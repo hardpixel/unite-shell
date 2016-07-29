@@ -6,6 +6,7 @@ const AppMenu = Me.imports.app_menu;
 const LeftBox = Me.imports.left_box;
 const TopIcons = Me.imports.top_icons;
 const ShowWindow = Me.imports.show_window;
+const StatusArea = Me.imports.status_area;
 
 function init(extensionMeta) {
 	Buttons.init(extensionMeta);
@@ -14,6 +15,7 @@ function init(extensionMeta) {
 	LeftBox.init(extensionMeta);
 	TopIcons.init(extensionMeta);
 	ShowWindow.init(extensionMeta);
+	StatusArea.init(extensionMeta);
 }
 
 function enable() {
@@ -23,6 +25,7 @@ function enable() {
 	LeftBox.enable();
 	TopIcons.enable();
 	ShowWindow.enable();
+	StatusArea.enable();
 }
 
 function disable() {
@@ -32,4 +35,5 @@ function disable() {
 	LeftBox.disable();
 	TopIcons.disable();
 	ShowWindow.disable();
+	StatusArea.disable();
 }
