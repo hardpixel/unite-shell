@@ -105,7 +105,7 @@ function enable() {
 	padding = 6;
 	styleLine = '-natural-hpadding: %dpx'.format(padding);
 
-	statusIconPadding = 2;
+	statusIconPadding = 6;
 	styleLineStatusIcon = 'padding-left: %dpx; padding-right: %dpx'.format(statusIconPadding, statusIconPadding)
 	// if you set it below 6 and it looks funny, that's your fault!
 	if (padding < 6) {
