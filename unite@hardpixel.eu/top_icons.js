@@ -1,204 +1,167 @@
-const Clutter = imports.gi.Clutter;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const Main = imports.ui.main;
-const GLib = imports.gi.GLib;
-const Lang = imports.lang;
-const Panel = imports.ui.panel;
-const PanelMenu = imports.ui.panelMenu;
-const Meta = imports.gi.Meta;
-const Mainloop = imports.mainloop;
-const NotificationDaemon = imports.ui.notificationDaemon;
+const St             = imports.gi.St;
+const Main           = imports.ui.main;
+const GLib           = imports.gi.GLib;
+const Lang           = imports.lang;
+const Clutter        = imports.gi.Clutter;
+const PanelMenu      = imports.ui.panelMenu;
+const ExtensionUtils = imports.misc.extensionUtils;
 
-let trayAddedId = 0;
-let trayRemovedId = 0;
-let getSource = null;
-let icons = [];
-let notificationDaemon;
-let notify_id = 0;
+let tray                    = null;
+let trayIconImplementations = null;
+let trayAddedId             = 0;
+let trayRemovedId           = 0;
+let icons                   = [];
+let iconsBoxLayout          = null;
+let iconsContainer          = null;
 
-const PANEL_ICON_SIZE = 24;
-
-let extensionPath;
-function init(extensionMeta) {
-	extensionPath = extensionMeta.path;
-	if (Main.legacyTray) {
-		notificationDaemon = Main.legacyTray;
-		NotificationDaemon.STANDARD_TRAY_ICON_IMPLEMENTATIONS = imports.ui.legacyTray.STANDARD_TRAY_ICON_IMPLEMENTATIONS;
-	}
-	else if (Main.notificationDaemon._fdoNotificationDaemon) {
-		notificationDaemon = Main.notificationDaemon._fdoNotificationDaemon;
-		getSource = Lang.bind(notificationDaemon, NotificationDaemon.FdoNotificationDaemon.prototype._getSource);
-	}
-	else {
-		notificationDaemon = Main.notificationDaemon;
-		getSource = Lang.bind(notificationDaemon, NotificationDaemon.NotificationDaemon.prototype._getSource);
-	}
-}
+function init(extensionMeta) {}
 
 function enable() {
-	Main.legacyTray.actor.hide();
-
-  notify_id = Main.legacyTray.actor.connect("notify::visible", function() {
-    if (Main.legacyTray.actor.visible)
-      Main.legacyTray.actor.hide();
-  });
-
-	GLib.idle_add(GLib.PRIORITY_LOW, moveToTop);
-}
-
-function createSource (title, pid, ndata, sender, trayIcon) {
-  if (trayIcon) {
-		onTrayIconAdded(this, trayIcon, title);
-		return null;
-  }
-
-  return getSource(title, pid, ndata, sender, trayIcon);
-};
-
-function onTrayIconAdded(o, icon, role) {
-	let wmClass = icon.wm_class ? icon.wm_class.toLowerCase() : '';
-	if (NotificationDaemon.STANDARD_TRAY_ICON_IMPLEMENTATIONS[wmClass] !== undefined)
-		return;
-
-	let buttonBox = new PanelMenu.ButtonBox();
-	let box = buttonBox.actor;
-	let parent = box.get_parent();
-
-	let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-	let iconSize = PANEL_ICON_SIZE * scaleFactor;
-
-	icon.set_size(iconSize, iconSize);
-	box.add_actor(icon);
-
-	icon.reactive = true;
-
-	if (parent)
-		parent.remove_actor(box);
-
-	icons.push(icon);
-	Main.panel._rightBox.insert_child_at_index(box, 0);
-
-	let clickProxy = new St.Bin({ width: iconSize, height: iconSize });
-	clickProxy.reactive = true;
-	Main.uiGroup.add_actor(clickProxy);
-
-	icon._proxyAlloc = Main.panel._rightBox.connect('allocation-changed', function() {
-		Meta.later_add(Meta.LaterType.BEFORE_REDRAW, function() {
-			let [x, y] = icon.get_transformed_position();
-			clickProxy.set_position(x, y);
-		});
-	});
-
-	icon.connect("destroy", function() {
-		Main.panel._rightBox.disconnect(icon._proxyAlloc);
-		clickProxy.destroy();
-	});
-
-	clickProxy.connect('button-release-event', function(actor, event) {
-		icon.click(event);
-	});
-
-	icon._clickProxy = clickProxy;
-
-	/* Fixme: HACK */
-	Meta.later_add(Meta.LaterType.BEFORE_REDRAW, function() {
-		let [x, y] = icon.get_transformed_position();
-		clickProxy.set_position(x, y);
-		return false;
-	});
-	let timerId = 0;
-	let i = 0;
-	timerId = Mainloop.timeout_add(500, function() {
-		icon.set_size(icon.width == iconSize ? iconSize - 1 : iconSize, icon.width == iconSize ? iconSize - 1 : iconSize);
-		i++;
-		if (i == 2)
-			Mainloop.source_remove(timerId);
-	});
-}
-
-function onTrayIconRemoved(o, icon) {
-	let parent = icon.get_parent();
-	parent.destroy();
-	icon.destroy();
-	icons.splice(icons.indexOf(icon), 1);
-}
-
-function moveToTop() {
-	notificationDaemon._trayManager.disconnect(notificationDaemon._trayIconAddedId);
-	notificationDaemon._trayManager.disconnect(notificationDaemon._trayIconRemovedId);
-	trayAddedId = notificationDaemon._trayManager.connect('tray-icon-added', onTrayIconAdded);
-	trayRemovedId = notificationDaemon._trayManager.connect('tray-icon-removed', onTrayIconRemoved);
-
-	notificationDaemon._getSource = createSource;
-
-	let toDestroy = [];
-	if (notificationDaemon._sources) {
-		for (let i = 0; i < notificationDaemon._sources.length; i++) {
-			let source = notificationDaemon._sources[i];
-			if (!source.trayIcon)
-				continue;
-			let parent = source.trayIcon.get_parent();
-			parent.remove_actor(source.trayIcon);
-			onTrayIconAdded(this, source.trayIcon, source.initialTitle);
-			toDestroy.push(source);
-		}
-	}
-	else {
-		for (let i = 0; i < notificationDaemon._iconBox.get_n_children(); i++) {
-			let button = notificationDaemon._iconBox.get_child_at_index(i);
-			let icon = button.child;
-			button.remove_actor(icon);
-			onTrayIconAdded(this, icon, '');
-			toDestroy.push(button);
-		}
-	}
-
-	for (let i = 0; i < toDestroy.length; i++) {
-		toDestroy[i].destroy();
-	}
-}
-
-function moveToTray() {
-	if (trayAddedId != 0) {
-		notificationDaemon._trayManager.disconnect(trayAddedId);
-		trayAddedId = 0;
-	}
-
-	if (trayRemovedId != 0) {
-		notificationDaemon._trayManager.disconnect(trayRemovedId);
-		trayRemovedId = 0;
-	}
-
-	notificationDaemon._trayIconAddedId = notificationDaemon._trayManager.connect('tray-icon-added', Lang.bind(notificationDaemon, notificationDaemon._onTrayIconAdded));
-	notificationDaemon._trayIconRemovedId = notificationDaemon._trayManager.connect('tray-icon-removed', Lang.bind(notificationDaemon, notificationDaemon._onTrayIconRemoved));
-	notificationDaemon._getSource = getSource;
-
-	for (let i = 0; i < icons.length; i++) {
-		let icon = icons[i];
-		let parent = icon.get_parent();
-		if (icon._clicked) {
-			icon.disconnect(icon._clicked);
-		}
-		icon._clicked = undefined;
-		if (icon._proxyAlloc) {
-			Main.panel._rightBox.disconnect(icon._proxyAlloc);
-		}
-		icon._clickProxy.destroy();
-		parent.remove_actor(icon);
-		parent.destroy();
-		notificationDaemon._onTrayIconAdded(notificationDaemon, icon);
-	}
-
-	icons = [];
+  GLib.idle_add(GLib.PRIORITY_LOW, moveToTop);
+  tray = Main.legacyTray;
 }
 
 function disable() {
-	moveToTray();
+  moveToTray();
+}
 
-	if (notify_id > 0)
-    Main.legacyTray.actor.disconnect(notify_id);
+function onTrayIconAdded(o, icon, role, delay=1000) {
+  // loop through the array and hide the extension if extension X is enabled and corresponding application is running
+  let wmClass       = icon.wm_class ? icon.wm_class.toLowerCase() : '';
+  let iconContainer = new St.Button({ child: icon, visible: false });
 
-	notify_id = 0;
-  Main.legacyTray.actor.show();
+  icon.connect('destroy', function() {
+    icon.clear_effects();
+    iconContainer.destroy();
+  });
+
+  iconContainer.connect('button-release-event', function(actor, event) {
+    icon.click(event);
+  });
+
+  GLib.timeout_add(GLib.PRIORITY_DEFAULT, delay, Lang.bind(this, function(){
+    iconContainer.visible        = true;
+    iconsContainer.actor.visible = true;
+
+    return GLib.SOURCE_REMOVE;
+  }));
+
+  iconsBoxLayout.insert_child_at_index(iconContainer, 0);
+
+  icon.reactive   = true;
+  let iconSize    = 18;
+  let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+
+  icon.get_parent().set_size(iconSize * scaleFactor, iconSize * scaleFactor);
+  icon.set_size(iconSize * scaleFactor, iconSize * scaleFactor);
+
+  icons.push(icon);
+}
+
+function onTrayIconRemoved(o, icon) {
+  let parent = icon.get_parent();
+
+  if (parent)
+    parent.destroy();
+
+  icon.destroy();
+  icons.splice(icons.indexOf(icon), 1);
+
+  if (icons.length === 0)
+    iconsContainer.actor.visible = false;
+}
+
+function moveToTop() {
+  // Replace signal handlers
+  if (tray._trayIconAddedId)
+    tray._trayManager.disconnect(tray._trayIconAddedId);
+
+  if (tray._trayIconRemovedId)
+    tray._trayManager.disconnect(tray._trayIconRemovedId);
+
+  trayAddedId   = tray._trayManager.connect('tray-icon-added', onTrayIconAdded);
+  trayRemovedId = tray._trayManager.connect('tray-icon-removed', onTrayIconRemoved);
+
+  // Create box layout for icon containers
+  iconsBoxLayout = new St.BoxLayout();
+  iconsBoxLayout.set_style('spacing: 5px; margin_top: 2px; margin_bottom: 2px;');
+
+  // An empty ButtonBox will still display padding,therefore create it without visibility.
+  iconsContainer = new PanelMenu.ButtonBox({ visible: false });
+  iconsContainer.actor.add_actor(iconsBoxLayout);
+  placeTray();
+
+  // Move each tray icon to the top
+  let length = tray._iconBox.get_n_children();
+  for (let i = 0; i < length; i++) {
+    let button = tray._iconBox.get_child_at_index(0);
+    let icon   = button.child;
+
+    button.remove_actor(icon);
+    button.destroy();
+    // Icon already loaded, no need to delay insertion
+    onTrayIconAdded(this, icon, '', 0);
+  }
+}
+
+function moveToTray() {
+  // Replace signal handlers
+  if (trayAddedId) {
+    tray._trayManager.disconnect(trayAddedId);
+    trayAddedId = 0;
+  }
+
+  if (trayRemovedId) {
+    tray._trayManager.disconnect(trayRemovedId);
+    trayRemovedId = 0;
+  }
+
+  tray._trayIconAddedId = tray._trayManager.connect('tray-icon-added', Lang.bind(tray, tray._onTrayIconAdded));
+  tray._trayIconRemovedId = tray._trayManager.connect('tray-icon-removed', Lang.bind(tray, tray._onTrayIconRemoved));
+
+  // Clean and move each icon back to the Legacy Tray;
+  for (let i = 0; i < icons.length; i++) {
+    let icon     = icons[i];
+    icon.opacity = 255;
+
+    icon.clear_effects();
+
+    let parent = icon.get_parent();
+
+    if (parent) {
+      parent.remove_actor(icon);
+      parent.destroy();
+    }
+
+    tray._onTrayIconAdded(tray, icon);
+  }
+
+  // Clean containers
+  icons = [];
+
+  if (iconsBoxLayout) {
+    iconsBoxLayout.destroy();
+    iconsBoxLayout = null;
+  }
+  if (iconsContainer) {
+    if (iconsContainer.actor) {
+      iconsContainer.actor.destroy();
+      iconsContainer.actor = null;
+    }
+
+    iconsContainer = null;
+  }
+}
+
+// Settings
+
+function placeTray() {
+  let parent = iconsContainer.actor.get_parent();
+
+  if (parent) {
+    parent.remove_actor(iconsContainer.actor);
+  }
+
+  let index = Main.panel._rightBox.get_n_children() - 1;
+  Main.panel._rightBox.insert_child_at_index(iconsContainer.actor, index);
 }
