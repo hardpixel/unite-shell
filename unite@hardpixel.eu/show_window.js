@@ -1,14 +1,11 @@
-const WindowAttentionHandler = imports.ui.windowAttentionHandler;
-const Shell                  = imports.gi.Shell;
-const Main                   = imports.ui.main;
+const Main = imports.ui.main;
 
-let handler
+let handler;
 
 function init(extensionMeta) {}
 
 function enable() {
-  windowtracker = Shell.WindowTracker.get_default();
-  handler       = global.display.connect('window-demands-attention', function(a,window) {
+  handler = global.display.connect('window-demands-attention', function(a, window) {
     Main.activateWindow(window);
   });
 }

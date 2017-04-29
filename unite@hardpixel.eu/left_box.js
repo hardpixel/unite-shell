@@ -1,14 +1,11 @@
-const St      = imports.gi.St;
 const Clutter = imports.gi.Clutter;
 const Main    = imports.ui.main;
 
 let panelConnectId;
 let panel;
-let extensionPath;
 
 function init(extensionMeta) {
-  extensionPath = extensionMeta.path;
-  panel         = Main.panel;
+  panel = Main.panel;
 }
 
 function enable() {

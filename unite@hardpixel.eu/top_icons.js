@@ -2,32 +2,29 @@ const St             = imports.gi.St;
 const Main           = imports.ui.main;
 const GLib           = imports.gi.GLib;
 const Lang           = imports.lang;
-const Clutter        = imports.gi.Clutter;
 const PanelMenu      = imports.ui.panelMenu;
-const ExtensionUtils = imports.misc.extensionUtils;
 
-let tray                    = null;
-let trayIconImplementations = null;
-let trayAddedId             = 0;
-let trayRemovedId           = 0;
-let icons                   = [];
-let iconsBoxLayout          = null;
-let iconsContainer          = null;
+let tray           = null;
+let trayAddedId    = 0;
+let trayRemovedId  = 0;
+let icons          = [];
+let iconsBoxLayout = null;
+let iconsContainer = null;
 
 function init(extensionMeta) {}
 
 function enable() {
   GLib.idle_add(GLib.PRIORITY_LOW, moveToTop);
   tray = Main.legacyTray;
+  Main.legacyTray.actor.hide();
 }
 
 function disable() {
   moveToTray();
+  Main.legacyTray.actor.show();
 }
 
 function onTrayIconAdded(o, icon, role, delay=1000) {
-  // loop through the array and hide the extension if extension X is enabled and corresponding application is running
-  let wmClass       = icon.wm_class ? icon.wm_class.toLowerCase() : '';
   let iconContainer = new St.Button({ child: icon, visible: false });
 
   icon.connect('destroy', function() {
@@ -51,9 +48,10 @@ function onTrayIconAdded(o, icon, role, delay=1000) {
   icon.reactive   = true;
   let iconSize    = 18;
   let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+  let newsize     = iconSize * scaleFactor;
 
-  icon.get_parent().set_size(iconSize * scaleFactor, iconSize * scaleFactor);
-  icon.set_size(iconSize * scaleFactor, iconSize * scaleFactor);
+  icon.get_parent().set_size(newsize, newsize);
+  icon.set_size(newsize, newsize);
 
   icons.push(icon);
 }
@@ -84,7 +82,7 @@ function moveToTop() {
 
   // Create box layout for icon containers
   iconsBoxLayout = new St.BoxLayout();
-  iconsBoxLayout.set_style('spacing: 5px; margin_top: 2px; margin_bottom: 2px;');
+  iconsBoxLayout.set_style('spacing: 10px; margin_top: 2px; margin_bottom: 2px;');
 
   // An empty ButtonBox will still display padding,therefore create it without visibility.
   iconsContainer = new PanelMenu.ButtonBox({ visible: false });
@@ -93,6 +91,7 @@ function moveToTop() {
 
   // Move each tray icon to the top
   let length = tray._iconBox.get_n_children();
+
   for (let i = 0; i < length; i++) {
     let button = tray._iconBox.get_child_at_index(0);
     let icon   = button.child;
@@ -152,8 +151,6 @@ function moveToTray() {
     iconsContainer = null;
   }
 }
-
-// Settings
 
 function placeTray() {
   let parent = iconsContainer.actor.get_parent();
