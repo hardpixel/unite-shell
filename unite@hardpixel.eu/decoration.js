@@ -3,14 +3,6 @@ const Mainloop = imports.mainloop;
 const Meta     = imports.gi.Meta;
 const Util     = imports.misc.util;
 
-function LOG(message) {
-  // log("[unite]: " + message);
-}
-
-function WARN(message) {
-  log("[unite]: " + message);
-}
-
 /**
  * Guesses the X ID of a window.
  *
@@ -79,7 +71,7 @@ function guessWindowXID(win) {
   // may be necessary if the title contains special characters and `x-window`
   // is not available.
   let result = GLib.spawn_command_line_sync('xprop -root _NET_CLIENT_LIST');
-  LOG('xprop -root _NET_CLIENT_LIST')
+
   if (result[0]) {
     let str = result[1].toString();
 
@@ -90,7 +82,6 @@ function guessWindowXID(win) {
     for (var i = 0; i < windowList.length; ++i) {
       let cmd = 'xprop -id "' + windowList[i] + '" _NET_WM_NAME _UNITE_ORIGINAL_STATE';
       let result = GLib.spawn_command_line_sync(cmd);
-      LOG(cmd);
 
       if (result[0]) {
         let output = result[1].toString();
@@ -100,7 +91,6 @@ function guessWindowXID(win) {
         }
 
         let title = output.match(/_NET_WM_NAME(\(\w+\))? = "(([^\\"]|\\"|\\\\)*)"/);
-        LOG("Title of XID %s is \"%s\".".format(windowList[i], title[2]));
 
         // Is this our guy?
         if (title && title[2] == win.title) {
@@ -110,8 +100,6 @@ function guessWindowXID(win) {
     }
   }
 
-  // debugging for when people find bugs..
-  WARN("Could not find XID for window with title %s".format(win.title));
   return null;
 }
 
@@ -138,11 +126,9 @@ function getOriginalState(win) {
 
   let id = guessWindowXID(win);
   let cmd = 'xprop -id ' + id;
-  LOG(cmd);
 
   let xprops = GLib.spawn_command_line_sync(cmd);
   if (!xprops[0]) {
-    WARN("xprop failed for " + win.title + " with id " + id);
     return win._uniteOriginalState = State.UNKNOWN;
   }
 
@@ -157,18 +143,17 @@ function getOriginalState(win) {
   m = str.match(/^_GTK_HIDE_TITLEBAR_WHEN_MAXIMIZED(\(CARDINAL\))? = ([0-9]+)$/m);
   if (m) {
     let state = !!m[1];
+
     cmd = ['xprop', '-id', id,
           '-f', '_UNITE_ORIGINAL_STATE', '32c',
           '-set', '_UNITE_ORIGINAL_STATE',
           (state ? '0x1' : '0x0')];
-    LOG(cmd.join(' '));
+
     Util.spawn(cmd);
     return win._uniteOriginalState = state
       ? WindowState.HIDE_TITLEBAR
       : WindowState.DEFAULT;
   }
-
-  WARN("Can't find original state for " + win.title + " with id " + id);
 
   // GTK uses the _GTK_HIDE_TITLEBAR_WHEN_MAXIMIZED atom to indicate that the
   // title bar should be hidden when maximized. If we can't find this atom, the
@@ -192,8 +177,6 @@ function getOriginalState(win) {
  * @param {boolean} hide - whether to hide the titlebar or not.
  */
 function setHideTitlebar(win, hide) {
-  LOG('setHideTitlebar: ' + win.get_title() + ': ' + hide);
-
   // Make sure we save the state before altering it.
   getOriginalState(win);
 
@@ -205,10 +188,9 @@ function setHideTitlebar(win, hide) {
              '-f', '_GTK_HIDE_TITLEBAR_WHEN_MAXIMIZED', '32c',
              '-set', '_GTK_HIDE_TITLEBAR_WHEN_MAXIMIZED',
              (hide ? '0x1' : '0x0')];
-  LOG(cmd.join(' '));
 
   // Run xprop
-  [success, pid] = GLib.spawn_async(
+  let [success, pid] = GLib.spawn_async(
     null,
     cmd,
     null,
@@ -284,11 +266,9 @@ function onWindowAdded(ws, win, retry) {
         return true;
       }
 
-      WARN("Finding XID for window %s failed".format(win.title));
       return false;
     }
 
-    LOG('onWindowAdded: ' + win.get_title());
     setHideTitlebar(win, true);
     return false;
   });
@@ -383,7 +363,7 @@ function disable() {
 
   forEachWindow(function(win) {
     let state = getOriginalState(win);
-    LOG('stopUndecorating: ' + win.title + ' original=' + state);
+
     if (state == WindowState.DEFAULT) {
       setHideTitlebar(win, false);
     }
