@@ -59,13 +59,13 @@ function createButtons() {
   }
 
   Mainloop.idle_add(function () {
-    // 1 for activity button and -1 for the menu
+    // 1 for activity button and +1 for the menu
     if (boxes[0].get_children().length) {
       Main.panel._leftBox.insert_child_at_index(actors[0], 1);
     }
 
     if (boxes[1].get_children().length) {
-      Main.panel._rightBox.insert_child_at_index(actors[1], Main.panel._rightBox.get_children().length - 1);
+      Main.panel._rightBox.insert_child_at_index(actors[1], Main.panel._rightBox.get_children().length + 1);
     }
 
     updateVisibility();
