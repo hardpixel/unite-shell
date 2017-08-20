@@ -1,4 +1,5 @@
 const ExtensionUtils = imports.misc.extensionUtils;
+const Main           = imports.ui.main;
 const Me             = ExtensionUtils.getCurrentExtension();
 const Decoration     = Me.imports.decoration;
 const Buttons        = Me.imports.buttons;
@@ -23,6 +24,8 @@ function enable() {
   LeftBox.enable();
   TopIcons.enable();
   ShowWindow.enable();
+
+  Main.loadTheme();
 }
 
 function disable() {
