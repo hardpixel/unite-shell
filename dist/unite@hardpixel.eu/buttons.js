@@ -1,6 +1,4 @@
-const GLib            = imports.gi.GLib;
 const Gio             = imports.gi.Gio;
-const Gtk             = imports.gi.Gtk;
 const Main            = imports.ui.main;
 const Mainloop        = imports.mainloop;
 const Meta            = imports.gi.Meta;
@@ -9,11 +7,52 @@ const ExtensionUtils  = imports.misc.extensionUtils;
 const Me              = ExtensionUtils.getCurrentExtension();
 const Util            = Me.imports.util;
 const DCONF_META_PATH = 'org.gnome.desktop.wm.preferences';
+const MAXIMIZED       = Meta.MaximizeFlags.BOTH;
 
-let actors = [], boxes = [];
+let extensionPath;
+
+let actors              = [];
+let boxes               = [];
+let wmCallbackIDs       = [];
+let overviewCallbackIDs = [];
+
+function init(extensionMeta) {
+  extensionPath = extensionMeta.path;
+}
+
+function enable() {
+  createButtons();
+
+  overviewCallbackIDs.push(Main.overview.connect('showing', updateVisibility));
+  overviewCallbackIDs.push(Main.overview.connect('hidden', updateVisibility));
+
+  wmCallbackIDs.push(global.window_manager.connect('switch-workspace', updateVisibility));
+  wmCallbackIDs.push(global.window_manager.connect('map', updateVisibility));
+  wmCallbackIDs.push(global.window_manager.connect('minimize', updateVisibility));
+  wmCallbackIDs.push(global.window_manager.connect('unminimize', updateVisibility));
+  wmCallbackIDs.push(global.window_manager.connect('size-change', updateVisibility));
+
+  wmCallbackIDs.push(global.window_manager.connect('destroy', function () {
+    Mainloop.idle_add(updateVisibility);
+  }));
+}
+
+function disable() {
+  for (let i = 0; i < wmCallbackIDs.length; ++i) {
+    global.window_manager.disconnect(wmCallbackIDs[i]);
+  }
+
+  for (let i = 0; i < overviewCallbackIDs.length; ++i) {
+    Main.overview.disconnect(overviewCallbackIDs[i]);
+  }
+
+  wmCallbackIDs       = [];
+  overviewCallbackIDs = [];
+
+  destroyButtons();
+}
 
 function createButtons() {
-  // Ensure we do not create buttons twice.
   destroyButtons();
 
   actors = [new St.Bin({ style_class: 'box-bin'}), new St.Bin({ style_class: 'box-bin' })];
@@ -23,7 +62,7 @@ function createButtons() {
     actors[i].add_actor(boxes[i]);
   }
 
-  let order  = new Gio.Settings({schema_id: DCONF_META_PATH}).get_string('button-layout');
+  let order  = new Gio.Settings({ schema_id: DCONF_META_PATH }).get_string('button-layout');
   let orders = order.replace(/ /g, '').split(':');
 
   orders[0] = orders[0].split(',');
@@ -36,8 +75,8 @@ function createButtons() {
   };
 
   for (let bi = 0; bi < boxes.length; ++bi) {
-    let order = orders[bi],
-    box       = boxes[bi];
+    let order = orders[bi];
+    let box   = boxes[bi];
 
     for (let i = 0; i < order.length; ++i) {
       if (!order[i]) {
@@ -59,7 +98,6 @@ function createButtons() {
   }
 
   Mainloop.idle_add(function () {
-    // 1 for activity button and +1 for the menu
     if (boxes[0].get_children().length) {
       Main.panel._leftBox.insert_child_at_index(actors[0], 1);
     }
@@ -83,9 +121,6 @@ function destroyButtons() {
   boxes  = [];
 }
 
-/*
- * Buttons actions
- */
 function leftclick(callback) {
   return function(actor, event) {
     if (event.get_button() !== 1) {
@@ -113,8 +148,6 @@ function maximize() {
     return;
   }
 
-  const MAXIMIZED = Meta.MaximizeFlags.BOTH;
-
   if (win.get_maximized() === MAXIMIZED) {
     win.unmaximize(MAXIMIZED);
   } else {
@@ -135,7 +168,6 @@ function close() {
 }
 
 function updateVisibility() {
-  // If we have a window to control, then we show the buttons.
   let visible = !Main.overview.visible;
 
   if (visible) {
@@ -162,54 +194,4 @@ function updateVisibility() {
   }
 
   return false;
-}
-
-let extensionPath;
-
-function init(extensionMeta) {
-  extensionPath = extensionMeta.path;
-}
-
-let wmCallbackIDs       = [];
-let overviewCallbackIDs = [];
-
-function enable() {
-  createButtons();
-
-  overviewCallbackIDs.push(Main.overview.connect('showing', updateVisibility));
-  overviewCallbackIDs.push(Main.overview.connect('hidden', updateVisibility));
-
-  wmCallbackIDs.push(global.window_manager.connect('switch-workspace', updateVisibility));
-  wmCallbackIDs.push(global.window_manager.connect('map', updateVisibility));
-  wmCallbackIDs.push(global.window_manager.connect('minimize', updateVisibility));
-  wmCallbackIDs.push(global.window_manager.connect('unminimize', updateVisibility));
-
-  try {
-    // Gnome 3.16
-    wmCallbackIDs.push(global.window_manager.connect('maximize', updateVisibility));
-    wmCallbackIDs.push(global.window_manager.connect('unmaximize', updateVisibility));
-  } catch (e) {
-    // Gnome 3.18
-    wmCallbackIDs.push(global.window_manager.connect('size-change', updateVisibility));
-  }
-
-  // note: 'destroy' needs a delay for .list_windows() report correctly
-  wmCallbackIDs.push(global.window_manager.connect('destroy', function () {
-    Mainloop.idle_add(updateVisibility);
-  }));
-}
-
-function disable() {
-  for (let i = 0; i < wmCallbackIDs.length; ++i) {
-    global.window_manager.disconnect(wmCallbackIDs[i]);
-  }
-
-  for (let i = 0; i < overviewCallbackIDs.length; ++i) {
-    Main.overview.disconnect(overviewCallbackIDs[i]);
-  }
-
-  wmCallbackIDs       = [];
-  overviewCallbackIDs = [];
-
-  destroyButtons();
 }
