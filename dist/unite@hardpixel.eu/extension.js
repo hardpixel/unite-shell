@@ -18,14 +18,14 @@ function init(extensionMeta) {
 }
 
 function enable() {
+  Main.loadTheme();
+
   Buttons.enable();
   Decoration.enable();
   AppMenu.enable();
   LeftBox.enable();
   TopIcons.enable();
   ShowWindow.enable();
-
-  Main.loadTheme();
 }
 
 function disable() {
