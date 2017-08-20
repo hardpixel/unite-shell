@@ -1,9 +1,22 @@
+#panel .aggregate-menu {
+  background: red; }
 #panel .panel-button {
-  -natural-hpadding: 6px;
-  -minimum-hpadding: 3px;
+  -natural-hpadding: 8px;
+  -minimum-hpadding: 6px;
   font-size: 0.9em; }
   #panel .panel-button .system-status-icon {
-    font-size: 1.1em; }
+    font-size: 1.1em;
+    margin: 0;
+    padding: 0; }
+  #panel .panel-button .panel-status-menu-box {
+    margin: 0;
+    padding: 0;
+    spacing: 0; }
+  #panel .panel-button .panel-status-indicators-box {
+    spacing: 10px; }
+    #panel .panel-button .panel-status-indicators-box .popup-menu-arrow {
+      width: 12px;
+      height: 12px; }
 #panel .popup-menu-arrow,
 #panel .app-menu-icon {
   width: 0;
@@ -14,7 +27,8 @@
   spacing: 2px; }
 #panel .window-button {
   width: 24px;
-  height: 20px; }
+  height: 20px;
+  color: red; }
   #panel .window-button.close {
     background-image: url("assets/close.svg"); }
     #panel .window-button.close:hover, #panel .window-button.close:active, #panel .window-button.close:overview, #panel .window-button.close:focus, #panel .window-button.close:checked {
