@@ -1,0 +1,77 @@
+#panel
+
+  .aggregate-menu
+    background: red
+
+  .panel-button
+    -natural-hpadding: 8px
+    -minimum-hpadding: 6px
+    font-size: .9em
+
+    .system-status-icon
+      font-size: 1.1em
+      margin: 0
+      padding: 0
+
+    .panel-status-menu-box
+      margin: 0
+      padding: 0
+      spacing: 0
+
+    .panel-status-indicators-box
+      spacing: 10px
+
+      .popup-menu-arrow
+        width: 12px
+        height: 12px
+
+  .popup-menu-arrow,
+  .app-menu-icon
+    width: 0
+    height: 0
+    margin: 0
+    padding: 0
+
+  .button-box
+    spacing: 2px
+
+  .window-button
+    width: 24px
+    height: 20px
+    color: red
+
+    &.close
+      background-image: url('assets/close.svg')
+
+      &:hover, &:active, &:overview, &:focus, &:checked
+        background-image: url('assets/close-active.svg')
+
+    &.minimize
+      background-image: url('assets/minimize.svg')
+
+      &:hover, &:active, &:overview, &:focus, &:checked
+        background-image: url('assets/minimize-active.svg')
+
+    &.maximize
+      background-image: url('assets/maximize.svg')
+
+      &:hover, &:active, &:overview, &:focus, &:checked
+        background-image: url('assets/maximize-active.svg')
+
+  #appMenu
+    margin-left: .5em
+    margin-right: .5em
+
+  #panelActivities
+    width: 55px
+
+    > *
+      background-color: transparent
+      color: transparent
+      background-image: url('assets/activities.svg')
+      background-position: center
+
+    &:hover, &:active, &:overview, &:focus, &:checked
+
+      > *
+        background-image: url('assets/activities-active.svg')
