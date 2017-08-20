@@ -134,30 +134,6 @@ function close() {
   win.delete(global.get_current_time());
 }
 
-let activeCSS = false;
-
-function loadTheme() {
-  let cssPath = GLib.build_filenamev([extensionPath, 'theme/styles.css']);
-
-  if (cssPath === activeCSS) {
-    return;
-  }
-
-  let cssFile = Gio.file_new_for_path(cssPath);
-  St.ThemeContext.get_for_stage(global.stage).get_theme().load_stylesheet(cssFile);
-
-  activeCSS = cssPath;
-}
-
-function unloadTheme() {
-  if (activeCSS) {
-    let cssFile = Gio.file_new_for_path(activeCSS);
-    St.ThemeContext.get_for_stage(global.stage).get_theme().unload_stylesheet(cssFile);
-
-    activeCSS = false;
-  }
-}
-
 function updateVisibility() {
   // If we have a window to control, then we show the buttons.
   let visible = !Main.overview.visible;
@@ -199,7 +175,6 @@ let overviewCallbackIDs = [];
 
 function enable() {
   createButtons();
-  loadTheme();
 
   overviewCallbackIDs.push(Main.overview.connect('showing', updateVisibility));
   overviewCallbackIDs.push(Main.overview.connect('hidden', updateVisibility));
@@ -236,6 +211,5 @@ function disable() {
   wmCallbackIDs       = [];
   overviewCallbackIDs = [];
 
-  unloadTheme();
   destroyButtons();
 }
