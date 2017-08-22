@@ -42,8 +42,10 @@
     #panel .window-button.maximize:hover, #panel .window-button.maximize:active, #panel .window-button.maximize:overview, #panel .window-button.maximize:focus, #panel .window-button.maximize:checked {
       background-image: url("assets/maximize-active.svg"); }
 #panel #appMenu {
-  margin-left: 0.5em;
-  margin-right: 0.5em; }
+  margin-left: 10px;
+  margin-right: 5px; }
+  #panel #appMenu .popup-menu-arrow {
+    margin-left: 5px; }
 #panel #panelActivities {
   width: 55px; }
   #panel #panelActivities > * {
