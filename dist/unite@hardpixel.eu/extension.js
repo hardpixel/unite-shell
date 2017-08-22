@@ -185,7 +185,7 @@ function createButtons() {
     }
 
     if (position == 'right') {
-      let index = Main.panel._rightBox.get_children().length + 1;
+      let index = panel._rightBox.get_children().length + 1;
       panel._rightBox.insert_child_at_index(buttonsActor, index);
     }
   }
