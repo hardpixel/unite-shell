@@ -27,7 +27,7 @@ function disableAppMenu() {
 }
 
 function updateAppMenu() {
-  lactiveApp   = wtracker.focus_app;
+  activeApp    = wtracker.focus_app;
   activeWindow = global.display.focus_window;
 
   if (activeWindow && activeWindow.get_window_type() !== TOPLEVEL) {
