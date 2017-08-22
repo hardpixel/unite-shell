@@ -143,6 +143,12 @@ function closeWindow() {
 }
 
 function updateButtons() {
+  let window = global.display.focus_window;
+
+  if (window.get_window_type() !== TOPLEVEL) {
+    return;
+  }
+
   let visible = false;
   focusWindow = global.display.focus_window;
 

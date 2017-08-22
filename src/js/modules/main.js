@@ -1,6 +1,7 @@
 const Main       = imports.ui.main;
 const Meta       = imports.gi.Meta;
 const Shell      = imports.gi.Shell;
+const Gtk        = imports.gi.Gtk;
 const Gio        = imports.gi.Gio;
 const GLib       = imports.gi.GLib;
 const Mainloop   = imports.mainloop;
@@ -11,6 +12,7 @@ const Lang       = imports.lang;
 const PanelMenu  = imports.ui.panelMenu;
 const DCONF_META = 'org.gnome.desktop.wm.preferences';
 const MAXIMIZED  = Meta.MaximizeFlags.BOTH;
+const TOPLEVEL   = Gtk.WindowType.TOPLEVEL;
 
 let wtracker;
 let panel;
