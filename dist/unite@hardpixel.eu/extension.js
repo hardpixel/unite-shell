@@ -173,6 +173,7 @@ function createButtons() {
     buttonsBox   = new St.BoxLayout({ style_class: 'button-box' });
 
     buttonsActor.add_actor(buttonsBox);
+    buttonsActor.hide();
 
     buttons.forEach(function (btn) {
       let callback = buttonsCallbacks[btn];
@@ -260,14 +261,12 @@ function closeWindow() {
 }
 
 function updateButtons() {
-  let window = global.display.focus_window;
-
-  if (window.get_window_type() !== TOPLEVEL) {
-    return;
-  }
-
   let visible = false;
   focusWindow = global.display.focus_window;
+
+  if (focusWindow && focusWindow.get_window_type() !== TOPLEVEL) {
+    return;
+  }
 
   if (!Main.overview.visible && focusWindow) {
     visible = focusWindow.decorated && focusWindow.get_maximized() === MAXIMIZED;
@@ -311,14 +310,12 @@ function disableAppMenu() {
 }
 
 function updateAppMenu() {
-  let window = global.display.focus_window;
+  lactiveApp   = wtracker.focus_app;
+  activeWindow = global.display.focus_window;
 
-  if (window.get_window_type() !== TOPLEVEL) {
+  if (activeWindow && activeWindow.get_window_type() !== TOPLEVEL) {
     return;
   }
-
-  activeApp    = wtracker.focus_app;
-  activeWindow = window;
 
   if (activeWindow) {
     activeWindow.connect('notify::title', updateAppMenuTitle);
