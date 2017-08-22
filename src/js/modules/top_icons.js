@@ -1,9 +1,3 @@
-const St             = imports.gi.St;
-const Main           = imports.ui.main;
-const GLib           = imports.gi.GLib;
-const Lang           = imports.lang;
-const PanelMenu      = imports.ui.panelMenu;
-
 let tray           = null;
 let trayAddedId    = 0;
 let trayRemovedId  = 0;
@@ -11,15 +5,13 @@ let icons          = [];
 let iconsBoxLayout = null;
 let iconsContainer = null;
 
-function init(extensionMeta) {}
-
-function enable() {
+function enableTopIcons() {
   GLib.idle_add(GLib.PRIORITY_LOW, moveToTop);
   tray = Main.legacyTray;
   Main.legacyTray.actor.hide();
 }
 
-function disable() {
+function disableTopIcons() {
   moveToTray();
   Main.legacyTray.actor.show();
 }

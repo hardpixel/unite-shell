@@ -1,8 +1,3 @@
-const GLib     = imports.gi.GLib;
-const Mainloop = imports.mainloop;
-const Meta     = imports.gi.Meta;
-const Util     = imports.misc.util;
-
 /**
  * Guesses the X ID of a window.
  *
@@ -326,10 +321,10 @@ function forEachWindow(callback) {
 /**
  * Subextension hooks
  */
-function init() {}
 
 let changeWorkspaceID = 0;
-function enable() {
+
+function enableDecoration() {
   // Connect events
   changeWorkspaceID = global.screen.connect('notify::n-workspaces', onChangeNWorkspaces);
 
@@ -353,7 +348,7 @@ function enable() {
   });
 }
 
-function disable() {
+function disableDecoration() {
   if (changeWorkspaceID) {
     global.screen.disconnect(changeWorkspaceID);
     changeWorkspaceID = 0;
