@@ -1,12 +1,12 @@
 let appmenuWmHandlers = [];
 let appmenuWtHandler  = null;
-let appmenuAwHandler  = null;
-let appmenuAaHandler  = null;
+let appmenuGsHandler  = null;
 let activeApp         = null;
 let activeWindow      = null;
 
 function enableAppMenu() {
   appmenuWtHandler = wtracker.connect('notify::focus-app', updateAppMenu);
+  appmenuGsHandler = global.screen.connect('restacked', updateAppMenu);
 
   appmenuWmHandlers.push(global.window_manager.connect('size-changed', updateAppMenu));
   appmenuWmHandlers.push(global.window_manager.connect('destroy', updateAppMenu));
@@ -19,14 +19,9 @@ function disableAppMenu() {
     global.window_manager.disconnect(handler);
   });
 
-  if (activeWindow) {
-    activeWindow.disconnect(appmenuAwHandler);
-  }
-
   appmenuWmHandlers = [];
   appmenuWtHandler  = null;
-  appmenuAwHandler  = null;
-  appmenuAaHandler  = null;
+  appmenuGsHandler  = null;
   activeApp         = null;
   activeWindow      = null;
 }
@@ -35,18 +30,14 @@ function updateAppMenu() {
   activeApp    = wtracker.focus_app;
   activeWindow = global.display.focus_window;
 
-  if (appmenuAaHandler) {
-    activeApp.disconnect(appmenuAaHandler);
-  }
-
-  if (appmenuAwHandler) {
-    activeWindow.disconnect(appmenuAwHandler);
-  }
-
   if (activeWindow) {
-    appmenuAaHandler = activeApp.connect('windows-changed', updateAppMenu);
-    appmenuAwHandler = activeWindow.connect('notify::title', updateAppMenu);
+    activeWindow.connect('notify::title', updateAppMenuTitle);
+    updateAppMenuTitle();
+  }
+}
 
+function updateAppMenuTitle() {
+  Mainloop.idle_add(function () {
     let title = activeWindow.title;
 
     if (activeWindow.get_maximized() !== MAXIMIZED) {
@@ -54,5 +45,5 @@ function updateAppMenu() {
     }
 
     appmenu._label.set_text(title);
-  }
+  });
 }

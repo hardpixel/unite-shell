@@ -1,6 +1,7 @@
 let buttonsWmHandlers = [];
 let buttonsOvHandlers = [];
 let buttonsWtHandler  = null;
+let buttonsGsHandler  = null;
 let buttonsActor      = null;
 let buttonsBox        = null;
 let focusWindow       = null;
@@ -10,6 +11,7 @@ function enableButtons() {
   createButtons();
 
   buttonsWtHandler = wtracker.connect('notify::focus-app', updateButtons);
+  buttonsGsHandler = global.screen.connect('restacked', updateAppMenu);
 
   buttonsOvHandlers.push(Main.overview.connect('showing', updateButtons));
   buttonsOvHandlers.push(Main.overview.connect('hidden', updateButtons));
@@ -20,6 +22,7 @@ function enableButtons() {
 
 function disableButtons() {
   wtracker.disconnect(buttonsWtHandler);
+  global.screen.disconnect(buttonsGsHandler);
 
   buttonsOvHandlers.forEach(function (handler) {
     Main.overview.disconnect(handler);
@@ -32,6 +35,7 @@ function disableButtons() {
   buttonsWmHandlers = [];
   buttonsOvHandlers = [];
   buttonsWtHandler  = null;
+  buttonsGsHandler  = null;
 
   destroyButtons();
 }
@@ -109,12 +113,16 @@ function buttonsClick(callback) {
 }
 
 function minimizeWindow() {
+  focusWindow = global.display.focus_window;
+
   if (focusWindow && !focusWindow.minimized) {
     focusWindow.minimize();
   }
 }
 
 function maximizeWindow() {
+  focusWindow = global.display.focus_window;
+
   if (focusWindow) {
     if (focusWindow.get_maximized() === MAXIMIZED) {
       focusWindow.unmaximize(MAXIMIZED);
@@ -127,6 +135,8 @@ function maximizeWindow() {
 }
 
 function closeWindow() {
+  focusWindow = global.display.focus_window;
+
   if (focusWindow) {
     focusWindow.delete(global.get_current_time());
   }
@@ -140,9 +150,11 @@ function updateButtons() {
     visible = focusWindow.decorated && focusWindow.get_maximized() === MAXIMIZED;
   }
 
-  if (visible) {
-    buttonsActor.show();
-  } else {
-    buttonsActor.hide();
-  }
+  Mainloop.idle_add(function () {
+    if (visible) {
+      buttonsActor.show();
+    } else {
+      buttonsActor.hide();
+    }
+  });
 }

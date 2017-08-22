@@ -116,6 +116,7 @@ function disableLeftBox() {
 let buttonsWmHandlers = [];
 let buttonsOvHandlers = [];
 let buttonsWtHandler  = null;
+let buttonsGsHandler  = null;
 let buttonsActor      = null;
 let buttonsBox        = null;
 let focusWindow       = null;
@@ -125,6 +126,7 @@ function enableButtons() {
   createButtons();
 
   buttonsWtHandler = wtracker.connect('notify::focus-app', updateButtons);
+  buttonsGsHandler = global.screen.connect('restacked', updateAppMenu);
 
   buttonsOvHandlers.push(Main.overview.connect('showing', updateButtons));
   buttonsOvHandlers.push(Main.overview.connect('hidden', updateButtons));
@@ -135,6 +137,7 @@ function enableButtons() {
 
 function disableButtons() {
   wtracker.disconnect(buttonsWtHandler);
+  global.screen.disconnect(buttonsGsHandler);
 
   buttonsOvHandlers.forEach(function (handler) {
     Main.overview.disconnect(handler);
@@ -147,6 +150,7 @@ function disableButtons() {
   buttonsWmHandlers = [];
   buttonsOvHandlers = [];
   buttonsWtHandler  = null;
+  buttonsGsHandler  = null;
 
   destroyButtons();
 }
@@ -224,12 +228,16 @@ function buttonsClick(callback) {
 }
 
 function minimizeWindow() {
+  focusWindow = global.display.focus_window;
+
   if (focusWindow && !focusWindow.minimized) {
     focusWindow.minimize();
   }
 }
 
 function maximizeWindow() {
+  focusWindow = global.display.focus_window;
+
   if (focusWindow) {
     if (focusWindow.get_maximized() === MAXIMIZED) {
       focusWindow.unmaximize(MAXIMIZED);
@@ -242,6 +250,8 @@ function maximizeWindow() {
 }
 
 function closeWindow() {
+  focusWindow = global.display.focus_window;
+
   if (focusWindow) {
     focusWindow.delete(global.get_current_time());
   }
@@ -255,22 +265,24 @@ function updateButtons() {
     visible = focusWindow.decorated && focusWindow.get_maximized() === MAXIMIZED;
   }
 
-  if (visible) {
-    buttonsActor.show();
-  } else {
-    buttonsActor.hide();
-  }
+  Mainloop.idle_add(function () {
+    if (visible) {
+      buttonsActor.show();
+    } else {
+      buttonsActor.hide();
+    }
+  });
 }
 ;
 let appmenuWmHandlers = [];
 let appmenuWtHandler  = null;
-let appmenuAwHandler  = null;
-let appmenuAaHandler  = null;
+let appmenuGsHandler  = null;
 let activeApp         = null;
 let activeWindow      = null;
 
 function enableAppMenu() {
   appmenuWtHandler = wtracker.connect('notify::focus-app', updateAppMenu);
+  appmenuGsHandler = global.screen.connect('restacked', updateAppMenu);
 
   appmenuWmHandlers.push(global.window_manager.connect('size-changed', updateAppMenu));
   appmenuWmHandlers.push(global.window_manager.connect('destroy', updateAppMenu));
@@ -283,14 +295,9 @@ function disableAppMenu() {
     global.window_manager.disconnect(handler);
   });
 
-  if (activeWindow) {
-    activeWindow.disconnect(appmenuAwHandler);
-  }
-
   appmenuWmHandlers = [];
   appmenuWtHandler  = null;
-  appmenuAwHandler  = null;
-  appmenuAaHandler  = null;
+  appmenuGsHandler  = null;
   activeApp         = null;
   activeWindow      = null;
 }
@@ -299,18 +306,14 @@ function updateAppMenu() {
   activeApp    = wtracker.focus_app;
   activeWindow = global.display.focus_window;
 
-  if (appmenuAaHandler) {
-    activeApp.disconnect(appmenuAaHandler);
-  }
-
-  if (appmenuAwHandler) {
-    activeWindow.disconnect(appmenuAwHandler);
-  }
-
   if (activeWindow) {
-    appmenuAaHandler = activeApp.connect('windows-changed', updateAppMenu);
-    appmenuAwHandler = activeWindow.connect('notify::title', updateAppMenu);
+    activeWindow.connect('notify::title', updateAppMenuTitle);
+    updateAppMenuTitle();
+  }
+}
 
+function updateAppMenuTitle() {
+  Mainloop.idle_add(function () {
     let title = activeWindow.title;
 
     if (activeWindow.get_maximized() !== MAXIMIZED) {
@@ -318,7 +321,7 @@ function updateAppMenu() {
     }
 
     appmenu._label.set_text(title);
-  }
+  });
 }
 ;
 let tray           = null;
