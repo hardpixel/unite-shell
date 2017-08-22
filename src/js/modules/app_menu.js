@@ -1,27 +1,24 @@
 let appmenuWmHandlers = [];
-let appmenuWtHandler  = null;
-let appmenuGsHandler  = null;
+let appmenuDsHandler  = null;
 let activeApp         = null;
 let activeWindow      = null;
 
 function enableAppMenu() {
-  appmenuWtHandler = wtracker.connect('notify::focus-app', updateAppMenu);
-  appmenuGsHandler = global.screen.connect('restacked', updateAppMenu);
+  appmenuDsHandler = global.display.connect('notify::focus-window', updateAppMenu);
 
   appmenuWmHandlers.push(global.window_manager.connect('size-changed', updateAppMenu));
   appmenuWmHandlers.push(global.window_manager.connect('destroy', updateAppMenu));
 }
 
 function disableAppMenu() {
-  wtracker.disconnect(appmenuWtHandler);
+  global.display.disconnect(appmenuDsHandler);
 
   appmenuWmHandlers.forEach(function (handler) {
     global.window_manager.disconnect(handler);
   });
 
   appmenuWmHandlers = [];
-  appmenuWtHandler  = null;
-  appmenuGsHandler  = null;
+  appmenuDsHandler  = null;
   activeApp         = null;
   activeWindow      = null;
 }

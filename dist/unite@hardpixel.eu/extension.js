@@ -117,8 +117,7 @@ function disableLeftBox() {
 ;
 let buttonsWmHandlers = [];
 let buttonsOvHandlers = [];
-let buttonsWtHandler  = null;
-let buttonsGsHandler  = null;
+let buttonsDsHandler  = null;
 let buttonsActor      = null;
 let buttonsBox        = null;
 let focusWindow       = null;
@@ -127,8 +126,7 @@ let buttonsCallbacks  = { close: closeWindow, minimize: minimizeWindow, maximize
 function enableButtons() {
   createButtons();
 
-  buttonsWtHandler = wtracker.connect('notify::focus-app', updateButtons);
-  buttonsGsHandler = global.screen.connect('restacked', updateAppMenu);
+  buttonsDsHandler = global.display.connect('notify::focus-window', updateButtons);
 
   buttonsOvHandlers.push(Main.overview.connect('showing', updateButtons));
   buttonsOvHandlers.push(Main.overview.connect('hidden', updateButtons));
@@ -138,8 +136,7 @@ function enableButtons() {
 }
 
 function disableButtons() {
-  wtracker.disconnect(buttonsWtHandler);
-  global.screen.disconnect(buttonsGsHandler);
+  global.display.disconnect(buttonsDsHandler);
 
   buttonsOvHandlers.forEach(function (handler) {
     Main.overview.disconnect(handler);
@@ -151,8 +148,7 @@ function disableButtons() {
 
   buttonsWmHandlers = [];
   buttonsOvHandlers = [];
-  buttonsWtHandler  = null;
-  buttonsGsHandler  = null;
+  buttonsDsHandler  = null;
 
   destroyButtons();
 }
@@ -282,29 +278,26 @@ function updateButtons() {
 }
 ;
 let appmenuWmHandlers = [];
-let appmenuWtHandler  = null;
-let appmenuGsHandler  = null;
+let appmenuDsHandler  = null;
 let activeApp         = null;
 let activeWindow      = null;
 
 function enableAppMenu() {
-  appmenuWtHandler = wtracker.connect('notify::focus-app', updateAppMenu);
-  appmenuGsHandler = global.screen.connect('restacked', updateAppMenu);
+  appmenuDsHandler = global.display.connect('notify::focus-window', updateAppMenu);
 
   appmenuWmHandlers.push(global.window_manager.connect('size-changed', updateAppMenu));
   appmenuWmHandlers.push(global.window_manager.connect('destroy', updateAppMenu));
 }
 
 function disableAppMenu() {
-  wtracker.disconnect(appmenuWtHandler);
+  global.display.disconnect(appmenuDsHandler);
 
   appmenuWmHandlers.forEach(function (handler) {
     global.window_manager.disconnect(handler);
   });
 
   appmenuWmHandlers = [];
-  appmenuWtHandler  = null;
-  appmenuGsHandler  = null;
+  appmenuDsHandler  = null;
   activeApp         = null;
   activeWindow      = null;
 }
