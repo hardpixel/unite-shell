@@ -1,7 +1,6 @@
 const Main       = imports.ui.main;
 const Meta       = imports.gi.Meta;
 const Shell      = imports.gi.Shell;
-const Gtk        = imports.gi.Gtk;
 const Gio        = imports.gi.Gio;
 const GLib       = imports.gi.GLib;
 const Mainloop   = imports.mainloop;
@@ -32,8 +31,8 @@ function enable() {
   enableLeftBox();
   enableButtons();
   enableAppMenu();
-  enableTopIcons();
   enableDecoration();
+  enableTopIcons();
 }
 
 function disable() {
@@ -41,6 +40,6 @@ function disable() {
   disableLeftBox();
   disableButtons();
   disableAppMenu();
-  disableTopIcons();
   disableDecoration();
+  disableTopIcons();
 }
