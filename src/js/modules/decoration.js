@@ -1,43 +1,46 @@
 let decorationDsHandler = null;
+let decorationWindow    = null;
 
 function enableDecoration() {
-  decorationDsHandler = global.display.connect('notify::focus-window', watchXWindows);
+  decorationDsHandler = global.display.connect('notify::focus-window', updateDecoration);
 }
 
 function disableDecoration() {
   global.display.disconnect(decorationDsHandler);
+  Mainloop.idle_add(restoreDecoration);
 
   decorationDsHandler = null;
-  Mainloop.idle_add(restoreXWindows);
+  decorationWindow    = null;
 }
 
-function getXWindows() {
-  let items  = [];
-  let result = GLib.spawn_command_line_sync('xprop -root _NET_CLIENT_LIST');
+function getXWindow(win) {
+  let id = null;
 
-  if (result[0]) {
-    items = result[1].toString().match(/0x[0-9a-f]+/g);
+  try {
+    id = win.get_description().match(/0x[0-9a-f]+/);
+    if (id) return id[0];
+  } catch (err) {
+    id = null;
   }
 
-  return items;
-}
+  let act = win.get_compositor_private();
 
-function isXWindowHidden(id) {
-  let prop   = '_GTK_HIDE_TITLEBAR_WHEN_MAXIMIZED(CARDINAL) = 1';
-  let result = GLib.spawn_command_line_sync('xprop -id ' + id);
+  if (act) {
+    id = GLib.spawn_command_line_sync('xwininfo -children -id 0x%x'.format(act['x-window']));
 
-  if (result[0] && result[1].toString().indexOf(prop) !== -1) {
-    return true;
+    if (id[0]) {
+      let str    = id[1].toString();
+      let regexp = new RegExp('(0x[0-9a-f]+) +"%s"'.format(win.title));
+
+      id = str.match(regexp);
+      if (id) return id[1];
+
+      id = str.split(/child(?:ren)?:/)[1].match(/0x[0-9a-f]+/);
+      if (id) return id[0];
+    }
   }
-}
 
-function isXWindowMaximized(id) {
-  let prop   = '_NET_WM_STATE_MAXIMIZED_HORZ, _NET_WM_STATE_MAXIMIZED_VERT';
-  let result = GLib.spawn_command_line_sync('xprop -id ' + id);
-
-  if (result[0] && result[1].toString().indexOf(prop) !== -1) {
-    return true;
-  }
+  return null;
 }
 
 function toggleXTitlebar(id, hide) {
@@ -47,33 +50,34 @@ function toggleXTitlebar(id, hide) {
   Util.spawn(['xprop', '-id', id, '-f', prop, '32c', '-set', prop, value]);
 }
 
-function toggleXMaximize(id) {
-  let prop    = 'toggle,maximized_vert,maximized_horz'
-  let command = ['wmctrl', '-i', '-r', id, '-b', prop];
-
-  Util.spawn(command); Util.spawn(command);
+function toggleXMaximize(win) {
+  if (win.get_maximized() === MAXIMIZED) {
+    win.unmaximize(MAXIMIZED);
+    win.maximize(MAXIMIZED);
+  }
 }
 
-function watchXWindows() {
-  let items = getXWindows();
+function updateDecoration() {
+  decorationWindow = global.display.focus_window;
 
-  items.forEach(function(id) {
-    if (!isXWindowHidden(id)) {
-      toggleXTitlebar(id, true);
+  if (decorationWindow && decorationWindow.decorated) {
+    if (!decorationWindow._decorationOFF && !decorationWindow._windowXID) {
+      decorationWindow._windowXID     = getXWindow(decorationWindow);
+      decorationWindow._decorationOFF = true;
 
-      if (isXWindowMaximized(id)) {
-        toggleXMaximize(id);
-      }
+      toggleXTitlebar(decorationWindow._windowXID, true);
+      toggleXMaximize(decorationWindow);
     }
+  }
+}
+
+function restoreDecoration() {
+  let items = global.screen.get_active_workspace().list_windows().filter(function (w) {
+    return w._decorationOFF && w._windowXID;
   });
-}
 
-function restoreXWindows() {
-  let items = getXWindows();
-
-  items.forEach(function(id) {
-    if (isXWindowHidden(id)) {
-      toggleXTitlebar(id, false);
-    }
+  items.forEach(function(win) {
+    toggleXTitlebar(win._windowXID, true);
+    toggleXMaximize(win);
   });
 }
