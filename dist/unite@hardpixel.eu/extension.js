@@ -154,8 +154,13 @@ function disableButtons() {
 }
 
 function createButtons() {
-  let layout   = new Gio.Settings({ schema_id: DCONF_META }).get_string('button-layout');
-  let order    = layout.replace(/ /g, '').split(':');
+  let layout = new Gio.Settings({ schema_id: DCONF_META }).get_string('button-layout');
+  let order  = layout.replace(/ /g, '').split(':');
+
+  if (order.length < 2) {
+    return;
+  }
+
   let buttons  = collectButtons(order[1].split(','));
   let position = 'right';
 
