@@ -110,18 +110,14 @@ function buttonsClick(callback) {
 }
 
 function minimizeWindow() {
-  focusWindow = global.display.focus_window;
-
   if (focusWindow && !focusWindow.minimized) {
     focusWindow.minimize();
   }
 }
 
 function maximizeWindow() {
-  focusWindow = global.display.focus_window;
-
   if (focusWindow) {
-    if (focusWindow.get_maximized() === MAXIMIZED) {
+    if (focusWindow.get_maximized()) {
       focusWindow.unmaximize(MAXIMIZED);
     } else {
       focusWindow.maximize(MAXIMIZED);
@@ -132,8 +128,6 @@ function maximizeWindow() {
 }
 
 function closeWindow() {
-  focusWindow = global.display.focus_window;
-
   if (focusWindow) {
     focusWindow.delete(global.get_current_time());
   }
@@ -143,14 +137,14 @@ function updateButtons() {
   let visible = false;
   focusWindow = global.display.focus_window;
 
-  if (focusWindow && focusWindow.get_window_type() !== TOPLEVEL) {
-    return;
-  }
-
   if (!Main.overview.visible && focusWindow) {
-    visible = focusWindow.decorated && focusWindow.get_maximized() === MAXIMIZED;
+    visible = focusWindow.decorated && focusWindow.get_maximized();
   }
 
+  updateButtonsVisibility(visible);
+}
+
+function updateButtonsVisibility(visible) {
   Mainloop.idle_add(function () {
     if (visible) {
       buttonsActor.show();

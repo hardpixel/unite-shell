@@ -27,24 +27,27 @@ function updateAppMenu() {
   activeApp    = wtracker.focus_app;
   activeWindow = global.display.focus_window;
 
-  if (activeWindow && activeWindow.get_window_type() !== TOPLEVEL) {
-    return;
-  }
-
   if (activeWindow) {
     activeWindow.connect('notify::title', updateAppMenuTitle);
-    updateAppMenuTitle();
   }
+
+  updateAppMenuTitle();
 }
 
 function updateAppMenuTitle() {
   Mainloop.idle_add(function () {
-    let title = activeWindow.title;
+    let title = null;
 
-    if (activeWindow.get_maximized() !== MAXIMIZED) {
+    if (activeApp) {
       title = activeApp.get_name();
+
+      if (activeWindow && activeWindow.get_maximized()) {
+        title = activeWindow.title;
+      }
     }
 
-    appmenu._label.set_text(title);
+    if (title) {
+      appmenu._label.set_text(title);
+    }
   });
 }
