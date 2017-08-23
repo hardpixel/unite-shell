@@ -16,6 +16,7 @@ const MAXIMIZED  = Meta.MaximizeFlags.BOTH;
 let wtracker;
 let panel;
 let appmenu;
+let mtray;
 
 function init(extensionMeta) {
   wtracker = Shell.WindowTracker.get_default();
