@@ -1,12 +1,14 @@
 let appmenuWmHandlers = [];
 let appmenuDsHandler  = null;
 let appmenuMtHandler  = null;
+let appmenuBbHandler  = null;
 let activeApp         = null;
 let activeWindow      = null;
 
 function enableAppMenu() {
   appmenuDsHandler = global.display.connect('notify::focus-window', updateAppMenu);
-  appmenuMtHandler = mtray._bannerBin.connect('notify::hover', removeAppMenuTitle);
+  appmenuMtHandler = mtray.connect('source-removed', restoreAppMenuTitle);
+  appmenuBbHandler = mtray._bannerBin.connect('notify::hover', removeAppMenuTitle);
 
   appmenuWmHandlers.push(global.window_manager.connect('size-changed', updateAppMenu));
   appmenuWmHandlers.push(global.window_manager.connect('destroy', updateAppMenu));
@@ -14,7 +16,8 @@ function enableAppMenu() {
 
 function disableAppMenu() {
   global.display.disconnect(appmenuDsHandler);
-  mtray._bannerBin.disconnect(appmenuMtHandler);
+  mtray.disconnect(appmenuMtHandler);
+  mtray._bannerBin.disconnect(appmenuBbHandler);
 
   appmenuWmHandlers.forEach(function (handler) {
     global.window_manager.disconnect(handler);
@@ -23,6 +26,7 @@ function disableAppMenu() {
   appmenuWmHandlers = [];
   appmenuDsHandler  = null;
   appmenuMtHandler  = null;
+  appmenuBbHandler  = null;
   activeApp         = null;
   activeWindow      = null;
 }
@@ -58,4 +62,8 @@ function removeAppMenuTitle() {
   Mainloop.idle_add(function () {
     appmenu._label.set_text('');
   });
+}
+
+function restoreAppMenuTitle() {
+  Mainloop.idle_add(updateAppMenu);
 }

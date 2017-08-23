@@ -27,8 +27,7 @@
   spacing: 2px; }
 #panel .window-button {
   width: 24px;
-  height: 20px;
-  color: red; }
+  height: 20px; }
   #panel .window-button.close {
     background-image: url("assets/close.svg"); }
     #panel .window-button.close:hover, #panel .window-button.close:active, #panel .window-button.close:overview, #panel .window-button.close:focus, #panel .window-button.close:checked {
