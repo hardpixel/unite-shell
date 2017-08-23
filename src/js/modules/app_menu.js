@@ -31,8 +31,8 @@ function updateAppMenu() {
   activeApp    = wtracker.focus_app;
   activeWindow = global.display.focus_window;
 
-  if (activeWindow) {
-    activeWindow.connect('notify::title', updateAppMenuTitle);
+  if (activeWindow && !activeWindow._updateTitleID) {
+    activeWindow._updateTitleID = activeWindow.connect('notify::title', updateAppMenuTitle);
   }
 
   updateAppMenuTitle();
