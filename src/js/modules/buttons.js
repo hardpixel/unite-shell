@@ -54,7 +54,7 @@ function createButtons() {
 
   if (buttons) {
     buttonsActor = new St.Bin({ style_class: 'box-bin'});
-    buttonsBox   = new St.BoxLayout({ style_class: 'button-box' });
+    buttonsBox   = new St.BoxLayout({ style_class: 'window-buttons-box' });
 
     buttonsActor.add_actor(buttonsBox);
     buttonsActor.hide();
