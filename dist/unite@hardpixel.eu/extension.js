@@ -536,10 +536,3 @@ function removeTrayIcon(o, icon) {
   }
 }
 ;
-
-
-
-
-
-
-
