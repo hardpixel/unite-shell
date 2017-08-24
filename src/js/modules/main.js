@@ -16,12 +16,14 @@ let wtracker;
 let panel;
 let appmenu;
 let mtray;
+let tray;
 
 function init(extensionMeta) {
   wtracker = Shell.WindowTracker.get_default();
   panel    = Main.panel;
   appmenu  = panel.statusArea.appMenu;
   mtray    = Main.messageTray;
+  tray     = Main.legacyTray;
 }
 
 function enable() {
