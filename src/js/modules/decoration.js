@@ -17,30 +17,12 @@ function getXWindow(win) {
   let id = null;
 
   try {
-    id = win.get_description().match(/0x[0-9a-f]+/);
-    if (id) return id[0];
+    id = win.get_description().match(/0x[0-9a-f]+/)[0];
   } catch (err) {
     id = null;
   }
 
-  let act = win.get_compositor_private();
-
-  if (act) {
-    id = GLib.spawn_command_line_sync('xwininfo -children -id 0x%x'.format(act['x-window']));
-
-    if (id[0]) {
-      let str    = id[1].toString();
-      let regexp = new RegExp('(0x[0-9a-f]+) +"%s"'.format(win.title));
-
-      id = str.match(regexp);
-      if (id) return id[1];
-
-      id = str.split(/child(?:ren)?:/)[1].match(/0x[0-9a-f]+/);
-      if (id) return id[0];
-    }
-  }
-
-  return null;
+  return id;
 }
 
 function toggleXTitlebar(id, hide) {
