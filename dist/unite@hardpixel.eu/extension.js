@@ -543,10 +543,3 @@ function removeTrayIcon(o, icon) {
   }
 }
 ;
-
-
-
-
-
-
-
