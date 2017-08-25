@@ -190,7 +190,7 @@ function createButtons() {
     }
 
     if (position == 'right') {
-      let index = panel._rightBox.get_children().length + 1;
+      let index = panel._rightBox.get_n_children() + 1;
       panel._rightBox.insert_child_at_index(buttonsActor, index);
     }
   }
@@ -198,11 +198,13 @@ function createButtons() {
 
 function destroyButtons() {
   if (buttonsActor) {
-    buttonsBox.destroy();
     buttonsActor.destroy();
-
     buttonsActor = null;
-    buttonsBox   = null;
+  }
+
+  if (buttonsBox) {
+    buttonsBox.destroy();
+    buttonsBox = null;
   }
 }
 
@@ -483,13 +485,18 @@ function moveToTray() {
     tray._onTrayIconAdded(tray, icon);
   });
 
-  iconsBoxLayout.destroy();
-  iconsContainer.destroy();
+  if (iconsBoxLayout) {
+    iconsBoxLayout.destroy();
+    iconsBoxLayout = null;
+  }
+
+  if (iconsContainer) {
+    iconsContainer.destroy();
+    iconsContainer = null;
+  }
 
   trayHandlers   = [];
   trayIcons      = [];
-  iconsBoxLayout = null;
-  iconsContainer = null;
 }
 
 function addTrayIcon(o, icon, role, delay=1000) {
@@ -536,3 +543,10 @@ function removeTrayIcon(o, icon) {
   }
 }
 ;
+
+
+
+
+
+
+

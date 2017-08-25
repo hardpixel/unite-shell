@@ -68,13 +68,18 @@ function moveToTray() {
     tray._onTrayIconAdded(tray, icon);
   });
 
-  iconsBoxLayout.destroy();
-  iconsContainer.destroy();
+  if (iconsBoxLayout) {
+    iconsBoxLayout.destroy();
+    iconsBoxLayout = null;
+  }
+
+  if (iconsContainer) {
+    iconsContainer.destroy();
+    iconsContainer = null;
+  }
 
   trayHandlers   = [];
   trayIcons      = [];
-  iconsBoxLayout = null;
-  iconsContainer = null;
 }
 
 function addTrayIcon(o, icon, role, delay=1000) {

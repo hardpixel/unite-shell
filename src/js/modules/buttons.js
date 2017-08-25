@@ -72,7 +72,7 @@ function createButtons() {
     }
 
     if (position == 'right') {
-      let index = panel._rightBox.get_children().length + 1;
+      let index = panel._rightBox.get_n_children() + 1;
       panel._rightBox.insert_child_at_index(buttonsActor, index);
     }
   }
@@ -80,11 +80,13 @@ function createButtons() {
 
 function destroyButtons() {
   if (buttonsActor) {
-    buttonsBox.destroy();
     buttonsActor.destroy();
-
     buttonsActor = null;
-    buttonsBox   = null;
+  }
+
+  if (buttonsBox) {
+    buttonsBox.destroy();
+    buttonsBox = null;
   }
 }
 
