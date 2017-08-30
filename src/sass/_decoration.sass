@@ -1,0 +1,18 @@
+$position: 'left' !default
+
+window
+
+  &.maximized, &.tiled
+
+    headerbar, .titlebar
+
+      &:not(.default-decoration)
+        padding-#{$position}: 0
+
+        > box
+
+          &.left, &.right
+            margin: 0 -200px 0
+
+    .titlebar.default-decoration
+      margin: -200px 0 0
