@@ -1,6 +1,7 @@
 const Main       = imports.ui.main;
 const Meta       = imports.gi.Meta;
 const Shell      = imports.gi.Shell;
+const GLib       = imports.gi.GLib;
 const Gio        = imports.gi.Gio;
 const Mainloop   = imports.mainloop;
 const St         = imports.gi.St;
@@ -16,6 +17,7 @@ let panel;
 let appmenu;
 let mtray;
 let tray;
+let extpath;
 
 function init(extensionMeta) {
   wtracker = Shell.WindowTracker.get_default();
@@ -23,6 +25,7 @@ function init(extensionMeta) {
   appmenu  = panel.statusArea.appMenu;
   mtray    = Main.messageTray;
   tray     = Main.legacyTray;
+  extpath  = extensionMeta.path;
 }
 
 function enable() {

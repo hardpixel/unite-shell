@@ -4,6 +4,7 @@ let buttonsDsHandler  = null;
 let buttonsActor      = null;
 let buttonsBox        = null;
 let focusWindow       = null;
+let buttonsPosition   = 'right';
 let buttonsCallbacks  = { close: closeWindow, minimize: minimizeWindow, maximize: maximizeWindow };
 
 function enableButtons() {
@@ -32,6 +33,7 @@ function disableButtons() {
   buttonsWmHandlers = [];
   buttonsOvHandlers = [];
   buttonsDsHandler  = null;
+  buttonsPosition   = null;
 
   destroyButtons();
 }
@@ -44,12 +46,11 @@ function createButtons() {
     return;
   }
 
-  let buttons  = collectButtons(order[1].split(','));
-  let position = 'right';
+  let buttons = collectButtons(order[1].split(','));
 
   if (!buttons) {
-    buttons  = collectButtons(order[0].split(','));
-    position = 'left';
+    buttons         = collectButtons(order[0].split(','));
+    buttonsPosition = 'left';
   }
 
   if (buttons) {
@@ -67,11 +68,11 @@ function createButtons() {
       buttonsBox.add(button);
     });
 
-    if (position == 'left') {
+    if (buttonsPosition == 'left') {
       panel._leftBox.insert_child_at_index(buttonsActor, 1);
     }
 
-    if (position == 'right') {
+    if (buttonsPosition == 'right') {
       let index = panel._rightBox.get_n_children() + 1;
       panel._rightBox.insert_child_at_index(buttonsActor, index);
     }
@@ -145,7 +146,7 @@ function updateButtons() {
   focusWindow = global.display.focus_window;
 
   if (!Main.overview.visible && focusWindow) {
-    visible = focusWindow.decorated && focusWindow.get_maximized();
+    visible = focusWindow.get_maximized();
   }
 
   updateButtonsVisibility(visible);
