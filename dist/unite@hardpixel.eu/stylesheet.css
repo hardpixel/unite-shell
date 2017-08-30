@@ -1,11 +1,7 @@
-#panel .aggregate-menu {
-  background: red; }
 #panel .panel-button {
   -natural-hpadding: 8px;
-  -minimum-hpadding: 6px;
-  font-size: 0.9em; }
+  -minimum-hpadding: 6px; }
   #panel .panel-button .system-status-icon {
-    font-size: 1.1em;
     margin: 0;
     padding: 0; }
   #panel .panel-button .panel-status-menu-box {
