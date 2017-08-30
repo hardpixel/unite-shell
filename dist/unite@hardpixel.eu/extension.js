@@ -1,6 +1,7 @@
 const Main       = imports.ui.main;
 const Meta       = imports.gi.Meta;
 const Shell      = imports.gi.Shell;
+const GLib       = imports.gi.GLib;
 const Gio        = imports.gi.Gio;
 const Mainloop   = imports.mainloop;
 const St         = imports.gi.St;
@@ -16,6 +17,7 @@ let panel;
 let appmenu;
 let mtray;
 let tray;
+let extpath;
 
 function init(extensionMeta) {
   wtracker = Shell.WindowTracker.get_default();
@@ -23,6 +25,7 @@ function init(extensionMeta) {
   appmenu  = panel.statusArea.appMenu;
   mtray    = Main.messageTray;
   tray     = Main.legacyTray;
+  extpath  = extensionMeta.path;
 }
 
 function enable() {
@@ -122,6 +125,7 @@ let buttonsDsHandler  = null;
 let buttonsActor      = null;
 let buttonsBox        = null;
 let focusWindow       = null;
+let buttonsPosition   = 'right';
 let buttonsCallbacks  = { close: closeWindow, minimize: minimizeWindow, maximize: maximizeWindow };
 
 function enableButtons() {
@@ -150,6 +154,7 @@ function disableButtons() {
   buttonsWmHandlers = [];
   buttonsOvHandlers = [];
   buttonsDsHandler  = null;
+  buttonsPosition   = null;
 
   destroyButtons();
 }
@@ -162,12 +167,11 @@ function createButtons() {
     return;
   }
 
-  let buttons  = collectButtons(order[1].split(','));
-  let position = 'right';
+  let buttons = collectButtons(order[1].split(','));
 
   if (!buttons) {
-    buttons  = collectButtons(order[0].split(','));
-    position = 'left';
+    buttons         = collectButtons(order[0].split(','));
+    buttonsPosition = 'left';
   }
 
   if (buttons) {
@@ -185,11 +189,11 @@ function createButtons() {
       buttonsBox.add(button);
     });
 
-    if (position == 'left') {
+    if (buttonsPosition == 'left') {
       panel._leftBox.insert_child_at_index(buttonsActor, 1);
     }
 
-    if (position == 'right') {
+    if (buttonsPosition == 'right') {
       let index = panel._rightBox.get_n_children() + 1;
       panel._rightBox.insert_child_at_index(buttonsActor, index);
     }
@@ -263,7 +267,7 @@ function updateButtons() {
   focusWindow = global.display.focus_window;
 
   if (!Main.overview.visible && focusWindow) {
-    visible = focusWindow.decorated && focusWindow.get_maximized();
+    visible = focusWindow.get_maximized();
   }
 
   updateButtonsVisibility(visible);
@@ -351,17 +355,24 @@ function restoreAppMenuTitle() {
 ;
 let decorationDsHandler = null;
 let decorationWindow    = null;
+let decorationStyleFile = null;
 
 function enableDecoration() {
+  decorationStyleFile = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
   decorationDsHandler = global.display.connect('notify::focus-window', updateDecoration);
+
+  addDecorationStyles();
 }
 
 function disableDecoration() {
+  removeDecorationStyles();
+
   global.display.disconnect(decorationDsHandler);
   Mainloop.idle_add(restoreDecoration);
 
   decorationDsHandler = null;
   decorationWindow    = null;
+  decorationStyleFile = null;
 }
 
 function getXWindow(win) {
@@ -413,6 +424,33 @@ function restoreDecoration() {
     toggleXTitlebar(win._windowXID, true);
     toggleXMaximize(win);
   });
+}
+
+function addDecorationStyles() {
+  let styleContent  = decorationStyleContent();
+  let styleFilePath = extpath + '/buttons-' + buttonsPosition + '.css';
+  let styleImport   = "@import url('" + styleFilePath + "');\n\n"
+
+  GLib.file_set_contents(decorationStyleFile, styleImport + styleContent);
+}
+
+function removeDecorationStyles() {
+  let styleContent = decorationStyleContent();
+  GLib.file_set_contents(decorationStyleFile, styleContent);
+}
+
+function decorationStyleContent() {
+  let styleContent = '';
+
+  if (GLib.file_test(decorationStyleFile, GLib.FileTest.EXISTS)) {
+    let fileContent = GLib.file_get_contents(decorationStyleFile);
+
+    if (fileContent[0] == true) {
+      styleContent = fileContent[1].toString().replace(/@import.*unite@hardpixel\.eu.*css['"]\);\n\n/g, '');
+    }
+  }
+
+  return styleContent;
 }
 ;
 let trayHandlers   = [];
