@@ -1,4 +1,5 @@
 //= require modules/main
+//= require modules/helpers
 //= require modules/show_window
 //= require modules/left_box
 //= require modules/buttons
