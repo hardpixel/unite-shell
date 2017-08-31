@@ -1,10 +1,12 @@
 let decorationDsHandler = null;
 let decorationWindow    = null;
 let decorationStyleFile = null;
+let decorationMaxUnmax  = null;
 
 function enableDecoration() {
   decorationStyleFile = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
   decorationDsHandler = global.display.connect('notify::focus-window', updateDecoration);
+  decorationMaxUnmax  = Utils.versionCompare(Config.PACKAGE_VERSION, '3.24') < 0;
 
   addDecorationStyles();
 }
@@ -18,29 +20,18 @@ function disableDecoration() {
   decorationDsHandler = null;
   decorationWindow    = null;
   decorationStyleFile = null;
+  decorationMaxUnmax  = null;
 }
 
-function getXWindow(win) {
-  let id = null;
-
-  try {
-    id = win.get_description().match(/0x[0-9a-f]+/)[0];
-  } catch (err) {
-    id = null;
-  }
-
-  return id;
-}
-
-function toggleXTitlebar(id, hide) {
+function toggleWindowDecoration(id, hide) {
   let prop  = '_GTK_HIDE_TITLEBAR_WHEN_MAXIMIZED';
   let value = hide ? '0x1' : '0x0';
 
   Util.spawn(['xprop', '-id', id, '-f', prop, '32c', '-set', prop, value]);
 }
 
-function toggleXMaximize(win) {
-  if (win.get_maximized() === MAXIMIZED) {
+function toggleWindowMaximize(win) {
+  if (decorationMaxUnmax && win.get_maximized() === MAXIMIZED) {
     win.unmaximize(MAXIMIZED);
     win.maximize(MAXIMIZED);
   }
@@ -54,20 +45,22 @@ function updateDecoration() {
       decorationWindow._windowXID     = getXWindow(decorationWindow);
       decorationWindow._decorationOFF = true;
 
-      toggleXTitlebar(decorationWindow._windowXID, true);
-      toggleXMaximize(decorationWindow);
+      toggleWindowDecoration(decorationWindow._windowXID, true);
+      toggleWindowMaximize(decorationWindow);
     }
   }
 }
 
 function restoreDecoration() {
-  let items = global.screen.get_active_workspace().list_windows().filter(function (w) {
-    return w._decorationOFF && w._windowXID;
-  });
+  let windows = getAllWindows();
 
-  items.forEach(function(win) {
-    toggleXTitlebar(win._windowXID, true);
-    toggleXMaximize(win);
+  windows.forEach(function(win) {
+    if (win._decorationOFF && win._windowXID) {
+      toggleWindowDecoration(win._windowXID, true);
+      toggleWindowMaximize(win);
+
+      win._decorationOFF = false;
+    }
   });
 }
 
