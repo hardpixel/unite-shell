@@ -58,7 +58,9 @@ function updateAppMenuTitle() {
 
       if (activeWindow.get_maximized()) {
         title = activeWindow.title;
-      } else {
+      }
+
+      if (!title) {
         title = activeApp.get_name();
       }
 
