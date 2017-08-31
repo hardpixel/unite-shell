@@ -9,6 +9,7 @@ function enableDecoration() {
   decorationMaxUnmax  = versionCompare(Config.PACKAGE_VERSION, '3.24') < 0;
 
   addDecorationStyles();
+  Mainloop.idle_add(applyDecoration);
 }
 
 function disableDecoration() {
@@ -39,29 +40,45 @@ function toggleWindowMaximize(win) {
 
 function updateDecoration() {
   decorationWindow = global.display.focus_window;
+  hideDecoration(decorationWindow);
+}
 
-  if (decorationWindow && decorationWindow.decorated) {
-    if (!decorationWindow._decorationOFF && !decorationWindow._windowXID) {
-      decorationWindow._windowXID     = getXWindow(decorationWindow);
-      decorationWindow._decorationOFF = true;
+function applyDecoration() {
+  let windows = getAllWindows();
 
-      toggleWindowDecoration(decorationWindow._windowXID, true);
-      toggleWindowMaximize(decorationWindow);
-    }
-  }
+  windows.forEach(function(win) {
+    hideDecoration(win);
+  });
 }
 
 function restoreDecoration() {
   let windows = getAllWindows();
 
   windows.forEach(function(win) {
-    if (win._decorationOFF && win._windowXID) {
+    showDecoration(win);
+  });
+}
+
+function showDecoration(win) {
+  if (win._decorationOFF && win._windowXID) {
+    toggleWindowDecoration(win._windowXID, false);
+    toggleWindowMaximize(win);
+
+    win._windowXID     = null;
+    win._decorationOFF = false;
+  }
+}
+
+function hideDecoration(win) {
+  if (win && win.decorated) {
+    if (!win._decorationOFF && !win._windowXID) {
+      win._windowXID     = getXWindow(win);
+      win._decorationOFF = true;
+
       toggleWindowDecoration(win._windowXID, true);
       toggleWindowMaximize(win);
-
-      win._decorationOFF = false;
     }
-  });
+  }
 }
 
 function addDecorationStyles() {
