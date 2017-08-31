@@ -47,6 +47,8 @@ function disable() {
   disableAppMenu();
   disableDecoration();
   disableTopIcons();
+
+  Main.loadTheme();
 }
 ;
 function getXWindow(win) {
