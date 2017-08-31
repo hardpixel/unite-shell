@@ -1,5 +1,7 @@
 window.maximized headerbar:not(.default-decoration), window.maximized .titlebar:not(.default-decoration), window.tiled headerbar:not(.default-decoration), window.tiled .titlebar:not(.default-decoration) {
   padding-left: 0; }
+  window.maximized headerbar:not(.default-decoration) ~ headerbar, window.maximized headerbar:not(.default-decoration) ~ .titlebar, window.maximized .titlebar:not(.default-decoration) ~ headerbar, window.maximized .titlebar:not(.default-decoration) ~ .titlebar, window.tiled headerbar:not(.default-decoration) ~ headerbar, window.tiled headerbar:not(.default-decoration) ~ .titlebar, window.tiled .titlebar:not(.default-decoration) ~ headerbar, window.tiled .titlebar:not(.default-decoration) ~ .titlebar {
+    padding-left: 6px; }
   window.maximized headerbar:not(.default-decoration) > box.left, window.maximized headerbar:not(.default-decoration) > box.right, window.maximized .titlebar:not(.default-decoration) > box.left, window.maximized .titlebar:not(.default-decoration) > box.right, window.tiled headerbar:not(.default-decoration) > box.left, window.tiled headerbar:not(.default-decoration) > box.right, window.tiled .titlebar:not(.default-decoration) > box.left, window.tiled .titlebar:not(.default-decoration) > box.right {
     margin: 0 -200px 0; }
 window.maximized .titlebar.default-decoration, window.tiled .titlebar.default-decoration {
