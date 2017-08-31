@@ -6,7 +6,7 @@ let decorationMaxUnmax  = null;
 function enableDecoration() {
   decorationStyleFile = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
   decorationDsHandler = global.display.connect('notify::focus-window', updateDecoration);
-  decorationMaxUnmax  = Utils.versionCompare(Config.PACKAGE_VERSION, '3.24') < 0;
+  decorationMaxUnmax  = versionCompare(Config.PACKAGE_VERSION, '3.24') < 0;
 
   addDecorationStyles();
 }
