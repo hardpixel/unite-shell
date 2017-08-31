@@ -15,6 +15,15 @@ function enableAppMenu() {
 }
 
 function disableAppMenu() {
+  let windows = getAllWindows();
+
+  windows.forEach(function(win) {
+    if (win._updateTitleID) {
+      win.disconnect(win._updateTitleID);
+      win._updateTitleID = null;
+    }
+  });
+
   global.display.disconnect(appmenuDsHandler);
   mtray.disconnect(appmenuMtHandler);
   mtray._bannerBin.disconnect(appmenuBbHandler);
