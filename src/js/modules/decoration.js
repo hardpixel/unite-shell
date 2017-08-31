@@ -74,7 +74,7 @@ function restoreDecoration() {
 function addDecorationStyles() {
   let styleContent  = decorationStyleContent();
   let styleFilePath = extpath + '/buttons-' + buttonsPosition + '.css';
-  let styleImport   = "@import url('" + styleFilePath + "');\n\n"
+  let styleImport   = "@import url('" + styleFilePath + "');\n"
 
   GLib.file_set_contents(decorationStyleFile, styleImport + styleContent);
 }
@@ -91,7 +91,7 @@ function decorationStyleContent() {
     let fileContent = GLib.file_get_contents(decorationStyleFile);
 
     if (fileContent[0] == true) {
-      styleContent = fileContent[1].toString().replace(/@import.*unite@hardpixel\.eu.*css['"]\);\n\n/g, '');
+      styleContent = fileContent[1].toString().replace(/@import.*unite@hardpixel\.eu.*css['"]\);\n/g, '');
     }
   }
 
