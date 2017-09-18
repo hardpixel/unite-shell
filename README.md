@@ -28,11 +28,11 @@ Make sure you have installed `xorg-xprop` and copy folder `unite@hardpixel.eu` i
 ### Gnome Shell Extensions
 The easiest way to install this extension is via the official [Gnome Shell Extensions](https://extensions.gnome.org) resource page [here](https://extensions.gnome.org/extension/1287/unite).
 
-### Arch Linux
-[AUR package](https://aur.archlinux.org/packages/gnome-shell-extension-unite)
+### Packages
+Arch Linux: [AUR package](https://aur.archlinux.org/packages/gnome-shell-extension-unite)
 
 ## License
-[GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)
+Unite Shell is available as open source under the terms of the [GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)
 
 ## Credits
 This extension is inspired by or uses parts of code from the extensions [Pixel Saver](https://github.com/deadalnix/pixel-saver), [TopIcons Plus](https://github.com/phocean/TopIcons-plus), [Extend Left Box](https://github.com/StephenPCG/extend-left-box).
