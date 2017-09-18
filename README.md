@@ -15,7 +15,7 @@ Unite is a GNOME Shell extension which makes a few layout tweaks to the top pane
 * Moves legacy tray icons to the top panel.
 
 ### Wayland
-Since version `0.3.0` applications on wayland with client side decorations are supported using CSS.
+Since version `2` applications on wayland with client side decorations are supported using CSS.
 
 ## Install
 Make sure you have installed `xorg-xprop` and copy folder `unite@hardpixel.eu` into `~/.local/share/gnome-shell/extensions`. To get the complete Ubuntu Unity layout you can combine it with [Dash to Dock](https://github.com/micheleg/dash-to-dock) extension.
