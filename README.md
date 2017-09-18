@@ -3,7 +3,6 @@
 Unite makes GNOME Shell look like Ubuntu Unity Shell.
 
 ![Screenshot](https://raw.githubusercontent.com/hardpixel/unite-shell/master/screenshot.png)
-![Screenshot Headerbars](https://raw.githubusercontent.com/hardpixel/unite-shell/master/screenshot-headerbars.png)
 
 ## About
 Unite is a GNOME Shell extension which makes a few layout tweaks to the top panel and removes window decorations to make it look like Ubuntu Unity Shell.
