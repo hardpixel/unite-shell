@@ -2,16 +2,23 @@ let appmenuWmHandlers = [];
 let appmenuDsHandler  = null;
 let appmenuMtHandler  = null;
 let appmenuBbHandler  = null;
+let appmenuSizeChange = null;
 let activeApp         = null;
 let activeWindow      = null;
 
 function enableAppMenu() {
-  appmenuDsHandler = global.display.connect('notify::focus-window', updateAppMenu);
-  appmenuMtHandler = mtray.connect('source-removed', restoreAppMenuTitle);
-  appmenuBbHandler = mtray._bannerBin.connect('notify::hover', removeAppMenuTitle);
+  appmenuSizeChange = versionCompare(Config.PACKAGE_VERSION, '3.24') < 0;
+  appmenuDsHandler  = global.display.connect('notify::focus-window', updateAppMenu);
+  appmenuMtHandler  = mtray.connect('source-removed', restoreAppMenuTitle);
+  appmenuBbHandler  = mtray._bannerBin.connect('notify::hover', removeAppMenuTitle);
 
-  appmenuWmHandlers.push(global.window_manager.connect('size-changed', updateAppMenu));
   appmenuWmHandlers.push(global.window_manager.connect('destroy', updateAppMenu));
+
+  if (appmenuSizeChange) {
+    appmenuWmHandlers.push(global.window_manager.connect('size-change', updateAppMenu));
+  } else {
+    appmenuWmHandlers.push(global.window_manager.connect('size-changed', updateAppMenu));
+  }
 }
 
 function disableAppMenu() {
@@ -36,6 +43,7 @@ function disableAppMenu() {
   appmenuDsHandler  = null;
   appmenuMtHandler  = null;
   appmenuBbHandler  = null;
+  appmenuSizeChange = null;
   activeApp         = null;
   activeWindow      = null;
 }

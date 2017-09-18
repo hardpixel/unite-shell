@@ -1,6 +1,7 @@
 let buttonsWmHandlers = [];
 let buttonsOvHandlers = [];
 let buttonsDsHandler  = null;
+let buttonsSizeChange = null;
 let buttonsActor      = null;
 let buttonsBox        = null;
 let focusWindow       = null;
@@ -10,13 +11,19 @@ let buttonsCallbacks  = { close: closeWindow, minimize: minimizeWindow, maximize
 function enableButtons() {
   createButtons();
 
-  buttonsDsHandler = global.display.connect('notify::focus-window', updateButtons);
+  buttonsSizeChange = versionCompare(Config.PACKAGE_VERSION, '3.24') < 0;
+  buttonsDsHandler  = global.display.connect('notify::focus-window', updateButtons);
 
   buttonsOvHandlers.push(Main.overview.connect('showing', updateButtons));
   buttonsOvHandlers.push(Main.overview.connect('hidden', updateButtons));
 
-  buttonsWmHandlers.push(global.window_manager.connect('size-changed', updateButtons));
   buttonsWmHandlers.push(global.window_manager.connect('destroy', updateButtons));
+
+  if (buttonsSizeChange) {
+    buttonsWmHandlers.push(global.window_manager.connect('size-change', updateButtons));
+  } else {
+    buttonsWmHandlers.push(global.window_manager.connect('size-changed', updateButtons));
+  }
 }
 
 function disableButtons() {
@@ -34,6 +41,7 @@ function disableButtons() {
   buttonsOvHandlers = [];
   buttonsDsHandler  = null;
   buttonsPosition   = null;
+  buttonsSizeChange = null;
 
   destroyButtons();
 }

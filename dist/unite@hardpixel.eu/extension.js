@@ -179,6 +179,7 @@ function disableLeftBox() {
 let buttonsWmHandlers = [];
 let buttonsOvHandlers = [];
 let buttonsDsHandler  = null;
+let buttonsSizeChange = null;
 let buttonsActor      = null;
 let buttonsBox        = null;
 let focusWindow       = null;
@@ -188,13 +189,19 @@ let buttonsCallbacks  = { close: closeWindow, minimize: minimizeWindow, maximize
 function enableButtons() {
   createButtons();
 
-  buttonsDsHandler = global.display.connect('notify::focus-window', updateButtons);
+  buttonsSizeChange = versionCompare(Config.PACKAGE_VERSION, '3.24') < 0;
+  buttonsDsHandler  = global.display.connect('notify::focus-window', updateButtons);
 
   buttonsOvHandlers.push(Main.overview.connect('showing', updateButtons));
   buttonsOvHandlers.push(Main.overview.connect('hidden', updateButtons));
 
-  buttonsWmHandlers.push(global.window_manager.connect('size-changed', updateButtons));
   buttonsWmHandlers.push(global.window_manager.connect('destroy', updateButtons));
+
+  if (buttonsSizeChange) {
+    buttonsWmHandlers.push(global.window_manager.connect('size-change', updateButtons));
+  } else {
+    buttonsWmHandlers.push(global.window_manager.connect('size-changed', updateButtons));
+  }
 }
 
 function disableButtons() {
@@ -212,6 +219,7 @@ function disableButtons() {
   buttonsOvHandlers = [];
   buttonsDsHandler  = null;
   buttonsPosition   = null;
+  buttonsSizeChange = null;
 
   destroyButtons();
 }
@@ -344,16 +352,23 @@ let appmenuWmHandlers = [];
 let appmenuDsHandler  = null;
 let appmenuMtHandler  = null;
 let appmenuBbHandler  = null;
+let appmenuSizeChange = null;
 let activeApp         = null;
 let activeWindow      = null;
 
 function enableAppMenu() {
-  appmenuDsHandler = global.display.connect('notify::focus-window', updateAppMenu);
-  appmenuMtHandler = mtray.connect('source-removed', restoreAppMenuTitle);
-  appmenuBbHandler = mtray._bannerBin.connect('notify::hover', removeAppMenuTitle);
+  appmenuSizeChange = versionCompare(Config.PACKAGE_VERSION, '3.24') < 0;
+  appmenuDsHandler  = global.display.connect('notify::focus-window', updateAppMenu);
+  appmenuMtHandler  = mtray.connect('source-removed', restoreAppMenuTitle);
+  appmenuBbHandler  = mtray._bannerBin.connect('notify::hover', removeAppMenuTitle);
 
-  appmenuWmHandlers.push(global.window_manager.connect('size-changed', updateAppMenu));
   appmenuWmHandlers.push(global.window_manager.connect('destroy', updateAppMenu));
+
+  if (appmenuSizeChange) {
+    appmenuWmHandlers.push(global.window_manager.connect('size-change', updateAppMenu));
+  } else {
+    appmenuWmHandlers.push(global.window_manager.connect('size-changed', updateAppMenu));
+  }
 }
 
 function disableAppMenu() {
@@ -378,6 +393,7 @@ function disableAppMenu() {
   appmenuDsHandler  = null;
   appmenuMtHandler  = null;
   appmenuBbHandler  = null;
+  appmenuSizeChange = null;
   activeApp         = null;
   activeWindow      = null;
 }
