@@ -4,16 +4,72 @@ let iconsBoxLayout = null;
 let iconsContainer = null;
 
 function enableTopIcons() {
-  Mainloop.idle_add(moveToPanel);
-  tray.actor.hide();
+  if (Main.legacyTray) {
+    Mainloop.idle_add(moveToPanel);
+    tray.actor.hide();
+  } else {
+    Mainloop.idle_add(createTray);
+  }
 }
 
 function disableTopIcons() {
-  Mainloop.idle_add(moveToTray);
-  tray.actor.show();
+  if (Main.legacyTray) {
+    Mainloop.idle_add(moveToTray);
+    tray.actor.show();
+  } else {
+    Mainloop.idle_add(destroyTray);
+  }
+
+  trayHandlers = [];
+  trayIcons    = [];
+}
+
+function createTray() {
+  createIconsContainer();
+
+  tray = new Shell.TrayManager();
+  tray.connect('tray-icon-added', addTrayIcon);
+  tray.connect('tray-icon-removed', removeTrayIcon);
+  tray.manage_screen(global.screen, Main.panel.actor);
+}
+
+function destroyTray() {
+  tray = null;
+  System.gc();
+
+  destroyIconsContainer();
+}
+
+function createIconsContainer() {
+  iconsBoxLayout = new St.BoxLayout({ style_class: 'tray-icons-box' });
+  iconsContainer = new PanelMenu.ButtonBox({ visible: false });
+  iconsContainer.actor.add_actor(iconsBoxLayout);
+
+  let parent = iconsContainer.actor.get_parent();
+  let index  = panel._rightBox.get_n_children() - 1;
+
+  if (parent) {
+    parent.remove_actor(iconsContainer.actor);
+  }
+
+  panel._rightBox.insert_child_at_index(iconsContainer.actor, index);
+}
+
+function destroyIconsContainer() {
+  if (iconsBoxLayout) {
+    iconsBoxLayout.destroy();
+    iconsBoxLayout = null;
+  }
+
+  if (iconsContainer) {
+    iconsContainer.destroy();
+    iconsContainer = null;
+  }
 }
 
 function moveToPanel() {
+  createIconsContainer();
+
   if (tray._trayIconAddedId) {
     tray._trayManager.disconnect(tray._trayIconAddedId);
   }
@@ -25,19 +81,7 @@ function moveToPanel() {
   trayHandlers.push(tray._trayManager.connect('tray-icon-added', addTrayIcon));
   trayHandlers.push(tray._trayManager.connect('tray-icon-removed', removeTrayIcon));
 
-  iconsBoxLayout = new St.BoxLayout({ style_class: 'tray-icons-box' });
-  iconsContainer = new PanelMenu.ButtonBox({ visible: false });
-  iconsContainer.actor.add_actor(iconsBoxLayout);
-
-  let parent = iconsContainer.actor.get_parent();
-  let index  = panel._rightBox.get_n_children() - 1;
-  let icons  = tray._iconBox.get_children();
-
-  if (parent) {
-    parent.remove_actor(iconsContainer.actor);
-  }
-
-  panel._rightBox.insert_child_at_index(iconsContainer.actor, index);
+  let icons = tray._iconBox.get_children();
 
   icons.forEach(function (button) {
     let icon = button.child;
@@ -68,18 +112,7 @@ function moveToTray() {
     tray._onTrayIconAdded(tray, icon);
   });
 
-  if (iconsBoxLayout) {
-    iconsBoxLayout.destroy();
-    iconsBoxLayout = null;
-  }
-
-  if (iconsContainer) {
-    iconsContainer.destroy();
-    iconsContainer = null;
-  }
-
-  trayHandlers   = [];
-  trayIcons      = [];
+  destroyIconsContainer();
 }
 
 function addTrayIcon(o, icon, role, delay=1000) {
