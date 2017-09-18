@@ -21,6 +21,10 @@ Since version `0.3.0` applications on wayland with client side decorations are s
 ## Install
 Make sure you have installed `xorg-xprop` and copy folder `unite@hardpixel.eu` into `~/.local/share/gnome-shell/extensions`. To get the complete Ubuntu Unity layout you can combine it with [Dash to Dock](https://github.com/micheleg/dash-to-dock) extension.
 
+* Debian/Ubuntu: `apt install x11-utils`
+* Fedora/RHEL: `dnf install xorg-x11-utils`
+* Arch: `pacman -S xorg-xprop`
+
 ### Gnome Shell Extensions
 The easiest way to install this extension is via the official [Gnome Shell Extensions](https://extensions.gnome.org) resource page [here](https://extensions.gnome.org/extension/1287/unite).
 
