@@ -9,7 +9,7 @@ let buttonsPosition   = 'right';
 let buttonsCallbacks  = { close: closeWindow, minimize: minimizeWindow, maximize: maximizeWindow };
 
 function enableButtons() {
-  createButtons();
+  Mainloop.idle_add(createButtons);
 
   buttonsSizeChange = versionCompare(Config.PACKAGE_VERSION, '3.24') < 0;
   buttonsDsHandler  = global.display.connect('notify::focus-window', updateButtons);
@@ -43,7 +43,7 @@ function disableButtons() {
   buttonsPosition   = null;
   buttonsSizeChange = null;
 
-  destroyButtons();
+  Mainloop.idle_add(destroyButtons);
 }
 
 function createButtons() {

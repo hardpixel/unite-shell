@@ -31,23 +31,23 @@ function init(extensionMeta) {
 }
 
 function enable() {
-  Main.loadTheme();
-
   enableShowWindow();
   enableLeftBox();
+  enableTopIcons();
   enableButtons();
   enableAppMenu();
   enableDecoration();
-  enableTopIcons();
+
+  Main.loadTheme();
 }
 
 function disable() {
   disableShowWindow();
   disableLeftBox();
+  disableTopIcons();
   disableButtons();
   disableAppMenu();
   disableDecoration();
-  disableTopIcons();
 
   Main.loadTheme();
 }
@@ -188,7 +188,7 @@ let buttonsPosition   = 'right';
 let buttonsCallbacks  = { close: closeWindow, minimize: minimizeWindow, maximize: maximizeWindow };
 
 function enableButtons() {
-  createButtons();
+  Mainloop.idle_add(createButtons);
 
   buttonsSizeChange = versionCompare(Config.PACKAGE_VERSION, '3.24') < 0;
   buttonsDsHandler  = global.display.connect('notify::focus-window', updateButtons);
@@ -222,7 +222,7 @@ function disableButtons() {
   buttonsPosition   = null;
   buttonsSizeChange = null;
 
-  destroyButtons();
+  Mainloop.idle_add(destroyButtons);
 }
 
 function createButtons() {

@@ -31,23 +31,23 @@ function init(extensionMeta) {
 }
 
 function enable() {
-  Main.loadTheme();
-
   enableShowWindow();
   enableLeftBox();
+  enableTopIcons();
   enableButtons();
   enableAppMenu();
   enableDecoration();
-  enableTopIcons();
+
+  Main.loadTheme();
 }
 
 function disable() {
   disableShowWindow();
   disableLeftBox();
+  disableTopIcons();
   disableButtons();
   disableAppMenu();
   disableDecoration();
-  disableTopIcons();
 
   Main.loadTheme();
 }
