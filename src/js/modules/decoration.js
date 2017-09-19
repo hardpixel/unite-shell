@@ -8,14 +8,14 @@ function enableDecoration() {
   decorationDsHandler = global.display.connect('notify::focus-window', updateDecoration);
   decorationMaxUnmax  = versionCompare(Config.PACKAGE_VERSION, '3.24') < 0;
 
-  addDecorationStyles();
+  Mainloop.idle_add(addDecorationStyles);
   Mainloop.idle_add(applyDecoration);
 }
 
 function disableDecoration() {
-  removeDecorationStyles();
-
   global.display.disconnect(decorationDsHandler);
+
+  Mainloop.idle_add(removeDecorationStyles);
   Mainloop.idle_add(restoreDecoration);
 
   decorationDsHandler = null;
