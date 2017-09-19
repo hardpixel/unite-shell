@@ -2,7 +2,7 @@
   "shell-version": ["3.18", "3.20", "3.22", "3.24", "3.26"],
   "uuid": "unite@hardpixel.eu",
   "url": "https://github.com/hardpixel/unite-shell",
-  "version": "3",
+  "version": "4",
   "name": "Unite",
   "description": "Unite is a GNOME Shell extension which makes a few layout tweaks to the top panel and removes window decorations to make it look like Ubuntu Unity Shell."
 }
