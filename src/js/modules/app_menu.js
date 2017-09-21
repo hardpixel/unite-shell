@@ -61,19 +61,17 @@ function updateAppMenu() {
 
 function updateAppMenuTitle() {
   Mainloop.idle_add(function () {
-    if (activeWindow) {
-      let title = null;
+    let title = null;
 
-      if (activeWindow.get_maximized()) {
-        title = activeWindow.title;
-      }
-
-      if (!title) {
-        title = activeApp.get_name();
-      }
-
-      appmenu._label.set_text(title);
+    if (activeWindow && activeWindow.get_maximized()) {
+      title = activeWindow.title;
     }
+
+    if (activeApp && !title) {
+      title = activeApp.get_name();
+    }
+
+    appmenu._label.set_text(title);
   });
 }
 
