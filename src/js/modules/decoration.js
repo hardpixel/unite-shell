@@ -1,10 +1,11 @@
 let decorationDsHandler = null;
 let decorationWindow    = null;
 let decorationStyleFile = null;
+let decorationPosition  = null;
 let decorationMaxUnmax  = null;
 
 function enableDecoration() {
-  decorationStyleFile = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
+  decorationPosition  = buttonsPosition;
   decorationDsHandler = global.display.connect('notify::focus-window', updateDecoration);
   decorationMaxUnmax  = versionCompare(Config.PACKAGE_VERSION, '3.24') < 0;
 
@@ -20,8 +21,8 @@ function disableDecoration() {
 
   decorationDsHandler = null;
   decorationWindow    = null;
-  decorationStyleFile = null;
   decorationMaxUnmax  = null;
+  decorationPosition  = null;
 }
 
 function toggleWindowDecoration(id, hide) {
@@ -82,16 +83,22 @@ function hideDecoration(win) {
 }
 
 function addDecorationStyles() {
-  let styleContent  = decorationStyleContent();
-  let styleFilePath = extpath + '/buttons-' + buttonsPosition + '.css';
-  let styleImport   = "@import url('" + styleFilePath + "');\n"
+  decorationStyleFile = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
 
-  GLib.file_set_contents(decorationStyleFile, styleImport + styleContent);
+  if (decorationPosition) {
+    let styleContent  = decorationStyleContent();
+    let styleFilePath = extpath + '/buttons-' + decorationPosition + '.css';
+    let styleImport   = "@import url('" + styleFilePath + "');\n"
+
+    GLib.file_set_contents(decorationStyleFile, styleImport + styleContent);
+  }
 }
 
 function removeDecorationStyles() {
   let styleContent = decorationStyleContent();
   GLib.file_set_contents(decorationStyleFile, styleContent);
+
+  decorationStyleFile = null;
 }
 
 function decorationStyleContent() {
