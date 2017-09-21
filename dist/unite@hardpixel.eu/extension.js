@@ -429,7 +429,9 @@ function updateAppMenuTitle() {
       title = activeApp.get_name();
     }
 
-    appmenu._label.set_text(title);
+    if (title) {
+      appmenu._label.set_text(title);
+    }
   });
 }
 
