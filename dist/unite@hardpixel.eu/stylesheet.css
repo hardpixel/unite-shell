@@ -26,15 +26,15 @@
   height: 20px; }
   #panel .window-button.close {
     background-image: url("assets/close.svg"); }
-    #panel .window-button.close:hover, #panel .window-button.close:active, #panel .window-button.close:overview, #panel .window-button.close:focus, #panel .window-button.close:checked {
+    #panel .window-button.close:hover, #panel .window-button.close:active, #panel .window-button.close:focus {
       background-image: url("assets/close-active.svg"); }
   #panel .window-button.minimize {
     background-image: url("assets/minimize.svg"); }
-    #panel .window-button.minimize:hover, #panel .window-button.minimize:active, #panel .window-button.minimize:overview, #panel .window-button.minimize:focus, #panel .window-button.minimize:checked {
+    #panel .window-button.minimize:hover, #panel .window-button.minimize:active, #panel .window-button.minimize:focus {
       background-image: url("assets/minimize-active.svg"); }
   #panel .window-button.maximize {
     background-image: url("assets/maximize.svg"); }
-    #panel .window-button.maximize:hover, #panel .window-button.maximize:active, #panel .window-button.maximize:overview, #panel .window-button.maximize:focus, #panel .window-button.maximize:checked {
+    #panel .window-button.maximize:hover, #panel .window-button.maximize:active, #panel .window-button.maximize:focus {
       background-image: url("assets/maximize-active.svg"); }
 #panel .tray-buttons-box {
   spacing: 10px;
@@ -52,5 +52,5 @@
     color: transparent;
     background-image: url("assets/activities.svg");
     background-position: center; }
-  #panel #panelActivities:hover > *, #panel #panelActivities:active > *, #panel #panelActivities:overview > *, #panel #panelActivities:focus > *, #panel #panelActivities:checked > * {
+  #panel #panelActivities:hover > *, #panel #panelActivities:active > *, #panel #panelActivities:focus > * {
     background-image: url("assets/activities-active.svg"); }
