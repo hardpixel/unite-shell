@@ -206,6 +206,8 @@ function enableButtons() {
   } else {
     buttonsWmHandlers.push(global.window_manager.connect('size-changed', updateButtons));
   }
+
+  Mainloop.idle_add(updateButtons);
 }
 
 function disableButtons() {
@@ -375,6 +377,8 @@ function enableAppMenu() {
   } else {
     appmenuWmHandlers.push(global.window_manager.connect('size-changed', updateAppMenu));
   }
+
+  Mainloop.idle_add(updateAppMenu);
 }
 
 function disableAppMenu() {

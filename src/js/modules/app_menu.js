@@ -19,6 +19,8 @@ function enableAppMenu() {
   } else {
     appmenuWmHandlers.push(global.window_manager.connect('size-changed', updateAppMenu));
   }
+
+  Mainloop.idle_add(updateAppMenu);
 }
 
 function disableAppMenu() {
