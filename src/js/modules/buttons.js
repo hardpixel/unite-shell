@@ -124,11 +124,9 @@ function collectButtons(items) {
 
 function buttonsClick(callback) {
   return function(actor, event) {
-    if (event.get_button() !== 1) {
-      return;
+    if (event.get_button() === 1) {
+      callback(actor, event);
     }
-
-    return callback(actor, event);
   }
 }
 
