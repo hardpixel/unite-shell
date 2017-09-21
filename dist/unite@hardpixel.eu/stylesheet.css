@@ -45,9 +45,8 @@
   margin-right: 5px; }
   #panel #appMenu .popup-menu-arrow {
     margin-left: 5px; }
-  #panel #appMenu .app-menu-icon {
-    opacity: 0;
-    box-shadow: none; }
+  #panel #appMenu .app-menu-icon > StIcon {
+    icon-shadow: none; }
 #panel #panelActivities {
   width: 55px; }
   #panel #panelActivities > * {
