@@ -62,7 +62,7 @@ function destroyIconsContainer() {
   }
 
   if (iconsContainer) {
-    iconsContainer.destroy();
+    iconsContainer.actor.destroy();
     iconsContainer = null;
   }
 }
