@@ -5,10 +5,13 @@ let buttonsSizeChange = null;
 let buttonsActor      = null;
 let buttonsBox        = null;
 let focusWindow       = null;
-let buttonsPosition   = 'right';
+let buttonsItems      = null;
+let buttonsPosition   = null;
 let buttonsCallbacks  = { close: closeWindow, minimize: minimizeWindow, maximize: maximizeWindow };
 
 function enableButtons() {
+  detectButtons();
+
   Mainloop.idle_add(createButtons);
 
   buttonsSizeChange = versionCompare(Config.PACKAGE_VERSION, '3.24') < 0;
@@ -40,13 +43,14 @@ function disableButtons() {
   buttonsWmHandlers = [];
   buttonsOvHandlers = [];
   buttonsDsHandler  = null;
+  buttonsItems      = null;
   buttonsPosition   = null;
   buttonsSizeChange = null;
 
   Mainloop.idle_add(destroyButtons);
 }
 
-function createButtons() {
+function detectButtons() {
   let layout = new Gio.Settings({ schema_id: DCONF_META }).get_string('button-layout');
   let order  = layout.replace(/ /g, '').split(':');
 
@@ -54,21 +58,24 @@ function createButtons() {
     return;
   }
 
-  let buttons = collectButtons(order[1].split(','));
+  buttonsItems    = collectButtons(order[1].split(','));
+  buttonsPosition = 'right';
 
-  if (!buttons) {
-    buttons         = collectButtons(order[0].split(','));
+  if (!buttonsItems) {
+    buttonsItems    = collectButtons(order[0].split(','));
     buttonsPosition = 'left';
   }
+}
 
-  if (buttons) {
+function createButtons() {
+  if (buttonsItems) {
     buttonsActor = new St.Bin({ style_class: 'box-bin'});
     buttonsBox   = new St.BoxLayout({ style_class: 'window-buttons-box' });
 
     buttonsActor.add_actor(buttonsBox);
     buttonsActor.hide();
 
-    buttons.forEach(function (btn) {
+    buttonsItems.forEach(function (btn) {
       let callback = buttonsCallbacks[btn];
       let button   = new St.Button({ style_class: btn  + ' window-button', track_hover: true });
 
