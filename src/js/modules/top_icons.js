@@ -19,9 +19,6 @@ function disableTopIcons() {
   } else {
     Mainloop.idle_add(destroyTray);
   }
-
-  trayHandlers = [];
-  trayIcons    = [];
 }
 
 function createTray() {
@@ -34,7 +31,10 @@ function createTray() {
 }
 
 function destroyTray() {
-  tray = null;
+  tray         = null;
+  trayHandlers = [];
+  trayIcons    = [];
+
   System.gc();
 
   destroyIconsContainer();
@@ -113,9 +113,14 @@ function moveToTray() {
   });
 
   destroyIconsContainer();
+
+  trayHandlers = [];
+  trayIcons    = [];
 }
 
 function addTrayIcon(o, icon, role, delay=1000) {
+  trayIcons.push(icon);
+
   let iconContainer = new St.Button({ child: icon, visible: false });
 
   icon.connect('destroy', function() {
@@ -140,8 +145,6 @@ function addTrayIcon(o, icon, role, delay=1000) {
   icon.reactive = true;
   icon.get_parent().set_size(size, size);
   icon.set_size(size, size);
-
-  trayIcons.push(icon);
 }
 
 function removeTrayIcon(o, icon) {
