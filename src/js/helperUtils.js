@@ -1,5 +1,6 @@
 const Config = imports.misc.config;
 const Gio    = imports.gi.Gio;
+const Main   = imports.ui.main;
 const Meta   = imports.gi.Meta;
 
 function getXWindow(win) {
