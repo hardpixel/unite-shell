@@ -96,8 +96,8 @@ const TopIcons = new Lang.Class({
       this._tray._trayManager.disconnect(handler);
     }));
 
-    this._tray._trayIconAddedId   = this._tray._trayManager.connect('tray-icon-added', Lang.bind(tray, this._tray._onTrayIconAdded));
-    this._tray._trayIconRemovedId = this._tray._trayManager.connect('tray-icon-removed', Lang.bind(tray, this._tray._onTrayIconRemoved));
+    this._tray._trayIconAddedId   = this._tray._trayManager.connect('tray-icon-added', Lang.bind(this._tray, this._tray._onTrayIconAdded));
+    this._tray._trayIconRemovedId = this._tray._trayManager.connect('tray-icon-removed', Lang.bind(this._tray, this._tray._onTrayIconRemoved));
 
     this._icons.forEach(Lang.bind(this, function (icon) {
       let parent = icon.get_parent();
@@ -107,7 +107,7 @@ const TopIcons = new Lang.Class({
         parent.destroy();
       }
 
-      this._tray._onTrayIconAdded(tray, icon);
+      this._tray._onTrayIconAdded(this._tray, icon);
     }));
 
     this._destroyIconsContainer();
