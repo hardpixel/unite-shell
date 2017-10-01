@@ -128,7 +128,7 @@ const TopIcons = new Lang.Class({
     });
 
     Mainloop.timeout_add(delay, Lang.bind(this, function () {
-      iconContainer.visible        = true;
+      iconContainer.visible              = true;
       this._iconsContainer.actor.visible = true;
     }));
 
