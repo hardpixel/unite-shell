@@ -3,8 +3,8 @@ const Main           = imports.ui.main;
 const Mainloop       = imports.mainloop;
 const Shell          = imports.gi.Shell;
 const ExtensionUtils = imports.misc.extensionUtils;
-const UniteExtension = ExtensionUtils.getCurrentExtension();
-const HelperUtils    = UniteExtension.imports.helperUtils;
+const Unite          = ExtensionUtils.getCurrentExtension();
+const Helper         = Unite.imports.helperUtils;
 
 const AppMenu = new Lang.Class({
   Name: 'AppMenu',
@@ -23,7 +23,7 @@ const AppMenu = new Lang.Class({
     this._appMenu       = Main.panel.statusArea.appMenu,
     this._windowTracker = Shell.WindowTracker.get_default() || {},
     this._messageTray   = Main.messageTray,
-    this._sizeSignal    = HelperUtils.versionLT('3.24') ? 'size-change' : 'size-changed';
+    this._sizeSignal    = Helper.versionLT('3.24') ? 'size-change' : 'size-changed';
 
     this._dsHandlerID = global.display.connect('notify::focus-window', Lang.bind(this, this._updateMenu));
     this._mtHandlerID = this._messageTray.connect('source-removed', Lang.bind(this, this._restoreTitle));
@@ -71,7 +71,7 @@ const AppMenu = new Lang.Class({
   },
 
   destroy: function() {
-    let windows = HelperUtils.getAllWindows();
+    let windows = Helper.getAllWindows();
 
     windows.forEach(function(win) {
       if (win._updateTitleID) {
