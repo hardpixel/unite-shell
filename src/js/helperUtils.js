@@ -60,6 +60,18 @@ function collectWindowButtons(layout_items) {
   return items;
 }
 
+function overviewSignalIDs() {
+  let signals = Main.overview._signalConnections.map(function (item) {
+    if (item.disconnected) {
+      return 0;
+    } else {
+      return item.id;
+    }
+  });
+
+  return signals;
+}
+
 function versionCompare(v1, v2) {
   let v1parts   = ('' + v1).split('.')
   let v2parts   = ('' + v2).split('.')
