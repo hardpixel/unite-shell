@@ -137,7 +137,9 @@ const WindowButtons = new Lang.Class({
     global.display.disconnect(this._dsHandlerID);
 
     this._ovHandlerIDs.forEach(function (handler) {
-      Main.overview.disconnect(handler);
+      if (Helper.overviewSignalIDs().indexOf(handler) > -1) {
+        Main.overview.disconnect(handler);
+      }
     });
 
     this._wmHandlerIDs.forEach(function (handler) {
