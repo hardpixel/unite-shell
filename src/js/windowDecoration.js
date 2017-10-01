@@ -19,7 +19,7 @@ const WindowDecoration = new Lang.Class({
 
   _init: function() {
     this._extensionPath   = Unite.path;
-    this._buttonsPosition = 'left';
+    this._buttonsPosition = Helper.getWindowButtons('position');
     this._needsMaxUnmax   = Helper.versionLT('3.24');
     this._userStylesPath  = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
     this._handlerID       = global.display.connect('notify::focus-window', Lang.bind(this, this._updateTitlebar));
