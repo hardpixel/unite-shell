@@ -92,9 +92,9 @@ const TopIcons = new Lang.Class({
   },
 
   _moveToTray: function () {
-    this._handlerIDs.forEach(function (handler) {
+    this._handlerIDs.forEach(Lang.bind(this, function (handler) {
       this._tray._trayManager.disconnect(handler);
-    });
+    }));
 
     this._tray._trayIconAddedId   = this._tray._trayManager.connect('tray-icon-added', Lang.bind(tray, this._tray._onTrayIconAdded));
     this._tray._trayIconRemovedId = this._tray._trayManager.connect('tray-icon-removed', Lang.bind(tray, this._tray._onTrayIconRemoved));
