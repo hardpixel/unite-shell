@@ -1,4 +1,5 @@
 const Config = imports.misc.config;
+const Gio    = imports.gi.Gio;
 const Meta   = imports.gi.Meta;
 
 function getXWindow(win) {
@@ -14,6 +15,49 @@ function getAllWindows() {
   let windows = actors.filter(function(w) { return w.window_type !== Meta.WindowType.DESKTOP; });
 
   return windows;
+}
+
+function getWindowButtons(return_only) {
+  let prefs  = new Gio.Settings({ schema_id: 'org.gnome.desktop.wm.preferences' });
+  let layout = prefs.get_string('button-layout');
+  let order  = layout.replace(/ /g, '').split(':');
+
+  if (order.length < 2) {
+    return;
+  }
+
+  let buttons  = collectWindowButtons(order[1].split(','));
+  let position = 'right';
+
+  if (!buttons) {
+    buttons    = collectWindowButtons(order[0].split(','));
+    position = 'left';
+  }
+
+  if (return_only == 'position') {
+    return position;
+  } else if (return_only == 'buttons') {
+    return buttons;
+  } else {
+    return [position, buttons];
+  }
+}
+
+function collectWindowButtons(layout_items) {
+  let names = ['close', 'minimize', 'maximize'];
+  let items = [];
+
+  layout_items.forEach(function (item) {
+    if (names.indexOf(item) > -1) {
+      items.push(item);
+    }
+  });
+
+  if (items.length == 0) {
+    items = null;
+  }
+
+  return items;
 }
 
 function versionCompare(v1, v2) {
