@@ -4,6 +4,7 @@ const ExtensionUtils   = imports.misc.extensionUtils;
 const Unite            = ExtensionUtils.getCurrentExtension();
 const ActivateWindow   = Unite.imports.activateWindow.ActivateWindow;
 const ExtendLeftBox    = Unite.imports.extendLeftBox.ExtendLeftBox;
+const MessageTray      = Unite.imports.messageTray.MessageTray;
 const AppMenu          = Unite.imports.appMenu.AppMenu;
 const WindowButtons    = Unite.imports.windowButtons.WindowButtons;
 const WindowDecoration = Unite.imports.windowDecoration.WindowDecoration;
@@ -13,6 +14,7 @@ const UniteShell = new Lang.Class({
   Name: 'UniteShell',
   _activateWindow: null,
   _extendLeftBox: null,
+  _messageTray: null,
   _appMenu: null,
   _windowButtons: null,
   _windowDecoration: null,
@@ -21,6 +23,7 @@ const UniteShell = new Lang.Class({
   _init: function() {
     this._activateWindow   = new ActivateWindow();
     this._extendLeftBox    = new ExtendLeftBox();
+    this._messageTray      = new MessageTray();
     this._appMenu          = new AppMenu();
     this._windowButtons    = new WindowButtons();
     this._windowDecoration = new WindowDecoration();
@@ -32,6 +35,7 @@ const UniteShell = new Lang.Class({
   destroy: function() {
     this._activateWindow.destroy();
     this._extendLeftBox.destroy();
+    this._messageTray.destroy();
     this._appMenu.destroy();
     this._windowButtons.destroy();
     this._windowDecoration.destroy();

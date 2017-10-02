@@ -13,6 +13,7 @@ guard 'sprockets', destination: 'dist/unite@hardpixel.eu', asset_paths: ['src/js
   watch (%r{src/js/extension.js}) { 'dist/unite@hardpixel.eu/extension.js' }
   watch (%r{src/js/helperUtils.js}) { 'dist/unite@hardpixel.eu/helperUtils.js' }
   watch (%r{src/js/activateWindow.js}) { 'dist/unite@hardpixel.eu/activateWindow.js' }
+  watch (%r{src/js/messageTray.js}) { 'dist/unite@hardpixel.eu/messageTray.js' }
   watch (%r{src/js/extendLeftBox.js}) { 'dist/unite@hardpixel.eu/extendLeftBox.js' }
   watch (%r{src/js/appMenu.js}) { 'dist/unite@hardpixel.eu/appMenu.js' }
   watch (%r{src/js/windowButtons.js}) { 'dist/unite@hardpixel.eu/windowButtons.js' }
