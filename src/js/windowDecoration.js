@@ -22,10 +22,17 @@ const WindowDecoration = new Lang.Class({
     this._buttonsPosition = Helper.getWindowButtons('position');
     this._needsMaxUnmax   = Helper.versionLT('3.24');
     this._userStylesPath  = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
-    this._handlerID       = global.display.connect('notify::focus-window', Lang.bind(this, this._updateTitlebar));
 
     Mainloop.idle_add(Lang.bind(this, this._addUserStyles));
     Mainloop.idle_add(Lang.bind(this, this._undecorateWindows));
+
+    this._connectSignals();
+  },
+
+  _connectSignals: function () {
+    this._handlerID = global.display.connect(
+      'notify::focus-window', Lang.bind(this, this._updateTitlebar)
+    );
   },
 
   _toggleTitlebar: function (id, hide) {
