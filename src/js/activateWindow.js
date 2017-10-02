@@ -6,7 +6,9 @@ const ActivateWindow = new Lang.Class({
   _handlerID: null,
 
   _init: function() {
-    this._handlerID = global.display.connect('window-demands-attention', Lang.bind(this, this._activate));
+    this._handlerID = global.display.connect(
+      'window-demands-attention', Lang.bind(this, this._activate)
+    );
   },
 
   _activate: function (actor, win) {
