@@ -1,7 +1,9 @@
 const Lang           = imports.lang;
 const Main           = imports.ui.main;
 const Mainloop       = imports.mainloop;
+const MessageTray    = Main.messageTray;
 const Shell          = imports.gi.Shell;
+const WindowTracker  = Shell.WindowTracker.get_default();
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
 const Helper         = Unite.imports.helperUtils;
@@ -9,9 +11,6 @@ const Helper         = Unite.imports.helperUtils;
 const AppMenu = new Lang.Class({
   Name: 'AppMenu',
   _appMenu: null,
-  _windowTracker: null,
-  _messageTray: null,
-  _sizeSignal: null,
   _wmHandlerIDs: [],
   _dsHandlerID: null,
   _mtHandlerID: null,
@@ -20,27 +19,45 @@ const AppMenu = new Lang.Class({
   _activeWindow: null,
 
   _init: function() {
-    this._appMenu       = Main.panel.statusArea.appMenu;
-    this._windowTracker = Shell.WindowTracker.get_default() || {};
-    this._messageTray   = Main.messageTray;
-    this._sizeSignal    = Helper.versionLT('3.24') ? 'size-change' : 'size-changed';
-
-    this._dsHandlerID = global.display.connect('notify::focus-window', Lang.bind(this, this._updateMenu));
-    this._mtHandlerID = this._messageTray.connect('source-removed', Lang.bind(this, this._restoreTitle));
-    this._bbHandlerID = this._messageTray._bannerBin.connect('notify::hover', Lang.bind(this, this._removeTitle));
-
-    this._wmHandlerIDs.push(global.window_manager.connect('destroy', Lang.bind(this, this._updateMenu)));
-    this._wmHandlerIDs.push(global.window_manager.connect(this._sizeSignal, Lang.bind(this, this._updateMenu)));
+    this._appMenu = Main.panel.statusArea.appMenu;
 
     Mainloop.idle_add(Lang.bind(this, this._updateMenu));
+
+    this._connectSignals();
+  },
+
+  _connectSignals: function () {
+    this._dsHandlerID = global.display.connect(
+      'notify::focus-window', Lang.bind(this, this._updateMenu)
+    );
+
+    this._mtHandlerID = MessageTray.connect(
+      'source-removed', Lang.bind(this, this._restoreTitle)
+    );
+
+    this._bbHandlerID = MessageTray._bannerBin.connect(
+      'notify::hover', Lang.bind(this, this._removeTitle)
+    );
+
+    this._wmHandlerIDs.push(global.window_manager.connect(
+      'destroy', Lang.bind(this, this._updateMenu)
+    ));
+
+    let sizeSignal = Helper.versionLT('3.24') ? 'size-change' : 'size-changed';
+
+    this._wmHandlerIDs.push(global.window_manager.connect(
+      sizeSignal, Lang.bind(this, this._updateMenu)
+    ));
   },
 
   _updateMenu: function () {
-    this._activeApp    = this._windowTracker.focus_app;
+    this._activeApp    = WindowTracker.focus_app;
     this._activeWindow = global.display.focus_window;
 
     if (this._activeWindow && !this._activeWindow._updateTitleID) {
-      this._activeWindow._updateTitleID = this._activeWindow.connect('notify::title', Lang.bind(this, this._updateTitle));
+      this._activeWindow._updateTitleID = this._activeWindow.connect(
+        'notify::title', Lang.bind(this, this._updateTitle)
+      );
     }
 
     this._updateTitle();
@@ -82,8 +99,8 @@ const AppMenu = new Lang.Class({
 
     global.display.disconnect(this._dsHandlerID);
 
-    this._messageTray.disconnect(this._mtHandlerID);
-    this._messageTray._bannerBin.disconnect(this._bbHandlerID);
+    MessageTray.disconnect(this._mtHandlerID);
+    MessageTray._bannerBin.disconnect(this._bbHandlerID);
 
     this._wmHandlerIDs.forEach(function (handler) {
       global.window_manager.disconnect(handler);

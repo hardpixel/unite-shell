@@ -12,8 +12,13 @@ function getXWindow(win) {
 }
 
 function getAllWindows() {
-  let actors  = global.get_window_actors().map(function (w) { return w.meta_window; });
-  let windows = actors.filter(function(w) { return w.window_type !== Meta.WindowType.DESKTOP; });
+  let windows = global.get_window_actors().map(function (win) {
+    return win.meta_window;
+  });
+
+  windows = windows.filter(function(win) {
+    return win.window_type !== Meta.WindowType.DESKTOP;
+  });
 
   return windows;
 }

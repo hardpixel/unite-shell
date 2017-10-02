@@ -4,16 +4,15 @@ const Mainloop       = imports.mainloop;
 const Panel          = Main.panel;
 const St             = imports.gi.St;
 const Lang           = imports.lang;
-const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
 const Helper         = Unite.imports.helperUtils;
+const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
 const WindowButtons = new Lang.Class({
   Name: 'WindowButtons',
   _buttons: null,
   _position: null,
-  _sizeSignal: null,
   _wmHandlerIDs: [],
   _ovHandlerIDs: [],
   _dsHandlerID : null,
@@ -27,14 +26,31 @@ const WindowButtons = new Lang.Class({
     Mainloop.idle_add(Lang.bind(this, this._createButtons));
     Mainloop.idle_add(Lang.bind(this, this._updateVisibility));
 
-    this._sizeSignal  = Helper.versionLT('3.24') ? 'size-change' : 'size-changed';;
-    this._dsHandlerID = global.display.connect('notify::focus-window', Lang.bind(this, this._updateVisibility));
+    this._connectSignals();
+  },
 
-    this._ovHandlerIDs.push(Main.overview.connect('showing', Lang.bind(this, this._updateVisibility)));
-    this._ovHandlerIDs.push(Main.overview.connect('hidden', Lang.bind(this, this._updateVisibility)));
+  _connectSignals: function () {
+    this._dsHandlerID = global.display.connect(
+      'notify::focus-window', Lang.bind(this, this._updateVisibility)
+    );
 
-    this._wmHandlerIDs.push(global.window_manager.connect('destroy', Lang.bind(this, this._updateVisibility)));
-    this._wmHandlerIDs.push(global.window_manager.connect(this._sizeSignal, Lang.bind(this, this._updateVisibility)));
+    this._ovHandlerIDs.push(Main.overview.connect(
+      'showing', Lang.bind(this, this._updateVisibility)
+    ));
+
+    this._ovHandlerIDs.push(Main.overview.connect(
+      'hidden', Lang.bind(this, this._updateVisibility)
+    ));
+
+    this._wmHandlerIDs.push(global.window_manager.connect(
+      'destroy', Lang.bind(this, this._updateVisibility)
+    ));
+
+    let sizeSignal = Helper.versionLT('3.24') ? 'size-change' : 'size-changed';
+
+    this._wmHandlerIDs.push(global.window_manager.connect(
+      sizeSignal, Lang.bind(this, this._updateVisibility)
+    ));
   },
 
   _createButtons: function () {
