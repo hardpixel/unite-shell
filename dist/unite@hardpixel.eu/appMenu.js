@@ -20,9 +20,9 @@ const AppMenu = new Lang.Class({
   _activeWindow: null,
 
   _init: function() {
-    this._appMenu       = Main.panel.statusArea.appMenu,
-    this._windowTracker = Shell.WindowTracker.get_default() || {},
-    this._messageTray   = Main.messageTray,
+    this._appMenu       = Main.panel.statusArea.appMenu;
+    this._windowTracker = Shell.WindowTracker.get_default() || {};
+    this._messageTray   = Main.messageTray;
     this._sizeSignal    = Helper.versionLT('3.24') ? 'size-change' : 'size-changed';
 
     this._dsHandlerID = global.display.connect('notify::focus-window', Lang.bind(this, this._updateMenu));
