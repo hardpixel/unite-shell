@@ -1,7 +1,6 @@
 const Lang           = imports.lang;
 const Main           = imports.ui.main;
 const Mainloop       = imports.mainloop;
-const MessageTray    = Main.messageTray;
 const Shell          = imports.gi.Shell;
 const WindowTracker  = Shell.WindowTracker.get_default();
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -13,8 +12,6 @@ const AppMenu = new Lang.Class({
   _appMenu: null,
   _wmHandlerIDs: [],
   _dsHandlerID: null,
-  _mtHandlerID: null,
-  _bbHandlerID: null,
   _activeApp: null,
   _activeWindow: null,
 
@@ -29,14 +26,6 @@ const AppMenu = new Lang.Class({
   _connectSignals: function () {
     this._dsHandlerID = global.display.connect(
       'notify::focus-window', Lang.bind(this, this._updateMenu)
-    );
-
-    this._mtHandlerID = MessageTray.connect(
-      'source-removed', Lang.bind(this, this._restoreTitle)
-    );
-
-    this._bbHandlerID = MessageTray._bannerBin.connect(
-      'notify::hover', Lang.bind(this, this._removeTitle)
     );
 
     this._wmHandlerIDs.push(global.window_manager.connect(
@@ -79,14 +68,6 @@ const AppMenu = new Lang.Class({
     }
   },
 
-  _removeTitle: function () {
-    this._appMenu._label.set_text('');
-  },
-
-  _restoreTitle: function () {
-    Mainloop.idle_add(Lang.bind(this, this._updateMenu));
-  },
-
   destroy: function() {
     let windows = Helper.getAllWindows();
 
@@ -98,9 +79,6 @@ const AppMenu = new Lang.Class({
     });
 
     global.display.disconnect(this._dsHandlerID);
-
-    MessageTray.disconnect(this._mtHandlerID);
-    MessageTray._bannerBin.disconnect(this._bbHandlerID);
 
     this._wmHandlerIDs.forEach(function (handler) {
       global.window_manager.disconnect(handler);

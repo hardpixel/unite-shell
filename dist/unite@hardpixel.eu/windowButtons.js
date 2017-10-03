@@ -2,6 +2,7 @@ const Main           = imports.ui.main;
 const Meta           = imports.gi.Meta;
 const Mainloop       = imports.mainloop;
 const Panel          = Main.panel;
+const AppMenu        = Panel.statusArea.appMenu;
 const St             = imports.gi.St;
 const Lang           = imports.lang;
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -135,7 +136,7 @@ const WindowButtons = new Lang.Class({
     this._activeWindow = global.display.focus_window;
 
     if (this._buttonsActor) {
-      let visible = false;
+      let visible = AppMenu._visible;
 
       if (!Main.overview.visible && this._activeWindow) {
         visible = this._activeWindow.get_maximized();
