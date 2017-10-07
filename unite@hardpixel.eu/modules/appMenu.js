@@ -1,5 +1,6 @@
 const Lang           = imports.lang;
 const Main           = imports.ui.main;
+const Meta           = imports.gi.Meta;
 const Mainloop       = imports.mainloop;
 const Gtk            = imports.gi.Gtk;
 const Shell          = imports.gi.Shell;
@@ -8,6 +9,7 @@ const AppSystem      = Shell.AppSystem.get_default()
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
 const Helpers        = Unite.imports.helpers;
+const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
 var AppMenu = new Lang.Class({
   Name: 'AppMenu',
@@ -79,7 +81,7 @@ var AppMenu = new Lang.Class({
   _updateTitle: function () {
     let title = null;
 
-    if (this._activeWindow && this._activeWindow.get_maximized()) {
+    if (this._activeWindow && this._activeWindow.get_maximized() === MAXIMIZED) {
       title = this._activeWindow.title;
     }
 

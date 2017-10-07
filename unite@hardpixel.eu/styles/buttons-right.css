@@ -1,31 +1,22 @@
 .csd.maximized headerbar:not(.default-decoration),
-.csd.maximized .titlebar:not(.default-decoration),
-.csd.tiled headerbar:not(.default-decoration),
-.csd.tiled .titlebar:not(.default-decoration) {
+.csd.maximized .titlebar:not(.default-decoration) {
   padding-right: 0;
 }
 
 .csd.maximized headerbar:not(.default-decoration) ~ headerbar,
 .csd.maximized headerbar:not(.default-decoration) ~ .titlebar,
 .csd.maximized .titlebar:not(.default-decoration) ~ headerbar,
-.csd.maximized .titlebar:not(.default-decoration) ~ .titlebar,
-.csd.tiled headerbar:not(.default-decoration) ~ headerbar,
-.csd.tiled headerbar:not(.default-decoration) ~ .titlebar,
-.csd.tiled .titlebar:not(.default-decoration) ~ headerbar,
-.csd.tiled .titlebar:not(.default-decoration) ~ .titlebar {
+.csd.maximized .titlebar:not(.default-decoration) ~ .titlebar {
   padding-left: 6px;
 }
 
 .csd.maximized headerbar:not(.default-decoration) > box.right,
-.csd.maximized .titlebar:not(.default-decoration) > box.right,
-.csd.tiled headerbar:not(.default-decoration) > box.right,
-.csd.tiled .titlebar:not(.default-decoration) > box.right {
+.csd.maximized .titlebar:not(.default-decoration) > box.right {
   margin: 0 -200px 0 0;
   opacity: 0;
 }
 
-.csd.maximized .titlebar.default-decoration,
-.csd.tiled .titlebar.default-decoration {
+.csd.maximized .titlebar.default-decoration {
   margin: -200px 0 0;
   opacity: 0;
 }

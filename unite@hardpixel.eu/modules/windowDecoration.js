@@ -23,8 +23,12 @@ var WindowDecoration = new Lang.Class({
   },
 
   _connectSignals: function () {
-    this._handlerID = global.display.connect(
+    this._dsHandlerID = global.display.connect(
       'notify::focus-window', Lang.bind(this, this._updateTitlebar)
+    );
+
+    this._wmHandlerID = global.window_manager.connect(
+      'size-change', Lang.bind(this, this._updateTitlebar)
     );
   },
 
@@ -46,7 +50,14 @@ var WindowDecoration = new Lang.Class({
 
   _updateTitlebar: function () {
     this._activeWindow = global.display.focus_window;
-    this._hideTitlebar(this._activeWindow);
+
+    if (this._activeWindow) {
+      if (this._activeWindow.get_maximized() == MAXIMIZED) {
+        this._hideTitlebar(this._activeWindow);
+      } else {
+        this._showTitlebar(this._activeWindow);
+      }
+    }
   },
 
   _showTitlebar: function (win) {
@@ -103,7 +114,14 @@ var WindowDecoration = new Lang.Class({
 
   _undecorateWindows: function () {
     let windows = Helpers.getAllWindows();
-    windows.forEach(Lang.bind(this, this._hideTitlebar));
+
+    windows.forEach(Lang.bind(this, function (win) {
+      if (win.get_maximized() == MAXIMIZED) {
+        this._hideTitlebar(win);
+      } else {
+        this._showTitlebar(win);
+      }
+    }));
   },
 
   _decorateWindows: function () {
@@ -112,7 +130,8 @@ var WindowDecoration = new Lang.Class({
   },
 
   destroy: function() {
-    global.display.disconnect(this._handlerID);
+    global.display.disconnect(this._dsHandlerID);
+    global.window_manager.disconnect(this._wmHandlerID);
 
     Mainloop.idle_add(Lang.bind(this, this._removeUserStyles));
     Mainloop.idle_add(Lang.bind(this, this._decorateWindows));
