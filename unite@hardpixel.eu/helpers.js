@@ -36,7 +36,7 @@ function getWindowButtons(return_only) {
   let position = 'right';
 
   if (!buttons) {
-    buttons    = collectWindowButtons(order[0].split(','));
+    buttons  = collectWindowButtons(order[0].split(','));
     position = 'left';
   }
 
