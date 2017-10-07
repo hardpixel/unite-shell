@@ -94,7 +94,7 @@ const WindowDecoration = new Lang.Class({
   _addUserStyles: function () {
     if (this._buttonsPosition) {
       let styleContent  = this._updateUserStyles();
-      let styleFilePath = this._extensionPath + '/buttons-' + this._buttonsPosition + '.css';
+      let styleFilePath = this._extensionPath + '/styles/buttons-' + this._buttonsPosition + '.css';
       let styleImport   = "@import url('" + styleFilePath + "');\n"
 
       GLib.file_set_contents(this._userStylesPath, styleImport + styleContent);
