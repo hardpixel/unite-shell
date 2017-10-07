@@ -9,11 +9,8 @@ const Panel     = Main.panel;
 
 var TopIcons = new Lang.Class({
   Name: 'TopIcons',
-  _tray: null,
   _handlerIDs: [],
   _icons: [],
-  _iconsBoxLayout: null,
-  _iconsContainer: null,
 
   _init: function() {
     this._tray = Main.legacyTray;

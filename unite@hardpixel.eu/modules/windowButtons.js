@@ -12,14 +12,8 @@ const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
 var WindowButtons = new Lang.Class({
   Name: 'WindowButtons',
-  _buttons: null,
-  _position: null,
   _wmHandlerIDs: [],
   _ovHandlerIDs: [],
-  _dsHandlerID : null,
-  _buttonsActor: null,
-  _buttonsBox: null,
-  _activeWindow: null,
 
   _init: function() {
     [this._position, this._buttons] = Helpers.getWindowButtons();

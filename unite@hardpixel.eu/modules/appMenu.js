@@ -11,14 +11,7 @@ const Helpers        = Unite.imports.helpers;
 
 var AppMenu = new Lang.Class({
   Name: 'AppMenu',
-  _appMenu: null,
-  _gtkSettings: null,
   _wmHandlerIDs: [],
-  _dsHandlerID: null,
-  _asHandlerID: null,
-  _wtHandlerID: null,
-  _activeApp: null,
-  _activeWindow: null,
 
   _init: function() {
     this._appMenu     = Main.panel.statusArea.appMenu;

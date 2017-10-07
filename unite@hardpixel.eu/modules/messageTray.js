@@ -4,7 +4,6 @@ const Clutter = imports.gi.Clutter;
 
 var MessageTray = new Lang.Class({
   Name: 'MessageTray',
-  _container: null,
 
   _init: function() {
     this._container = Main.messageTray._bannerBin;

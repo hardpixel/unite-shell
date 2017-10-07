@@ -10,15 +10,8 @@ const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
 var WindowDecoration = new Lang.Class({
   Name: 'WindowDecoration',
-  _extensionPath: null,
-  _handlerID: null,
-  _activeWindow: null,
-  _userStylesPath: null,
-  _buttonsPosition: null,
-  _needsMaxUnmax: null,
 
   _init: function() {
-    this._extensionPath   = Unite.path;
     this._buttonsPosition = Helpers.getWindowButtons('position');
     this._needsMaxUnmax   = Helpers.getVersion() < 3.24;
     this._userStylesPath  = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
@@ -96,7 +89,7 @@ var WindowDecoration = new Lang.Class({
   _addUserStyles: function () {
     if (this._buttonsPosition) {
       let styleContent  = this._updateUserStyles();
-      let styleFilePath = this._extensionPath + '/styles/buttons-' + this._buttonsPosition + '.css';
+      let styleFilePath = Unite.path + '/styles/buttons-' + this._buttonsPosition + '.css';
       let styleImport   = "@import url('" + styleFilePath + "');\n"
 
       GLib.file_set_contents(this._userStylesPath, styleImport + styleContent);

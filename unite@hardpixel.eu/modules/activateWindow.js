@@ -3,7 +3,6 @@ const Main = imports.ui.main;
 
 var ActivateWindow = new Lang.Class({
   Name: 'ActivateWindow',
-  _handlerID: null,
 
   _init: function() {
     this._handlerID = global.display.connect(

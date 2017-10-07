@@ -13,14 +13,6 @@ const TopIcons         = Unite.imports.modules.topIcons.TopIcons;
 
 var UniteShell = new Lang.Class({
   Name: 'UniteShell',
-  _activateWindow: null,
-  _extendLeftBox: null,
-  _messageTray: null,
-  _activitiesButton: null,
-  _appMenu: null,
-  _windowButtons: null,
-  _windowDecoration: null,
-  _topIcons: null,
 
   _init: function() {
     this._activateWindow   = new ActivateWindow();
@@ -57,4 +49,5 @@ function enable() {
 
 function disable() {
   uniteShell.destroy();
+  uniteShell = null;
 };
