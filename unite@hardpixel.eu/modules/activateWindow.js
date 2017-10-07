@@ -1,7 +1,7 @@
 const Lang = imports.lang;
 const Main = imports.ui.main;
 
-const ActivateWindow = new Lang.Class({
+var ActivateWindow = new Lang.Class({
   Name: 'ActivateWindow',
   _handlerID: null,
 

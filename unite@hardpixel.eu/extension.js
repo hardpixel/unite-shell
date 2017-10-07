@@ -11,7 +11,7 @@ const WindowButtons    = Unite.imports.modules.windowButtons.WindowButtons;
 const WindowDecoration = Unite.imports.modules.windowDecoration.WindowDecoration;
 const TopIcons         = Unite.imports.modules.topIcons.TopIcons;
 
-const UniteShell = new Lang.Class({
+var UniteShell = new Lang.Class({
   Name: 'UniteShell',
   _activateWindow: null,
   _extendLeftBox: null,

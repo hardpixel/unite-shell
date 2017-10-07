@@ -3,7 +3,7 @@ const Lang    = imports.lang;
 const Main    = imports.ui.main;
 const Panel   = Main.panel;
 
-const ExtendLeftBox = new Lang.Class({
+var ExtendLeftBox = new Lang.Class({
   Name: 'ExtendLeftBox',
   _handlerID: null,
 

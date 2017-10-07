@@ -1,7 +1,7 @@
 const Lang = imports.lang;
 const Main = imports.ui.main;
 
-const ActivitiesButton = new Lang.Class({
+var ActivitiesButton = new Lang.Class({
   Name: 'ActivitiesButton',
   _activities: null,
 

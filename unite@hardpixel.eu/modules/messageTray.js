@@ -2,7 +2,7 @@ const Lang    = imports.lang;
 const Main    = imports.ui.main;
 const Clutter = imports.gi.Clutter;
 
-const MessageTray = new Lang.Class({
+var MessageTray = new Lang.Class({
   Name: 'MessageTray',
   _container: null,
 

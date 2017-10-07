@@ -9,7 +9,7 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
 const Helpers        = Unite.imports.helpers;
 
-const AppMenu = new Lang.Class({
+var AppMenu = new Lang.Class({
   Name: 'AppMenu',
   _appMenu: null,
   _gtkSettings: null,

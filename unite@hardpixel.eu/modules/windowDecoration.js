@@ -8,7 +8,7 @@ const Unite          = ExtensionUtils.getCurrentExtension();
 const Helpers        = Unite.imports.helpers;
 const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
-const WindowDecoration = new Lang.Class({
+var WindowDecoration = new Lang.Class({
   Name: 'WindowDecoration',
   _extensionPath: null,
   _handlerID: null,

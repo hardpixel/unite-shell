@@ -7,7 +7,7 @@ const Lang      = imports.lang;
 const PanelMenu = imports.ui.panelMenu;
 const Panel     = Main.panel;
 
-const TopIcons = new Lang.Class({
+var TopIcons = new Lang.Class({
   Name: 'TopIcons',
   _tray: null,
   _handlerIDs: [],

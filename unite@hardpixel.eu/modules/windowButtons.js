@@ -10,7 +10,7 @@ const Unite          = ExtensionUtils.getCurrentExtension();
 const Helpers        = Unite.imports.helpers;
 const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
-const WindowButtons = new Lang.Class({
+var WindowButtons = new Lang.Class({
   Name: 'WindowButtons',
   _buttons: null,
   _position: null,
