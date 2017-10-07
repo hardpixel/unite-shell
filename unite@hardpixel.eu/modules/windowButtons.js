@@ -7,7 +7,7 @@ const St             = imports.gi.St;
 const Lang           = imports.lang;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
-const Helper         = Unite.imports.helperUtils;
+const Helpers        = Unite.imports.helpers;
 const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
 const WindowButtons = new Lang.Class({
@@ -22,7 +22,7 @@ const WindowButtons = new Lang.Class({
   _activeWindow: null,
 
   _init: function() {
-    [this._position, this._buttons] = Helper.getWindowButtons();
+    [this._position, this._buttons] = Helpers.getWindowButtons();
 
     Mainloop.idle_add(Lang.bind(this, this._createButtons));
     Mainloop.idle_add(Lang.bind(this, this._updateVisibility));
@@ -47,7 +47,7 @@ const WindowButtons = new Lang.Class({
       'destroy', Lang.bind(this, this._updateVisibility)
     ));
 
-    let sizeSignal = Helper.versionLT('3.24') ? 'size-change' : 'size-changed';
+    let sizeSignal = Helpers.versionLT('3.24') ? 'size-change' : 'size-changed';
 
     this._wmHandlerIDs.push(global.window_manager.connect(
       sizeSignal, Lang.bind(this, this._updateVisibility)
@@ -156,7 +156,7 @@ const WindowButtons = new Lang.Class({
     global.display.disconnect(this._dsHandlerID);
 
     this._ovHandlerIDs.forEach(function (handler) {
-      if (Helper.overviewSignalIDs().indexOf(handler) > -1) {
+      if (Helpers.overviewSignalIDs().indexOf(handler) > -1) {
         Main.overview.disconnect(handler);
       }
     });

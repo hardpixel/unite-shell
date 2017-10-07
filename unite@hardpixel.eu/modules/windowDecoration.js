@@ -5,7 +5,7 @@ const Util           = imports.misc.util;
 const Lang           = imports.lang;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
-const Helper         = Unite.imports.helperUtils;
+const Helpers        = Unite.imports.helpers;
 const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
 const WindowDecoration = new Lang.Class({
@@ -19,8 +19,8 @@ const WindowDecoration = new Lang.Class({
 
   _init: function() {
     this._extensionPath   = Unite.path;
-    this._buttonsPosition = Helper.getWindowButtons('position');
-    this._needsMaxUnmax   = Helper.versionLT('3.24');
+    this._buttonsPosition = Helpers.getWindowButtons('position');
+    this._needsMaxUnmax   = Helpers.versionLT('3.24');
     this._userStylesPath  = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
 
     Mainloop.idle_add(Lang.bind(this, this._addUserStyles));
@@ -67,7 +67,7 @@ const WindowDecoration = new Lang.Class({
   _hideTitlebar: function (win) {
     if (win && win.decorated) {
       if (!win._decorationOFF && !win._windowXID) {
-        win._windowXID     = Helper.getXWindow(win);
+        win._windowXID     = Helpers.getXWindow(win);
         win._decorationOFF = true;
 
         this._toggleTitlebar(win._windowXID, true);
@@ -107,12 +107,12 @@ const WindowDecoration = new Lang.Class({
   },
 
   _undecorateWindows: function () {
-    let windows = Helper.getAllWindows();
+    let windows = Helpers.getAllWindows();
     windows.forEach(Lang.bind(this, this._hideTitlebar));
   },
 
   _decorateWindows: function () {
-    let windows = Helper.getAllWindows();
+    let windows = Helpers.getAllWindows();
     windows.forEach(Lang.bind(this, this._showTitlebar));
   },
 

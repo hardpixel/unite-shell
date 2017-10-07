@@ -7,7 +7,7 @@ const WindowTracker  = Shell.WindowTracker.get_default();
 const AppSystem      = Shell.AppSystem.get_default()
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
-const Helper         = Unite.imports.helperUtils;
+const Helpers        = Unite.imports.helpers;
 
 const AppMenu = new Lang.Class({
   Name: 'AppMenu',
@@ -47,7 +47,7 @@ const AppMenu = new Lang.Class({
       'destroy', Lang.bind(this, this._updateMenu)
     ));
 
-    let sizeSignal = Helper.versionLT('3.24') ? 'size-change' : 'size-changed';
+    let sizeSignal = Helpers.versionLT('3.24') ? 'size-change' : 'size-changed';
 
     this._wmHandlerIDs.push(global.window_manager.connect(
       sizeSignal, Lang.bind(this, this._updateMenu)
@@ -102,7 +102,7 @@ const AppMenu = new Lang.Class({
   },
 
   destroy: function() {
-    let windows = Helper.getAllWindows();
+    let windows = Helpers.getAllWindows();
 
     windows.forEach(function(win) {
       if (win._updateTitleID) {
