@@ -2,14 +2,14 @@ const Lang             = imports.lang;
 const Main             = imports.ui.main;
 const ExtensionUtils   = imports.misc.extensionUtils;
 const Unite            = ExtensionUtils.getCurrentExtension();
-const ActivateWindow   = Unite.imports.activateWindow.ActivateWindow;
-const ExtendLeftBox    = Unite.imports.extendLeftBox.ExtendLeftBox;
-const MessageTray      = Unite.imports.messageTray.MessageTray;
-const ActivitiesButton = Unite.imports.activitiesButton.ActivitiesButton;
-const AppMenu          = Unite.imports.appMenu.AppMenu;
-const WindowButtons    = Unite.imports.windowButtons.WindowButtons;
-const WindowDecoration = Unite.imports.windowDecoration.WindowDecoration;
-const TopIcons         = Unite.imports.topIcons.TopIcons;
+const ActivateWindow   = Unite.imports.modules.activateWindow.ActivateWindow;
+const ExtendLeftBox    = Unite.imports.modules.extendLeftBox.ExtendLeftBox;
+const MessageTray      = Unite.imports.modules.messageTray.MessageTray;
+const ActivitiesButton = Unite.imports.modules.activitiesButton.ActivitiesButton;
+const AppMenu          = Unite.imports.modules.appMenu.AppMenu;
+const WindowButtons    = Unite.imports.modules.windowButtons.WindowButtons;
+const WindowDecoration = Unite.imports.modules.windowDecoration.WindowDecoration;
+const TopIcons         = Unite.imports.modules.topIcons.TopIcons;
 
 const UniteShell = new Lang.Class({
   Name: 'UniteShell',
