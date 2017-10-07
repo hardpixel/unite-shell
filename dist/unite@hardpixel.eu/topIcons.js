@@ -47,6 +47,11 @@ const TopIcons = new Lang.Class({
 
     let parent = this._iconsContainer.actor.get_parent();
     let index  = Panel._rightBox.get_n_children() - 1;
+    let child  = Panel._rightBox.get_children();
+
+    if (child[index]._windowButtons) {
+      index = index - 1;
+    }
 
     if (parent) {
       parent.remove_actor(this._iconsContainer.actor);
