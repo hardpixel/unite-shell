@@ -20,7 +20,7 @@ var WindowDecoration = new Lang.Class({
   _init: function() {
     this._extensionPath   = Unite.path;
     this._buttonsPosition = Helpers.getWindowButtons('position');
-    this._needsMaxUnmax   = Helpers.versionLT('3.24');
+    this._needsMaxUnmax   = Helpers.getVersion() < 3.24;
     this._userStylesPath  = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
 
     Mainloop.idle_add(Lang.bind(this, this._addUserStyles));
