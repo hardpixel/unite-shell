@@ -29,7 +29,7 @@ function getWindowButtons(return_only) {
   let order  = layout.replace(/ /g, '').split(':');
 
   if (order.length < 2) {
-    return;
+    return null;
   }
 
   let buttons  = collectWindowButtons(order[1].split(','));
