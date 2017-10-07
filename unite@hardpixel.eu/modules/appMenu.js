@@ -47,10 +47,8 @@ var AppMenu = new Lang.Class({
       'destroy', Lang.bind(this, this._updateMenu)
     ));
 
-    let sizeSignal = Helpers.versionLT('3.24') ? 'size-change' : 'size-changed';
-
     this._wmHandlerIDs.push(global.window_manager.connect(
-      sizeSignal, Lang.bind(this, this._updateMenu)
+      'size-change', Lang.bind(this, this._updateMenu)
     ));
   },
 
