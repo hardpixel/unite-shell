@@ -14,13 +14,15 @@ $position: 'left' !default
 
         > box
 
-          &.left
-            margin: 0 0 0 -200px
-            opacity: 0
+          @if $position == 'left'
+            &.left
+              margin: 0 0 0 -200px
+              opacity: 0
 
-          &.right
-            margin: 0 -200px 0 0
-            opacity: 0
+          @if $position == 'right'
+            &.right
+              margin: 0 -200px 0 0
+              opacity: 0
 
     .titlebar.default-decoration
       margin: -200px 0 0
