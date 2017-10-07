@@ -44,8 +44,10 @@ var WindowDecoration = new Lang.Class({
 
   _toggleMaximize: function (win) {
     if (this._needsMaxUnmax && win.get_maximized() === MAXIMIZED) {
-      win.unmaximize(MAXIMIZED);
-      win.maximize(MAXIMIZED);
+      Mainloop.idle_add(function () {
+        win.unmaximize(MAXIMIZED);
+        win.maximize(MAXIMIZED);
+      });
     }
   },
 
