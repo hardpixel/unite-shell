@@ -32,7 +32,7 @@ const TopIcons = new Lang.Class({
     this._tray = new Shell.TrayManager();
     this._tray.connect('tray-icon-added', Lang.bind(this, this._addTrayIcon));
     this._tray.connect('tray-icon-removed', Lang.bind(this, this._removeTrayIcon));
-    this._tray.manage_screen(global.screen, Main.Panel.actor);
+    this._tray.manage_screen(global.screen, Panel.actor);
   },
 
   _destroyTray: function () {
