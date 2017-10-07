@@ -47,10 +47,8 @@ var WindowButtons = new Lang.Class({
       'destroy', Lang.bind(this, this._updateVisibility)
     ));
 
-    let sizeSignal = Helpers.versionLT('3.24') ? 'size-change' : 'size-changed';
-
     this._wmHandlerIDs.push(global.window_manager.connect(
-      sizeSignal, Lang.bind(this, this._updateVisibility)
+      'size-change', Lang.bind(this, this._updateVisibility)
     ));
   },
 
@@ -118,13 +116,11 @@ var WindowButtons = new Lang.Class({
 
   _maximizeWindow: function () {
     if (this._activeWindow) {
-      if (this._activeWindow.get_maximized()) {
+      if (this._activeWindow.get_maximized() == MAXIMIZED) {
         this._activeWindow.unmaximize(MAXIMIZED);
       } else {
         this._activeWindow.maximize(MAXIMIZED);
       }
-
-      this._activeWindow.activate(global.get_current_time());
     }
   },
 
@@ -153,10 +149,10 @@ var WindowButtons = new Lang.Class({
   },
 
   destroy: function() {
-    global.display.disconnect(this._dsHandlerID);
+    let handlers = Helpers.overviewSignalIDs();
 
     this._ovHandlerIDs.forEach(function (handler) {
-      if (Helpers.overviewSignalIDs().indexOf(handler) > -1) {
+      if (handlers.indexOf(handler) > -1) {
         Main.overview.disconnect(handler);
       }
     });
@@ -164,6 +160,8 @@ var WindowButtons = new Lang.Class({
     this._wmHandlerIDs.forEach(function (handler) {
       global.window_manager.disconnect(handler);
     });
+
+    global.display.disconnect(this._dsHandlerID);
 
     Mainloop.idle_add(Lang.bind(this, this._destroyButtons));
   }
