@@ -1,8 +1,0 @@
-{
-  "shell-version": ["3.18", "3.20", "3.22", "3.24", "3.26"],
-  "uuid": "unite@hardpixel.eu",
-  "url": "https://github.com/hardpixel/unite-shell",
-  "version": -1,
-  "name": "Unite",
-  "description": "Unite is a GNOME Shell extension which makes a few layout tweaks to the top panel and removes window decorations to make it look like Ubuntu Unity Shell.\n\n- Adds window buttons to the top panel for maximized windows.\n- Shows current window title in the app menu for maximized windows.\n- Removes titlebars on maximized windows.\n- Hides window controls on maximized windows with headerbars.\n- Moves the date to the right, fixes icons spacing and removes dropdown arrows.\n- Moves legacy tray icons to the top panel.\n\nThis extension depends on some Xorg utilities. To install them:\n- Debian/Ubuntu: apt install x11-utils\n- Fedora/RHEL: dnf install xorg-x11-utils\n- Arch: pacman -S xorg-xprop\n\n* Since version 2 applications on wayland with client side decorations are supported using CSS."
-}

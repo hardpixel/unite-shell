@@ -1,0 +1,108 @@
+#panel .panel-button {
+  -natural-hpadding: 8px;
+  -minimum-hpadding: 6px;
+}
+
+#panel .panel-button .system-status-icon {
+  margin: 0;
+  padding: 0;
+}
+
+#panel .panel-button .panel-status-menu-box {
+  margin: 0;
+  padding: 0;
+  spacing: 0;
+}
+
+#panel .panel-button .panel-status-indicators-box {
+  spacing: 10px;
+}
+
+#panel .panel-button .panel-status-indicators-box .popup-menu-arrow {
+  width: 12px;
+  height: 12px;
+}
+
+#panel .popup-menu-arrow,
+#panel .app-menu-icon {
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+#panel .window-buttons-box {
+  spacing: 2px;
+}
+
+#panel .window-button {
+  width: 24px;
+  height: 20px;
+}
+
+#panel .window-button.close {
+  background-image: url("assets/close.svg");
+}
+
+#panel .window-button.close:hover,
+#panel .window-button.close:active,
+#panel .window-button.close:focus {
+  background-image: url("assets/close-active.svg");
+}
+
+#panel .window-button.minimize {
+  background-image: url("assets/minimize.svg");
+}
+
+#panel .window-button.minimize:hover,
+#panel .window-button.minimize:active,
+#panel .window-button.minimize:focus {
+  background-image: url("assets/minimize-active.svg");
+}
+
+#panel .window-button.maximize {
+  background-image: url("assets/maximize.svg");
+}
+
+#panel .window-button.maximize:hover,
+#panel .window-button.maximize:active,
+#panel .window-button.maximize:focus {
+  background-image: url("assets/maximize-active.svg");
+}
+
+#panel .tray-buttons-box {
+  spacing: 10px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+#panel #appMenu {
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
+#panel #appMenu .popup-menu-arrow {
+  margin-left: 5px;
+}
+
+#panel #appMenu .app-menu-icon > StIcon {
+  icon-shadow: none;
+}
+
+#panel #panelActivities {
+  width: 55px;
+}
+
+#panel #panelActivities > * {
+  background-color: transparent;
+  color: transparent;
+  background-image: url("assets/activities.svg");
+  background-position: center;
+  background-size: contain;
+}
+
+#panel #panelActivities:hover > *,
+#panel #panelActivities:active > *,
+#panel #panelActivities:focus > * {
+  background-image: url("assets/activities-active.svg");
+}
