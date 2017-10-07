@@ -59,6 +59,8 @@ const WindowButtons = new Lang.Class({
       this._buttonsActor = new St.Bin();
       this._buttonsBox   = new St.BoxLayout({ style_class: 'window-buttons-box' });
 
+      this._buttonsActor._windowButtons = true;
+
       this._buttonsActor.add_actor(this._buttonsBox);
       this._buttonsActor.hide();
 
