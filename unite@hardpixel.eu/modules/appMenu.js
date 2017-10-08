@@ -53,7 +53,7 @@ var AppMenu = new Lang.Class({
     if (showMenu) {
       if (this._appMenu._nonSensitive) {
         this._appMenu.setSensitive(true);
-        delete this._appMenu._nonSensitive;
+        this._appMenu._nonSensitive = false;
       }
     } else {
       if (!this._appMenu._visible && this._appMenu._targetApp) {
@@ -112,6 +112,9 @@ var AppMenu = new Lang.Class({
       global.window_manager.disconnect(handler);
     });
 
-    Mainloop.idle_add(Lang.bind(this, this._showMenu));
+    Mainloop.idle_add(Lang.bind(this, Lang.bind(this, function () {
+      this._showMenu();
+      delete this._appMenu._nonSensitive;
+    })));
   }
 });
