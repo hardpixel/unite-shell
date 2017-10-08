@@ -78,6 +78,19 @@ function overviewSignalIDs() {
   return signals;
 }
 
+function isMaximized(win) {
+  let check = false;
+
+  if (win) {
+    let primaryScreen = win.is_on_primary_monitor();
+    let fullMaximized = win.get_maximized() == Meta.MaximizeFlags.BOTH;
+
+    check = primaryScreen && fullMaximized;
+  }
+
+  return check;
+}
+
 function getVersion() {
   let version = Config.PACKAGE_VERSION.match(/\d+.\d+/);
   return parseFloat(version);

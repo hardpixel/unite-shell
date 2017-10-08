@@ -130,8 +130,8 @@ var WindowButtons = new Lang.Class({
     if (this._buttonsActor) {
       let visible = AppMenu._visible;
 
-      if (!Main.overview.visible && this._activeWindow) {
-        visible = this._activeWindow.get_maximized() === MAXIMIZED;
+      if (!Main.overview.visible) {
+        visible = Helpers.isMaximized(this._activeWindow);
       }
 
       if (visible) {
