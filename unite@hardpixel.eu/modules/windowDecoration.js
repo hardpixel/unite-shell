@@ -62,18 +62,20 @@ var WindowDecoration = new Lang.Class({
 
   _showTitlebar: function (win) {
     if (win._decorationOFF && win._windowXID) {
+      win._decorationOFF = false;
+
       this._toggleTitlebar(win._windowXID, false);
       this._toggleMaximize(win);
-
-      win._windowXID     = null;
-      win._decorationOFF = false;
     }
   },
 
   _hideTitlebar: function (win) {
     if (win && win.decorated) {
-      if (!win._decorationOFF && !win._windowXID) {
-        win._windowXID     = Helpers.getXWindow(win);
+      if (!win._windowXID) {
+        win._windowXID = Helpers.getXWindow(win);
+      }
+
+      if (win._windowXID && !win._decorationOFF) {
         win._decorationOFF = true;
 
         this._toggleTitlebar(win._windowXID, true);
