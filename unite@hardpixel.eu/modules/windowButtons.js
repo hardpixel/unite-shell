@@ -110,7 +110,7 @@ var WindowButtons = new Lang.Class({
 
   _maximizeWindow: function () {
     if (this._activeWindow) {
-      if (this._activeWindow.get_maximized() == MAXIMIZED) {
+      if (this._activeWindow.get_maximized() === MAXIMIZED) {
         this._activeWindow.unmaximize(MAXIMIZED);
       } else {
         this._activeWindow.maximize(MAXIMIZED);
