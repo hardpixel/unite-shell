@@ -3,7 +3,7 @@ const Main    = imports.ui.main;
 const Clutter = imports.gi.Clutter;
 
 var MessageTray = new Lang.Class({
-  Name: 'MessageTray',
+  Name: 'Unite.MessageTray',
 
   _init: function() {
     this._container = Main.messageTray._bannerBin;

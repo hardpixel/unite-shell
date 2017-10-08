@@ -12,7 +12,7 @@ const WindowDecoration = Unite.imports.modules.windowDecoration.WindowDecoration
 const TopIcons         = Unite.imports.modules.topIcons.TopIcons;
 
 var UniteShell = new Lang.Class({
-  Name: 'UniteShell',
+  Name: 'Unite',
 
   _init: function() {
     this._activateWindow   = new ActivateWindow();

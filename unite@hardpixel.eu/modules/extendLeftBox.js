@@ -4,7 +4,7 @@ const Main    = imports.ui.main;
 const Panel   = Main.panel;
 
 var ExtendLeftBox = new Lang.Class({
-  Name: 'ExtendLeftBox',
+  Name: 'Unite.ExtendLeftBox',
 
   _init: function() {
     this._handlerID = Panel.actor.connect('allocate', Lang.bind(this, this._extend));

@@ -8,7 +8,7 @@ const PanelMenu = imports.ui.panelMenu;
 const Panel     = Main.panel;
 
 var TopIcons = new Lang.Class({
-  Name: 'TopIcons',
+  Name: 'Unite.TopIcons',
   _handlerIDs: [],
   _icons: [],
 

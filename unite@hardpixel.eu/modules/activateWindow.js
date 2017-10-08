@@ -2,7 +2,7 @@ const Lang = imports.lang;
 const Main = imports.ui.main;
 
 var ActivateWindow = new Lang.Class({
-  Name: 'ActivateWindow',
+  Name: 'Unite.ActivateWindow',
 
   _init: function() {
     this._handlerID = global.display.connect(

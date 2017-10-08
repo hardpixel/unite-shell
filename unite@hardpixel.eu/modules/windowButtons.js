@@ -11,7 +11,7 @@ const Helpers        = Unite.imports.helpers;
 const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
 var WindowButtons = new Lang.Class({
-  Name: 'WindowButtons',
+  Name: 'Unite.WindowButtons',
   _wmHandlerIDs: [],
   _ovHandlerIDs: [],
 

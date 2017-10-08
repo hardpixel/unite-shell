@@ -2,7 +2,7 @@ const Lang = imports.lang;
 const Main = imports.ui.main;
 
 var ActivitiesButton = new Lang.Class({
-  Name: 'ActivitiesButton',
+  Name: 'Unite.ActivitiesButton',
 
   _init: function() {
     this._activities = Main.panel.statusArea.activities;

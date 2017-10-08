@@ -12,7 +12,7 @@ const Helpers        = Unite.imports.helpers;
 const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
 var AppMenu = new Lang.Class({
-  Name: 'AppMenu',
+  Name: 'Unite.AppMenu',
   _wmHandlerIDs: [],
 
   _init: function() {

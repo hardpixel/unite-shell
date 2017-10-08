@@ -9,7 +9,7 @@ const Helpers        = Unite.imports.helpers;
 const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
 var WindowDecoration = new Lang.Class({
-  Name: 'WindowDecoration',
+  Name: 'Unite.WindowDecoration',
 
   _init: function() {
     this._buttonsPosition = Helpers.getWindowButtons('position');
