@@ -13,6 +13,8 @@ Unite is a GNOME Shell extension which makes a few layout tweaks to the top pane
 * Hides window controls on maximized windows with headerbars.
 * Moves the date to the right, fixes icons spacing and removes dropdown arrows.
 * Moves legacy tray icons to the top panel.
+* Moves notifications to the right.
+* Hides activities button.
 
 ### Wayland
 Since version `2` applications on wayland with client side decorations are supported using CSS.
