@@ -62,7 +62,7 @@ var WindowDecoration = new Lang.Class({
 
   _showTitlebar: function (win) {
     if (win._decorationOFF && win._windowXID) {
-      win._decorationOFF = false;
+      delete win._decorationOFF;
 
       this._toggleTitlebar(win._windowXID, false);
       this._toggleMaximize(win);
@@ -128,7 +128,11 @@ var WindowDecoration = new Lang.Class({
 
   _decorateWindows: function () {
     let windows = Helpers.getAllWindows();
-    windows.forEach(Lang.bind(this, this._showTitlebar));
+
+    windows.forEach(Lang.bind(this, Lang.bind(this, function (win) {
+      this._showTitlebar(win);
+      delete win._windowXID;
+    })));
   },
 
   destroy: function() {

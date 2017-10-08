@@ -53,7 +53,7 @@ var AppMenu = new Lang.Class({
     if (showMenu) {
       if (this._appMenu._nonSensitive) {
         this._appMenu.setSensitive(true);
-        this._appMenu._nonSensitive = false;
+        delete this._appMenu._nonSensitive;
       }
     } else {
       if (!this._appMenu._visible && this._appMenu._targetApp) {
@@ -100,7 +100,7 @@ var AppMenu = new Lang.Class({
     windows.forEach(function(win) {
       if (win._updateTitleID) {
         win.disconnect(win._updateTitleID);
-        win._updateTitleID = null;
+        delete win._updateTitleID;
       }
     });
 
