@@ -1,22 +1,15 @@
-.csd.maximized headerbar:not(.default-decoration),
-.csd.maximized .titlebar:not(.default-decoration) {
+.maximized headerbar,
+.maximized .titlebar {
   padding-right: 0;
 }
 
-.csd.maximized headerbar:not(.default-decoration) ~ headerbar,
-.csd.maximized headerbar:not(.default-decoration) ~ .titlebar,
-.csd.maximized .titlebar:not(.default-decoration) ~ headerbar,
-.csd.maximized .titlebar:not(.default-decoration) ~ .titlebar {
-  padding-left: 6px;
-}
-
-.csd.maximized headerbar:not(.default-decoration) > box.right,
-.csd.maximized .titlebar:not(.default-decoration) > box.right {
+.maximized headerbar > box.right,
+.maximized .titlebar > box.right {
   margin: 0 -200px 0 0;
   opacity: 0;
 }
 
-.csd.maximized .titlebar.default-decoration {
+.maximized .titlebar.default-decoration {
   margin: -200px 0 0;
   opacity: 0;
 }
