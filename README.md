@@ -20,7 +20,7 @@ Unite is a GNOME Shell extension which makes a few layout tweaks to the top pane
 Since version `2` applications on wayland with client side decorations are supported using CSS.
 
 ## Install
-Make sure you have installed `xorg-xprop` and copy folder `unite@hardpixel.eu` into `~/.local/share/gnome-shell/extensions`. To get the complete Ubuntu Unity layout you can combine it with [Dash to Dock](https://github.com/micheleg/dash-to-dock) extension.
+Make sure you have installed `xorg-xprop`, download the latest [release](https://github.com/hardpixel/unite-shell/releases) and extract it into `~/.local/share/gnome-shell/extensions`. To get the complete Ubuntu Unity layout you can combine it with [Dash to Dock](https://github.com/micheleg/dash-to-dock) extension.
 
 * Debian/Ubuntu: `apt install x11-utils`
 * Fedora/RHEL: `dnf install xorg-x11-utils`
