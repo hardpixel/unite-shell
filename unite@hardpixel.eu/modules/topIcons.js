@@ -1,3 +1,4 @@
+const Clutter   = imports.gi.Clutter;
 const Main      = imports.ui.main;
 const Shell     = imports.gi.Shell;
 const Mainloop  = imports.mainloop;
@@ -128,15 +129,16 @@ var TopIcons = new Lang.Class({
   _addTrayIcon: function (o, icon, role, delay=1000) {
     this._icons.push(icon);
 
-    let iconContainer = new St.Button({ child: icon, visible: false });
+    let buttonMask    = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE;
+    let iconContainer = new St.Button({ child: icon, visible: false, button_mask: buttonMask });
 
     icon.connect('destroy', function() {
       icon.clear_effects();
       iconContainer.destroy();
     });
 
-    iconContainer.connect('button-release-event', function (actor, evt) {
-      icon.click(evt);
+    iconContainer.connect('clicked', function () {
+      icon.click(Clutter.get_current_event());
     });
 
     Mainloop.timeout_add(delay, Lang.bind(this, function () {
