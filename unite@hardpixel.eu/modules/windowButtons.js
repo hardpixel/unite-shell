@@ -60,7 +60,7 @@ var WindowButtons = new Lang.Class({
         let button = new St.Button({ style_class: action  + ' window-button', track_hover: true });
 
         button._windowAction = action;
-        button.connect('button-release-event', Lang.bind(this, this._onButtonClick));
+        button.connect('clicked', Lang.bind(this, this._onButtonClick));
 
         this._buttonsBox.add(button);
       }));
@@ -87,18 +87,16 @@ var WindowButtons = new Lang.Class({
   },
 
   _onButtonClick: function (actor, evt) {
-    if (evt.get_button() === 1) {
-      switch (actor._windowAction) {
-        case 'minimize':
-          this._minimizeWindow();
-          break;
-        case 'maximize':
-          this._maximizeWindow();
-          break;
-        case 'close':
-          this._closeWindow();
-          break;
-      }
+    switch (actor._windowAction) {
+      case 'minimize':
+        this._minimizeWindow();
+        break;
+      case 'maximize':
+        this._maximizeWindow();
+        break;
+      case 'close':
+        this._closeWindow();
+        break;
     }
   },
 
