@@ -130,7 +130,7 @@ var TopIcons = new Lang.Class({
     this._icons.push(icon);
 
     let buttonMask    = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE;
-    let iconContainer = new St.Button({ child: icon, visible: false, button_mask: buttonMask });
+    let iconContainer = new St.Button({ child: icon, button_mask: buttonMask });
 
     icon.connect('destroy', function() {
       icon.clear_effects();
@@ -142,7 +142,6 @@ var TopIcons = new Lang.Class({
     });
 
     Mainloop.timeout_add(delay, Lang.bind(this, function () {
-      iconContainer.visible              = true;
       this._iconsContainer.actor.visible = true;
     }));
 
