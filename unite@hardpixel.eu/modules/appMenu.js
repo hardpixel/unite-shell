@@ -8,6 +8,7 @@ const AppSystem      = Shell.AppSystem.get_default()
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
 const Helpers        = Unite.imports.helpers;
+const Convenience    = Unite.imports.convenience;
 
 var AppMenu = new Lang.Class({
   Name: 'Unite.AppMenu',
@@ -16,11 +17,17 @@ var AppMenu = new Lang.Class({
   _init: function() {
     this._appMenu     = Main.panel.statusArea.appMenu;
     this._gtkSettings = Gtk.Settings.get_default();
+    this._settings    = Convenience.getSettings();
 
-    Mainloop.idle_add(Lang.bind(this, this._showMenu));
-    Mainloop.idle_add(Lang.bind(this, this._updateMenu));
+    this._toggle();
+    this._connectSettings();
+  },
 
-    this._connectSignals();
+  _connectSettings: function() {
+    this._settings.connect(
+      'changed::show-window-title',
+      Lang.bind(this, this._toggle)
+    );
   },
 
   _connectSignals: function () {
@@ -43,6 +50,38 @@ var AppMenu = new Lang.Class({
     this._wmHandlerIDs.push(global.window_manager.connect(
       'size-change', Lang.bind(this, this._updateMenu)
     ));
+  },
+
+  _disconnectSignals: function() {
+    let windows = Helpers.getAllWindows();
+
+    windows.forEach(function(win) {
+      if (win._updateTitleID) {
+        win.disconnect(win._updateTitleID);
+        delete win._updateTitleID;
+      }
+    });
+
+    if (this._dsHandlerID) {
+      global.display.disconnect(this._dsHandlerID);
+      delete this._dsHandlerID;
+    }
+
+    if (this._asHandlerID) {
+      AppSystem.disconnect(this._asHandlerID);
+      delete this._asHandlerID;
+    }
+
+    if (this._wtHandlerID) {
+      WindowTracker.disconnect(this._wtHandlerID);
+      delete this._wtHandlerID;
+    }
+
+    this._wmHandlerIDs.forEach(function (handler) {
+      global.window_manager.disconnect(handler);
+    });
+
+    this._wmHandlerIDs = [];
   },
 
   _showMenu: function () {
@@ -92,27 +131,24 @@ var AppMenu = new Lang.Class({
     }
   },
 
+  _toggle: function() {
+    this._enabled = this._settings.get_boolean('show-window-title');
+    this._enabled ? this._create() : this.destroy();
+  },
+
+  _create: function() {
+    Mainloop.idle_add(Lang.bind(this, this._showMenu));
+    Mainloop.idle_add(Lang.bind(this, this._updateMenu));
+
+    this._connectSignals();
+  },
+
   destroy: function() {
-    let windows = Helpers.getAllWindows();
-
-    windows.forEach(function(win) {
-      if (win._updateTitleID) {
-        win.disconnect(win._updateTitleID);
-        delete win._updateTitleID;
-      }
-    });
-
-    global.display.disconnect(this._dsHandlerID);
-    AppSystem.disconnect(this._asHandlerID);
-    WindowTracker.disconnect(this._wtHandlerID);
-
-    this._wmHandlerIDs.forEach(function (handler) {
-      global.window_manager.disconnect(handler);
-    });
-
     Mainloop.idle_add(Lang.bind(this, Lang.bind(this, function () {
       this._showMenu();
       delete this._appMenu._nonSensitive;
     })));
+
+    this._disconnectSignals();
   }
 });
