@@ -1,12 +1,15 @@
-const Clutter   = imports.gi.Clutter;
-const Main      = imports.ui.main;
-const Shell     = imports.gi.Shell;
-const Mainloop  = imports.mainloop;
-const St        = imports.gi.St;
-const System    = imports.system;
-const Lang      = imports.lang;
-const PanelMenu = imports.ui.panelMenu;
-const Panel     = Main.panel;
+const Clutter        = imports.gi.Clutter;
+const Main           = imports.ui.main;
+const Shell          = imports.gi.Shell;
+const Mainloop       = imports.mainloop;
+const St             = imports.gi.St;
+const System         = imports.system;
+const Lang           = imports.lang;
+const PanelMenu      = imports.ui.panelMenu;
+const Panel          = Main.panel;
+const ExtensionUtils = imports.misc.extensionUtils;
+const Unite          = ExtensionUtils.getCurrentExtension();
+const Convenience    = Unite.imports.convenience;
 
 var TopIcons = new Lang.Class({
   Name: 'Unite.TopIcons',
@@ -14,14 +17,18 @@ var TopIcons = new Lang.Class({
   _icons: [],
 
   _init: function() {
-    this._tray = Main.legacyTray;
+    this._tray     = Main.legacyTray;
+    this._settings = Convenience.getSettings();
 
-    if (this._tray) {
-      Mainloop.idle_add(Lang.bind(this, this._moveToPanel));
-      this._tray.actor.hide();
-    } else {
-      Mainloop.idle_add(Lang.bind(this, this._createTray));
-    }
+    this._updateTray();
+    this._connectSettings();
+  },
+
+  _connectSettings: function() {
+    this._settings.connect(
+      'changed::show-legacy-tray',
+      Lang.bind(this, this._updateTray)
+    );
   },
 
   _createTray: function () {
@@ -35,6 +42,8 @@ var TopIcons = new Lang.Class({
 
   _destroyTray: function () {
     this._destroyIconsContainer();
+
+    this._tray = null;
     System.gc();
   },
 
@@ -61,10 +70,12 @@ var TopIcons = new Lang.Class({
   _destroyIconsContainer: function () {
     if (this._iconsBoxLayout) {
       this._iconsBoxLayout.destroy();
+      delete this._iconsBoxLayout;
     }
 
     if (this._iconsContainer) {
       this._iconsContainer.actor.destroy();
+      delete this._iconsContainer;
     }
   },
 
@@ -123,6 +134,7 @@ var TopIcons = new Lang.Class({
       this._tray._onTrayIconAdded(this._tray, icon);
     }));
 
+    this._handlerIDs = [];
     this._destroyIconsContainer();
   },
 
@@ -167,6 +179,25 @@ var TopIcons = new Lang.Class({
 
     if (this._icons.length === 0) {
       this._iconsContainer.actor.visible = false;
+    }
+  },
+
+  _enableTray: function() {
+    if (Main.legacyTray) {
+      Mainloop.idle_add(Lang.bind(this, this._moveToPanel));
+      this._tray.actor.hide();
+    } else {
+      Mainloop.idle_add(Lang.bind(this, this._createTray));
+    }
+  },
+
+  _updateTray: function() {
+    this._enabled = this._settings.get_boolean('show-legacy-tray');
+
+    if (this._enabled) {
+      this._enableTray();
+    } else {
+      this.destroy();
     }
   },
 
