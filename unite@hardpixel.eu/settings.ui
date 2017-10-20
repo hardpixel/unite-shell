@@ -249,8 +249,8 @@
     </child>
     <child>
       <object class="GtkBox">
-        <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="no_show_all">True</property>
         <property name="spacing">50</property>
         <child>
           <object class="GtkLabel">
