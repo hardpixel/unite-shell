@@ -22,25 +22,20 @@ var ActivitiesButton = new Lang.Class({
     );
   },
 
-  _showButton: function() {
-    this._activities.actor.show();
-  },
-
-  _hideButton: function() {
-    this._activities.actor.hide();
+  _toggleButton: function(hide) {
+    if (hide) {
+      this._activities.actor.hide();
+    } else {
+      this._activities.actor.show();
+    }
   },
 
   _updateVisibility: function() {
     this._hidden = this._settings.get_boolean('hide-activities-button');
-
-    if (this._hidden) {
-      this._hideButton();
-    } else {
-      this._showButton();
-    }
+    this._toggleButton(this._hidden);
   },
 
   destroy: function() {
-    this._showButton();
+    this._toggleButton(false);
   }
 });
