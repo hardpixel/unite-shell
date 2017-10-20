@@ -1,12 +1,29 @@
-const Clutter = imports.gi.Clutter;
-const Lang    = imports.lang;
-const Main    = imports.ui.main;
-const Panel   = Main.panel;
+const Clutter        = imports.gi.Clutter;
+const Lang           = imports.lang;
+const Main           = imports.ui.main;
+const Panel          = Main.panel;
+const ExtensionUtils = imports.misc.extensionUtils;
+const Unite          = ExtensionUtils.getCurrentExtension();
+const Convenience    = Unite.imports.convenience;
 
 var ExtendLeftBox = new Lang.Class({
   Name: 'Unite.ExtendLeftBox',
 
   _init: function() {
+    this._settings = Convenience.getSettings();
+
+    this._update();
+    this._connectSettings();
+  },
+
+  _connectSettings: function() {
+    this._settings.connect(
+      'changed::extend-left-box',
+      Lang.bind(this, this._update)
+    );
+  },
+
+  _enable: function() {
     this._handlerID = Panel.actor.connect('allocate', Lang.bind(this, this._extend));
   },
 
@@ -61,7 +78,21 @@ var ExtendLeftBox = new Lang.Class({
     Panel._rightBox.allocate(childBox, flags);
   },
 
+  _update: function() {
+    this._enabled = this._settings.get_boolean('extend-left-box');
+
+    if (this._enabled) {
+      this._enable();
+    } else {
+      this.destroy();
+    }
+
+    Panel.actor.queue_relayout();
+  },
+
   destroy: function() {
-    Panel.actor.disconnect(this._handlerID);
+    if (this._handlerID) {
+      Panel.actor.disconnect(this._handlerID);
+    }
   }
 });
