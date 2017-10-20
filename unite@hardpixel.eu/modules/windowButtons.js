@@ -8,6 +8,7 @@ const Lang           = imports.lang;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
 const Helpers        = Unite.imports.helpers;
+const Convenience    = Unite.imports.convenience;
 const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
 var WindowButtons = new Lang.Class({
@@ -16,12 +17,17 @@ var WindowButtons = new Lang.Class({
   _ovHandlerIDs: [],
 
   _init: function() {
-    [this._position, this._buttons] = Helpers.getWindowButtons();
+    this._settings = Convenience.getSettings();
 
-    Mainloop.idle_add(Lang.bind(this, this._createButtons));
-    Mainloop.idle_add(Lang.bind(this, this._updateVisibility));
+    this._toggle();
+    this._connectSettings();
+  },
 
-    this._connectSignals();
+  _connectSettings: function() {
+    this._settings.connect(
+      'changed::show-window-buttons',
+      Lang.bind(this, this._toggle)
+    );
   },
 
   _connectSignals: function () {
@@ -44,6 +50,28 @@ var WindowButtons = new Lang.Class({
     this._wmHandlerIDs.push(global.window_manager.connect(
       'size-change', Lang.bind(this, this._updateVisibility)
     ));
+  },
+
+  _disconnectSignals: function() {
+    let handlers = Helpers.overviewSignalIDs();
+
+    this._ovHandlerIDs.forEach(function (handler) {
+      if (handlers.indexOf(handler) > -1) {
+        Main.overview.disconnect(handler);
+      }
+    });
+
+    this._wmHandlerIDs.forEach(function (handler) {
+      global.window_manager.disconnect(handler);
+    });
+
+    if (this._dsHandlerID) {
+      global.display.disconnect(this._dsHandlerID);
+      delete this._dsHandlerID;
+    }
+
+    this._ovHandlerIDs = [];
+    this._wmHandlerIDs = [];
   },
 
   _createButtons: function () {
@@ -140,21 +168,22 @@ var WindowButtons = new Lang.Class({
     }
   },
 
+  _toggle: function() {
+    this._enabled = this._settings.get_boolean('show-window-buttons');
+    this._enabled ? this._create() : this.destroy();
+  },
+
+  _create: function() {
+    [this._position, this._buttons] = Helpers.getWindowButtons();
+
+    Mainloop.idle_add(Lang.bind(this, this._createButtons));
+    Mainloop.idle_add(Lang.bind(this, this._updateVisibility));
+
+    this._connectSignals();
+  },
+
   destroy: function() {
-    let handlers = Helpers.overviewSignalIDs();
-
-    this._ovHandlerIDs.forEach(function (handler) {
-      if (handlers.indexOf(handler) > -1) {
-        Main.overview.disconnect(handler);
-      }
-    });
-
-    this._wmHandlerIDs.forEach(function (handler) {
-      global.window_manager.disconnect(handler);
-    });
-
-    global.display.disconnect(this._dsHandlerID);
-
     Mainloop.idle_add(Lang.bind(this, this._destroyButtons));
+    this._disconnectSignals();
   }
 });
