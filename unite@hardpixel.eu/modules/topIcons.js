@@ -20,14 +20,13 @@ var TopIcons = new Lang.Class({
     this._tray     = Main.legacyTray;
     this._settings = Convenience.getSettings();
 
-    this._updateTray();
+    this._toggle();
     this._connectSettings();
   },
 
   _connectSettings: function() {
     this._settings.connect(
-      'changed::show-legacy-tray',
-      Lang.bind(this, this._updateTray)
+      'changed::show-legacy-tray', Lang.bind(this, this._toggle)
     );
   },
 
@@ -41,6 +40,7 @@ var TopIcons = new Lang.Class({
   },
 
   _destroyTray: function () {
+    this._icons = [];
     this._destroyIconsContainer();
 
     this._tray = null;
@@ -134,7 +134,9 @@ var TopIcons = new Lang.Class({
       this._tray._onTrayIconAdded(this._tray, icon);
     }));
 
+    this._icons      = [];
     this._handlerIDs = [];
+
     this._destroyIconsContainer();
   },
 
@@ -182,22 +184,17 @@ var TopIcons = new Lang.Class({
     }
   },
 
-  _enableTray: function() {
+  _toggle: function() {
+    this._enabled = this._settings.get_boolean('show-legacy-tray');
+    this._enabled ? this._create() : this.destroy();
+  },
+
+  _create: function() {
     if (Main.legacyTray) {
       Mainloop.idle_add(Lang.bind(this, this._moveToPanel));
       this._tray.actor.hide();
     } else {
       Mainloop.idle_add(Lang.bind(this, this._createTray));
-    }
-  },
-
-  _updateTray: function() {
-    this._enabled = this._settings.get_boolean('show-legacy-tray');
-
-    if (this._enabled) {
-      this._enableTray();
-    } else {
-      this.destroy();
     }
   },
 
