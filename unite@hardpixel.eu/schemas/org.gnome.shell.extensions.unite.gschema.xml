@@ -10,9 +10,10 @@
   </enum>
 
   <enum id="org.gnome.shell.extensions.unite.hideTitlebars">
-    <value value="0" nick="both" />
-    <value value="1" nick="maximized" />
-    <value value="2" nick="tiled" />
+    <value value="0" nick="none" />
+    <value value="1" nick="tiled" />
+    <value value="2" nick="maximized" />
+    <value value="3" nick="both" />
   </enum>
 
   <enum id="org.gnome.shell.extensions.unite.notificationsPosition">
