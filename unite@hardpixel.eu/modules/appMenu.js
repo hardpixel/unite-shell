@@ -15,9 +15,8 @@ var AppMenu = new Lang.Class({
   _wmHandlerIDs: [],
 
   _init: function() {
-    this._appMenu     = Main.panel.statusArea.appMenu;
-    this._gtkSettings = Gtk.Settings.get_default();
-    this._settings    = Convenience.getSettings();
+    this._appMenu  = Main.panel.statusArea.appMenu;
+    this._settings = Convenience.getSettings();
 
     this._toggle();
     this._connectSettings();
@@ -25,8 +24,7 @@ var AppMenu = new Lang.Class({
 
   _connectSettings: function() {
     this._settings.connect(
-      'changed::show-window-title',
-      Lang.bind(this, this._toggle)
+      'changed::show-window-title', Lang.bind(this, this._toggle)
     );
   },
 
@@ -85,7 +83,8 @@ var AppMenu = new Lang.Class({
   },
 
   _showMenu: function () {
-    let showMenu = this._gtkSettings.gtk_shell_shows_app_menu;
+    let settings = Gtk.Settings.get_default();
+    let showMenu = settings.gtk_shell_shows_app_menu;
 
     if (showMenu) {
       if (this._appMenu._nonSensitive) {
