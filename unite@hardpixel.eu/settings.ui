@@ -179,7 +179,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="valign">center</property>
-            <property name="label" translatable="yes">Show active window title in app menu</property>
+            <property name="label" translatable="yes">Show window title in app menu</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -218,7 +218,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="valign">center</property>
-            <property name="label" translatable="yes">Show active window buttons in top bar</property>
+            <property name="label" translatable="yes">Show window buttons in top bar</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -270,7 +270,7 @@
             <property name="width_request">150</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="active">0</property>
+            <property name="active_id">0</property>
             <items>
               <item id="0" translatable="yes">Default Dark</item>
               <item id="1" translatable="yes">Default Light</item>
@@ -305,7 +305,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="valign">center</property>
-            <property name="label" translatable="yes">Hide titlebar for windows</property>
+            <property name="label" translatable="yes">Hide maximized or tiled window titlebars</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -318,11 +318,12 @@
             <property name="width_request">150</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="active">1</property>
+            <property name="active_id">2</property>
             <items>
-              <item id="0" translatable="yes">Both</item>
-              <item id="1" translatable="yes">Maximized</item>
-              <item id="2" translatable="yes">Tiled</item>
+              <item id="0" translatable="yes">None</item>
+              <item id="1" translatable="yes">Tiled</item>
+              <item id="2" translatable="yes">Maximized</item>
+              <item id="3" translatable="yes">Both</item>
             </items>
           </object>
           <packing>
@@ -362,7 +363,7 @@
             <property name="width_request">150</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="active">2</property>
+            <property name="active_id">2</property>
             <items>
               <item id="0" translatable="yes">Center</item>
               <item id="1" translatable="yes">Left</item>
