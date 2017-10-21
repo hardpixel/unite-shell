@@ -25,8 +25,7 @@ var WindowButtons = new Lang.Class({
 
   _connectSettings: function() {
     this._settings.connect(
-      'changed::show-window-buttons',
-      Lang.bind(this, this._toggle)
+      'changed::show-window-buttons', Lang.bind(this, this._toggle)
     );
   },
 
@@ -107,47 +106,47 @@ var WindowButtons = new Lang.Class({
   _destroyButtons: function () {
     if (this._buttonsActor) {
       this._buttonsActor.destroy();
+      delete this._buttonsActor;
     }
 
     if (this._buttonsBox) {
       this._buttonsBox.destroy();
+      delete this._buttonsBox;
     }
   },
 
   _onButtonClick: function (actor, evt) {
-    switch (actor._windowAction) {
-      case 'minimize':
-        this._minimizeWindow();
-        break;
-      case 'maximize':
-        this._maximizeWindow();
-        break;
-      case 'close':
-        this._closeWindow();
-        break;
+    if (this._activeWindow) {
+      switch (actor._windowAction) {
+        case 'minimize':
+          this._minimizeWindow();
+          break;
+        case 'maximize':
+          this._maximizeWindow();
+          break;
+        case 'close':
+          this._closeWindow();
+          break;
+      }
     }
   },
 
   _minimizeWindow: function () {
-    if (this._activeWindow && !this._activeWindow.minimized) {
+    if (!this._activeWindow.minimized) {
       this._activeWindow.minimize();
     }
   },
 
   _maximizeWindow: function () {
-    if (this._activeWindow) {
-      if (this._activeWindow.get_maximized() === MAXIMIZED) {
-        this._activeWindow.unmaximize(MAXIMIZED);
-      } else {
-        this._activeWindow.maximize(MAXIMIZED);
-      }
+    if (this._activeWindow.get_maximized() === MAXIMIZED) {
+      this._activeWindow.unmaximize(MAXIMIZED);
+    } else {
+      this._activeWindow.maximize(MAXIMIZED);
     }
   },
 
   _closeWindow: function () {
-    if (this._activeWindow) {
-      this._activeWindow.delete(global.get_current_time());
-    }
+    this._activeWindow.delete(global.get_current_time());
   },
 
   _updateVisibility: function () {
