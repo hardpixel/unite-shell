@@ -12,22 +12,28 @@ var ExtendLeftBox = new Lang.Class({
   _init: function() {
     this._settings = Convenience.getSettings();
 
-    this._update();
+    this._toggle();
     this._connectSettings();
   },
 
   _connectSettings: function() {
     this._settings.connect(
-      'changed::extend-left-box',
-      Lang.bind(this, this._update)
+      'changed::extend-left-box', Lang.bind(this, this._toggle)
     );
   },
 
-  _enable: function() {
-    this._handlerID = Panel.actor.connect('allocate', Lang.bind(this, this._extend));
+  _connnectSignals: function() {
+    this._handlerID = Panel.actor.connect('allocate', Lang.bind(this, this._extendBox));
   },
 
-  _extend: function (actor, box, flags) {
+  _disconnectSignals: function() {
+    if (this._handlerID) {
+      Panel.actor.disconnect(this._handlerID);
+      delete this._handlerID;
+    }
+  },
+
+  _extendBox: function (actor, box, flags) {
     let allocWidth  = box.x2 - box.x1;
     let allocHeight = box.y2 - box.y1;
 
@@ -78,21 +84,18 @@ var ExtendLeftBox = new Lang.Class({
     Panel._rightBox.allocate(childBox, flags);
   },
 
-  _update: function() {
+  _toggle: function() {
     this._enabled = this._settings.get_boolean('extend-left-box');
+    this._enabled ? this._create() : this.destroy();
+  },
 
-    if (this._enabled) {
-      this._enable();
-    } else {
-      this.destroy();
-    }
-
+  _create: function() {
+    this._connnectSignals();
     Panel.actor.queue_relayout();
   },
 
   destroy: function() {
-    if (this._handlerID) {
-      Panel.actor.disconnect(this._handlerID);
-    }
+    this._disconnectSignals();
+    Panel.actor.queue_relayout();
   }
 });
