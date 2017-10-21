@@ -10,40 +10,43 @@ var ActivateWindow = new Lang.Class({
   _init: function() {
     this._settings = Convenience.getSettings();
 
-    this._update();
+    this._toggle();
     this._connectSettings();
   },
 
   _connectSettings: function() {
     this._settings.connect(
-      'changed::autofocus-windows',
-      Lang.bind(this, this._update)
+      'changed::autofocus-windows', Lang.bind(this, this._toggle)
     );
   },
 
-  _enable: function() {
+  _connectSignals: function() {
     this._handlerID = global.display.connect(
-      'window-demands-attention', Lang.bind(this, this._activate)
+      'window-demands-attention', Lang.bind(this, this._activateWindow)
     );
   },
 
-  _activate: function (actor, win) {
+  _disconnectSignals: function() {
+    if (this._handlerID) {
+      global.display.disconnect(this._handlerID);
+      delete this._handlerID;
+    }
+  },
+
+  _activateWindow: function (actor, win) {
     Main.activateWindow(win);
   },
 
-  _update: function() {
+  _toggle: function() {
     this._enabled = this._settings.get_boolean('autofocus-windows');
+    this._enabled ? this._create() : this.destroy();
+  },
 
-    if (this._enabled) {
-      this._enable();
-    } else {
-      this.destroy();
-    }
+  _create: function() {
+    this._connectSignals();
   },
 
   destroy: function() {
-    if (this._handlerID) {
-      global.display.disconnect(this._handlerID);
-    }
+    this._disconnectSignals();
   }
 });
