@@ -11,14 +11,13 @@ var ActivitiesButton = new Lang.Class({
     this._activities = Main.panel.statusArea.activities;
     this._settings   = Convenience.getSettings();
 
-    this._updateVisibility();
+    this._toggle();
     this._connectSettings();
   },
 
   _connectSettings: function() {
     this._settings.connect(
-      'changed::hide-activities-button',
-      Lang.bind(this, this._updateVisibility)
+      'changed::hide-activities-button', Lang.bind(this, this._toggle)
     );
   },
 
@@ -30,7 +29,7 @@ var ActivitiesButton = new Lang.Class({
     }
   },
 
-  _updateVisibility: function() {
+  _toggle: function() {
     this._hidden = this._settings.get_boolean('hide-activities-button');
     this._toggleButton(this._hidden);
   },
