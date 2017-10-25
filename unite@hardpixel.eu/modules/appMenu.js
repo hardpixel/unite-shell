@@ -131,8 +131,8 @@ var AppMenu = new Lang.Class({
   },
 
   _toggle: function() {
-    this._enabled = this._settings.get_boolean('show-window-title');
-    this._enabled ? this._create() : this.destroy();
+    this._enabled = this._settings.get_enum('show-window-title');
+    this._enabled != 0 ? this._create() : this.destroy();
   },
 
   _create: function() {

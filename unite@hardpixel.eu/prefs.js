@@ -35,9 +35,7 @@ var PrefsWidget = new GObject.Class({
       'hide-activities-button',
       'extend-left-box',
       'show-legacy-tray',
-      'autofocus-windows',
-      'show-window-title',
-      'show-window-buttons'
+      'autofocus-windows'
     ];
 
     return items;
@@ -54,8 +52,10 @@ var PrefsWidget = new GObject.Class({
 
   _getEnumerations: function () {
     items = [
-      'window-buttons-theme',
       'hide-window-titlebars',
+      'show-window-title',
+      'show-window-buttons',
+      'window-buttons-theme',
       'notifications-position'
     ];
 

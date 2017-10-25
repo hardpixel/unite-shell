@@ -168,8 +168,8 @@ var WindowButtons = new Lang.Class({
   },
 
   _toggle: function() {
-    this._enabled = this._settings.get_boolean('show-window-buttons');
-    this._enabled ? this._create() : this.destroy();
+    this._enabled = this._settings.get_enum('show-window-buttons');
+    this._enabled != 0 ? this._create() : this.destroy();
   },
 
   _create: function() {
