@@ -16,6 +16,22 @@
     <value value="3" nick="both" />
   </enum>
 
+  <enum id="org.gnome.shell.extensions.unite.showTitle">
+    <value value="0" nick="none" />
+    <value value="1" nick="tiled" />
+    <value value="2" nick="maximized" />
+    <value value="3" nick="both" />
+    <value value="4" nick="always" />
+  </enum>
+
+  <enum id="org.gnome.shell.extensions.unite.showButtons">
+    <value value="0" nick="none" />
+    <value value="1" nick="tiled" />
+    <value value="2" nick="maximized" />
+    <value value="3" nick="both" />
+    <value value="4" nick="always" />
+  </enum>
+
   <enum id="org.gnome.shell.extensions.unite.notificationsPosition">
     <value value="0" nick="center" />
     <value value="1" nick="left" />
@@ -43,13 +59,13 @@
       <summary>Autofocus windows that demand attention.</summary>
     </key>
 
-    <key name="show-window-title" type="b">
-      <default>true</default>
+    <key name="show-window-title" enum="org.gnome.shell.extensions.unite.showTitle">
+      <default>"maximized"</default>
       <summary>Use window title to replace the app-menu label.</summary>
     </key>
 
-    <key name="show-window-buttons" type="b">
-      <default>true</default>
+    <key name="show-window-buttons" enum="org.gnome.shell.extensions.unite.showButtons">
+      <default>"maximized"</default>
       <summary>Active window bottons in top bar.</summary>
     </key>
 
