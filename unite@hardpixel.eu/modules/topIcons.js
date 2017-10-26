@@ -141,7 +141,7 @@ var TopIcons = new Lang.Class({
       iconContainer.destroy();
     });
 
-    iconContainer.connect('clicked', function () {
+    iconContainer.connect('button-release-event', function () {
       icon.click(Clutter.get_current_event());
     });
 
