@@ -34,7 +34,10 @@ var TopIcons = new Lang.Class({
   },
 
   _destroyTray: function () {
+    this._icons = [];
     this._destroyIconsContainer();
+
+    this._tray = null;
     System.gc();
   },
 
@@ -123,6 +126,7 @@ var TopIcons = new Lang.Class({
       this._tray._onTrayIconAdded(this._tray, icon);
     }));
 
+    this._icons = [];
     this._destroyIconsContainer();
   },
 
