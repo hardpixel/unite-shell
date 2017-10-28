@@ -41,9 +41,13 @@ var WindowDecoration = new Lang.Class({
 
   _toggleMaximize: function (win) {
     if (this._needsMaxUnmax && win.get_maximized() === MAXIMIZED) {
-      Mainloop.idle_add(function () {
+      win._doingMaxUnmax = true;
+
+      Mainloop.timeout_add(50, function () {
         win.unmaximize(MAXIMIZED);
         win.maximize(MAXIMIZED);
+
+        win._doingMaxUnmax = false;
       });
     }
   },
@@ -59,7 +63,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _showTitlebar: function (win) {
-    if (win && win._decorationOFF && win._windowXID) {
+    if (win && !win._doingMaxUnmax && win._decorationOFF && win._windowXID) {
       win._decorationOFF = false;
 
       this._toggleTitlebar(win._windowXID, false);
@@ -68,7 +72,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _hideTitlebar: function (win) {
-    if (win && win.decorated) {
+    if (win && !win._doingMaxUnmax && win.decorated) {
       if (!win._windowXID) {
         win._windowXID = Helpers.getXWindow(win);
       }
@@ -132,6 +136,7 @@ var WindowDecoration = new Lang.Class({
 
       delete win._decorationOFF;
       delete win._windowXID;
+      delete win._doingMaxUnmax;
     })));
   },
 
