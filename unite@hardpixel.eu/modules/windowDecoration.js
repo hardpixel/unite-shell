@@ -38,6 +38,19 @@ var WindowDecoration = new Lang.Class({
     );
   },
 
+  _disconnectSignals: function() {
+    if (this._dsHandlerID) {
+      global.display.disconnect(this._dsHandlerID);
+    }
+
+    if (this._wmHandlerID) {
+      global.window_manager.disconnect(this._wmHandlerID);
+    }
+
+    delete this._dsHandlerID;
+    delete this._wmHandlerID;
+  },
+
   _toggleTitlebar: function (id, hide) {
     let prop  = '_GTK_HIDE_TITLEBAR_WHEN_MAXIMIZED';
     let value = hide ? '0x1' : '0x0';
@@ -159,15 +172,9 @@ var WindowDecoration = new Lang.Class({
   },
 
   destroy: function() {
-    if (this._dsHandlerID) {
-      global.display.disconnect(this._dsHandlerID);
-    }
-
-    if (this._wmHandlerID) {
-      global.window_manager.disconnect(this._wmHandlerID);
-    }
-
     Mainloop.idle_add(Lang.bind(this, this._removeUserStyles));
     Mainloop.idle_add(Lang.bind(this, this._decorateWindows));
+
+    this._disconnectSignals();
   }
 });
