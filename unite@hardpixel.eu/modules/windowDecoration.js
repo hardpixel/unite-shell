@@ -74,7 +74,7 @@ var WindowDecoration = new Lang.Class({
   _updateTitlebar: function () {
     this._activeWindow = global.display.focus_window;
 
-    if (Helpers.isMaximized(this._activeWindow)) {
+    if (Helpers.isMaximized(this._activeWindow, this._enabled)) {
       this._hideTitlebar(this._activeWindow);
     } else {
       this._showTitlebar(this._activeWindow);
@@ -82,7 +82,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _showTitlebar: function (win) {
-    if (win && !win._doingMaxUnmax && win._decorationOFF && win._windowXID) {
+    if (win && !win._doingMaxUnmax && win.decorated && win._decorationOFF && win._windowXID) {
       win._decorationOFF = false;
 
       this._toggleTitlebar(win._windowXID, false);
@@ -139,7 +139,7 @@ var WindowDecoration = new Lang.Class({
     let windows = Helpers.getAllWindows();
 
     windows.forEach(Lang.bind(this, function (win) {
-      if (win.get_maximized() == MAXIMIZED) {
+      if (Helpers.isMaximized(win, this._enabled)) {
         this._hideTitlebar(win);
       } else {
         this._showTitlebar(win);
@@ -151,6 +151,8 @@ var WindowDecoration = new Lang.Class({
     let windows = Helpers.getAllWindows();
 
     windows.forEach(Lang.bind(this, Lang.bind(this, function (win) {
+      win._decorationOFF = true;
+
       this._showTitlebar(win);
 
       delete win._decorationOFF;
