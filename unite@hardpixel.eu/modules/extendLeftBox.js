@@ -1,16 +1,39 @@
-const Clutter = imports.gi.Clutter;
-const Lang    = imports.lang;
-const Main    = imports.ui.main;
-const Panel   = Main.panel;
+const Clutter        = imports.gi.Clutter;
+const Lang           = imports.lang;
+const Main           = imports.ui.main;
+const Panel          = Main.panel;
+const ExtensionUtils = imports.misc.extensionUtils;
+const Unite          = ExtensionUtils.getCurrentExtension();
+const Convenience    = Unite.imports.convenience;
 
 var ExtendLeftBox = new Lang.Class({
   Name: 'Unite.ExtendLeftBox',
 
   _init: function() {
-    this._handlerID = Panel.actor.connect('allocate', Lang.bind(this, this._extend));
+    this._settings = Convenience.getSettings();
+
+    this._toggle();
+    this._connectSettings();
   },
 
-  _extend: function (actor, box, flags) {
+  _connectSettings: function() {
+    this._settings.connect(
+      'changed::extend-left-box', Lang.bind(this, this._toggle)
+    );
+  },
+
+  _connnectSignals: function() {
+    this._handlerID = Panel.actor.connect('allocate', Lang.bind(this, this._extendBox));
+  },
+
+  _disconnectSignals: function() {
+    if (this._handlerID) {
+      Panel.actor.disconnect(this._handlerID);
+      delete this._handlerID;
+    }
+  },
+
+  _extendBox: function (actor, box, flags) {
     let allocWidth  = box.x2 - box.x1;
     let allocHeight = box.y2 - box.y1;
 
@@ -61,7 +84,18 @@ var ExtendLeftBox = new Lang.Class({
     Panel._rightBox.allocate(childBox, flags);
   },
 
+  _toggle: function() {
+    this._enabled = this._settings.get_boolean('extend-left-box');
+    this._enabled ? this._create() : this.destroy();
+  },
+
+  _create: function() {
+    this._connnectSignals();
+    Panel.actor.queue_relayout();
+  },
+
   destroy: function() {
-    Panel.actor.disconnect(this._handlerID);
+    this._disconnectSignals();
+    Panel.actor.queue_relayout();
   }
 });

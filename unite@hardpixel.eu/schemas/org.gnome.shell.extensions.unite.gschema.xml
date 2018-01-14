@@ -1,0 +1,87 @@
+<schemalist gettext-domain="gnome-shell-extensions">
+  <enum id="org.gnome.shell.extensions.unite.buttonsTheme">
+    <value value="0" nick="default-dark" />
+    <value value="1" nick="default-light" />
+    <value value="2" nick="ambiance" />
+    <value value="3" nick="arc-dark" />
+    <value value="4" nick="arc-light" />
+    <value value="5" nick="united-dark" />
+    <value value="6" nick="united-light" />
+  </enum>
+
+  <enum id="org.gnome.shell.extensions.unite.hideTitlebars">
+    <value value="0" nick="none" />
+    <value value="1" nick="tiled" />
+    <value value="2" nick="maximized" />
+    <value value="3" nick="both" />
+  </enum>
+
+  <enum id="org.gnome.shell.extensions.unite.showTitle">
+    <value value="0" nick="none" />
+    <value value="1" nick="tiled" />
+    <value value="2" nick="maximized" />
+    <value value="3" nick="both" />
+    <value value="4" nick="always" />
+  </enum>
+
+  <enum id="org.gnome.shell.extensions.unite.showButtons">
+    <value value="0" nick="none" />
+    <value value="1" nick="tiled" />
+    <value value="2" nick="maximized" />
+    <value value="3" nick="both" />
+    <value value="4" nick="always" />
+  </enum>
+
+  <enum id="org.gnome.shell.extensions.unite.notificationsPosition">
+    <value value="0" nick="center" />
+    <value value="1" nick="left" />
+    <value value="2" nick="right" />
+  </enum>
+
+  <schema id="org.gnome.shell.extensions.unite" path="/org/gnome/shell/extensions/unite/">
+    <key name="hide-activities-button" type="b">
+      <default>true</default>
+      <summary>Hide top bar activities button.</summary>
+    </key>
+
+    <key name="extend-left-box" type="b">
+      <default>true</default>
+      <summary>Extend top bar left box.</summary>
+    </key>
+
+    <key name="show-legacy-tray" type="b">
+      <default>true</default>
+      <summary>Legacy tray icons in top bar.</summary>
+    </key>
+
+    <key name="autofocus-windows" type="b">
+      <default>true</default>
+      <summary>Autofocus windows that demand attention.</summary>
+    </key>
+
+    <key name="show-window-title" enum="org.gnome.shell.extensions.unite.showTitle">
+      <default>"maximized"</default>
+      <summary>Use window title to replace the app-menu label.</summary>
+    </key>
+
+    <key name="show-window-buttons" enum="org.gnome.shell.extensions.unite.showButtons">
+      <default>"maximized"</default>
+      <summary>Active window bottons in top bar.</summary>
+    </key>
+
+    <key name="window-buttons-theme" enum="org.gnome.shell.extensions.unite.buttonsTheme">
+      <default>"default-dark"</default>
+      <summary>Top bar window buttons theme.</summary>
+    </key>
+
+    <key name="hide-window-titlebars" enum="org.gnome.shell.extensions.unite.hideTitlebars">
+      <default>"maximized"</default>
+      <summary>Select windows state to hide titlebars.</summary>
+    </key>
+
+    <key name="notifications-position" enum="org.gnome.shell.extensions.unite.notificationsPosition">
+      <default>"right"</default>
+      <summary>Select notification messages position.</summary>
+    </key>
+  </schema>
+</schemalist>
