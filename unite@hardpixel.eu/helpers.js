@@ -78,17 +78,36 @@ function overviewSignalIDs() {
   return signals;
 }
 
-function isMaximized(win) {
+function isMaximized(win, match_state) {
   let check = false;
+  let state = getStateName(match_state);
+  let flags = Meta.MaximizeFlags;
 
   if (win) {
+    let maximized     = win.get_maximized()
     let primaryScreen = win.is_on_primary_monitor();
-    let fullMaximized = win.get_maximized() == Meta.MaximizeFlags.BOTH;
+    let tileMaximized = maximized == flags.HORIZONTAL || maximized == flags.VERTICAL;
+    let fullMaximized = maximized == flags.BOTH;
 
-    check = primaryScreen && fullMaximized;
+    if (state == 'both') {
+      check = primaryScreen && maximized;
+    }
+
+    if (state == 'maximized') {
+      check = primaryScreen && fullMaximized;
+    }
+
+    if (state == 'tiled') {
+      check = primaryScreen && tileMaximized;
+    }
   }
 
   return check;
+}
+
+function getStateName(state) {
+  let states = ['none', 'tiled', 'maximized', 'both', 'always'];
+  return states[state || 2];
 }
 
 function getVersion() {
