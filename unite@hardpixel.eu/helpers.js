@@ -106,7 +106,7 @@ function isMaximized(win, match_state) {
 }
 
 function getStateName(state) {
-  let states = ['none', 'tiled', 'maximized', 'both', 'always'];
+  let states = ['never', 'tiled', 'maximized', 'both', 'always'];
   return states[state || 2];
 }
 

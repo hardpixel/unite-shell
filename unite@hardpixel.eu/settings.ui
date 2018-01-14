@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.1 -->
+<!-- Generated with glade 3.20.2 -->
 <interface domain="unite">
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkBox" id="prefs_widget">
@@ -179,7 +179,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="valign">center</property>
-            <property name="label" translatable="yes">Hide maximized or tiled window titlebars</property>
+            <property name="label" translatable="yes">Hide window titlebars</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -194,7 +194,7 @@
             <property name="can_focus">False</property>
             <property name="active_id">2</property>
             <items>
-              <item id="0" translatable="yes">None</item>
+              <item id="0" translatable="yes">Never</item>
               <item id="1" translatable="yes">Tiled</item>
               <item id="2" translatable="yes">Maximized</item>
               <item id="3" translatable="yes">Both</item>
@@ -239,7 +239,7 @@
             <property name="can_focus">False</property>
             <property name="active_id">2</property>
             <items>
-              <item id="0" translatable="yes">None</item>
+              <item id="0" translatable="yes">Never</item>
               <item id="1" translatable="yes">Tiled</item>
               <item id="2" translatable="yes">Maximized</item>
               <item id="3" translatable="yes">Both</item>
@@ -285,7 +285,7 @@
             <property name="can_focus">False</property>
             <property name="active_id">2</property>
             <items>
-              <item id="0" translatable="yes">None</item>
+              <item id="0" translatable="yes">Never</item>
               <item id="1" translatable="yes">Tiled</item>
               <item id="2" translatable="yes">Maximized</item>
               <item id="3" translatable="yes">Both</item>
