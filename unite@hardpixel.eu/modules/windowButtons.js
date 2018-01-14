@@ -66,7 +66,8 @@ var WindowButtons = new Lang.Class({
       }));
 
       if (this._position == 'left') {
-        Panel._leftBox.insert_child_at_index(this._buttonsActor, 1);
+        let appmenu = Main.panel.statusArea.appMenu.actor.get_parent();
+        Panel._leftBox.insert_child_below(this._buttonsActor, appmenu);
       }
 
       if (this._position == 'right') {
