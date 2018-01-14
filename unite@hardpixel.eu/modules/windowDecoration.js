@@ -6,20 +6,26 @@ const Lang           = imports.lang;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
 const Helpers        = Unite.imports.helpers;
+const Convenience    = Unite.imports.convenience;
 const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
 var WindowDecoration = new Lang.Class({
   Name: 'Unite.WindowDecoration',
 
   _init: function() {
-    this._buttonsPosition = Helpers.getWindowButtons('position');
+    this._settings        = Convenience.getSettings();
     this._needsMaxUnmax   = Helpers.getVersion() < 3.24;
     this._userStylesPath  = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
+    this._buttonsPosition = Helpers.getWindowButtons('position');
 
-    Mainloop.idle_add(Lang.bind(this, this._addUserStyles));
-    Mainloop.idle_add(Lang.bind(this, this._undecorateWindows));
+    this._toggle();
+    this._connectSettings();
+  },
 
-    this._connectSignals();
+  _connectSettings: function() {
+    this._settings.connect(
+      'changed::hide-window-titlebars', Lang.bind(this, this._toggle)
+    );
   },
 
   _connectSignals: function () {
@@ -135,9 +141,26 @@ var WindowDecoration = new Lang.Class({
     })));
   },
 
+  _toggle: function() {
+    this._enabled = this._settings.get_enum('hide-window-titlebars');
+    this._enabled != 0 ? this._create() : this.destroy();
+  },
+
+  _create: function() {
+    Mainloop.idle_add(Lang.bind(this, this._addUserStyles));
+    Mainloop.idle_add(Lang.bind(this, this._undecorateWindows));
+
+    this._connectSignals();
+  },
+
   destroy: function() {
-    global.display.disconnect(this._dsHandlerID);
-    global.window_manager.disconnect(this._wmHandlerID);
+    if (this._dsHandlerID) {
+      global.display.disconnect(this._dsHandlerID);
+    }
+
+    if (this._wmHandlerID) {
+      global.window_manager.disconnect(this._wmHandlerID);
+    }
 
     Mainloop.idle_add(Lang.bind(this, this._removeUserStyles));
     Mainloop.idle_add(Lang.bind(this, this._decorateWindows));
