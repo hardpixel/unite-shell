@@ -74,7 +74,7 @@ var WindowButtons = new Lang.Class({
   },
 
   _createButtons: function () {
-    if (this._buttons) {
+    if (this._buttons && !this._buttonsActor) {
       this._buttonsActor = new St.Bin();
       this._buttonsBox   = new St.BoxLayout({ style_class: 'window-buttons-box' });
 
@@ -173,20 +173,25 @@ var WindowButtons = new Lang.Class({
 
   _toggle: function() {
     this._enabled = this._settings.get_enum('show-window-buttons');
-    this._enabled != 0 ? this._create() : this.destroy();
+    this._enabled != 0 ? this._activate() : this.destroy();
   },
 
-  _create: function() {
+  _activate: function() {
     [this._position, this._buttons] = Helpers.getWindowButtons();
 
     Mainloop.idle_add(Lang.bind(this, this._createButtons));
     Mainloop.idle_add(Lang.bind(this, this._updateVisibility));
 
-    this._connectSignals();
+    if (!this._activated) {
+      this._activated = true;
+      this._connectSignals();
+    }
   },
 
   destroy: function() {
     Mainloop.idle_add(Lang.bind(this, this._destroyButtons));
     this._disconnectSignals();
+
+    this._activated = false;
   }
 });
