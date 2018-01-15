@@ -169,14 +169,17 @@ var WindowDecoration = new Lang.Class({
 
   _toggle: function() {
     this._enabled = this._settings.get_enum('hide-window-titlebars');
-    this._enabled != 0 ? this._create() : this.destroy();
+    this._enabled != 0 ? this._activate() : this.destroy();
   },
 
-  _create: function() {
+  _activate: function() {
     Mainloop.idle_add(Lang.bind(this, this._addUserStyles));
     Mainloop.idle_add(Lang.bind(this, this._undecorateWindows));
 
-    this._connectSignals();
+    if (!this._activated) {
+      this._activated = true;
+      this._connectSignals();
+    }
   },
 
   destroy: function() {
@@ -184,5 +187,7 @@ var WindowDecoration = new Lang.Class({
     Mainloop.idle_add(Lang.bind(this, this._decorateWindows));
 
     this._disconnectSignals();
+
+    this._activated = false;
   }
 });
