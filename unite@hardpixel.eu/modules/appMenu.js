@@ -134,14 +134,17 @@ var AppMenu = new Lang.Class({
 
   _toggle: function() {
     this._enabled = this._settings.get_enum('show-window-title');
-    this._enabled != 0 ? this._create() : this.destroy();
+    this._enabled != 0 ? this._activate() : this.destroy();
   },
 
-  _create: function() {
+  _activate: function() {
     Mainloop.idle_add(Lang.bind(this, this._showMenu));
     Mainloop.idle_add(Lang.bind(this, this._updateMenu));
 
-    this._connectSignals();
+    if (!this._activated) {
+      this._activated = true;
+      this._connectSignals();
+    }
   },
 
   destroy: function() {
@@ -151,5 +154,7 @@ var AppMenu = new Lang.Class({
     })));
 
     this._disconnectSignals();
+
+    this._activated = false;
   }
 });
