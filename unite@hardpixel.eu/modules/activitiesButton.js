@@ -30,8 +30,12 @@ var ActivitiesButton = new Lang.Class({
   },
 
   _toggle: function() {
-    this._hidden = this._settings.get_boolean('hide-activities-button');
-    this._toggleButton(this._hidden);
+    this._enabled = this._settings.get_boolean('hide-activities-button');
+    this._enabled ? this._activate() : this.destroy();
+  },
+
+  _activate: function() {
+    this._toggleButton(true);
   },
 
   destroy: function() {

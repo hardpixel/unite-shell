@@ -186,10 +186,10 @@ var TopIcons = new Lang.Class({
 
   _toggle: function() {
     this._enabled = this._settings.get_boolean('show-legacy-tray');
-    this._enabled ? this._create() : this.destroy();
+    this._enabled ? this._activate() : this.destroy();
   },
 
-  _create: function() {
+  _activate: function() {
     if (Main.legacyTray) {
       Mainloop.idle_add(Lang.bind(this, this._moveToPanel));
       this._tray.actor.hide();

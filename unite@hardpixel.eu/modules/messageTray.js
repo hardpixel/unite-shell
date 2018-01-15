@@ -12,7 +12,7 @@ var MessageTray = new Lang.Class({
     this._container = Main.messageTray._bannerBin;
     this._settings  = Convenience.getSettings();
 
-    this._create();
+    this._activate();
     this._connectSettings();
   },
 
@@ -50,7 +50,7 @@ var MessageTray = new Lang.Class({
     this._container.set_x_align(alignments[this._position]);
   },
 
-  _create: function () {
+  _activate: function () {
     this._updatePosition();
     this._updateWidth();
   },

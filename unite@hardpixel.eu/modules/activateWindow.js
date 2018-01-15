@@ -39,10 +39,10 @@ var ActivateWindow = new Lang.Class({
 
   _toggle: function() {
     this._enabled = this._settings.get_boolean('autofocus-windows');
-    this._enabled ? this._create() : this.destroy();
+    this._enabled ? this._activate() : this.destroy();
   },
 
-  _create: function() {
+  _activate: function() {
     this._connectSignals();
   },
 
