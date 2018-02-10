@@ -23,9 +23,9 @@ var ActivitiesButton = new Lang.Class({
 
   _toggleButton: function(hide) {
     if (hide) {
-      this._activities.actor.hide();
+      this._activities.container.hide();
     } else {
-      this._activities.actor.show();
+      this._activities.container.show();
     }
   },
 
