@@ -78,11 +78,11 @@
 
 #panel #appMenu {
   margin-left: 8px;
-  margin-right: 8px;
+  margin-right: 3px;
 }
 
 #panel #appMenu .popup-menu-arrow {
-  margin: 0;
+  margin-left: 5px;
 }
 
 #panel #appMenu .app-menu-icon > StIcon {
