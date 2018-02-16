@@ -36,7 +36,7 @@
 }
 
 #panel .window-button {
-  width: 24px;
+  width: 22px;
   height: 28px;
 }
 
@@ -77,12 +77,12 @@
 }
 
 #panel #appMenu {
-  margin-left: 10px;
-  margin-right: 5px;
+  margin-left: 8px;
+  margin-right: 8px;
 }
 
 #panel #appMenu .popup-menu-arrow {
-  margin-left: 5px;
+  margin: 0;
 }
 
 #panel #appMenu .app-menu-icon > StIcon {
