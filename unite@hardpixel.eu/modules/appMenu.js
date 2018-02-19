@@ -41,6 +41,10 @@ var AppMenu = new Lang.Class({
       'notify::focus-app', Lang.bind(this, this._showMenu)
     );
 
+    this._ovHandlerID = Main.overview.connect(
+      'hiding', Lang.bind(this, this._showMenu)
+    );
+
     this._wmHandlerIDs.push(global.window_manager.connect(
       'destroy', Lang.bind(this, this._updateMenu)
     ));
@@ -73,6 +77,11 @@ var AppMenu = new Lang.Class({
     if (this._wtHandlerID) {
       WindowTracker.disconnect(this._wtHandlerID);
       delete this._wtHandlerID;
+    }
+
+    if (this._ovHandlerID) {
+      Main.overview.disconnect(this._ovHandlerID);
+      delete this._ovHandlerID;
     }
 
     this._wmHandlerIDs.forEach(function (handler) {
