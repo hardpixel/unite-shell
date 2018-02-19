@@ -39,7 +39,7 @@ var WindowButtons = new Lang.Class({
     ));
 
     this._ovHandlerIDs.push(Main.overview.connect(
-      'hidden', Lang.bind(this, this._updateVisibility)
+      'hiding', Lang.bind(this, this._updateVisibility)
     ));
 
     this._wmHandlerIDs.push(global.window_manager.connect(
