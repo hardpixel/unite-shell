@@ -105,14 +105,14 @@ var WindowButtons = new Lang.Class({
   },
 
   _destroyButtons: function () {
-    if (this._buttonsActor) {
-      this._buttonsActor.destroy();
-      delete this._buttonsActor;
-    }
-
     if (this._buttonsBox) {
       this._buttonsBox.destroy();
       delete this._buttonsBox;
+    }
+
+    if (this._buttonsActor) {
+      this._buttonsActor.destroy();
+      delete this._buttonsActor;
     }
   },
 
