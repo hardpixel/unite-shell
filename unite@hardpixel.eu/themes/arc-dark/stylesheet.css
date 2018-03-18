@@ -7,22 +7,34 @@
   background-image: url("titlebutton-close.png");
 }
 
-.close:hover .icon, .close:active .icon {
+.close:hover .icon {
   background-image: url("titlebutton-close-hover.png");
 }
 
-.minimize .icon {
-  background-image: url("titlebutton-min.png");
+.close:active .icon {
+  background-image: url("titlebutton-close-active.png");
 }
 
-.minimize:hover .icon, .minimize:active .icon {
-  background-image: url("titlebutton-min-hover.png");
+.minimize .icon {
+  background-image: url("titlebutton-minimize.png");
+}
+
+.minimize:hover .icon {
+  background-image: url("titlebutton-minimize-hover.png");
+}
+
+.minimize:active .icon {
+  background-image: url("titlebutton-minimize-active.png");
 }
 
 .maximize .icon {
-  background-image: url("titlebutton-max.png");
+  background-image: url("titlebutton-maximize.png");
 }
 
-.maximize:hover .icon, .maximize:active .icon {
-  background-image: url("titlebutton-max-hover.png");
+.maximize:hover .icon {
+  background-image: url("titlebutton-maximize-hover.png");
+}
+
+.maximize:active .icon {
+  background-image: url("titlebutton-maximize-active.png");
 }
