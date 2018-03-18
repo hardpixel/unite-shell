@@ -187,7 +187,7 @@ var WindowButtons = new Lang.Class({
 
       if (!Main.overview.visible) {
         let maximized = Helpers.isMaximized(this._activeWindow, this._enabled);
-        let always = Helpers.getStateName(this._enabled) == 'always' && this._activeWindow;
+        let always    = this._enabled == 'always' && this._activeWindow;
 
         visible = always || maximized;
       }
@@ -201,8 +201,8 @@ var WindowButtons = new Lang.Class({
   },
 
   _toggle: function() {
-    this._enabled = this._settings.get_enum('show-window-buttons');
-    this._enabled != 0 ? this._activate() : this.destroy();
+    this._enabled = this._settings.get_string('show-window-buttons');
+    this._enabled != 'never' ? this._activate() : this.destroy();
   },
 
   _activate: function() {

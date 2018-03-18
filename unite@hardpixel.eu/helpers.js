@@ -80,7 +80,6 @@ function overviewSignalIDs() {
 
 function isMaximized(win, match_state) {
   let check = false;
-  let state = getStateName(match_state);
   let flags = Meta.MaximizeFlags;
 
   if (win) {
@@ -89,25 +88,20 @@ function isMaximized(win, match_state) {
     let tileMaximized = maximized == flags.HORIZONTAL || maximized == flags.VERTICAL;
     let fullMaximized = maximized == flags.BOTH;
 
-    if (state == 'both') {
-      check = primaryScreen && maximized;
-    }
-
-    if (state == 'maximized') {
-      check = primaryScreen && fullMaximized;
-    }
-
-    if (state == 'tiled') {
-      check = primaryScreen && tileMaximized;
+    switch (match_state) {
+      case 'both':
+        check = primaryScreen && maximized;
+        break;
+      case 'maximized':
+        check = primaryScreen && fullMaximized;
+        break;
+      case 'tiled':
+        check = primaryScreen && tileMaximized;
+        break;
     }
   }
 
   return check;
-}
-
-function getStateName(state) {
-  let states = ['never', 'tiled', 'maximized', 'both', 'always'];
-  return states[state || 2];
 }
 
 function getVersion() {

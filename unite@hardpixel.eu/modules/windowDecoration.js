@@ -168,8 +168,8 @@ var WindowDecoration = new Lang.Class({
   },
 
   _toggle: function() {
-    this._enabled = this._settings.get_enum('hide-window-titlebars');
-    this._enabled != 0 ? this._activate() : this.destroy();
+    this._enabled = this._settings.get_string('hide-window-titlebars');
+    this._enabled != 'never' ? this._activate() : this.destroy();
   },
 
   _activate: function() {

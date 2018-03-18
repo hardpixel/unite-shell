@@ -126,7 +126,7 @@ var AppMenu = new Lang.Class({
   _updateTitle: function () {
     let title     = null;
     let maximized = Helpers.isMaximized(this._activeWindow, this._enabled);
-    let always    = Helpers.getStateName(this._enabled) == 'always' && this._activeWindow;
+    let always    = this._enabled == 'always' && this._activeWindow;
 
     if (always || maximized) {
       title = this._activeWindow.title;
@@ -142,8 +142,8 @@ var AppMenu = new Lang.Class({
   },
 
   _toggle: function() {
-    this._enabled = this._settings.get_enum('show-window-title');
-    this._enabled != 0 ? this._activate() : this.destroy();
+    this._enabled = this._settings.get_string('show-window-title');
+    this._enabled != 'never' ? this._activate() : this.destroy();
   },
 
   _activate: function() {
