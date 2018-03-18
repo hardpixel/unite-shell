@@ -24,7 +24,7 @@ var MessageTray = new Lang.Class({
   },
 
   _updatePosition: function () {
-    this._position = this._settings.get_enum('notifications-position');
+    this._position = this._settings.get_string('notifications-position');
     this._alignMessages();
   },
 
@@ -43,11 +43,11 @@ var MessageTray = new Lang.Class({
   },
 
   _alignMessages: function () {
-    let alignments = [
-      Clutter.ActorAlign.CENTER,
-      Clutter.ActorAlign.START,
-      Clutter.ActorAlign.END
-    ];
+    let alignments = {
+      center: Clutter.ActorAlign.CENTER,
+      left:   Clutter.ActorAlign.START,
+      right:  Clutter.ActorAlign.END
+    };
 
     this._container.set_x_align(alignments[this._position]);
   },
