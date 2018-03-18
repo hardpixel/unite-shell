@@ -90,8 +90,8 @@ var WindowButtons = new Lang.Class({
       this._buttonsActor.hide();
 
       this._buttons.forEach(Lang.bind(this, function (action) {
-        let button = new St.Button({ style_class: 'window-button', track_hover: true });
-        let icon   = new St.Bin({ style_class: 'icon ' + action });
+        let button = new St.Button({ style_class: 'window-button ' + action, track_hover: true });
+        let icon   = new St.Bin({ style_class: 'icon' });
 
         button._windowAction = action;
         button.add_actor(icon);

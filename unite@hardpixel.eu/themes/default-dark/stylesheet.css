@@ -3,29 +3,26 @@
   height: 16px;
 }
 
-.window-button .close {
+.close .icon {
   background-image: url("close.svg");
 }
 
-.window-button:hover .close,
-.window-button:active .close {
+.close:hover .icon, .close:active .icon {
   background-image: url("close-active.svg");
 }
 
-.window-button .minimize {
+.minimize .icon {
   background-image: url("minimize.svg");
 }
 
-.window-button:hover .minimize,
-.window-button:active .minimize {
+.minimize:hover .icon, .minimize:active .icon {
   background-image: url("minimize-active.svg");
 }
 
-.window-button .maximize {
+.maximize .icon {
   background-image: url("maximize.svg");
 }
 
-.window-button:hover .maximize,
-.window-button:active .maximize {
+.maximize:hover .icon, .maximize:active .icon {
   background-image: url("maximize-active.svg");
 }
