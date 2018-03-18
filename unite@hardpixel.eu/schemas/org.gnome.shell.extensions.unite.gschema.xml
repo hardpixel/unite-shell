@@ -3,10 +3,10 @@
     <value value="0" nick="default-dark" />
     <value value="1" nick="default-light" />
     <value value="2" nick="ambiance" />
-    <value value="3" nick="arc-dark" />
-    <value value="4" nick="arc-light" />
-    <value value="5" nick="united-dark" />
-    <value value="6" nick="united-light" />
+    <!-- <value value="4" nick="arc-dark" /> -->
+    <!-- <value value="5" nick="arc-light" /> -->
+    <!-- <value value="6" nick="united-dark" /> -->
+    <!-- <value value="7" nick="united-light" /> -->
   </enum>
 
   <enum id="org.gnome.shell.extensions.unite.hideTitlebars">
