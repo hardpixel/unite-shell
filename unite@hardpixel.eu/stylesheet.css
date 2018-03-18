@@ -97,21 +97,3 @@
 #panel #appMenu .app-menu-icon > StIcon {
   icon-shadow: none;
 }
-
-#panel #panelActivities {
-  width: 55px;
-}
-
-#panel #panelActivities > * {
-  background-color: transparent;
-  color: transparent;
-  background-image: url("assets/activities.svg");
-  background-position: center;
-  background-size: contain;
-}
-
-#panel #panelActivities:hover > *,
-#panel #panelActivities:active > *,
-#panel #panelActivities:focus > * {
-  background-image: url("assets/activities-active.svg");
-}
