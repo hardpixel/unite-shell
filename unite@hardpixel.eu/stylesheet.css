@@ -35,38 +35,47 @@
   spacing: 2px;
 }
 
+#panel .window-buttons-box:first-child .window-button:first-child {
+  padding-left: 2px;
+}
+
 #panel .window-button {
   width: 22px;
   height: 28px;
 }
 
-#panel .window-button.close {
+#panel .window-button .icon {
+  width: 16px;
+  height: 16px;
+}
+
+#panel .window-button .close {
   background-image: url("assets/close.svg");
 }
 
-#panel .window-button.close:hover,
-#panel .window-button.close:active,
-#panel .window-button.close:focus {
+#panel .window-button:hover .close,
+#panel .window-button:active .close,
+#panel .window-button:focus .close {
   background-image: url("assets/close-active.svg");
 }
 
-#panel .window-button.minimize {
+#panel .window-button .minimize {
   background-image: url("assets/minimize.svg");
 }
 
-#panel .window-button.minimize:hover,
-#panel .window-button.minimize:active,
-#panel .window-button.minimize:focus {
+#panel .window-button:hover .minimize,
+#panel .window-button:active .minimize,
+#panel .window-button:focus .minimize {
   background-image: url("assets/minimize-active.svg");
 }
 
-#panel .window-button.maximize {
+#panel .window-button .maximize {
   background-image: url("assets/maximize.svg");
 }
 
-#panel .window-button.maximize:hover,
-#panel .window-button.maximize:active,
-#panel .window-button.maximize:focus {
+#panel .window-button:hover .maximize,
+#panel .window-button:active .maximize,
+#panel .window-button:focus .maximize {
   background-image: url("assets/maximize-active.svg");
 }
 
