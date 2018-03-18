@@ -160,7 +160,7 @@ var WindowButtons = new Lang.Class({
 
       if (!Main.overview.visible) {
         let maximized = Helpers.isMaximized(this._activeWindow, this._enabled);
-        let always = Helpers.getStateName(this._enabled) == 'always';
+        let always = Helpers.getStateName(this._enabled) == 'always' && this._activeWindow;
 
         visible = always || maximized;
       }
