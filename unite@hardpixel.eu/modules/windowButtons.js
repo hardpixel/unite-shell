@@ -4,6 +4,8 @@ const Mainloop       = imports.mainloop;
 const Panel          = Main.panel;
 const AppMenu        = Panel.statusArea.appMenu;
 const St             = imports.gi.St;
+const Gio            = imports.gi.Gio;
+const GLib           = imports.gi.GLib;
 const Lang           = imports.lang;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
@@ -26,6 +28,10 @@ var WindowButtons = new Lang.Class({
   _connectSettings: function() {
     this._settings.connect(
       'changed::show-window-buttons', Lang.bind(this, this._toggle)
+    );
+
+    this._settings.connect(
+      'changed::window-buttons-theme', Lang.bind(this, this._applyTheme)
     );
   },
 
@@ -103,6 +109,8 @@ var WindowButtons = new Lang.Class({
         let index = Panel._rightBox.get_n_children() + 1;
         Panel._rightBox.insert_child_at_index(this._buttonsActor, index);
       }
+
+      this._applyTheme();
     }
   },
 
@@ -115,6 +123,25 @@ var WindowButtons = new Lang.Class({
     if (this._buttonsActor) {
       this._buttonsActor.destroy();
       delete this._buttonsActor;
+    }
+  },
+
+  _applyTheme: function () {
+    let themeContext = St.ThemeContext.get_for_stage(global.stage).get_theme();
+
+    if (this._buttonsTheme) {
+      themeContext.unload_stylesheet(this._buttonsTheme);
+    }
+
+    let theme   = this._settings.get_string('window-buttons-theme');
+    let cssPath = GLib.build_filenamev([Unite.path, 'themes', theme, 'stylesheet.css']);
+    let cssFile = Gio.file_new_for_path(cssPath);
+
+    if (!this._buttonsTheme || this._buttonsTheme !== cssFile) {
+      this._buttonsTheme = cssFile;
+
+      themeContext.load_stylesheet(cssFile);
+      Main.loadTheme();
     }
   },
 
@@ -194,6 +221,7 @@ var WindowButtons = new Lang.Class({
     Mainloop.idle_add(Lang.bind(this, this._destroyButtons));
     this._disconnectSignals();
 
+    delete this._buttonsTheme;
     this._activated = false;
   }
 });
