@@ -1,0 +1,40 @@
+.window-button .icon {
+  width: 19px;
+  height: 19px;
+}
+
+.close .icon {
+  background-image: url("close_focused_normal.png");
+}
+
+.close:hover .icon {
+  background-image: url("close_focused_prelight.png");
+}
+
+.close:active .icon {
+  background-image: url("close_focused_pressed.png");
+}
+
+.minimize .icon {
+  background-image: url("minimize_focused_normal.png");
+}
+
+.minimize:hover .icon {
+  background-image: url("minimize_focused_prelight.png");
+}
+
+.minimize:active .icon {
+  background-image: url("minimize_focused_pressed.png");
+}
+
+.maximize .icon {
+  background-image: url("maximize_focused_normal.png");
+}
+
+.maximize:hover .icon {
+  background-image: url("maximize_focused_prelight.png");
+}
+
+.maximize:active .icon {
+  background-image: url("maximize_focused_pressed.png");
+}

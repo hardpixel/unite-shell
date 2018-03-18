@@ -335,10 +335,11 @@
               <item id="0" translatable="yes">Default Dark</item>
               <item id="1" translatable="yes">Default Light</item>
               <item id="2" translatable="yes">Ambiance</item>
-              <!-- <item id="3" translatable="yes">Arc Dark</item> -->
-              <!-- <item id="4" translatable="yes">Arc Light</item> -->
-              <!-- <item id="5" translatable="yes">United Dark</item> -->
-              <!-- <item id="6" translatable="yes">United Light</item> -->
+              <item id="3" translatable="yes">Radiance</item>
+              <!-- <item id="4" translatable="yes">Arc Dark</item> -->
+              <!-- <item id="5" translatable="yes">Arc Light</item> -->
+              <!-- <item id="6" translatable="yes">United Dark</item> -->
+              <!-- <item id="7" translatable="yes">United Light</item> -->
             </items>
           </object>
           <packing>

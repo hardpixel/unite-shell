@@ -3,6 +3,7 @@
     <value value="0" nick="default-dark" />
     <value value="1" nick="default-light" />
     <value value="2" nick="ambiance" />
+    <value value="3" nick="radiance" />
     <!-- <value value="4" nick="arc-dark" /> -->
     <!-- <value value="5" nick="arc-light" /> -->
     <!-- <value value="6" nick="united-dark" /> -->
