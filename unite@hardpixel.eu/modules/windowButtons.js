@@ -206,22 +206,24 @@ var WindowButtons = new Lang.Class({
   },
 
   _activate: function() {
-    [this._position, this._buttons] = Helpers.getWindowButtons();
-
-    Mainloop.idle_add(Lang.bind(this, this._createButtons));
-    Mainloop.idle_add(Lang.bind(this, this._updateVisibility));
-
     if (!this._activated) {
+      [this._position, this._buttons] = Helpers.getWindowButtons();
+
+      Mainloop.idle_add(Lang.bind(this, this._createButtons));
+      Mainloop.idle_add(Lang.bind(this, this._updateVisibility));
+
       this._activated = true;
       this._connectSignals();
     }
   },
 
   destroy: function() {
-    Mainloop.idle_add(Lang.bind(this, this._destroyButtons));
-    this._disconnectSignals();
+    if (this._activated) {
+      Mainloop.idle_add(Lang.bind(this, this._destroyButtons));
+      this._disconnectSignals();
 
-    delete this._buttonsTheme;
-    this._activated = false;
+      this._activated = false;
+      delete this._buttonsTheme;
+    }
   }
 });

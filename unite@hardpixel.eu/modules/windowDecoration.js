@@ -173,21 +173,22 @@ var WindowDecoration = new Lang.Class({
   },
 
   _activate: function() {
-    Mainloop.idle_add(Lang.bind(this, this._addUserStyles));
-    Mainloop.idle_add(Lang.bind(this, this._undecorateWindows));
-
     if (!this._activated) {
+      Mainloop.idle_add(Lang.bind(this, this._addUserStyles));
+      Mainloop.idle_add(Lang.bind(this, this._undecorateWindows));
+
       this._activated = true;
       this._connectSignals();
     }
   },
 
   destroy: function() {
-    Mainloop.idle_add(Lang.bind(this, this._removeUserStyles));
-    Mainloop.idle_add(Lang.bind(this, this._decorateWindows));
+    if (this._activated) {
+      Mainloop.idle_add(Lang.bind(this, this._removeUserStyles));
+      Mainloop.idle_add(Lang.bind(this, this._decorateWindows));
 
-    this._disconnectSignals();
-
-    this._activated = false;
+      this._activated = false;
+      this._disconnectSignals();
+    }
   }
 });

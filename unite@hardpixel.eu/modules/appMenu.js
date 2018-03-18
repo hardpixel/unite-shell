@@ -147,23 +147,24 @@ var AppMenu = new Lang.Class({
   },
 
   _activate: function() {
-    Mainloop.idle_add(Lang.bind(this, this._showMenu));
-    Mainloop.idle_add(Lang.bind(this, this._updateMenu));
-
     if (!this._activated) {
+      Mainloop.idle_add(Lang.bind(this, this._showMenu));
+      Mainloop.idle_add(Lang.bind(this, this._updateMenu));
+
       this._activated = true;
       this._connectSignals();
     }
   },
 
   destroy: function() {
-    Mainloop.idle_add(Lang.bind(this, Lang.bind(this, function () {
-      this._showMenu();
-      delete this._appMenu._nonSensitive;
-    })));
+    if (this._activated) {
+      Mainloop.idle_add(Lang.bind(this, Lang.bind(this, function () {
+        this._showMenu();
+        delete this._appMenu._nonSensitive;
+      })));
 
-    this._disconnectSignals();
-
-    this._activated = false;
+      this._activated = false;
+      this._disconnectSignals();
+    }
   }
 });
