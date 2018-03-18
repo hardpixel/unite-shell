@@ -13,36 +13,17 @@ var MessageTray = new Lang.Class({
     this._container = Main.messageTray._bannerBin;
     this._settings  = Convenience.getSettings();
 
-    this._activate();
+    this._toggle();
     this._connectSettings();
   },
 
   _connectSettings: function () {
     this._settings.connect(
-      'changed::notifications-position', Lang.bind(this, this._updatePosition)
+      'changed::notifications-position', Lang.bind(this, this._toggle)
     );
   },
 
   _updatePosition: function () {
-    this._position = this._settings.get_string('notifications-position');
-    this._alignMessages();
-  },
-
-  _resetPosition: function () {
-    this._position = 0;
-    this._alignMessages();
-  },
-
-  _updateWidth: function () {
-    let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-    this._container.set_width(390 * scale);
-  },
-
-  _resetWidth: function () {
-    this._container.set_width(0);
-  },
-
-  _alignMessages: function () {
     let alignments = {
       center: Clutter.ActorAlign.CENTER,
       left:   Clutter.ActorAlign.START,
@@ -52,13 +33,35 @@ var MessageTray = new Lang.Class({
     this._container.set_x_align(alignments[this._position]);
   },
 
+  _updateWidth: function () {
+    let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+    this._container.set_width(390 * scale);
+  },
+
+  _resetWidth: function () {
+    this._container.set_width(-1);
+  },
+
+  _toggle: function() {
+    this._position = this._settings.get_string('notifications-position');
+    this._position != 'center' ? this._activate() : this.destroy();
+  },
+
   _activate: function () {
-    this._updatePosition();
-    this._updateWidth();
+    if (!this._activated) {
+      this._activated = true;
+
+      this._updatePosition();
+      this._updateWidth();
+    }
   },
 
   destroy: function() {
-    this._resetPosition();
-    this._resetWidth();
+    if (this._activated) {
+      this._activated = false;
+
+      this._updatePosition();
+      this._resetWidth();
+    }
   }
 });
