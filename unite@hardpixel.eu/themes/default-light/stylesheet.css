@@ -1,0 +1,29 @@
+#panel .window-button .close {
+  background-image: url("close.svg");
+}
+
+#panel .window-button:hover .close,
+#panel .window-button:active .close,
+#panel .window-button:focus .close {
+  background-image: url("close-active.svg");
+}
+
+#panel .window-button .minimize {
+  background-image: url("minimize.svg");
+}
+
+#panel .window-button:hover .minimize,
+#panel .window-button:active .minimize,
+#panel .window-button:focus .minimize {
+  background-image: url("minimize-active.svg");
+}
+
+#panel .window-button .maximize {
+  background-image: url("maximize.svg");
+}
+
+#panel .window-button:hover .maximize,
+#panel .window-button:active .maximize,
+#panel .window-button:focus .maximize {
+  background-image: url("maximize-active.svg");
+}

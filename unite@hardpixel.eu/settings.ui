@@ -333,7 +333,7 @@
             <property name="active_id">0</property>
             <items>
               <item id="0" translatable="yes">Default Dark</item>
-              <!-- <item id="1" translatable="yes">Default Light</item> -->
+              <item id="1" translatable="yes">Default Light</item>
               <!-- <item id="2" translatable="yes">Ambiance</item> -->
               <!-- <item id="3" translatable="yes">Arc Dark</item> -->
               <!-- <item id="4" translatable="yes">Arc Light</item> -->
