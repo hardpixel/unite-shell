@@ -16,6 +16,8 @@ Unite is a GNOME Shell extension which makes a few layout tweaks to the top pane
 * Moves notifications to the right.
 * Hides activities button.
 
+Settings are provided to enable/disable or customize the available tweaks.
+
 ![Settings](https://raw.githubusercontent.com/hardpixel/unite-shell/master/settings.png)
 
 ### Wayland
