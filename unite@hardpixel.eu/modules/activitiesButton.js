@@ -35,10 +35,16 @@ var ActivitiesButton = new Lang.Class({
   },
 
   _activate: function() {
-    this._toggleButton(true);
+    if (!this._activated) {
+      this._activated = true;
+      this._toggleButton(true);
+    }
   },
 
   destroy: function() {
-    this._toggleButton(false);
+    if (this._activated) {
+      this._activated = false;
+      this._toggleButton(false);
+    }
   }
 });

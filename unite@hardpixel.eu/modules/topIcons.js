@@ -190,20 +190,28 @@ var TopIcons = new Lang.Class({
   },
 
   _activate: function() {
-    if (Main.legacyTray) {
-      Mainloop.idle_add(Lang.bind(this, this._moveToPanel));
-      this._tray.actor.hide();
-    } else {
-      Mainloop.idle_add(Lang.bind(this, this._createTray));
+    if (!this._activated) {
+      this._activated = true;
+
+      if (Main.legacyTray) {
+        Mainloop.idle_add(Lang.bind(this, this._moveToPanel));
+        this._tray.actor.hide();
+      } else {
+        Mainloop.idle_add(Lang.bind(this, this._createTray));
+      }
     }
   },
 
   destroy: function() {
-    if (Main.legacyTray) {
-      Mainloop.idle_add(Lang.bind(this, this._moveToTray));
-      this._tray.actor.show();
-    } else {
-      Mainloop.idle_add(Lang.bind(this, this._destroyTray));
+    if (this._activated) {
+      this._activated = false;
+
+      if (Main.legacyTray) {
+        Mainloop.idle_add(Lang.bind(this, this._moveToTray));
+        this._tray.actor.show();
+      } else {
+        Mainloop.idle_add(Lang.bind(this, this._destroyTray));
+      }
     }
   }
 });
