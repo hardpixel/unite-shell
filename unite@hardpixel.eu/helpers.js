@@ -42,11 +42,13 @@ function getWindowButtons(return_only) {
 
   if (return_only == 'position') {
     return position;
-  } else if (return_only == 'buttons') {
-    return buttons;
-  } else {
-    return [position, buttons];
   }
+
+  if (return_only == 'buttons') {
+    return buttons;
+  }
+
+  return [position, buttons];
 }
 
 function collectWindowButtons(layout_items) {
