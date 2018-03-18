@@ -1,0 +1,28 @@
+.window-button .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.close .icon {
+  background-image: url("titlebutton-close.png");
+}
+
+.close:hover .icon, .close:active .icon {
+  background-image: url("titlebutton-close-hover.png");
+}
+
+.minimize .icon {
+  background-image: url("titlebutton-min.png");
+}
+
+.minimize:hover .icon, .minimize:active .icon {
+  background-image: url("titlebutton-min-hover.png");
+}
+
+.maximize .icon {
+  background-image: url("titlebutton-max.png");
+}
+
+.maximize:hover .icon, .maximize:active .icon {
+  background-image: url("titlebutton-max-hover.png");
+}
