@@ -156,7 +156,7 @@ var TopIcons = new Lang.Class({
     });
 
     Mainloop.timeout_add(delay, Lang.bind(this, function () {
-      this._iconsContainer.actor.visible = true;
+      this._iconsContainer.container.show();
     }));
 
     this._iconsBoxLayout.insert_child_at_index(iconContainer, 0);
@@ -174,13 +174,14 @@ var TopIcons = new Lang.Class({
 
     if (parent) {
       parent.destroy();
+    } else {
+      icon.destroy();
     }
 
-    icon.destroy();
     this._icons.splice(this._icons.indexOf(icon), 1);
 
     if (this._icons.length === 0) {
-      this._iconsContainer.actor.visible = false;
+      this._iconsContainer.container.hide();
     }
   },
 
