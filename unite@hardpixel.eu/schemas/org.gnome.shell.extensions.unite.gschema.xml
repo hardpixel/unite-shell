@@ -10,6 +10,7 @@
     <value value="7" nick="united-light" />
     <value value="8" nick="materia-dark" />
     <value value="9" nick="materia-light" />
+    <value value="10" nick="osx-arc" />
   </enum>
 
   <enum id="org.gnome.shell.extensions.unite.hideTitlebars">
