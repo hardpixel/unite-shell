@@ -4,37 +4,37 @@
 }
 
 .close .icon {
-  background-image: url("titlebutton-close.png");
+  background-image: url("titlebutton-close.svg");
 }
 
 .close:hover .icon {
-  background-image: url("titlebutton-close-hover.png");
+  background-image: url("titlebutton-close-hover.svg");
 }
 
 .close:active .icon {
-  background-image: url("titlebutton-close-active.png");
+  background-image: url("titlebutton-close-active.svg");
 }
 
 .minimize .icon {
-  background-image: url("titlebutton-minimize.png");
+  background-image: url("titlebutton-minimize.svg");
 }
 
 .minimize:hover .icon {
-  background-image: url("titlebutton-minimize-hover.png");
+  background-image: url("titlebutton-minimize-hover.svg");
 }
 
 .minimize:active .icon {
-  background-image: url("titlebutton-minimize-active.png");
+  background-image: url("titlebutton-minimize-active.svg");
 }
 
 .maximize .icon {
-  background-image: url("titlebutton-maximize.png");
+  background-image: url("titlebutton-maximize.svg");
 }
 
 .maximize:hover .icon {
-  background-image: url("titlebutton-maximize-hover.png");
+  background-image: url("titlebutton-maximize-hover.svg");
 }
 
 .maximize:active .icon {
-  background-image: url("titlebutton-maximize-active.png");
+  background-image: url("titlebutton-maximize-active.svg");
 }
