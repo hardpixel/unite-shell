@@ -135,11 +135,14 @@ var WindowButtons = new Lang.Class({
     let context = St.ThemeContext.get_for_stage(global.stage).get_theme();
     let theme   = this._settings.get_string('window-buttons-theme');
     let cssPath = GLib.build_filenamev([Unite.path, 'themes', theme, 'stylesheet.css']);
-    let cssFile = Gio.file_new_for_path(cssPath);
 
-    if (!this._buttonsTheme || this._buttonsTheme !== cssFile) {
-      this._buttonsTheme = cssFile;
-      context.load_stylesheet(cssFile);
+    if (GLib.file_test(cssPath, GLib.FileTest.EXISTS)) {
+      let cssFile = Gio.file_new_for_path(cssPath);
+
+      if (!this._buttonsTheme || this._buttonsTheme !== cssFile) {
+        this._buttonsTheme = cssFile;
+        context.load_stylesheet(this._buttonsTheme);
+      }
     }
   },
 
