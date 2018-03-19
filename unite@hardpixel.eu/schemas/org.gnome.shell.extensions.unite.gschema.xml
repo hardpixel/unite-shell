@@ -39,12 +39,13 @@
     <value value="2" nick="right" />
   </enum>
 
-  <schema id="org.gnome.shell.extensions.unite" path="/org/gnome/shell/extensions/unite/">
-    <key name="hide-activities-button" type="b">
-      <default>true</default>
-      <summary>Hide top bar activities button.</summary>
-    </key>
+  <enum id="org.gnome.shell.extensions.unite.hideActivitiesButton">
+    <value value="0" nick="never" />
+    <value value="1" nick="auto" />
+    <value value="2" nick="always" />
+  </enum>
 
+  <schema id="org.gnome.shell.extensions.unite" path="/org/gnome/shell/extensions/unite/">
     <key name="extend-left-box" type="b">
       <default>true</default>
       <summary>Extend top bar left box.</summary>
@@ -83,6 +84,11 @@
     <key name="notifications-position" enum="org.gnome.shell.extensions.unite.notificationsPosition">
       <default>"right"</default>
       <summary>Select notification messages position.</summary>
+    </key>
+
+    <key name="hide-activities-button" enum="org.gnome.shell.extensions.unite.hideActivitiesButton">
+      <default>"auto"</default>
+      <summary>Hide top bar activities button.</summary>
     </key>
   </schema>
 </schemalist>
