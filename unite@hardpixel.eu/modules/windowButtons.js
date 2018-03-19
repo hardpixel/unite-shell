@@ -193,7 +193,7 @@ var WindowButtons = new Lang.Class({
     if (this._buttonsActor) {
       let visible = AppMenu._targetApp != null && !Main.overview.visibleTarget;
 
-      if (!Main.overview.visible) {
+      if (!Main.overview.visibleTarget) {
         let maximized = Helpers.isMaximized(this._activeWindow, this._enabled);
         let always    = this._enabled == 'always' && this._activeWindow;
 
