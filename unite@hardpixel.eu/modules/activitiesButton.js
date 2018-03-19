@@ -77,7 +77,7 @@ var ActivitiesButton = new Lang.Class({
   },
 
   _updateVisibility: function() {
-    let hide = AppMenu._visible;
+    let hide = AppMenu._targetApp != null && !Main.overview.visibleTarget;
 
     if (this._enabled == 'always') {
       hide = true;
