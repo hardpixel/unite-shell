@@ -31,7 +31,7 @@ var PrefsWidget = new GObject.Class({
   },
 
   _getBooleans: function () {
-    items = [
+    let items = [
       'extend-left-box',
       'show-legacy-tray',
       'autofocus-windows'
@@ -50,7 +50,7 @@ var PrefsWidget = new GObject.Class({
   },
 
   _getEnumerations: function () {
-    items = [
+    let items = [
       'hide-activities-button',
       'hide-window-titlebars',
       'show-window-title',
