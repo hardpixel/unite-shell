@@ -101,7 +101,9 @@ var AppMenu = new Lang.Class({
         this._appMenu._nonSensitive = false;
       }
     } else {
-      if (!this._appMenu._visible && this._appMenu._targetApp) {
+      let targetApp = this._appMenu._targetApp != null;
+
+      if (!this._appMenu._visible && targetApp && !Main.overview.visibleTarget) {
         this._appMenu.show();
         this._appMenu.setSensitive(false);
         this._appMenu._nonSensitive = true;
