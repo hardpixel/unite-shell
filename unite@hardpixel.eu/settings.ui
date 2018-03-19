@@ -348,6 +348,7 @@
               <item id="8" translatable="yes">Materia Dark</item>
               <item id="9" translatable="yes">Materia Light</item>
               <item id="10" translatable="yes">OSX Arc</item>
+              <item id="11" translatable="yes">Vertex</item>
             </items>
           </object>
           <packing>
