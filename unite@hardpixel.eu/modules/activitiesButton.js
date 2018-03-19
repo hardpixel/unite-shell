@@ -102,13 +102,9 @@ var ActivitiesButton = new Lang.Class({
   _activate: function() {
     if (!this._activated) {
       this._activated = true;
-      this._updateVisibility();
-    }
 
-    if (this._enabled == 'auto') {
+      this._updateVisibility();
       this._connectSignals();
-    } else {
-      this._disconnectSignals();
     }
   },
 
