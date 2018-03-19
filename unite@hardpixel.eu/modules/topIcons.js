@@ -106,7 +106,7 @@ var TopIcons = new Lang.Class({
       button.remove_actor(icon);
       button.destroy();
 
-      this._addTrayIcon(null, icon, '', 0);
+      this._addTrayIcon(null, icon);
     }));
   },
 
@@ -140,7 +140,7 @@ var TopIcons = new Lang.Class({
     this._destroyIconsContainer();
   },
 
-  _addTrayIcon: function (o, icon, role, delay=1000) {
+  _addTrayIcon: function (o, icon, role) {
     this._icons.push(icon);
 
     let buttonMask    = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE;
@@ -155,10 +155,8 @@ var TopIcons = new Lang.Class({
       icon.click(Clutter.get_current_event());
     });
 
-    Mainloop.timeout_add(delay, Lang.bind(this, function () {
-      this._iconsContainer.container.show();
-    }));
-
+    this._iconsContainer.actor.show();
+    this._iconsContainer.container.show();
     this._iconsBoxLayout.insert_child_at_index(iconContainer, 0);
 
     let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
@@ -181,6 +179,7 @@ var TopIcons = new Lang.Class({
     this._icons.splice(this._icons.indexOf(icon), 1);
 
     if (this._icons.length === 0) {
+      this._iconsContainer.actor.hide();
       this._iconsContainer.container.hide();
     }
   },
