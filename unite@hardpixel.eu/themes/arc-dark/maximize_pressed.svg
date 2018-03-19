@@ -1,0 +1,11 @@
+<svg enable-background="new" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(-1290 -243.00002)">
+    <ellipse cx="1302" cy="255" fill="#5f697f" opacity=".45" rx="6" ry="6.000001"/>
+    <path d="m1302 248a7 7 0 0 0 -7 7 7 7 0 0 0 7 7 7 7 0 0 0 7-7 7 7 0 0 0 -7-7zm0 1a6 6 0 0 1 6 6 6 6 0 0 1 -6 6 6 6 0 0 1 -6-6 6 6 0 0 1 6-6z" fill="#15171c" opacity=".37"/>
+    <path d="m87.799705 972h3.381737c.450297 0 .816227.36847.818758.8188v3.3817zm2.407413 6.00692h-3.395078c-.450346 0-.818758-.36842-.818758-.81875v-3.39509z" fill="#c4c7cc" fill-rule="evenodd" transform="translate(1212.9998 -720)"/>
+  </g>
+  <path d="m4 3.99998h16v16h-16z" fill="none"/>
+  <circle cx="11.99999" cy="11.99998" fill="#5294e2" r="7"/>
+  <path d="m87.799705 972h3.381737c.450297 0 .816227.36847.818758.8188v3.3817zm2.407413 6.00692h-3.395078c-.450346 0-.818758-.36842-.818758-.81875v-3.39509z" fill="#fff" fill-rule="evenodd" transform="translate(-77.00021 -963.00002)"/>
+  <path d="m3.99999 3.99998h16v16h-16z" fill="none"/>
+</svg>
