@@ -77,21 +77,22 @@ var ActivitiesButton = new Lang.Class({
   },
 
   _updateVisibility: function() {
-    let hide = AppMenu._targetApp != null && !Main.overview.visibleTarget;
-
-    if (this._enabled == 'always') {
-      hide = true;
-    }
-
-    if (this._enabled == 'never') {
-      hide = false;
-    }
+    let menu = AppMenu._targetApp != null && !Main.overview.visibleTarget;
+    let hide = this._enabled == 'always' || menu;
 
     if (hide) {
-      this._activities.container.hide();
+      this._hideButton();
     } else {
-      this._activities.container.show();
+      this._showButton();
     }
+  },
+
+  _hideButton: function () {
+    this._activities.container.hide();
+  },
+
+  _showButton: function () {
+    this._activities.container.show();
   },
 
   _toggle: function() {
@@ -112,7 +113,7 @@ var ActivitiesButton = new Lang.Class({
     if (this._activated) {
       this._activated = false;
 
-      this._updateVisibility();
+      this._showButton();
       this._disconnectSignals();
     }
   }
