@@ -31,7 +31,7 @@ var WindowButtons = new Lang.Class({
     );
 
     this._settings.connect(
-      'changed::window-buttons-theme', Lang.bind(this, this._applyTheme)
+      'changed::window-buttons-theme', Lang.bind(this, this._updateTheme)
     );
   },
 
@@ -109,8 +109,6 @@ var WindowButtons = new Lang.Class({
         let index = Panel._rightBox.get_n_children() + 1;
         Panel._rightBox.insert_child_at_index(this._buttonsActor, index);
       }
-
-      this._applyTheme();
     }
   },
 
@@ -126,22 +124,29 @@ var WindowButtons = new Lang.Class({
     }
   },
 
-  _applyTheme: function () {
-    let themeContext = St.ThemeContext.get_for_stage(global.stage).get_theme();
+  _updateTheme: function () {
+    this._unloadTheme();
+    this._loadTheme();
 
-    if (this._buttonsTheme) {
-      themeContext.unload_stylesheet(this._buttonsTheme);
-    }
+    Main.loadTheme();
+  },
 
+  _loadTheme: function () {
+    let context = St.ThemeContext.get_for_stage(global.stage).get_theme();
     let theme   = this._settings.get_string('window-buttons-theme');
     let cssPath = GLib.build_filenamev([Unite.path, 'themes', theme, 'stylesheet.css']);
     let cssFile = Gio.file_new_for_path(cssPath);
 
     if (!this._buttonsTheme || this._buttonsTheme !== cssFile) {
       this._buttonsTheme = cssFile;
+      context.load_stylesheet(cssFile);
+    }
+  },
 
-      themeContext.load_stylesheet(cssFile);
-      Main.loadTheme();
+  _unloadTheme: function () {
+    if (this._buttonsTheme) {
+      let context = St.ThemeContext.get_for_stage(global.stage).get_theme();
+      context.unload_stylesheet(this._buttonsTheme);
     }
   },
 
@@ -214,6 +219,7 @@ var WindowButtons = new Lang.Class({
 
       this._activated = true;
       this._connectSignals();
+      this._loadTheme();
     }
   },
 
@@ -221,6 +227,7 @@ var WindowButtons = new Lang.Class({
     if (this._activated) {
       Mainloop.idle_add(Lang.bind(this, this._destroyButtons));
       this._disconnectSignals();
+      this._unloadTheme();
 
       this._activated = false;
       delete this._buttonsTheme;
