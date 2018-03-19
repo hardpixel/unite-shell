@@ -345,6 +345,8 @@
               <item id="5" translatable="yes">Arc Light</item>
               <item id="6" translatable="yes">United Dark</item>
               <item id="7" translatable="yes">United Light</item>
+              <item id="8" translatable="yes">Materia Dark</item>
+              <item id="9" translatable="yes">Materia Light</item>
             </items>
           </object>
           <packing>

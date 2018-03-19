@@ -8,6 +8,8 @@
     <value value="5" nick="arc-light" />
     <value value="6" nick="united-dark" />
     <value value="7" nick="united-light" />
+    <value value="8" nick="materia-dark" />
+    <value value="9" nick="materia-light" />
   </enum>
 
   <enum id="org.gnome.shell.extensions.unite.hideTitlebars">
