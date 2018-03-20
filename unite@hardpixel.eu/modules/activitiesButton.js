@@ -2,6 +2,7 @@ const Lang           = imports.lang;
 const Main           = imports.ui.main;
 const Shell          = imports.gi.Shell;
 const AppSystem      = Shell.AppSystem.get_default();
+const WindowTracker  = Shell.WindowTracker.get_default();
 const AppMenu        = Main.panel.statusArea.appMenu;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
@@ -34,6 +35,10 @@ var ActivitiesButton = new Lang.Class({
 
     this._asHandlerID = AppSystem.connect(
       'app-state-changed', Lang.bind(this, this._updateVisibility)
+    );
+
+    this._wtHandlerID = WindowTracker.connect(
+      'notify::focus-app', Lang.bind(this, this._updateVisibility)
     );
 
     this._ovHandlerIDs.push(Main.overview.connect(
@@ -70,6 +75,11 @@ var ActivitiesButton = new Lang.Class({
     if (this._asHandlerID) {
       AppSystem.disconnect(this._asHandlerID);
       delete this._asHandlerID;
+    }
+
+    if (this._wtHandlerID) {
+      WindowTracker.disconnect(this._wtHandlerID);
+      delete this._wtHandlerID;
     }
 
     this._ovHandlerIDs = [];
