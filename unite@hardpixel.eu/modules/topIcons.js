@@ -53,13 +53,13 @@ var TopIcons = new Lang.Class({
     this._iconsContainer.actor.add_actor(this._iconsBoxLayout);
 
     let parent = this._iconsContainer.actor.get_parent();
-    let agMenu = Main.panel.statusArea.aggregateMenu.actor.get_parent();
+    let agmenu = Main.panel.statusArea.aggregateMenu.actor.get_parent();
 
     if (parent) {
       parent.remove_actor(this._iconsContainer.actor);
     }
 
-    Panel._rightBox.insert_child_below(this._iconsContainer.actor, agMenu);
+    Panel._rightBox.insert_child_below(this._iconsContainer.actor, agmenu);
   },
 
   _destroyIconsContainer: function () {
