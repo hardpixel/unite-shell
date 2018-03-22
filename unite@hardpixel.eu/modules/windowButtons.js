@@ -106,8 +106,7 @@ var WindowButtons = new Lang.Class({
       }
 
       if (this._position == 'right') {
-        let index = Panel._rightBox.get_n_children() + 1;
-        Panel._rightBox.insert_child_at_index(this._buttonsActor, index);
+        Panel._rightBox.add_child(this._buttonsActor);
       }
     }
   },
