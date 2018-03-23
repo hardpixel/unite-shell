@@ -91,7 +91,6 @@ var DesktopName = new Lang.Class({
   _destroyLabel: function () {
     if (this._labelActor) {
       this._labelActor.destroy();
-      this._labelActor.destroy();
 
       delete this._labelActor;
       delete this._labelText;
