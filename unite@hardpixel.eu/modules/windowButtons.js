@@ -58,22 +58,18 @@ var WindowButtons = new Lang.Class({
   },
 
   _disconnectSignals: function() {
-    let handlers = Helpers.overviewSignalIDs();
+    if (this._dsHandlerID) {
+      global.display.disconnect(this._dsHandlerID);
+      delete this._dsHandlerID;
+    }
 
     this._ovHandlerIDs.forEach(function (handler) {
-      if (handlers.indexOf(handler) > -1) {
-        Main.overview.disconnect(handler);
-      }
+      Main.overview.disconnect(handler);
     });
 
     this._wmHandlerIDs.forEach(function (handler) {
       global.window_manager.disconnect(handler);
     });
-
-    if (this._dsHandlerID) {
-      global.display.disconnect(this._dsHandlerID);
-      delete this._dsHandlerID;
-    }
 
     this._ovHandlerIDs = [];
     this._wmHandlerIDs = [];
