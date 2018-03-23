@@ -27,12 +27,12 @@ var ActivitiesButton = new Lang.Class({
   },
 
   _connectSignals: function () {
-    this._asHandlerID = AppSystem.connect(
-      'app-state-changed', Lang.bind(this, this._updateVisibility)
-    );
-
     this._wtHandlerID = WindowTracker.connect(
       'notify::focus-app', Lang.bind(this, this._updateVisibility)
+    );
+
+    this._asHandlerID = AppSystem.connect(
+      'app-state-changed', Lang.bind(this, this._updateVisibility)
     );
 
     this._ovHandlerIDs.push(Main.overview.connect(
@@ -45,14 +45,14 @@ var ActivitiesButton = new Lang.Class({
   },
 
   _disconnectSignals: function() {
-    if (this._asHandlerID) {
-      AppSystem.disconnect(this._asHandlerID);
-      delete this._asHandlerID;
-    }
-
     if (this._wtHandlerID) {
       WindowTracker.disconnect(this._wtHandlerID);
       delete this._wtHandlerID;
+    }
+
+    if (this._asHandlerID) {
+      AppSystem.disconnect(this._asHandlerID);
+      delete this._asHandlerID;
     }
 
     this._ovHandlerIDs.forEach(function (handler) {
