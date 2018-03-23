@@ -12,7 +12,6 @@ const Convenience    = Unite.imports.convenience;
 
 var AppMenu = new Lang.Class({
   Name: 'Unite.AppMenu',
-  _wmHandlerIDs: [],
 
   _init: function() {
     this._appMenu  = Main.panel.statusArea.appMenu;
@@ -29,6 +28,10 @@ var AppMenu = new Lang.Class({
   },
 
   _connectSignals: function () {
+    this._wtHandlerID = WindowTracker.connect(
+      'notify::focus-app', Lang.bind(this, this._showMenu)
+    );
+
     this._dsHandlerID = global.display.connect(
       'notify::focus-window', Lang.bind(this, this._updateMenu)
     );
@@ -37,21 +40,13 @@ var AppMenu = new Lang.Class({
       'app-state-changed', Lang.bind(this, this._showMenu)
     );
 
-    this._wtHandlerID = WindowTracker.connect(
-      'notify::focus-app', Lang.bind(this, this._showMenu)
-    );
-
     this._ovHandlerID = Main.overview.connect(
       'hiding', Lang.bind(this, this._showMenu)
     );
 
-    this._wmHandlerIDs.push(global.window_manager.connect(
-      'destroy', Lang.bind(this, this._updateMenu)
-    ));
-
-    this._wmHandlerIDs.push(global.window_manager.connect(
+    this._wmHandlerID = global.window_manager.connect(
       'size-change', Lang.bind(this, this._updateMenu)
-    ));
+    );
   },
 
   _disconnectSignals: function() {
@@ -64,6 +59,11 @@ var AppMenu = new Lang.Class({
       }
     });
 
+    if (this._wtHandlerID) {
+      WindowTracker.disconnect(this._wtHandlerID);
+      delete this._wtHandlerID;
+    }
+
     if (this._dsHandlerID) {
       global.display.disconnect(this._dsHandlerID);
       delete this._dsHandlerID;
@@ -74,21 +74,15 @@ var AppMenu = new Lang.Class({
       delete this._asHandlerID;
     }
 
-    if (this._wtHandlerID) {
-      WindowTracker.disconnect(this._wtHandlerID);
-      delete this._wtHandlerID;
-    }
-
     if (this._ovHandlerID) {
       Main.overview.disconnect(this._ovHandlerID);
       delete this._ovHandlerID;
     }
 
-    this._wmHandlerIDs.forEach(function (handler) {
-      global.window_manager.disconnect(handler);
-    });
-
-    this._wmHandlerIDs = [];
+    if (this._wmHandlerID) {
+      global.window_manager.disconnect(this._wmHandlerID);
+      delete this._wmHandlerID;
+    }
   },
 
   _showMenu: function () {
