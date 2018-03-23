@@ -6,12 +6,10 @@ const WindowTracker  = Shell.WindowTracker.get_default();
 const AppMenu        = Main.panel.statusArea.appMenu;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
-const Helpers        = Unite.imports.helpers;
 const Convenience    = Unite.imports.convenience;
 
 var ActivitiesButton = new Lang.Class({
   Name: 'Unite.ActivitiesButton',
-  _wmHandlerIDs: [],
   _ovHandlerIDs: [],
 
   _init: function() {
@@ -29,10 +27,6 @@ var ActivitiesButton = new Lang.Class({
   },
 
   _connectSignals: function () {
-    this._dsHandlerID = global.display.connect(
-      'notify::focus-window', Lang.bind(this, this._updateVisibility)
-    );
-
     this._asHandlerID = AppSystem.connect(
       'app-state-changed', Lang.bind(this, this._updateVisibility)
     );
@@ -48,30 +42,9 @@ var ActivitiesButton = new Lang.Class({
     this._ovHandlerIDs.push(Main.overview.connect(
       'hiding', Lang.bind(this, this._updateVisibility)
     ));
-
-    this._wmHandlerIDs.push(global.window_manager.connect(
-      'destroy', Lang.bind(this, this._updateVisibility)
-    ));
   },
 
   _disconnectSignals: function() {
-    let handlers = Helpers.overviewSignalIDs();
-
-    this._ovHandlerIDs.forEach(function (handler) {
-      if (handlers.indexOf(handler) > -1) {
-        Main.overview.disconnect(handler);
-      }
-    });
-
-    this._wmHandlerIDs.forEach(function (handler) {
-      global.window_manager.disconnect(handler);
-    });
-
-    if (this._dsHandlerID) {
-      global.display.disconnect(this._dsHandlerID);
-      delete this._dsHandlerID;
-    }
-
     if (this._asHandlerID) {
       AppSystem.disconnect(this._asHandlerID);
       delete this._asHandlerID;
@@ -82,8 +55,11 @@ var ActivitiesButton = new Lang.Class({
       delete this._wtHandlerID;
     }
 
+    this._ovHandlerIDs.forEach(function (handler) {
+      Main.overview.disconnect(handler);
+    });
+
     this._ovHandlerIDs = [];
-    this._wmHandlerIDs = [];
   },
 
   _updateVisibility: function() {
