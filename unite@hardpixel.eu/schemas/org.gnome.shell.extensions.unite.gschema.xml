@@ -65,6 +65,11 @@
       <summary>Autofocus windows that demand attention.</summary>
     </key>
 
+    <key name="show-desktop-name" type="b">
+      <default>true</default>
+      <summary>Show desktop name in top bar.</summary>
+    </key>
+
     <key name="show-window-title" enum="org.gnome.shell.extensions.unite.showTitle">
       <default>"maximized"</default>
       <summary>Use window title to replace the app-menu label.</summary>

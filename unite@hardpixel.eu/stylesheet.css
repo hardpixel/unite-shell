@@ -50,6 +50,10 @@
   margin-bottom: 2px;
 }
 
+#panel .desktop-name {
+  padding: 0 8px;
+}
+
 #panel #appMenu {
   margin-left: 8px;
   margin-right: 3px;

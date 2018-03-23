@@ -1,5 +1,6 @@
 const Lang           = imports.lang;
 const Main           = imports.ui.main;
+const St             = imports.gi.St;
 const Shell          = imports.gi.Shell;
 const AppSystem      = Shell.AppSystem.get_default();
 const WindowTracker  = Shell.WindowTracker.get_default();
@@ -9,13 +10,12 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
 const Convenience    = Unite.imports.convenience;
 
-var ActivitiesButton = new Lang.Class({
-  Name: 'Unite.ActivitiesButton',
+var DesktopName = new Lang.Class({
+  Name: 'Unite.DesktopName',
   _ovHandlerIDs: [],
 
   _init: function() {
-    this._activities = Panel.statusArea.activities;
-    this._settings   = Convenience.getSettings();
+    this._settings = Convenience.getSettings();
 
     this._toggle();
     this._connectSettings();
@@ -23,7 +23,7 @@ var ActivitiesButton = new Lang.Class({
 
   _connectSettings: function() {
     this._settings.connect(
-      'changed::hide-activities-button', Lang.bind(this, this._toggle)
+      'changed::show-desktop-name', Lang.bind(this, this._toggle)
     );
   },
 
@@ -64,37 +64,51 @@ var ActivitiesButton = new Lang.Class({
   },
 
   _updateVisibility: function() {
-    let menu = AppMenu._targetApp != null && !Main.overview.visibleTarget;
-    let hide = this._enabled == 'always' || menu;
+    let show = AppMenu._targetApp == null && !Main.overview.visibleTarget;
 
-    if (!hide && Panel._desktopName) {
-      hide = AppMenu._targetApp == null && !Main.overview.visibleTarget;
-    }
-
-    if (hide) {
-      this._hideButton();
+    if (show) {
+      this._labelActor.show();
     } else {
-      this._showButton();
+      this._labelActor.hide();
     }
   },
 
-  _hideButton: function () {
-    this._activities.container.hide();
+  _createLabel: function () {
+    if (!this._labelActor) {
+      this._labelActor = new St.Bin({ style_class: 'desktop-name' });
+      this._labelActor.hide();
+
+      this._labelText = new St.Label({ text: 'GNOME Desktop' });
+      this._labelActor.add_actor(this._labelText);
+
+      let activities = Panel.statusArea.activities.actor.get_parent();
+      Panel._leftBox.insert_child_below(this._labelActor, activities);
+
+      Panel._desktopName = true;
+    }
   },
 
-  _showButton: function () {
-    this._activities.container.show();
+  _destroyLabel: function () {
+    if (this._labelActor) {
+      this._labelActor.destroy();
+      this._labelActor.destroy();
+
+      delete this._labelActor;
+      delete this._labelText;
+      delete Panel._desktopName;
+    }
   },
 
   _toggle: function() {
-    this._enabled = this._settings.get_string('hide-activities-button');
-    this._enabled != 'never' ? this._activate() : this.destroy();
+    this._enabled = this._settings.get_boolean('show-desktop-name');
+    this._enabled ? this._activate() : this.destroy();
   },
 
   _activate: function() {
     if (!this._activated) {
       this._activated = true;
 
+      this._createLabel();
       this._updateVisibility();
       this._connectSignals();
     }
@@ -104,7 +118,7 @@ var ActivitiesButton = new Lang.Class({
     if (this._activated) {
       this._activated = false;
 
-      this._showButton();
+      this._destroyLabel();
       this._disconnectSignals();
     }
   }
