@@ -36,11 +36,11 @@ var ActivitiesButton = new Lang.Class({
       'app-state-changed', Lang.bind(this, this._updateVisibility)
     );
 
-    ['showing', 'hiding'].forEach(function (eventName) {
+    ['showing', 'hiding'].forEach(Lang.bind(this, function (eventName) {
       this._ovHandlerIDs.push(Main.overview.connect(
         eventName, Lang.bind(this, this._updateVisibility)
       ));
-    });
+    }));
   },
 
   _disconnectSignals: function() {
