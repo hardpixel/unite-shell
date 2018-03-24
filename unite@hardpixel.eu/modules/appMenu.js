@@ -1,6 +1,5 @@
 const Lang           = imports.lang;
 const Main           = imports.ui.main;
-const Mainloop       = imports.mainloop;
 const Gtk            = imports.gi.Gtk;
 const Shell          = imports.gi.Shell;
 const WindowTracker  = Shell.WindowTracker.get_default();
@@ -144,23 +143,21 @@ var AppMenu = new Lang.Class({
 
   _activate: function() {
     if (!this._activated) {
-      Mainloop.idle_add(Lang.bind(this, this._showMenu));
-      Mainloop.idle_add(Lang.bind(this, this._updateMenu));
-
       this._activated = true;
+
+      this._updateMenu();
       this._connectSignals();
     }
   },
 
   destroy: function() {
     if (this._activated) {
-      Mainloop.idle_add(Lang.bind(this, Lang.bind(this, function () {
-        this._showMenu();
-        delete this._appMenu._nonSensitive;
-      })));
-
       this._activated = false;
+
+      this._showMenu();
       this._disconnectSignals();
+
+      delete this._appMenu._nonSensitive;
     }
   }
 });

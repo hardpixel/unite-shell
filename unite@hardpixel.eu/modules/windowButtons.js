@@ -1,6 +1,5 @@
 const Main           = imports.ui.main;
 const Meta           = imports.gi.Meta;
-const Mainloop       = imports.mainloop;
 const Panel          = Main.panel;
 const AppMenu        = Panel.statusArea.appMenu;
 const St             = imports.gi.St;
@@ -208,22 +207,23 @@ var WindowButtons = new Lang.Class({
 
   _activate: function() {
     if (!this._activated) {
-      Mainloop.idle_add(Lang.bind(this, this._createButtons));
-      Mainloop.idle_add(Lang.bind(this, this._updateVisibility));
-
       this._activated = true;
-      this._connectSignals();
+
+      this._createButtons();
       this._loadTheme();
+      this._updateVisibility();
+      this._connectSignals();
     }
   },
 
   destroy: function() {
     if (this._activated) {
-      Mainloop.idle_add(Lang.bind(this, this._destroyButtons));
-      this._disconnectSignals();
-      this._unloadTheme();
-
       this._activated = false;
+
+      this._destroyButtons();
+      this._unloadTheme();
+      this._disconnectSignals();
+
       delete this._buttonsTheme;
     }
   }
