@@ -72,6 +72,8 @@ var WindowButtons = new Lang.Class({
   },
 
   _createButtons: function () {
+    [this._position, this._buttons] = Helpers.getWindowButtons();
+
     if (this._buttons && !this._buttonsActor) {
       this._buttonsActor = new St.Bin();
       this._buttonsBox   = new St.BoxLayout({ style_class: 'window-buttons-box' });
@@ -206,8 +208,6 @@ var WindowButtons = new Lang.Class({
 
   _activate: function() {
     if (!this._activated) {
-      [this._position, this._buttons] = Helpers.getWindowButtons();
-
       Mainloop.idle_add(Lang.bind(this, this._createButtons));
       Mainloop.idle_add(Lang.bind(this, this._updateVisibility));
 
