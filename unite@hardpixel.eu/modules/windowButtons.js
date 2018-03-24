@@ -40,21 +40,17 @@ var WindowButtons = new Lang.Class({
       'notify::focus-window', Lang.bind(this, this._updateVisibility)
     );
 
-    this._ovHandlerIDs.push(Main.overview.connect(
-      'showing', Lang.bind(this, this._updateVisibility)
-    ));
+    ['showing', 'hiding'].forEach(function (eventName) {
+      this._ovHandlerIDs.push(Main.overview.connect(
+        eventName, Lang.bind(this, this._updateVisibility)
+      ));
+    });
 
-    this._ovHandlerIDs.push(Main.overview.connect(
-      'hiding', Lang.bind(this, this._updateVisibility)
-    ));
-
-    this._wmHandlerIDs.push(global.window_manager.connect(
-      'destroy', Lang.bind(this, this._updateVisibility)
-    ));
-
-    this._wmHandlerIDs.push(global.window_manager.connect(
-      'size-change', Lang.bind(this, this._updateVisibility)
-    ));
+    ['size-change', 'destroy'].forEach(function (eventName) {
+      this._wmHandlerIDs.push(global.window_manager.connect(
+        eventName, Lang.bind(this, this._updateVisibility)
+      ));
+    });
   },
 
   _disconnectSignals: function() {

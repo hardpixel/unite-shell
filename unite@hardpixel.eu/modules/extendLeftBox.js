@@ -23,7 +23,9 @@ var ExtendLeftBox = new Lang.Class({
   },
 
   _connnectSignals: function() {
-    this._handlerID = Panel.actor.connect('allocate', Lang.bind(this, this._extendBox));
+    this._handlerID = Panel.actor.connect(
+      'allocate', Lang.bind(this, this._extendBox)
+    );
   },
 
   _disconnectSignals: function() {
