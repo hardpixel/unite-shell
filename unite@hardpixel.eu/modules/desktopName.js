@@ -8,6 +8,7 @@ const Panel          = Main.panel;
 const AppMenu        = Panel.statusArea.appMenu;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
+const Helpers        = Unite.imports.helpers;
 const Convenience    = Unite.imports.convenience;
 
 var DesktopName = new Lang.Class({
@@ -44,6 +45,8 @@ var DesktopName = new Lang.Class({
   },
 
   _disconnectSignals: function() {
+    this._ovHandlerIDs = Helpers.overviewSignals(this._ovHandlerIDs);
+
     if (this._wtHandlerID) {
       WindowTracker.disconnect(this._wtHandlerID);
       delete this._wtHandlerID;

@@ -53,6 +53,8 @@ var WindowButtons = new Lang.Class({
   },
 
   _disconnectSignals: function() {
+    this._ovHandlerIDs = Helpers.overviewSignals(this._ovHandlerIDs);
+
     if (this._dsHandlerID) {
       global.display.disconnect(this._dsHandlerID);
       delete this._dsHandlerID;

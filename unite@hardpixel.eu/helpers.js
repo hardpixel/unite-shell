@@ -68,6 +68,18 @@ function collectWindowButtons(layout_items) {
   return items;
 }
 
+function overviewSignals(handlers) {
+  let signals = [];
+
+  Main.overview._signalConnections.forEach(function (item) {
+    if (handlers.indexOf(item.id) > -1 && !item.disconnected) {
+      signals.push(item.id);
+    }
+  });
+
+  return signals;
+}
+
 function isMaximized(win, match_state) {
   let check = false;
   let flags = Meta.MaximizeFlags;
