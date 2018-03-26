@@ -1,6 +1,7 @@
 const Lang           = imports.lang;
 const Main           = imports.ui.main;
 const Gtk            = imports.gi.Gtk;
+const GtkSettings    = Gtk.Settings.get_default();
 const Shell          = imports.gi.Shell;
 const WindowTracker  = Shell.WindowTracker.get_default();
 const AppSystem      = Shell.AppSystem.get_default();
@@ -13,8 +14,9 @@ var AppMenu = new Lang.Class({
   Name: 'Unite.AppMenu',
 
   _init: function() {
-    this._appMenu  = Main.panel.statusArea.appMenu;
-    this._settings = Convenience.getSettings();
+    this._panelMenu = GtkSettings.gtk_shell_shows_app_menu;
+    this._appMenu   = Main.panel.statusArea.appMenu;
+    this._settings  = Convenience.getSettings();
 
     this._toggle();
     this._connectSettings();
@@ -27,6 +29,10 @@ var AppMenu = new Lang.Class({
   },
 
   _connectSignals: function () {
+    this._gsHandlerID = GtkSettings.connect(
+      'notify::gtk-shell-shows-app-menu', Lang.bind(this, this._syncMenu)
+    );
+
     this._wtHandlerID = WindowTracker.connect(
       'notify::focus-app', Lang.bind(this, this._showMenu)
     );
@@ -58,6 +64,11 @@ var AppMenu = new Lang.Class({
       }
     });
 
+    if (this._gsHandlerID) {
+      GtkSettings.disconnect(this._gsHandlerID);
+      delete this._gsHandlerID;
+    }
+
     if (this._wtHandlerID) {
       WindowTracker.disconnect(this._wtHandlerID);
       delete this._wtHandlerID;
@@ -84,11 +95,12 @@ var AppMenu = new Lang.Class({
     }
   },
 
-  _showMenu: function () {
-    let settings = Gtk.Settings.get_default();
-    let showMenu = settings.gtk_shell_shows_app_menu;
+  _syncMenu: function () {
+    this._panelMenu = GtkSettings.gtk_shell_shows_app_menu;
+  },
 
-    if (showMenu) {
+  _showMenu: function () {
+    if (this._panelMenu) {
       if (this._appMenu._nonSensitive) {
         this._appMenu.setSensitive(true);
         this._appMenu._nonSensitive = false;
