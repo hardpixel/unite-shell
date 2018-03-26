@@ -26,10 +26,6 @@ var WindowButtons = new Lang.Class({
   },
 
   _connectSettings: function() {
-    this._dwmprefs.connect(
-      'changed::button-layout', Lang.bind(this, this._updateButtons)
-    );
-
     this._settings.connect(
       'changed::show-window-buttons', Lang.bind(this, this._toggle)
     );
@@ -40,6 +36,10 @@ var WindowButtons = new Lang.Class({
   },
 
   _connectSignals: function () {
+    this._dpHandlerID = this._dwmprefs.connect(
+      'changed::button-layout', Lang.bind(this, this._updateButtons)
+    );
+
     this._dsHandlerID = global.display.connect(
       'notify::focus-window', Lang.bind(this, this._updateVisibility)
     );
@@ -59,6 +59,11 @@ var WindowButtons = new Lang.Class({
 
   _disconnectSignals: function() {
     this._ovHandlerIDs = Helpers.overviewSignals(this._ovHandlerIDs);
+
+    if (this._dpHandlerID) {
+      this._dwmprefs.disconnect(this._dpHandlerID);
+      delete this._dpHandlerID;
+    }
 
     if (this._dsHandlerID) {
       global.display.disconnect(this._dsHandlerID);
