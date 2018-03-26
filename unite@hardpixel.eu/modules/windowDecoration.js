@@ -41,14 +41,13 @@ var WindowDecoration = new Lang.Class({
   _disconnectSignals: function() {
     if (this._dsHandlerID) {
       global.display.disconnect(this._dsHandlerID);
+      delete this._dsHandlerID;
     }
 
     if (this._wmHandlerID) {
       global.window_manager.disconnect(this._wmHandlerID);
+      delete this._wmHandlerID;
     }
-
-    delete this._dsHandlerID;
-    delete this._wmHandlerID;
   },
 
   _toggleTitlebar: function (id, hide) {
