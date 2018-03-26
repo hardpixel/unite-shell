@@ -18,6 +18,7 @@ var WindowButtons = new Lang.Class({
   _ovHandlerIDs: [],
 
   _init: function() {
+    this._dwmprefs = new Gio.Settings({ schema_id: 'org.gnome.desktop.wm.preferences' });
     this._settings = Convenience.getSettings();
 
     this._toggle();
@@ -25,6 +26,10 @@ var WindowButtons = new Lang.Class({
   },
 
   _connectSettings: function() {
+    this._dwmprefs.connect(
+      'changed::button-layout', Lang.bind(this, this._updateButtons)
+    );
+
     this._settings.connect(
       'changed::show-window-buttons', Lang.bind(this, this._toggle)
     );
@@ -115,6 +120,13 @@ var WindowButtons = new Lang.Class({
     if (this._buttonsActor) {
       this._buttonsActor.destroy();
       delete this._buttonsActor;
+    }
+  },
+
+  _updateButtons: function () {
+    if (this._buttonsActor) {
+      this._destroyButtons();
+      this._createButtons();
     }
   },
 
