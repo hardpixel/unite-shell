@@ -132,6 +132,7 @@ var AppMenu = new Lang.Class({
 
   _updateTitle: function () {
     let title     = null;
+    let current   = this._appMenu._label.get_text();
     let maximized = Helpers.isMaximized(this._activeWindow, this._enabled);
     let always    = this._enabled == 'always' && this._activeWindow;
 
@@ -139,11 +140,11 @@ var AppMenu = new Lang.Class({
       title = this._activeWindow.title;
     }
 
-    if (this._activeApp && !title) {
+    if (!title && this._activeApp) {
       title = this._activeApp.get_name();
     }
 
-    if (title) {
+    if (title && title != current) {
       this._appMenu._label.set_text(title);
     }
   },
