@@ -2,6 +2,7 @@ const Lang           = imports.lang;
 const Main           = imports.ui.main;
 const Clutter        = imports.gi.Clutter;
 const St             = imports.gi.St;
+const MessageBanner  = Main.messageTray._bannerBin;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
 const Convenience    = Unite.imports.convenience;
@@ -10,8 +11,7 @@ var MessageTray = new Lang.Class({
   Name: 'Unite.MessageTray',
 
   _init: function() {
-    this._container = Main.messageTray._bannerBin;
-    this._settings  = Convenience.getSettings();
+    this._settings = Convenience.getSettings();
 
     this._toggle();
     this._connectSettings();
@@ -30,16 +30,16 @@ var MessageTray = new Lang.Class({
       right:  Clutter.ActorAlign.END
     };
 
-    this._container.set_x_align(alignments[this._position]);
+    MessageBanner.set_x_align(alignments[this._position]);
   },
 
   _updateWidth: function () {
     let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-    this._container.set_width(390 * scale);
+    MessageBanner.set_width(390 * scale);
   },
 
   _resetWidth: function () {
-    this._container.set_width(-1);
+    MessageBanner.set_width(-1);
   },
 
   _toggle: function() {
