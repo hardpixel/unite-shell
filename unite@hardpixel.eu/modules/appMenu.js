@@ -120,14 +120,16 @@ var AppMenu = new Lang.Class({
     this._activeApp    = WindowTracker.focus_app;
     this._activeWindow = global.display.focus_window;
 
-    if (this._activeWindow && !this._activeWindow._updateTitleID) {
-      this._activeWindow._updateTitleID = this._activeWindow.connect(
-        'notify::title', Lang.bind(this, this._updateTitle)
-      );
-    }
+    if (Helpers.isValidWindow(this._activeWindow)) {
+      if (this._activeWindow && !this._activeWindow._updateTitleID) {
+        this._activeWindow._updateTitleID = this._activeWindow.connect(
+          'notify::title', Lang.bind(this, this._updateTitle)
+        );
+      }
 
-    this._updateTitle();
-    this._showMenu();
+      this._updateTitle();
+      this._showMenu();
+    }
   },
 
   _updateTitle: function () {
