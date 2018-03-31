@@ -18,7 +18,7 @@ var WindowButtons = new Lang.Class({
   _ovHandlerIDs: [],
 
   _init: function() {
-    this._dwmprefs = new Gio.Settings({ schema_id: 'org.gnome.desktop.wm.preferences' });
+    this._dwmprefs = Helpers.wmPreferences();
     this._settings = Convenience.getSettings();
 
     this._toggle();

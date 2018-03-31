@@ -3,6 +3,13 @@ const Gio    = imports.gi.Gio;
 const Main   = imports.ui.main;
 const Meta   = imports.gi.Meta;
 
+function wmPreferences() {
+  let schema = 'org.gnome.desktop.wm.preferences';
+  let prefs  = new Gio.Settings({ schema_id: schema });
+
+  return prefs;
+}
+
 function isValidWindow(win) {
   let valid = false;
 
@@ -41,7 +48,7 @@ function getAllWindows() {
 }
 
 function getWindowButtons(return_only) {
-  let prefs  = new Gio.Settings({ schema_id: 'org.gnome.desktop.wm.preferences' });
+  let prefs  = wmPreferences();
   let layout = prefs.get_string('button-layout');
   let order  = layout.replace(/ /g, '').split(':');
 
