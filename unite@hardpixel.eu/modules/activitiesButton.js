@@ -4,6 +4,7 @@ const Shell          = imports.gi.Shell;
 const AppSystem      = Shell.AppSystem.get_default();
 const WindowTracker  = Shell.WindowTracker.get_default();
 const Panel          = Main.panel;
+const Activities     = Panel.statusArea.activities;
 const AppMenu        = Panel.statusArea.appMenu;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
@@ -15,8 +16,7 @@ var ActivitiesButton = new Lang.Class({
   _ovHandlerIDs: [],
 
   _init: function() {
-    this._activities = Panel.statusArea.activities;
-    this._settings   = Convenience.getSettings();
+    this._settings = Convenience.getSettings();
 
     this._toggle();
     this._connectSettings();
@@ -65,14 +65,16 @@ var ActivitiesButton = new Lang.Class({
   },
 
   _updateVisibility: function() {
-    let menu = AppMenu._targetApp != null && !Main.overview.visibleTarget;
-    let hide = this._enabled == 'always' || menu;
+    let overview = Main.overview.visibleTarget;
+    let target   = AppMenu._targetApp != null;
+    let appmenu  = target && !overview;
+    let hidden   = this._enabled == 'always' || appmenu;
 
-    if (!hide && Panel._desktopName) {
-      hide = AppMenu._targetApp == null && !Main.overview.visibleTarget;
+    if (!hidden && Panel._desktopName) {
+      hidden = !target && !overview;
     }
 
-    if (hide) {
+    if (hidden) {
       this._hideButton();
     } else {
       this._showButton();
@@ -80,11 +82,11 @@ var ActivitiesButton = new Lang.Class({
   },
 
   _hideButton: function () {
-    this._activities.container.hide();
+    Activities.container.hide();
   },
 
   _showButton: function () {
-    this._activities.container.show();
+    Activities.container.show();
   },
 
   _toggle: function() {
