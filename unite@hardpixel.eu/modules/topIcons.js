@@ -9,6 +9,7 @@ const PanelMenu      = imports.ui.panelMenu;
 const Panel          = Main.panel;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
+const Helpers        = Unite.imports.helpers;
 const Convenience    = Unite.imports.convenience;
 
 var TopIcons = new Lang.Class({
@@ -140,6 +141,7 @@ var TopIcons = new Lang.Class({
 
     let buttonMask    = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE;
     let iconContainer = new St.Button({ child: icon, button_mask: buttonMask });
+    let iconSize      = Helpers.scaleSize(18);
 
     icon.connect('destroy', function() {
       icon.clear_effects();
@@ -154,12 +156,9 @@ var TopIcons = new Lang.Class({
     this._iconsContainer.container.show();
     this._iconsBoxLayout.insert_child_at_index(iconContainer, 0);
 
-    let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-    let size  = 18 * scale;
-
     icon.reactive = true;
-    icon.get_parent().set_size(size, size);
-    icon.set_size(size, size);
+    icon.get_parent().set_size(iconSize, iconSize);
+    icon.set_size(iconSize, iconSize);
   },
 
   _removeTrayIcon: function (o, icon) {

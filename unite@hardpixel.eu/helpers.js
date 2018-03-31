@@ -1,5 +1,6 @@
 const Config = imports.misc.config;
 const Gio    = imports.gi.Gio;
+const St     = imports.gi.St;
 const Main   = imports.ui.main;
 const Meta   = imports.gi.Meta;
 
@@ -133,4 +134,11 @@ function isMaximized(win, match_state) {
 function getVersion() {
   let version = Config.PACKAGE_VERSION.match(/\d+.\d+/);
   return parseFloat(version);
+}
+
+function scaleSize(initial_size) {
+  let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+  let size  = initial_size * scale;
+
+  return size;
 }

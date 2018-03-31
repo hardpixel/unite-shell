@@ -1,10 +1,10 @@
 const Lang           = imports.lang;
 const Main           = imports.ui.main;
 const Clutter        = imports.gi.Clutter;
-const St             = imports.gi.St;
 const MessageBanner  = Main.messageTray._bannerBin;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
+const Helpers        = Unite.imports.helpers;
 const Convenience    = Unite.imports.convenience;
 
 var MessageTray = new Lang.Class({
@@ -34,8 +34,8 @@ var MessageTray = new Lang.Class({
   },
 
   _updateWidth: function () {
-    let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-    MessageBanner.set_width(390 * scale);
+    let width = Helpers.scaleSize(390);
+    MessageBanner.set_width(width);
   },
 
   _resetWidth: function () {
