@@ -15,8 +15,8 @@ var ApplicationMenu = new Lang.Class({
   Name: 'Unite.ApplicationMenu',
 
   _init: function() {
-    this._panelMenu = GtkSettings.gtk_shell_shows_app_menu;
-    this._settings  = Convenience.getSettings();
+    this._appMenu  = GtkSettings.gtk_shell_shows_app_menu;
+    this._settings = Convenience.getSettings();
 
     this._toggle();
     this._connectSettings();
@@ -96,11 +96,11 @@ var ApplicationMenu = new Lang.Class({
   },
 
   _syncMenu: function () {
-    this._panelMenu = GtkSettings.gtk_shell_shows_app_menu;
+    this._appMenu = GtkSettings.gtk_shell_shows_app_menu;
   },
 
   _showMenu: function () {
-    if (this._panelMenu) {
+    if (this._appMenu) {
       if (AppMenu._nonSensitive) {
         AppMenu.setSensitive(true);
         AppMenu._nonSensitive = false;
