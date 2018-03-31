@@ -3,6 +3,23 @@ const Gio    = imports.gi.Gio;
 const Main   = imports.ui.main;
 const Meta   = imports.gi.Meta;
 
+function isValidWindow(win) {
+  let valid = false;
+
+  if (win) {
+    let valid_types = [
+      Meta.WindowType.NORMAL,
+      Meta.WindowType.DIALOG,
+      Meta.WindowType.MODAL_DIALOG,
+      Meta.WindowType.UTILITY
+    ];
+
+    valid = valid_types.indexOf(win.window_type) > -1;
+  }
+
+  return valid;
+}
+
 function getXWindow(win) {
   try {
     return win.get_description().match(/0x[0-9a-f]+/)[0];
@@ -17,7 +34,7 @@ function getAllWindows() {
   });
 
   windows = windows.filter(function(win) {
-    return win.window_type !== Meta.WindowType.DESKTOP;
+    return isValidWindow(win);
   });
 
   return windows;
