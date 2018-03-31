@@ -71,22 +71,26 @@ var WindowDecoration = new Lang.Class({
   },
 
   _updateTitlebar: function () {
-    this._activeWindow = global.display.focus_window;
+    let window = global.display.focus_window;
 
-    if (Helpers.isMaximized(this._activeWindow, this._enabled)) {
-      this._hideTitlebar(this._activeWindow);
-    } else {
-      this._showTitlebar(this._activeWindow);
+    if (Helpers.isValidWindow(window)) {
+      if (Helpers.isMaximized(window, this._enabled)) {
+        this._hideTitlebar(window);
+      } else {
+        this._showTitlebar(window);
+      }
     }
   },
 
   _showTitlebar: function (win) {
-    if (win && !win._doingMaxUnmax) {
+    let undecorated = win && win._decorationOFF;
+
+    if (undecorated && !win._doingMaxUnmax) {
       if (!win._windowXID) {
         win._windowXID = Helpers.getXWindow(win);
       }
 
-      if (win._windowXID && win._decorationOFF) {
+      if (win._windowXID) {
         win._decorationOFF = false;
 
         this._toggleTitlebar(win._windowXID, false);
@@ -96,12 +100,14 @@ var WindowDecoration = new Lang.Class({
   },
 
   _hideTitlebar: function (win) {
-    if (win && !win._doingMaxUnmax && win.decorated) {
+    let decorated = win && !win._decorationOFF && win.decorated;
+
+    if (decorated && !win._doingMaxUnmax) {
       if (!win._windowXID) {
         win._windowXID = Helpers.getXWindow(win);
       }
 
-      if (win._windowXID && !win._decorationOFF) {
+      if (win._windowXID) {
         win._decorationOFF = true;
 
         this._toggleTitlebar(win._windowXID, true);
