@@ -5,6 +5,7 @@ const GtkSettings    = Gtk.Settings.get_default();
 const Shell          = imports.gi.Shell;
 const WindowTracker  = Shell.WindowTracker.get_default();
 const AppSystem      = Shell.AppSystem.get_default();
+const AppMenu        = Main.panel.statusArea.appMenu;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
 const Helpers        = Unite.imports.helpers;
@@ -15,7 +16,6 @@ var ApplicationMenu = new Lang.Class({
 
   _init: function() {
     this._panelMenu = GtkSettings.gtk_shell_shows_app_menu;
-    this._appMenu   = Main.panel.statusArea.appMenu;
     this._settings  = Convenience.getSettings();
 
     this._toggle();
@@ -101,17 +101,18 @@ var ApplicationMenu = new Lang.Class({
 
   _showMenu: function () {
     if (this._panelMenu) {
-      if (this._appMenu._nonSensitive) {
-        this._appMenu.setSensitive(true);
-        this._appMenu._nonSensitive = false;
+      if (AppMenu._nonSensitive) {
+        AppMenu.setSensitive(true);
+        AppMenu._nonSensitive = false;
       }
     } else {
-      let targetApp = this._appMenu._targetApp != null;
+      let visible = AppMenu._targetApp != null && !Main.overview.visibleTarget;
 
-      if (!this._appMenu._visible && targetApp && !Main.overview.visibleTarget) {
-        this._appMenu.show();
-        this._appMenu.setSensitive(false);
-        this._appMenu._nonSensitive = true;
+      if (!AppMenu._visible && visible) {
+        AppMenu.show();
+        AppMenu.setSensitive(false);
+
+        AppMenu._nonSensitive = true;
       }
     }
   },
@@ -134,7 +135,7 @@ var ApplicationMenu = new Lang.Class({
 
   _updateTitle: function () {
     let title     = null;
-    let current   = this._appMenu._label.get_text();
+    let current   = AppMenu._label.get_text();
     let maximized = Helpers.isMaximized(this._activeWindow, this._enabled);
     let always    = this._enabled == 'always' && this._activeWindow;
 
@@ -147,7 +148,7 @@ var ApplicationMenu = new Lang.Class({
     }
 
     if (title && title != current) {
-      this._appMenu._label.set_text(title);
+      AppMenu._label.set_text(title);
     }
   },
 
@@ -172,7 +173,7 @@ var ApplicationMenu = new Lang.Class({
       this._showMenu();
       this._disconnectSignals();
 
-      delete this._appMenu._nonSensitive;
+      delete AppMenu._nonSensitive;
     }
   }
 });
