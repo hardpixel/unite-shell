@@ -202,9 +202,11 @@ var WindowButtons = new Lang.Class({
     this._activeWindow = global.display.focus_window;
 
     if (this._buttonsActor) {
-      let visible = AppMenu._targetApp != null && !Main.overview.visibleTarget;
+      let valid    = Helpers.isValidWindow(this._activeWindow);
+      let overview = Main.overview.visibleTarget;
+      let visible  = AppMenu._targetApp != null && !overview;
 
-      if (!Main.overview.visibleTarget) {
+      if (!overview && valid) {
         let maximized = Helpers.isMaximized(this._activeWindow, this._enabled);
         let always    = this._enabled == 'always' && this._activeWindow;
 
