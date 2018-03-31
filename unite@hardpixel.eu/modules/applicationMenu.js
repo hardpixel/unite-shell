@@ -15,7 +15,6 @@ var ApplicationMenu = new Lang.Class({
   Name: 'Unite.ApplicationMenu',
 
   _init: function() {
-    this._appMenu  = GtkSettings.gtk_shell_shows_app_menu;
     this._settings = Convenience.getSettings();
 
     this._toggle();
@@ -99,21 +98,29 @@ var ApplicationMenu = new Lang.Class({
     this._appMenu = GtkSettings.gtk_shell_shows_app_menu;
   },
 
+  _resetMenu: function () {
+    if (AppMenu._nonSensitive) {
+      AppMenu.setSensitive(true);
+      delete AppMenu._nonSensitive;
+    }
+  },
+
+  _forceShowMenu: function () {
+    let visible = AppMenu._targetApp != null && !Main.overview.visibleTarget;
+
+    if (!AppMenu._visible && visible) {
+      AppMenu.show();
+      AppMenu.setSensitive(false);
+
+      AppMenu._nonSensitive = true;
+    }
+  },
+
   _showMenu: function () {
     if (this._appMenu) {
-      if (AppMenu._nonSensitive) {
-        AppMenu.setSensitive(true);
-        AppMenu._nonSensitive = false;
-      }
+      this._resetMenu();
     } else {
-      let visible = AppMenu._targetApp != null && !Main.overview.visibleTarget;
-
-      if (!AppMenu._visible && visible) {
-        AppMenu.show();
-        AppMenu.setSensitive(false);
-
-        AppMenu._nonSensitive = true;
-      }
+      this._forceShowMenu();
     }
   },
 
@@ -161,6 +168,7 @@ var ApplicationMenu = new Lang.Class({
     if (!this._activated) {
       this._activated = true;
 
+      this._syncMenu();
       this._updateMenu();
       this._connectSignals();
     }
@@ -170,10 +178,9 @@ var ApplicationMenu = new Lang.Class({
     if (this._activated) {
       this._activated = false;
 
+      this._syncMenu();
       this._showMenu();
       this._disconnectSignals();
-
-      delete AppMenu._nonSensitive;
     }
   }
 });
