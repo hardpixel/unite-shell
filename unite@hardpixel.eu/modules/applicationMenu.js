@@ -10,8 +10,8 @@ const Unite          = ExtensionUtils.getCurrentExtension();
 const Helpers        = Unite.imports.helpers;
 const Convenience    = Unite.imports.convenience;
 
-var AppMenu = new Lang.Class({
-  Name: 'Unite.AppMenu',
+var ApplicationMenu = new Lang.Class({
+  Name: 'Unite.ApplicationMenu',
 
   _init: function() {
     this._panelMenu = GtkSettings.gtk_shell_shows_app_menu;

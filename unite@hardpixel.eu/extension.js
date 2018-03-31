@@ -7,7 +7,7 @@ const ExtendLeftBox    = Unite.imports.modules.extendLeftBox.ExtendLeftBox;
 const DesktopName      = Unite.imports.modules.desktopName.DesktopName;
 const MessageTray      = Unite.imports.modules.messageTray.MessageTray;
 const ActivitiesButton = Unite.imports.modules.activitiesButton.ActivitiesButton;
-const AppMenu          = Unite.imports.modules.appMenu.AppMenu;
+const ApplicationMenu  = Unite.imports.modules.applicationMenu.ApplicationMenu;
 const WindowButtons    = Unite.imports.modules.windowButtons.WindowButtons;
 const WindowDecoration = Unite.imports.modules.windowDecoration.WindowDecoration;
 const TopIcons         = Unite.imports.modules.topIcons.TopIcons;
@@ -21,7 +21,7 @@ var UniteShell = new Lang.Class({
     this._desktopName      = new DesktopName();
     this._messageTray      = new MessageTray();
     this._activitiesButton = new ActivitiesButton();
-    this._appMenu          = new AppMenu();
+    this._applicationMenu  = new ApplicationMenu();
     this._windowButtons    = new WindowButtons();
     this._windowDecoration = new WindowDecoration();
     this._topIcons         = new TopIcons();
@@ -35,7 +35,7 @@ var UniteShell = new Lang.Class({
     this._desktopName.destroy();
     this._messageTray.destroy();
     this._activitiesButton.destroy();
-    this._appMenu.destroy();
+    this._applicationMenu.destroy();
     this._windowButtons.destroy();
     this._windowDecoration.destroy();
     this._topIcons.destroy();
