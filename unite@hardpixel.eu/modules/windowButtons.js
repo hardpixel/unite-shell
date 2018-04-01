@@ -1,5 +1,6 @@
 const Main           = imports.ui.main;
 const Meta           = imports.gi.Meta;
+const Shell          = imports.gi.Shell;
 const Panel          = Main.panel;
 const AppMenu        = Panel.statusArea.appMenu;
 const St             = imports.gi.St;
@@ -204,7 +205,9 @@ var WindowButtons = new Lang.Class({
     if (this._buttonsActor) {
       let valid    = Helpers.isValidWindow(this._activeWindow);
       let overview = Main.overview.visibleTarget;
-      let visible  = AppMenu._targetApp != null && !overview;
+      let target   = AppMenu._targetApp;
+      let running  = target != null && target.get_state() == Shell.AppState.RUNNING;
+      let visible  = running && !overview;
 
       if (!overview && valid) {
         let maximized = Helpers.isMaximized(this._activeWindow, this._enabled);
