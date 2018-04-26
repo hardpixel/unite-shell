@@ -141,7 +141,7 @@ var TopIcons = new Lang.Class({
 
     let buttonMask    = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE;
     let iconContainer = new St.Button({ child: icon, button_mask: buttonMask });
-    let iconSize      = Helpers.scaleSize(18);
+    let iconSize      = Helpers.scaleSize(20);
 
     icon.connect('destroy', function() {
       icon.clear_effects();
