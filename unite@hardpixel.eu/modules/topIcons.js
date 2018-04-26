@@ -2,6 +2,7 @@ const Clutter        = imports.gi.Clutter;
 const Main           = imports.ui.main;
 const Shell          = imports.gi.Shell;
 const Mainloop       = imports.mainloop;
+const Gtk            = imports.gi.Gtk;
 const St             = imports.gi.St;
 const System         = imports.system;
 const Lang           = imports.lang;
@@ -139,9 +140,9 @@ var TopIcons = new Lang.Class({
   _addTrayIcon: function (o, icon, role) {
     this._icons.push(icon);
 
+    let iconSym       = this._createIcon(icon);
     let buttonMask    = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE;
-    let iconContainer = new St.Button({ child: icon, button_mask: buttonMask });
-    let iconSize      = Helpers.scaleSize(18);
+    let iconContainer = new St.Button({ child: iconSym, button_mask: buttonMask });
 
     icon.connect('destroy', function() {
       icon.clear_effects();
@@ -155,10 +156,6 @@ var TopIcons = new Lang.Class({
     this._iconsContainer.actor.show();
     this._iconsContainer.container.show();
     this._iconsBoxLayout.insert_child_at_index(iconContainer, 0);
-
-    icon.reactive = true;
-    icon.get_parent().set_size(iconSize, iconSize);
-    icon.set_size(iconSize, iconSize);
   },
 
   _removeTrayIcon: function (o, icon) {
@@ -176,6 +173,25 @@ var TopIcons = new Lang.Class({
       this._iconsContainer.actor.hide();
       this._iconsContainer.container.hide();
     }
+  },
+
+  _createIcon: function (icon) {
+    let size  = Helpers.scaleSize(19);
+    let theme = Gtk.IconTheme.get_default();
+    let name  = icon.wm_class ? icon.wm_class.toLowerCase() + '-symbolic' : '';
+    let info  = theme.lookup_icon(name, 24, Gtk.IconLookupFlags.FORCE_SYMBOLIC);
+
+    if (info && info.is_symbolic) {
+      name = info.get_filename().replace(/^.*\/|\.\S+$/g, '');
+      icon = new St.Icon({ icon_name: name, style_class: 'system-status-icon' });
+    } else {
+      icon.reactive = true;
+      icon.set_size(size, size);
+
+      this._desaturateIcon(icon);
+    }
+
+    return icon;
   },
 
   _desaturateIcon: function (icon) {
