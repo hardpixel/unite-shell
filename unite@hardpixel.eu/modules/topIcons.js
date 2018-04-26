@@ -178,6 +178,18 @@ var TopIcons = new Lang.Class({
     }
   },
 
+  _desaturateIcon: function (icon) {
+    let desEffect = new Clutter.DesaturateEffect({ factor : 1.0 });
+    let briEffect = new Clutter.BrightnessContrastEffect({});
+
+    briEffect.set_brightness(0.2);
+    briEffect.set_contrast(0.3);
+
+    icon.clear_effects();
+    icon.add_effect_with_name('desaturate', desEffect);
+    icon.add_effect_with_name('brightness-contrast', briEffect);
+  },
+
   _toggle: function() {
     this._enabled = this._settings.get_boolean('show-legacy-tray');
     this._enabled ? this._activate() : this.destroy();
