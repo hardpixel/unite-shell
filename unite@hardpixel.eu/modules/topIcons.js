@@ -172,7 +172,7 @@ var TopIcons = new Lang.Class({
 
     this._icons.splice(this._icons.indexOf(icon), 1);
 
-    if (this._icons.length === 0) {
+    if (this._iconsBoxLayout.get_n_children() === 0) {
       this._iconsContainer.actor.hide();
       this._iconsContainer.container.hide();
     }
