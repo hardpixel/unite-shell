@@ -388,6 +388,9 @@
               <item id="9" translatable="yes">Materia Light</item>
               <item id="10" translatable="yes">OSX Arc</item>
               <item id="11" translatable="yes">Vertex</item>
+              <item id="12" translatable="yes">Pop Dark</item>
+              <item id="13" translatable="yes">Pop Light</item>
+              <item id="14" translatable="yes">Vimix</item>
             </items>
           </object>
           <packing>
