@@ -12,6 +12,9 @@
     <value value="9" nick="materia-light" />
     <value value="10" nick="osx-arc" />
     <value value="11" nick="vertex" />
+    <value value="12" nick="pop-dark" />
+    <value value="13" nick="pop-light" />
+    <value value="14" nick="vimix" />
   </enum>
 
   <enum id="org.gnome.shell.extensions.unite.hideTitlebars">
