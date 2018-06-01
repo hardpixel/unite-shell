@@ -7,16 +7,15 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
 const Helpers        = Unite.imports.helpers;
 const Convenience    = Unite.imports.convenience;
+const STYLESPATH     = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
+const REMAXIMIZE     = Helpers.getVersion() < 3.24;
 const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
 var WindowDecoration = new Lang.Class({
   Name: 'Unite.WindowDecoration',
 
   _init: function() {
-    this._settings        = Convenience.getSettings();
-    this._needsMaxUnmax   = Helpers.getVersion() < 3.24;
-    this._userStylesPath  = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
-    this._buttonsPosition = Helpers.getWindowButtons('position');
+    this._settings = Convenience.getSettings();
 
     this._toggle();
     this._connectSettings();
@@ -50,15 +49,21 @@ var WindowDecoration = new Lang.Class({
     }
   },
 
-  _toggleTitlebar: function (id, hide) {
-    let prop  = '_GTK_HIDE_TITLEBAR_WHEN_MAXIMIZED';
-    let value = hide ? '0x1' : '0x0';
+  _toggleTitlebar: function (win, hide) {
+    if (!win._windowXID) {
+      win._windowXID = Helpers.getXWindow(win);
+    }
 
-    Util.spawn(['xprop', '-id', id, '-f', prop, '32c', '-set', prop, value]);
+    if (win._windowXID) {
+      let prop  = '_GTK_HIDE_TITLEBAR_WHEN_MAXIMIZED';
+      let value = hide ? '0x1' : '0x0';
+
+      Util.spawn(['xprop', '-id', win._windowXID, '-f', prop, '32c', '-set', prop, value]);
+    }
   },
 
   _toggleMaximize: function (win) {
-    if (this._needsMaxUnmax && win.get_maximized() === MAXIMIZED) {
+    if (REMAXIMIZE && win.get_maximized() === MAXIMIZED) {
       win._doingMaxUnmax = true;
 
       Mainloop.timeout_add(50, function () {
@@ -86,16 +91,10 @@ var WindowDecoration = new Lang.Class({
     let undecorated = win && win._decorationOFF;
 
     if (undecorated && !win._doingMaxUnmax) {
-      if (!win._windowXID) {
-        win._windowXID = Helpers.getXWindow(win);
-      }
+      win._decorationOFF = false;
 
-      if (win._windowXID) {
-        win._decorationOFF = false;
-
-        this._toggleTitlebar(win._windowXID, false);
-        this._toggleMaximize(win);
-      }
+      this._toggleTitlebar(win, false);
+      this._toggleMaximize(win);
     }
   },
 
@@ -103,24 +102,18 @@ var WindowDecoration = new Lang.Class({
     let decorated = win && !win._decorationOFF && win.decorated;
 
     if (decorated && !win._doingMaxUnmax) {
-      if (!win._windowXID) {
-        win._windowXID = Helpers.getXWindow(win);
-      }
+      win._decorationOFF = true;
 
-      if (win._windowXID) {
-        win._decorationOFF = true;
-
-        this._toggleTitlebar(win._windowXID, true);
-        this._toggleMaximize(win);
-      }
+      this._toggleTitlebar(win, true);
+      this._toggleMaximize(win);
     }
   },
 
   _updateUserStyles: function () {
     let styleContent = '';
 
-    if (GLib.file_test(this._userStylesPath, GLib.FileTest.EXISTS)) {
-      let fileContent = GLib.file_get_contents(this._userStylesPath);
+    if (GLib.file_test(STYLESPATH, GLib.FileTest.EXISTS)) {
+      let fileContent = GLib.file_get_contents(STYLESPATH);
 
       if (fileContent[0] == true) {
         styleContent = fileContent[1].toString();
@@ -132,18 +125,20 @@ var WindowDecoration = new Lang.Class({
   },
 
   _addUserStyles: function () {
-    if (this._buttonsPosition) {
+    let buttonsPosition = Helpers.getWindowButtons('position');
+
+    if (buttonsPosition) {
       let styleContent  = this._updateUserStyles();
-      let styleFilePath = Unite.path + '/styles/buttons-' + this._buttonsPosition + '.css';
+      let styleFilePath = Unite.path + '/styles/buttons-' + buttonsPosition + '.css';
       let styleImport   = "@import url('" + styleFilePath + "');\n"
 
-      GLib.file_set_contents(this._userStylesPath, styleImport + styleContent);
+      GLib.file_set_contents(STYLESPATH, styleImport + styleContent);
     }
   },
 
   _removeUserStyles: function () {
     let styleContent = this._updateUserStyles();
-    GLib.file_set_contents(this._userStylesPath, styleContent);
+    GLib.file_set_contents(STYLESPATH, styleContent);
   },
 
   _undecorateWindows: function () {
@@ -163,7 +158,6 @@ var WindowDecoration = new Lang.Class({
 
     windows.forEach(Lang.bind(this, Lang.bind(this, function (win) {
       win._decorationOFF = true;
-
       this._showTitlebar(win);
 
       delete win._decorationOFF;
