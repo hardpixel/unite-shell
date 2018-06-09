@@ -28,29 +28,41 @@ var ApplicationMenu = new Lang.Class({
   },
 
   _connectSignals: function () {
-    this._gsHandlerID = GtkSettings.connect(
-      'notify::gtk-shell-shows-app-menu', Lang.bind(this, this._syncMenu)
-    );
+    if (!this._gsHandlerID) {
+      this._gsHandlerID = GtkSettings.connect(
+        'notify::gtk-shell-shows-app-menu', Lang.bind(this, this._syncMenu)
+      );
+    }
 
-    this._wtHandlerID = WindowTracker.connect(
-      'notify::focus-app', Lang.bind(this, this._showMenu)
-    );
+    if (!this._wtHandlerID) {
+      this._wtHandlerID = WindowTracker.connect(
+        'notify::focus-app', Lang.bind(this, this._showMenu)
+      );
+    }
 
-    this._dsHandlerID = global.display.connect(
-      'notify::focus-window', Lang.bind(this, this._updateMenu)
-    );
+    if (!this._dsHandlerID) {
+      this._dsHandlerID = global.display.connect(
+        'notify::focus-window', Lang.bind(this, this._updateMenu)
+      );
+    }
 
-    this._asHandlerID = AppSystem.connect(
-      'app-state-changed', Lang.bind(this, this._showMenu)
-    );
+    if (!this._asHandlerID) {
+      this._asHandlerID = AppSystem.connect(
+        'app-state-changed', Lang.bind(this, this._showMenu)
+      );
+    }
 
-    this._ovHandlerID = Main.overview.connect(
-      'hiding', Lang.bind(this, this._showMenu)
-    );
+    if (!this._ovHandlerID) {
+      this._ovHandlerID = Main.overview.connect(
+        'hiding', Lang.bind(this, this._showMenu)
+      );
+    }
 
-    this._wmHandlerID = global.window_manager.connect(
-      'size-change', Lang.bind(this, this._updateMenu)
-    );
+    if (!this._wmHandlerID) {
+      this._wmHandlerID = global.window_manager.connect(
+        'size-change', Lang.bind(this, this._updateMenu)
+      );
+    }
   },
 
   _disconnectSignals: function() {
@@ -165,22 +177,14 @@ var ApplicationMenu = new Lang.Class({
   },
 
   _activate: function() {
-    if (!this._activated) {
-      this._activated = true;
-
-      this._syncMenu();
-      this._updateMenu();
-      this._connectSignals();
-    }
+    this._syncMenu();
+    this._updateMenu();
+    this._connectSignals();
   },
 
   destroy: function() {
-    if (this._activated) {
-      this._activated = false;
-
-      this._syncMenu();
-      this._showMenu();
-      this._disconnectSignals();
-    }
+    this._syncMenu();
+    this._showMenu();
+    this._disconnectSignals();
   }
 });
