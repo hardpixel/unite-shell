@@ -164,7 +164,7 @@ var WindowButtons = new Lang.Class({
     if (GLib.file_test(cssPath, GLib.FileTest.EXISTS)) {
       let cssFile = Gio.file_new_for_path(cssPath);
 
-      if (!this._buttonsTheme || this._buttonsTheme !== cssFile) {
+      if (!this._buttonsTheme) {
         this._buttonsTheme = cssFile;
         context.load_stylesheet(this._buttonsTheme);
       }
