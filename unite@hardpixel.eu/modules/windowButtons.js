@@ -15,8 +15,6 @@ const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
 var WindowButtons = new Lang.Class({
   Name: 'Unite.WindowButtons',
-  _wmHandlerIDs: [],
-  _ovHandlerIDs: [],
 
   _init: function() {
     this._dwmprefs = Helpers.wmPreferences();
@@ -49,7 +47,9 @@ var WindowButtons = new Lang.Class({
       );
     }
 
-    if (this._ovHandlerIDs.length == 0) {
+    if (!this._ovHandlerIDs) {
+      this._ovHandlerIDs = [];
+
       ['showing', 'hiding'].forEach(Lang.bind(this, function (eventName) {
         this._ovHandlerIDs.push(Main.overview.connect(
           eventName, Lang.bind(this, this._updateVisibility)
@@ -57,7 +57,9 @@ var WindowButtons = new Lang.Class({
       }));
     }
 
-    if (this._wmHandlerIDs.length == 0) {
+    if (!this._wmHandlerIDs) {
+      this._wmHandlerIDs = [];
+
       ['size-change', 'destroy'].forEach(Lang.bind(this, function (eventName) {
         this._wmHandlerIDs.push(global.window_manager.connect(
           eventName, Lang.bind(this, this._updateVisibility)
@@ -67,8 +69,6 @@ var WindowButtons = new Lang.Class({
   },
 
   _disconnectSignals: function() {
-    this._ovHandlerIDs = Helpers.overviewSignals(this._ovHandlerIDs);
-
     if (this._dpHandlerID) {
       this._dwmprefs.disconnect(this._dpHandlerID);
       delete this._dpHandlerID;
@@ -79,7 +79,7 @@ var WindowButtons = new Lang.Class({
       delete this._dsHandlerID;
     }
 
-    this._ovHandlerIDs.forEach(function (handler) {
+    Helpers.overviewSignals(this._ovHandlerIDs).forEach(function (handler) {
       Main.overview.disconnect(handler);
     });
 
@@ -87,8 +87,8 @@ var WindowButtons = new Lang.Class({
       global.window_manager.disconnect(handler);
     });
 
-    this._ovHandlerIDs = [];
-    this._wmHandlerIDs = [];
+    delete this._ovHandlerIDs;
+    delete this._wmHandlerIDs;
   },
 
   _createButtons: function () {

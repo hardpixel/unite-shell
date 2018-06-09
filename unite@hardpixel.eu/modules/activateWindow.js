@@ -21,9 +21,11 @@ var ActivateWindow = new Lang.Class({
   },
 
   _connectSignals: function() {
-    this._handlerID = global.display.connect(
-      'window-demands-attention', Lang.bind(this, this._activateWindow)
-    );
+    if (!this._handlerID) {
+      this._handlerID = global.display.connect(
+        'window-demands-attention', Lang.bind(this, this._activateWindow)
+      );
+    }
   },
 
   _disconnectSignals: function() {

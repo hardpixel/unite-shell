@@ -13,7 +13,6 @@ const Convenience    = Unite.imports.convenience;
 
 var ActivitiesButton = new Lang.Class({
   Name: 'Unite.ActivitiesButton',
-  _ovHandlerIDs: [],
 
   _init: function() {
     this._settings = Convenience.getSettings();
@@ -41,7 +40,9 @@ var ActivitiesButton = new Lang.Class({
       );
     }
 
-    if (this._ovHandlerIDs.length == 0) {
+    if (!this._ovHandlerIDs) {
+      this._ovHandlerIDs = [];
+
       ['showing', 'hiding'].forEach(Lang.bind(this, function (eventName) {
         this._ovHandlerIDs.push(Main.overview.connect(
           eventName, Lang.bind(this, this._updateVisibility)
@@ -51,8 +52,6 @@ var ActivitiesButton = new Lang.Class({
   },
 
   _disconnectSignals: function() {
-    this._ovHandlerIDs = Helpers.overviewSignals(this._ovHandlerIDs);
-
     if (this._wtHandlerID) {
       WindowTracker.disconnect(this._wtHandlerID);
       delete this._wtHandlerID;
@@ -63,11 +62,11 @@ var ActivitiesButton = new Lang.Class({
       delete this._asHandlerID;
     }
 
-    this._ovHandlerIDs.forEach(function (handler) {
+    Helpers.overviewSignals(this._ovHandlerIDs).forEach(function (handler) {
       Main.overview.disconnect(handler);
     });
 
-    this._ovHandlerIDs = [];
+    delete this._ovHandlerIDs;
   },
 
   _updateVisibility: function() {

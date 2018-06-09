@@ -13,7 +13,6 @@ const Convenience    = Unite.imports.convenience;
 
 var DesktopName = new Lang.Class({
   Name: 'Unite.DesktopName',
-  _ovHandlerIDs: [],
 
   _init: function() {
     this._settings = Convenience.getSettings();
@@ -29,24 +28,30 @@ var DesktopName = new Lang.Class({
   },
 
   _connectSignals: function () {
-    this._wtHandlerID = WindowTracker.connect(
-      'notify::focus-app', Lang.bind(this, this._updateVisibility)
-    );
+    if (!this._wtHandlerID) {
+      this._wtHandlerID = WindowTracker.connect(
+        'notify::focus-app', Lang.bind(this, this._updateVisibility)
+      );
+    }
 
-    this._asHandlerID = AppSystem.connect(
-      'app-state-changed', Lang.bind(this, this._updateVisibility)
-    );
+    if (!this._asHandlerID) {
+      this._asHandlerID = AppSystem.connect(
+        'app-state-changed', Lang.bind(this, this._updateVisibility)
+      );
+    }
 
-    ['showing', 'hiding'].forEach(Lang.bind(this, function (eventName) {
-      this._ovHandlerIDs.push(Main.overview.connect(
-        eventName, Lang.bind(this, this._updateVisibility)
-      ));
-    }));
+    if (!this._ovHandlerIDs) {
+      this._ovHandlerIDs = [];
+
+      ['showing', 'hiding'].forEach(Lang.bind(this, function (eventName) {
+        this._ovHandlerIDs.push(Main.overview.connect(
+          eventName, Lang.bind(this, this._updateVisibility)
+        ));
+      }));
+    }
   },
 
   _disconnectSignals: function() {
-    this._ovHandlerIDs = Helpers.overviewSignals(this._ovHandlerIDs);
-
     if (this._wtHandlerID) {
       WindowTracker.disconnect(this._wtHandlerID);
       delete this._wtHandlerID;
@@ -57,11 +62,11 @@ var DesktopName = new Lang.Class({
       delete this._asHandlerID;
     }
 
-    this._ovHandlerIDs.forEach(function (handler) {
+    Helpers.overviewSignals(this._ovHandlerIDs).forEach(function (handler) {
       Main.overview.disconnect(handler);
     });
 
-    this._ovHandlerIDs = [];
+    delete this._ovHandlerIDs;
   },
 
   _updateVisibility: function() {
