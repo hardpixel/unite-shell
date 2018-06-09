@@ -41,12 +41,10 @@ var DesktopName = new Lang.Class({
     }
 
     if (!this._ovHandlerIDs) {
-      this._ovHandlerIDs = [];
+      let ovEvents = ['showing', 'hiding'];
 
-      ['showing', 'hiding'].forEach(Lang.bind(this, function (eventName) {
-        this._ovHandlerIDs.push(Main.overview.connect(
-          eventName, Lang.bind(this, this._updateVisibility)
-        ));
+      this._ovHandlerIDs = ovEvents.map(Lang.bind(this, function (eventName) {
+        Main.overview.connect(eventName, Lang.bind(this, this._updateVisibility));
       }));
     }
   },

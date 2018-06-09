@@ -48,22 +48,22 @@ var WindowButtons = new Lang.Class({
     }
 
     if (!this._ovHandlerIDs) {
-      this._ovHandlerIDs = [];
+      let ovEvents = ['showing', 'hiding'];
 
-      ['showing', 'hiding'].forEach(Lang.bind(this, function (eventName) {
-        this._ovHandlerIDs.push(Main.overview.connect(
+      this._ovHandlerIDs = ovEvents.map(Lang.bind(this, function (eventName) {
+        Main.overview.connect(
           eventName, Lang.bind(this, this._updateVisibility)
-        ));
+        );
       }));
     }
 
     if (!this._wmHandlerIDs) {
-      this._wmHandlerIDs = [];
+      let wmEvents = ['size-change', 'destroy'];
 
-      ['size-change', 'destroy'].forEach(Lang.bind(this, function (eventName) {
-        this._wmHandlerIDs.push(global.window_manager.connect(
+      this._wmHandlerIDs = wmEvents.map(Lang.bind(this, function (eventName) {
+        global.window_manager.connect(
           eventName, Lang.bind(this, this._updateVisibility)
-        ));
+        );
       }));
     }
   },
