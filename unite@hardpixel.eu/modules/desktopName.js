@@ -105,21 +105,13 @@ var DesktopName = new Lang.Class({
   },
 
   _activate: function() {
-    if (!this._activated) {
-      this._activated = true;
-
-      this._createLabel();
-      this._updateVisibility();
-      this._connectSignals();
-    }
+    this._createLabel();
+    this._updateVisibility();
+    this._connectSignals();
   },
 
   destroy: function() {
-    if (this._activated) {
-      this._activated = false;
-
-      this._destroyLabel();
-      this._disconnectSignals();
-    }
+    this._destroyLabel();
+    this._disconnectSignals();
   }
 });

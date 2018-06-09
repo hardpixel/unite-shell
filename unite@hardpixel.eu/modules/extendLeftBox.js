@@ -92,20 +92,12 @@ var ExtendLeftBox = new Lang.Class({
   },
 
   _activate: function() {
-    if (!this._activated) {
-      this._activated = true;
-
-      this._connnectSignals();
-      Panel.actor.queue_relayout();
-    }
+    this._connnectSignals();
+    Panel.actor.queue_relayout();
   },
 
   destroy: function() {
-    if (this._activated) {
-      this._activated = false;
-
-      this._disconnectSignals();
-      Panel.actor.queue_relayout();
-    }
+    this._disconnectSignals();
+    Panel.actor.queue_relayout();
   }
 });

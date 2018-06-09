@@ -43,16 +43,10 @@ var ActivateWindow = new Lang.Class({
   },
 
   _activate: function() {
-    if (!this._activated) {
-      this._activated = true;
-      this._connectSignals();
-    }
+    this._connectSignals();
   },
 
   destroy: function() {
-    if (this._activated) {
-      this._activated = false;
-      this._disconnectSignals();
-    }
+    this._disconnectSignals();
   }
 });
