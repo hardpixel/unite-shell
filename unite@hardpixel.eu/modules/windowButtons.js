@@ -51,7 +51,7 @@ var WindowButtons = new Lang.Class({
       let ovEvents = ['showing', 'hiding'];
 
       this._ovHandlerIDs = ovEvents.map(Lang.bind(this, function (eventName) {
-        Main.overview.connect(
+        return Main.overview.connect(
           eventName, Lang.bind(this, this._updateVisibility)
         );
       }));
@@ -61,7 +61,7 @@ var WindowButtons = new Lang.Class({
       let wmEvents = ['size-change', 'destroy'];
 
       this._wmHandlerIDs = wmEvents.map(Lang.bind(this, function (eventName) {
-        global.window_manager.connect(
+        return global.window_manager.connect(
           eventName, Lang.bind(this, this._updateVisibility)
         );
       }));

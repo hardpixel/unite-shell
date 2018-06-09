@@ -43,7 +43,9 @@ var DesktopName = new Lang.Class({
       let ovEvents = ['showing', 'hiding'];
 
       this._ovHandlerIDs = ovEvents.map(Lang.bind(this, function (eventName) {
-        Main.overview.connect(eventName, Lang.bind(this, this._updateVisibility));
+        return Main.overview.connect(
+          eventName, Lang.bind(this, this._updateVisibility)
+        );
       }));
     }
   },
