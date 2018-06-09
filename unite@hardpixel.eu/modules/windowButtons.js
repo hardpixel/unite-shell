@@ -37,25 +37,33 @@ var WindowButtons = new Lang.Class({
   },
 
   _connectSignals: function () {
-    this._dpHandlerID = this._dwmprefs.connect(
-      'changed::button-layout', Lang.bind(this, this._updateButtons)
-    );
+    if (!this._dpHandlerID) {
+      this._dpHandlerID = this._dwmprefs.connect(
+        'changed::button-layout', Lang.bind(this, this._updateButtons)
+      );
+    }
 
-    this._dsHandlerID = global.display.connect(
-      'notify::focus-window', Lang.bind(this, this._updateVisibility)
-    );
+    if (!this._dsHandlerID) {
+      this._dsHandlerID = global.display.connect(
+        'notify::focus-window', Lang.bind(this, this._updateVisibility)
+      );
+    }
 
-    ['showing', 'hiding'].forEach(Lang.bind(this, function (eventName) {
-      this._ovHandlerIDs.push(Main.overview.connect(
-        eventName, Lang.bind(this, this._updateVisibility)
-      ));
-    }));
+    if (this._ovHandlerIDs.length == 0) {
+      ['showing', 'hiding'].forEach(Lang.bind(this, function (eventName) {
+        this._ovHandlerIDs.push(Main.overview.connect(
+          eventName, Lang.bind(this, this._updateVisibility)
+        ));
+      }));
+    }
 
-    ['size-change', 'destroy'].forEach(Lang.bind(this, function (eventName) {
-      this._wmHandlerIDs.push(global.window_manager.connect(
-        eventName, Lang.bind(this, this._updateVisibility)
-      ));
-    }));
+    if (this._wmHandlerIDs.length == 0) {
+      ['size-change', 'destroy'].forEach(Lang.bind(this, function (eventName) {
+        this._wmHandlerIDs.push(global.window_manager.connect(
+          eventName, Lang.bind(this, this._updateVisibility)
+        ));
+      }));
+    }
   },
 
   _disconnectSignals: function() {
@@ -162,6 +170,8 @@ var WindowButtons = new Lang.Class({
     if (this._buttonsTheme) {
       let context = St.ThemeContext.get_for_stage(global.stage).get_theme();
       context.unload_stylesheet(this._buttonsTheme);
+
+      delete this._buttonsTheme;
     }
   },
 
@@ -230,25 +240,15 @@ var WindowButtons = new Lang.Class({
   },
 
   _activate: function() {
-    if (!this._activated) {
-      this._activated = true;
-
-      this._createButtons();
-      this._loadTheme();
-      this._updateVisibility();
-      this._connectSignals();
-    }
+    this._createButtons();
+    this._updateVisibility();
+    this._connectSignals();
+    this._loadTheme();
   },
 
   destroy: function() {
-    if (this._activated) {
-      this._activated = false;
-
-      this._destroyButtons();
-      this._unloadTheme();
-      this._disconnectSignals();
-
-      delete this._buttonsTheme;
-    }
+    this._destroyButtons();
+    this._disconnectSignals();
+    this._unloadTheme();
   }
 });
