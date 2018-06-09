@@ -79,16 +79,21 @@ var WindowButtons = new Lang.Class({
       delete this._dsHandlerID;
     }
 
-    Helpers.overviewSignals(this._ovHandlerIDs).forEach(function (handler) {
-      Main.overview.disconnect(handler);
-    });
+    if (this._ovHandlerIDs) {
+      this._ovHandlerIDs.forEach(function (handler) {
+        Main.overview.disconnect(handler);
+      });
 
-    this._wmHandlerIDs.forEach(function (handler) {
-      global.window_manager.disconnect(handler);
-    });
+      delete this._ovHandlerIDs;
+    }
 
-    delete this._ovHandlerIDs;
-    delete this._wmHandlerIDs;
+    if (this._wmHandlerIDs) {
+      this._wmHandlerIDs.forEach(function (handler) {
+        global.window_manager.disconnect(handler);
+      });
+
+      delete this._wmHandlerIDs;
+    }
   },
 
   _createButtons: function () {

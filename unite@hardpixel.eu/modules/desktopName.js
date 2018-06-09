@@ -8,7 +8,6 @@ const Panel          = Main.panel;
 const AppMenu        = Panel.statusArea.appMenu;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
-const Helpers        = Unite.imports.helpers;
 const Convenience    = Unite.imports.convenience;
 
 var DesktopName = new Lang.Class({
@@ -60,11 +59,13 @@ var DesktopName = new Lang.Class({
       delete this._asHandlerID;
     }
 
-    Helpers.overviewSignals(this._ovHandlerIDs).forEach(function (handler) {
-      Main.overview.disconnect(handler);
-    });
+    if (this._ovHandlerIDs) {
+      this._ovHandlerIDs.forEach(function (handler) {
+        Main.overview.disconnect(handler);
+      });
 
-    delete this._ovHandlerIDs;
+      delete this._ovHandlerIDs;
+    }
   },
 
   _updateVisibility: function() {
