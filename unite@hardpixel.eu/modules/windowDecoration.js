@@ -28,13 +28,17 @@ var WindowDecoration = new Lang.Class({
   },
 
   _connectSignals: function () {
-    this._dsHandlerID = global.display.connect(
-      'notify::focus-window', Lang.bind(this, this._updateTitlebar)
-    );
+    if (!this._dsHandlerID) {
+      this._dsHandlerID = global.display.connect(
+        'notify::focus-window', Lang.bind(this, this._updateTitlebar)
+      );
+    }
 
-    this._wmHandlerID = global.window_manager.connect(
-      'size-change', Lang.bind(this, this._updateTitlebar)
-    );
+    if (!this._wmHandlerID) {
+      this._wmHandlerID = global.window_manager.connect(
+        'size-change', Lang.bind(this, this._updateTitlebar)
+      );
+    }
   },
 
   _disconnectSignals: function() {
@@ -172,24 +176,16 @@ var WindowDecoration = new Lang.Class({
   },
 
   _activate: function() {
-    if (!this._activated) {
-      this._activated = true;
+    this._addUserStyles();
+    this._connectSignals();
 
-      Mainloop.idle_add(Lang.bind(this, this._addUserStyles));
-      Mainloop.idle_add(Lang.bind(this, this._undecorateWindows));
-
-      this._connectSignals();
-    }
+    Mainloop.idle_add(Lang.bind(this, this._undecorateWindows));
   },
 
   destroy: function() {
-    if (this._activated) {
-      this._activated = false;
+    this._removeUserStyles();
+    this._disconnectSignals();
 
-      Mainloop.idle_add(Lang.bind(this, this._removeUserStyles));
-      Mainloop.idle_add(Lang.bind(this, this._decorateWindows));
-
-      this._disconnectSignals();
-    }
+    Mainloop.idle_add(Lang.bind(this, this._decorateWindows));
   }
 });
