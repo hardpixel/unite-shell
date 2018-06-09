@@ -29,19 +29,25 @@ var ActivitiesButton = new Lang.Class({
   },
 
   _connectSignals: function () {
-    this._wtHandlerID = WindowTracker.connect(
-      'notify::focus-app', Lang.bind(this, this._updateVisibility)
-    );
+    if (!this._wtHandlerID) {
+      this._wtHandlerID = WindowTracker.connect(
+        'notify::focus-app', Lang.bind(this, this._updateVisibility)
+      );
+    }
 
-    this._asHandlerID = AppSystem.connect(
-      'app-state-changed', Lang.bind(this, this._updateVisibility)
-    );
+    if (!this._asHandlerID) {
+      this._asHandlerID = AppSystem.connect(
+        'app-state-changed', Lang.bind(this, this._updateVisibility)
+      );
+    }
 
-    ['showing', 'hiding'].forEach(Lang.bind(this, function (eventName) {
-      this._ovHandlerIDs.push(Main.overview.connect(
-        eventName, Lang.bind(this, this._updateVisibility)
-      ));
-    }));
+    if (this._ovHandlerIDs.length == 0) {
+      ['showing', 'hiding'].forEach(Lang.bind(this, function (eventName) {
+        this._ovHandlerIDs.push(Main.overview.connect(
+          eventName, Lang.bind(this, this._updateVisibility)
+        ));
+      }));
+    }
   },
 
   _disconnectSignals: function() {
@@ -95,20 +101,12 @@ var ActivitiesButton = new Lang.Class({
   },
 
   _activate: function() {
-    if (!this._activated) {
-      this._activated = true;
-
-      this._updateVisibility();
-      this._connectSignals();
-    }
+    this._updateVisibility();
+    this._connectSignals();
   },
 
   destroy: function() {
-    if (this._activated) {
-      this._activated = false;
-
-      this._showButton();
-      this._disconnectSignals();
-    }
+    this._showButton();
+    this._disconnectSignals();
   }
 });
