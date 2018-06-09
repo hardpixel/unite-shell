@@ -48,20 +48,12 @@ var MessageTray = new Lang.Class({
   },
 
   _activate: function () {
-    if (!this._activated) {
-      this._activated = true;
-
-      this._updatePosition();
-      this._updateWidth();
-    }
+    this._updatePosition();
+    this._updateWidth();
   },
 
   destroy: function() {
-    if (this._activated) {
-      this._activated = false;
-
-      this._updatePosition();
-      this._resetWidth();
-    }
+    this._updatePosition();
+    this._resetWidth();
   }
 });
