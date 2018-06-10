@@ -149,25 +149,29 @@ var WindowDecoration = new Lang.Class({
     let windows = Helpers.getAllWindows();
 
     windows.forEach(Lang.bind(this, function (win) {
-      if (Helpers.isMaximized(win, this._enabled)) {
-        this._hideTitlebar(win);
-      } else {
-        this._showTitlebar(win);
-      }
+      Mainloop.idle_add(Lang.bind(this, function () {
+        if (Helpers.isMaximized(win, this._enabled)) {
+          this._hideTitlebar(win);
+        } else {
+          this._showTitlebar(win);
+        }
+      }));
     }));
   },
 
   _decorateWindows: function () {
     let windows = Helpers.getAllWindows();
 
-    windows.forEach(Lang.bind(this, Lang.bind(this, function (win) {
-      win._decorationOFF = true;
-      this._showTitlebar(win);
+    windows.forEach(Lang.bind(this, function (win) {
+      Mainloop.idle_add(Lang.bind(this, function () {
+        win._decorationOFF = true;
+        this._showTitlebar(win);
 
-      delete win._decorationOFF;
-      delete win._windowXID;
-      delete win._doingMaxUnmax;
-    })));
+        delete win._decorationOFF;
+        delete win._windowXID;
+        delete win._doingMaxUnmax;
+      }));
+    }));
   },
 
   _toggle: function() {
@@ -177,15 +181,13 @@ var WindowDecoration = new Lang.Class({
 
   _activate: function() {
     this._addUserStyles();
+    this._undecorateWindows();
     this._connectSignals();
-
-    Mainloop.idle_add(Lang.bind(this, this._undecorateWindows));
   },
 
   destroy: function() {
     this._removeUserStyles();
+    this._decorateWindows();
     this._disconnectSignals();
-
-    Mainloop.idle_add(Lang.bind(this, this._decorateWindows));
   }
 });
