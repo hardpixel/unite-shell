@@ -26,7 +26,7 @@ var UniteShell = new Lang.Class({
     this._windowDecoration = new WindowDecoration();
     this._topIcons         = new TopIcons();
 
-    Main.panel._addStyleClassName('unite');
+    Main.panel._addStyleClassName('unite-shell');
   },
 
   destroy: function() {
@@ -40,7 +40,7 @@ var UniteShell = new Lang.Class({
     this._windowDecoration.destroy();
     this._topIcons.destroy();
 
-    Main.panel._removeStyleClassName('unite');
+    Main.panel._removeStyleClassName('unite-shell');
   }
 });
 
