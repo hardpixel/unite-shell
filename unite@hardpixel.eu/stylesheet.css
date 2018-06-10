@@ -1,75 +1,75 @@
-#panel .panel-button {
+#panel.unite .panel-button {
   -natural-hpadding: 8px;
   -minimum-hpadding: 6px;
 }
 
-#panel .panel-button .system-status-icon {
+#panel.unite .panel-button .system-status-icon {
   margin: 0;
   padding: 0;
 }
 
-#panel .panel-button .panel-status-menu-box {
+#panel.unite .panel-button .panel-status-menu-box {
   margin: 0;
   padding: 0;
   spacing: 0;
 }
 
-#panel .panel-button .panel-status-indicators-box {
+#panel.unite .panel-button .panel-status-indicators-box {
   spacing: 10px;
 }
 
-#panel .panel-button .panel-status-indicators-box .popup-menu-arrow {
+#panel.unite .panel-button .panel-status-indicators-box .popup-menu-arrow {
   width: 12px;
   height: 12px;
 }
 
-#panel .popup-menu-arrow,
-#panel .app-menu-icon {
+#panel.unite .popup-menu-arrow,
+#panel.unite .app-menu-icon {
   width: 0;
   height: 0;
   margin: 0;
   padding: 0;
 }
 
-#panel .window-buttons-box {
+#panel.unite .window-buttons-box {
   spacing: 2px;
 }
 
-#panel .window-buttons-box:first-child .window-button:first-child {
+#panel.unite .window-buttons-box:first-child .window-button:first-child {
   padding-left: 2px;
 }
 
-#panel .window-buttons-box .window-button {
+#panel.unite .window-buttons-box .window-button {
   width: 22px;
   height: 28px;
 }
 
-#panel .window-buttons-box .icon {
+#panel.unite .window-buttons-box .icon {
   background-color: transparent;
   border-radius: 0;
   box-shadow: none;
   border: 0;
 }
 
-#panel .tray-buttons-box {
+#panel.unite .tray-buttons-box {
   spacing: 10px;
   margin-top: 2px;
   margin-bottom: 2px;
 }
 
-#panel .desktop-name {
+#panel.unite .desktop-name {
   padding: 0 8px;
 }
 
-#panel #appMenu {
+#panel.unite #appMenu {
   margin-left: 8px;
   margin-right: 3px;
 }
 
-#panel #appMenu .popup-menu-arrow {
+#panel.unite #appMenu .popup-menu-arrow {
   margin-left: 5px;
 }
 
-#panel #appMenu .app-menu-icon > StIcon {
+#panel.unite #appMenu .app-menu-icon > StIcon {
   icon-shadow: none;
 }
