@@ -15,6 +15,7 @@ Unite is a GNOME Shell extension which makes a few layout tweaks to the top pane
 * Moves legacy tray icons to the top panel.
 * Moves notifications to the right.
 * Hides activities button.
+* Adds desktop name to the top panel.
 
 Settings are provided to enable/disable or customize the available tweaks.
 
