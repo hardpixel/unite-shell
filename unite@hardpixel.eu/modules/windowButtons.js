@@ -152,8 +152,6 @@ var WindowButtons = new Lang.Class({
   _updateTheme: function () {
     this._unloadTheme();
     this._loadTheme();
-
-    Main.loadTheme();
   },
 
   _loadTheme: function () {
@@ -167,14 +165,23 @@ var WindowButtons = new Lang.Class({
       if (!this._buttonsTheme) {
         this._buttonsTheme = cssFile;
         context.load_stylesheet(this._buttonsTheme);
+
+        if (this._buttonsBox) {
+          this._buttonsBox.add_style_class_name(theme + '-buttons');
+        }
       }
     }
   },
 
   _unloadTheme: function () {
     if (this._buttonsTheme) {
+      let theme   = this._settings.get_string('window-buttons-theme');
       let context = St.ThemeContext.get_for_stage(global.stage).get_theme();
       context.unload_stylesheet(this._buttonsTheme);
+
+      if (this._buttonsBox) {
+        this._buttonsBox.remove_style_class_name(theme + '-buttons');
+      }
 
       delete this._buttonsTheme;
     }
