@@ -21,9 +21,16 @@ var ActivitiesButton = new Lang.Class({
   },
 
   _connectSettings: function() {
-    this._settings.connect(
+    this._habHandlerID = this._settings.connect(
       'changed::hide-activities-button', Lang.bind(this, this._toggle)
     );
+  },
+
+  _disconnectSettings: function() {
+    if (this._habHandlerID) {
+      this._settings.disconnect(this._habHandlerID);
+      delete this._habHandlerID;
+    }
   },
 
   _connectSignals: function () {
@@ -97,16 +104,25 @@ var ActivitiesButton = new Lang.Class({
 
   _toggle: function() {
     this._enabled = this._settings.get_string('hide-activities-button');
-    this._enabled != 'never' ? this._activate() : this.destroy();
+
+    this._deactivate();
+    this._activate();
   },
 
   _activate: function() {
-    this._updateVisibility();
-    this._connectSignals();
+    if (this._enabled != 'never') {
+      this._updateVisibility();
+      this._connectSignals();
+    }
+  },
+
+  _deactivate: function() {
+    this._showButton();
+    this._disconnectSignals();
   },
 
   destroy: function() {
-    this._showButton();
-    this._disconnectSignals();
+    this._deactivate();
+    this._disconnectSettings();
   }
 });

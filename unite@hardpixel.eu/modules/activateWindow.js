@@ -15,9 +15,16 @@ var ActivateWindow = new Lang.Class({
   },
 
   _connectSettings: function() {
-    this._settings.connect(
+    this._awHandlerID = this._settings.connect(
       'changed::autofocus-windows', Lang.bind(this, this._toggle)
     );
+  },
+
+  _disconnectSettings: function() {
+    if (this._awHandlerID) {
+      this._settings.disconnect(this._awHandlerID);
+      delete this._awHandlerID;
+    }
   },
 
   _connectSignals: function() {
@@ -41,14 +48,23 @@ var ActivateWindow = new Lang.Class({
 
   _toggle: function() {
     this._enabled = this._settings.get_boolean('autofocus-windows');
-    this._enabled ? this._activate() : this.destroy();
+
+    this._deactivate();
+    this._activate();
   },
 
   _activate: function() {
-    this._connectSignals();
+    if (this._enabled) {
+      this._connectSignals();
+    }
+  },
+
+  _deactivate: function() {
+    this._disconnectSignals();
   },
 
   destroy: function() {
-    this._disconnectSignals();
+    this._deactivate();
+    this._disconnectSettings();
   }
 });

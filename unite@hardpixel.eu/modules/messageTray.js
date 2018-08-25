@@ -18,9 +18,16 @@ var MessageTray = new Lang.Class({
   },
 
   _connectSettings: function () {
-    this._settings.connect(
+    this._npHandlerID = this._settings.connect(
       'changed::notifications-position', Lang.bind(this, this._toggle)
     );
+  },
+
+  _disconnectSettings: function() {
+    if (this._npHandlerID) {
+      this._settings.disconnect(this._npHandlerID);
+      delete this._npHandlerID;
+    }
   },
 
   _updatePosition: function () {
@@ -44,16 +51,25 @@ var MessageTray = new Lang.Class({
 
   _toggle: function() {
     this._position = this._settings.get_string('notifications-position');
-    this._position != 'center' ? this._activate() : this.destroy();
+
+    this._deactivate();
+    this._activate();
   },
 
   _activate: function () {
+    if (this._position != 'center') {
+      this._updatePosition();
+      this._updateWidth();
+    }
+  },
+
+  _deactivate: function() {
     this._updatePosition();
-    this._updateWidth();
+    this._resetWidth();
   },
 
   destroy: function() {
-    this._updatePosition();
-    this._resetWidth();
+    this._deactivate();
+    this._disconnectSettings();
   }
 });

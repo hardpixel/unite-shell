@@ -26,13 +26,25 @@ var TopIcons = new Lang.Class({
   },
 
   _connectSettings: function() {
-    this._settings.connect(
+    this._sltHandlerID = this._settings.connect(
       'changed::show-legacy-tray', Lang.bind(this, this._toggle)
     );
 
-    this._settings.connect(
+    this._gtiHandlerID = this._settings.connect(
       'changed::greyscale-tray-icons', Lang.bind(this, this._desaturateIcons)
     );
+  },
+
+  _disconnectSettings: function() {
+    if (this._sltHandlerID) {
+      this._settings.disconnect(this._sltHandlerID);
+      delete this._sltHandlerID;
+    }
+
+    if (this._gtiHandlerID) {
+      this._settings.disconnect(this._gtiHandlerID);
+      delete this._gtiHandlerID;
+    }
   },
 
   _createTray: function () {
@@ -208,24 +220,33 @@ var TopIcons = new Lang.Class({
 
   _toggle: function() {
     this._enabled = this._settings.get_boolean('show-legacy-tray');
-    this._enabled ? this._activate() : this.destroy();
+
+    this._deactivate();
+    this._activate();
   },
 
   _activate: function() {
-    if (Main.legacyTray) {
-      Mainloop.idle_add(Lang.bind(this, this._moveToPanel));
-      this._tray.actor.hide();
-    } else {
-      Mainloop.idle_add(Lang.bind(this, this._createTray));
+    if (this._enabled) {
+      if (Main.legacyTray) {
+        Mainloop.idle_add(Lang.bind(this, this._moveToPanel));
+        this._tray.actor.hide();
+      } else {
+        Mainloop.idle_add(Lang.bind(this, this._createTray));
+      }
     }
   },
 
-  destroy: function() {
+  _deactivate: function() {
     if (Main.legacyTray) {
       Mainloop.idle_add(Lang.bind(this, this._moveToTray));
       this._tray.actor.show();
     } else {
       Mainloop.idle_add(Lang.bind(this, this._destroyTray));
     }
+  },
+
+  destroy: function() {
+    this._deactivate();
+    this._disconnectSettings();
   }
 });

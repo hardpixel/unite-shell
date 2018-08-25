@@ -21,9 +21,16 @@ var DesktopName = new Lang.Class({
   },
 
   _connectSettings: function() {
-    this._settings.connect(
+    this._sdnHandlerID = this._settings.connect(
       'changed::show-desktop-name', Lang.bind(this, this._toggle)
     );
+  },
+
+  _disconnectSettings: function() {
+    if (this._sdnHandlerID) {
+      this._settings.disconnect(this._sdnHandlerID);
+      delete this._sdnHandlerID;
+    }
   },
 
   _connectSignals: function () {
@@ -107,17 +114,26 @@ var DesktopName = new Lang.Class({
 
   _toggle: function() {
     this._enabled = this._settings.get_boolean('show-desktop-name');
-    this._enabled ? this._activate() : this.destroy();
+
+    this._deactivate();
+    this._activate();
   },
 
   _activate: function() {
-    this._createLabel();
-    this._updateVisibility();
-    this._connectSignals();
+    if (this._enabled) {
+      this._createLabel();
+      this._updateVisibility();
+      this._connectSignals();
+    }
+  },
+
+  _deactivate: function() {
+    this._destroyLabel();
+    this._disconnectSignals();
   },
 
   destroy: function() {
-    this._destroyLabel();
-    this._disconnectSignals();
+    this._deactivate();
+    this._disconnectSettings();
   }
 });

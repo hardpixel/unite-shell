@@ -22,9 +22,16 @@ var WindowDecoration = new Lang.Class({
   },
 
   _connectSettings: function() {
-    this._settings.connect(
+    this._hwtHandlerID = this._settings.connect(
       'changed::hide-window-titlebars', Lang.bind(this, this._toggle)
     );
+  },
+
+  _disconnectSettings: function() {
+    if (this._hwtHandlerID) {
+      this._settings.disconnect(this._hwtHandlerID);
+      delete this._hwtHandlerID;
+    }
   },
 
   _connectSignals: function () {
@@ -176,18 +183,27 @@ var WindowDecoration = new Lang.Class({
 
   _toggle: function() {
     this._enabled = this._settings.get_string('hide-window-titlebars');
-    this._enabled != 'never' ? this._activate() : this.destroy();
+
+    this._deactivate();
+    this._activate();
   },
 
   _activate: function() {
-    this._addUserStyles();
-    this._undecorateWindows();
-    this._connectSignals();
+    if (this._enabled != 'never') {
+      this._addUserStyles();
+      this._undecorateWindows();
+      this._connectSignals();
+    }
   },
 
-  destroy: function() {
+  _deactivate: function() {
     this._removeUserStyles();
     this._decorateWindows();
     this._disconnectSignals();
+  },
+
+  destroy: function() {
+    this._deactivate();
+    this._disconnectSettings();
   }
 });

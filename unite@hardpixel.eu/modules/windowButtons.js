@@ -25,13 +25,25 @@ var WindowButtons = new Lang.Class({
   },
 
   _connectSettings: function() {
-    this._settings.connect(
+    this._swbHandlerID = this._settings.connect(
       'changed::show-window-buttons', Lang.bind(this, this._toggle)
     );
 
-    this._settings.connect(
+    this._wbtHandlerID = this._settings.connect(
       'changed::window-buttons-theme', Lang.bind(this, this._updateTheme)
     );
+  },
+
+  _disconnectSettings: function() {
+    if (this._swbHandlerID) {
+      this._settings.disconnect(this._swbHandlerID);
+      delete this._swbHandlerID;
+    }
+
+    if (this._wbtHandlerID) {
+      this._settings.disconnect(this._wbtHandlerID);
+      delete this._wbtHandlerID;
+    }
   },
 
   _connectSignals: function () {
@@ -248,19 +260,28 @@ var WindowButtons = new Lang.Class({
 
   _toggle: function() {
     this._enabled = this._settings.get_string('show-window-buttons');
-    this._enabled != 'never' ? this._activate() : this.destroy();
+
+    this._deactivate();
+    this._activate();
   },
 
   _activate: function() {
-    this._createButtons();
-    this._updateVisibility();
-    this._connectSignals();
-    this._loadTheme();
+    if (this._enabled != 'never') {
+      this._createButtons();
+      this._updateVisibility();
+      this._connectSignals();
+      this._loadTheme();
+    }
   },
 
-  destroy: function() {
+  _deactivate: function() {
     this._destroyButtons();
     this._disconnectSignals();
     this._unloadTheme();
+  },
+
+  destroy: function() {
+    this._deactivate();
+    this._disconnectSettings();
   }
 });

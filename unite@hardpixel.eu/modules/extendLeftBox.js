@@ -17,9 +17,16 @@ var ExtendLeftBox = new Lang.Class({
   },
 
   _connectSettings: function() {
-    this._settings.connect(
+    this._elbHandlerID = this._settings.connect(
       'changed::extend-left-box', Lang.bind(this, this._toggle)
     );
+  },
+
+  _disconnectSettings: function() {
+    if (this._elbHandlerID) {
+      this._settings.disconnect(this._elbHandlerID);
+      delete this._elbHandlerID;
+    }
   },
 
   _connnectSignals: function() {
@@ -90,16 +97,25 @@ var ExtendLeftBox = new Lang.Class({
 
   _toggle: function() {
     this._enabled = this._settings.get_boolean('extend-left-box');
-    this._enabled ? this._activate() : this.destroy();
+
+    this._deactivate();
+    this._activate();
   },
 
   _activate: function() {
-    this._connnectSignals();
+    if (this._enabled) {
+      this._connnectSignals();
+      Panel.actor.queue_relayout();
+    }
+  },
+
+  _deactivate: function() {
+    this._disconnectSignals();
     Panel.actor.queue_relayout();
   },
 
   destroy: function() {
-    this._disconnectSignals();
-    Panel.actor.queue_relayout();
+    this._deactivate();
+    this._disconnectSettings();
   }
 });

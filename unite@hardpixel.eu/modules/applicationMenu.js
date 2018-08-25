@@ -22,9 +22,16 @@ var ApplicationMenu = new Lang.Class({
   },
 
   _connectSettings: function() {
-    this._settings.connect(
+    this._swtHandlerID = this._settings.connect(
       'changed::show-window-title', Lang.bind(this, this._toggle)
     );
+  },
+
+  _disconnectSettings: function() {
+    if (this._swtHandlerID) {
+      this._settings.disconnect(this._swtHandlerID);
+      delete this._swtHandlerID;
+    }
   },
 
   _connectSignals: function () {
@@ -173,18 +180,27 @@ var ApplicationMenu = new Lang.Class({
 
   _toggle: function() {
     this._enabled = this._settings.get_string('show-window-title');
-    this._enabled != 'never' ? this._activate() : this.destroy();
+
+    this._deactivate();
+    this._activate();
   },
 
   _activate: function() {
-    this._syncMenu();
-    this._updateMenu();
-    this._connectSignals();
+    if (this._enabled != 'never') {
+      this._syncMenu();
+      this._updateMenu();
+      this._connectSignals();
+    }
   },
 
-  destroy: function() {
+  _deactivate: function() {
     this._syncMenu();
     this._showMenu();
     this._disconnectSignals();
+  },
+
+  destroy: function() {
+    this._deactivate();
+    this._disconnectSettings();
   }
 });
