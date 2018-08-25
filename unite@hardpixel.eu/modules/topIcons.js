@@ -29,6 +29,10 @@ var TopIcons = new Lang.Class({
     this._settings.connect(
       'changed::show-legacy-tray', Lang.bind(this, this._toggle)
     );
+
+    this._settings.connect(
+      'changed::greyscale-tray-icons', Lang.bind(this, this._desaturateIcons)
+    );
   },
 
   _createTray: function () {
@@ -144,7 +148,6 @@ var TopIcons = new Lang.Class({
     let iconContainer = new St.Button({ child: icon, button_mask: buttonMask });
 
     icon.connect('destroy', function() {
-      icon.clear_effects();
       iconContainer.destroy();
     });
 
@@ -179,8 +182,29 @@ var TopIcons = new Lang.Class({
 
     icon.reactive = true;
     icon.set_size(size, size);
+    this._desaturateIcon(icon);
 
     return icon;
+  },
+
+  _desaturateIcon: function (icon) {
+    let greyscale = this._settings.get_boolean('greyscale-tray-icons');
+    icon.clear_effects();
+
+    if (greyscale) {
+      let desEffect = new Clutter.DesaturateEffect({ factor : 1.0 });
+      let briEffect = new Clutter.BrightnessContrastEffect({});
+
+      briEffect.set_brightness(0.2);
+      briEffect.set_contrast(0.3);
+
+      icon.add_effect_with_name('desaturate', desEffect);
+      icon.add_effect_with_name('brightness-contrast', briEffect);
+    }
+  },
+
+  _desaturateIcons: function () {
+    this._icons.forEach(Lang.bind(this, this._desaturateIcon));
   },
 
   _toggle: function() {

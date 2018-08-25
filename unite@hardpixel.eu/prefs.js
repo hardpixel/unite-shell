@@ -34,6 +34,7 @@ var PrefsWidget = new GObject.Class({
     let items = [
       'extend-left-box',
       'show-legacy-tray',
+      'greyscale-tray-icons',
       'show-desktop-name',
       'autofocus-windows'
     ];
