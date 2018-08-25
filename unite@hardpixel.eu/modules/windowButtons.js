@@ -259,13 +259,13 @@ var WindowButtons = new Lang.Class({
   },
 
   _toggle: function() {
-    this._enabled = this._settings.get_string('show-window-buttons');
-
     this._deactivate();
     this._activate();
   },
 
   _activate: function() {
+    this._enabled = this._settings.get_string('show-window-buttons');
+
     if (this._enabled != 'never') {
       this._createButtons();
       this._updateVisibility();

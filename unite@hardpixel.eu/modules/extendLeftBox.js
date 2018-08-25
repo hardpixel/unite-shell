@@ -96,13 +96,13 @@ var ExtendLeftBox = new Lang.Class({
   },
 
   _toggle: function() {
-    this._enabled = this._settings.get_boolean('extend-left-box');
-
     this._deactivate();
     this._activate();
   },
 
   _activate: function() {
+    this._enabled = this._settings.get_boolean('extend-left-box');
+
     if (this._enabled) {
       this._connnectSignals();
       Panel.actor.queue_relayout();

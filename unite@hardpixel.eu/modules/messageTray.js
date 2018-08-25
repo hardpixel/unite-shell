@@ -50,13 +50,13 @@ var MessageTray = new Lang.Class({
   },
 
   _toggle: function() {
-    this._position = this._settings.get_string('notifications-position');
-
     this._deactivate();
     this._activate();
   },
 
   _activate: function () {
+    this._position = this._settings.get_string('notifications-position');
+
     if (this._position != 'center') {
       this._updatePosition();
       this._updateWidth();

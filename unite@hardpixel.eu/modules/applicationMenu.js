@@ -179,13 +179,13 @@ var ApplicationMenu = new Lang.Class({
   },
 
   _toggle: function() {
-    this._enabled = this._settings.get_string('show-window-title');
-
     this._deactivate();
     this._activate();
   },
 
   _activate: function() {
+    this._enabled = this._settings.get_string('show-window-title');
+
     if (this._enabled != 'never') {
       this._syncMenu();
       this._updateMenu();

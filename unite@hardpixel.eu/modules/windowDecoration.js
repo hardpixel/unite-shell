@@ -182,13 +182,13 @@ var WindowDecoration = new Lang.Class({
   },
 
   _toggle: function() {
-    this._enabled = this._settings.get_string('hide-window-titlebars');
-
     this._deactivate();
     this._activate();
   },
 
   _activate: function() {
+    this._enabled = this._settings.get_string('hide-window-titlebars');
+
     if (this._enabled != 'never') {
       this._addUserStyles();
       this._undecorateWindows();

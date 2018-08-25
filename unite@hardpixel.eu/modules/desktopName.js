@@ -113,13 +113,13 @@ var DesktopName = new Lang.Class({
   },
 
   _toggle: function() {
-    this._enabled = this._settings.get_boolean('show-desktop-name');
-
     this._deactivate();
     this._activate();
   },
 
   _activate: function() {
+    this._enabled = this._settings.get_boolean('show-desktop-name');
+
     if (this._enabled) {
       this._createLabel();
       this._updateVisibility();

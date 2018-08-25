@@ -219,13 +219,13 @@ var TopIcons = new Lang.Class({
   },
 
   _toggle: function() {
-    this._enabled = this._settings.get_boolean('show-legacy-tray');
-
     this._deactivate();
     this._activate();
   },
 
   _activate: function() {
+    this._enabled = this._settings.get_boolean('show-legacy-tray');
+
     if (this._enabled) {
       if (Main.legacyTray) {
         Mainloop.idle_add(Lang.bind(this, this._moveToPanel));
