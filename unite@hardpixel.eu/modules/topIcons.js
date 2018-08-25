@@ -136,12 +136,12 @@ var TopIcons = new Lang.Class({
     this._destroyIconsContainer();
   },
 
-  _addTrayIcon: function (o, icon, role) {
-    this._icons.push(icon);
+  _addTrayIcon: function (o, trayIcon, role) {
+    this._icons.push(trayIcon);
 
+    let icon          = this._createIcon(trayIcon);
     let buttonMask    = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE;
     let iconContainer = new St.Button({ child: icon, button_mask: buttonMask });
-    let iconSize      = Helpers.scaleSize(20);
 
     icon.connect('destroy', function() {
       icon.clear_effects();
@@ -155,10 +155,6 @@ var TopIcons = new Lang.Class({
     this._iconsContainer.actor.show();
     this._iconsContainer.container.show();
     this._iconsBoxLayout.insert_child_at_index(iconContainer, 0);
-
-    icon.reactive = true;
-    icon.get_parent().set_size(iconSize, iconSize);
-    icon.set_size(iconSize, iconSize);
   },
 
   _removeTrayIcon: function (o, icon) {
@@ -176,6 +172,15 @@ var TopIcons = new Lang.Class({
       this._iconsContainer.actor.hide();
       this._iconsContainer.container.hide();
     }
+  },
+
+  _createIcon: function (icon) {
+    let size = Helpers.scaleSize(20);
+
+    icon.reactive = true;
+    icon.set_size(size, size);
+
+    return icon;
   },
 
   _toggle: function() {
