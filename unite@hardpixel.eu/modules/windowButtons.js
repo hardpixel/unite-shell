@@ -187,7 +187,7 @@ var WindowButtons = new Lang.Class({
     }
   },
 
-  _onButtonClick: function (actor, evt) {
+  _onButtonClick: function (actor, event) {
     if (this._activeWindow) {
       switch (actor._windowAction) {
         case 'minimize':
