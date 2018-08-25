@@ -148,8 +148,8 @@ var TopIcons = new Lang.Class({
       iconContainer.destroy();
     });
 
-    iconContainer.connect('button-release-event', function () {
-      icon.click(Clutter.get_current_event());
+    iconContainer.connect('button-release-event', function (actor, event) {
+      icon.click(event);
     });
 
     this._iconsContainer.actor.show();
