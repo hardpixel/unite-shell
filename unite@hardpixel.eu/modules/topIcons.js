@@ -14,11 +14,9 @@ const Convenience    = Unite.imports.convenience;
 
 var TopIcons = new Lang.Class({
   Name: 'Unite.TopIcons',
-  _handlerIDs: [],
   _icons: [],
 
   _init: function() {
-    this._tray     = Main.legacyTray;
     this._settings = Convenience.getSettings();
 
     this._activate();
@@ -96,67 +94,6 @@ var TopIcons = new Lang.Class({
     }
   },
 
-  _moveToPanel: function () {
-    this._createIconsContainer();
-
-    if (this._tray._trayIconAddedId) {
-      this._tray._trayManager.disconnect(this._tray._trayIconAddedId);
-    }
-
-    if (this._tray._trayIconRemovedId) {
-      this._tray._trayManager.disconnect(this._tray._trayIconRemovedId);
-    }
-
-    this._handlerIDs.push(this._tray._trayManager.connect(
-      'tray-icon-added', Lang.bind(this, this._addTrayIcon))
-    );
-
-    this._handlerIDs.push(this._tray._trayManager.connect(
-      'tray-icon-removed', Lang.bind(this, this._removeTrayIcon))
-    );
-
-    let icons = this._tray._iconBox.get_children();
-
-    icons.forEach(Lang.bind(this, function (button) {
-      let icon = button.child;
-
-      button.remove_actor(icon);
-      button.destroy();
-
-      this._addTrayIcon(null, icon);
-    }));
-  },
-
-  _moveToTray: function () {
-    this._handlerIDs.forEach(Lang.bind(this, function (handler) {
-      this._tray._trayManager.disconnect(handler);
-    }));
-
-    this._tray._trayIconAddedId = this._tray._trayManager.connect(
-      'tray-icon-added', Lang.bind(this._tray, this._tray._onTrayIconAdded)
-    );
-
-    this._tray._trayIconRemovedId = this._tray._trayManager.connect(
-      'tray-icon-removed', Lang.bind(this._tray, this._tray._onTrayIconRemoved)
-    );
-
-    this._icons.forEach(Lang.bind(this, function (icon) {
-      let parent = icon.get_parent();
-
-      if (parent) {
-        parent.remove_actor(icon);
-        parent.destroy();
-      }
-
-      this._tray._onTrayIconAdded(this._tray, icon);
-    }));
-
-    this._icons      = [];
-    this._handlerIDs = [];
-
-    this._destroyIconsContainer();
-  },
-
   _addTrayIcon: function (o, icon, role) {
     this._icons.push(icon);
 
@@ -232,22 +169,12 @@ var TopIcons = new Lang.Class({
     this._enabled = this._settings.get_boolean('show-legacy-tray');
 
     if (this._enabled) {
-      if (Main.legacyTray) {
-        Mainloop.idle_add(Lang.bind(this, this._moveToPanel));
-        this._tray.actor.hide();
-      } else {
-        Mainloop.idle_add(Lang.bind(this, this._createTray));
-      }
+      Mainloop.idle_add(Lang.bind(this, this._createTray));
     }
   },
 
   _deactivate: function() {
-    if (Main.legacyTray) {
-      Mainloop.idle_add(Lang.bind(this, this._moveToTray));
-      this._tray.actor.show();
-    } else {
-      Mainloop.idle_add(Lang.bind(this, this._destroyTray));
-    }
+    Mainloop.idle_add(Lang.bind(this, this._destroyTray));
   },
 
   destroy: function() {
