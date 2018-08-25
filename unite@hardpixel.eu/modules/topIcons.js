@@ -21,7 +21,7 @@ var TopIcons = new Lang.Class({
     this._tray     = Main.legacyTray;
     this._settings = Convenience.getSettings();
 
-    this._toggle();
+    this._activate();
     this._connectSettings();
   },
 

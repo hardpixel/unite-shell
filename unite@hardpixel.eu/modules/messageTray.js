@@ -13,7 +13,7 @@ var MessageTray = new Lang.Class({
   _init: function() {
     this._settings = Convenience.getSettings();
 
-    this._toggle();
+    this._activate();
     this._connectSettings();
   },
 

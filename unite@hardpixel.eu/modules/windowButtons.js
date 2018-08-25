@@ -20,7 +20,7 @@ var WindowButtons = new Lang.Class({
     this._dwmprefs = Helpers.wmPreferences();
     this._settings = Convenience.getSettings();
 
-    this._toggle();
+    this._activate();
     this._connectSettings();
   },
 
