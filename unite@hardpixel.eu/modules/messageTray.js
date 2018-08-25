@@ -40,6 +40,10 @@ var MessageTray = new Lang.Class({
     MessageBanner.set_x_align(alignments[this._position]);
   },
 
+  _resetPosition: function () {
+    MessageBanner.set_x_align(Clutter.ActorAlign.CENTER);
+  },
+
   _updateWidth: function () {
     let width = Helpers.scaleSize(390);
     MessageBanner.set_width(width);
@@ -64,7 +68,7 @@ var MessageTray = new Lang.Class({
   },
 
   _deactivate: function() {
-    this._updatePosition();
+    this._resetPosition();
     this._resetWidth();
   },
 
