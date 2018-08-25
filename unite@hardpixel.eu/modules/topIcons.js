@@ -140,10 +140,9 @@ var TopIcons = new Lang.Class({
     this._destroyIconsContainer();
   },
 
-  _addTrayIcon: function (o, trayIcon, role) {
-    this._icons.push(trayIcon);
+  _addTrayIcon: function (o, icon, role) {
+    this._icons.push(icon);
 
-    let icon          = this._createIcon(trayIcon);
     let buttonMask    = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE;
     let iconContainer = new St.Button({ child: icon, button_mask: buttonMask });
 
@@ -154,6 +153,8 @@ var TopIcons = new Lang.Class({
     iconContainer.connect('button-release-event', function (actor, event) {
       icon.click(event);
     });
+
+    this._setIcon(icon);
 
     this._iconsContainer.actor.show();
     this._iconsContainer.container.show();
@@ -177,14 +178,12 @@ var TopIcons = new Lang.Class({
     }
   },
 
-  _createIcon: function (icon) {
+  _setIcon: function (icon) {
     let size = Helpers.scaleSize(20);
 
     icon.reactive = true;
     icon.set_size(size, size);
     this._desaturateIcon(icon);
-
-    return icon;
   },
 
   _desaturateIcon: function (icon) {
