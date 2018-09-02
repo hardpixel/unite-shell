@@ -15,6 +15,7 @@
     <value value="12" nick="pop-dark" />
     <value value="13" nick="pop-light" />
     <value value="14" nick="vimix" />
+    <value value="15" nick="yaru" />
   </enum>
 
   <enum id="org.gnome.shell.extensions.unite.hideTitlebars">
