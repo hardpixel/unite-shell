@@ -140,8 +140,12 @@ var WindowDecoration = new Lang.Class({
 
     if (buttonsPosition) {
       let styleContent  = this._updateUserStyles();
-      let styleFilePath = Unite.path + '/styles/buttons-' + buttonsPosition + '.css';
-      let styleImport   = "@import url('" + styleFilePath + "');\n"
+      let styleFilePath = Unite.path + '/styles/buttons-' + buttonsPosition;
+      let styleImport   = "@import url('" + styleFilePath + ".css');\n";
+
+      if (this._enabled == 'both' || this._enabled == 'tiled') {
+        styleImport = styleImport + "@import url('" + styleFilePath + "-tiled.css');\n";
+      }
 
       GLib.file_set_contents(STYLESPATH, styleImport + styleContent);
     }

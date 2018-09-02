@@ -1,0 +1,23 @@
+.tiled headerbar,
+.tiled .titlebar {
+  padding-left: 0;
+}
+
+.tiled .titlebar headerbar ~ headerbar {
+  padding-left: 6px;
+}
+
+.tiled .titlebar .titlebar {
+  padding-left: 0;
+}
+
+.tiled headerbar > box.left,
+.tiled .titlebar > box.left {
+  margin: 0 0 0 -200px;
+  opacity: 0;
+}
+
+.tiled .titlebar.default-decoration {
+  margin: -200px 0 0;
+  opacity: 0;
+}
