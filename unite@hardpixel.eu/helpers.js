@@ -102,10 +102,11 @@ function isMaximized(win, match_state) {
     let primaryScreen = win.is_on_primary_monitor();
     let tileMaximized = maximized == flags.HORIZONTAL || maximized == flags.VERTICAL;
     let fullMaximized = maximized == flags.BOTH;
+    let bothMaximized = fullMaximized || tileMaximized;
 
     switch (match_state) {
       case 'both':
-        check = primaryScreen && maximized;
+        check = primaryScreen && bothMaximized;
         break;
       case 'maximized':
         check = primaryScreen && fullMaximized;
