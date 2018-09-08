@@ -88,7 +88,11 @@ var WindowDecoration = new Lang.Class({
 
   _updateTitlebar: function () {
     let window = global.display.focus_window;
-    let toggle = window && window.get_maximized() !== 0;
+    let toggle = window;
+
+    if (this._enabled == 'both') {
+      toggle = window && window.get_maximized() !== 0;
+    }
 
     if (toggle && Helpers.isValidWindow(window)) {
       if (Helpers.isMaximized(window, this._enabled)) {
