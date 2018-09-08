@@ -8,8 +8,6 @@ const Unite          = ExtensionUtils.getCurrentExtension();
 const Helpers        = Unite.imports.helpers;
 const Convenience    = Unite.imports.convenience;
 const STYLESPATH     = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
-const REMAXIMIZE     = Helpers.getVersion() < 3.24;
-const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
 var WindowDecoration = new Lang.Class({
   Name: 'Unite.WindowDecoration',
@@ -74,12 +72,15 @@ var WindowDecoration = new Lang.Class({
   },
 
   _toggleMaximize: function (win) {
-    if (REMAXIMIZE && win.get_maximized() === MAXIMIZED) {
+    let remaximize    = Helpers.getVersion() < 3.24;
+    let maximizeState = win && win.get_maximized();
+
+    if (remaximize && maximizeState > 0) {
       win._doingMaxUnmax = true;
 
       Mainloop.timeout_add(50, function () {
-        win.unmaximize(MAXIMIZED);
-        win.maximize(MAXIMIZED);
+        win.unmaximize(maximizeState);
+        win.maximize(maximizeState);
 
         win._doingMaxUnmax = false;
       });
