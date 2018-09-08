@@ -11,7 +11,6 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
 const Helpers        = Unite.imports.helpers;
 const Convenience    = Unite.imports.convenience;
-const MAXIMIZED      = Meta.MaximizeFlags.BOTH;
 
 var WindowButtons = new Lang.Class({
   Name: 'Unite.WindowButtons',
@@ -222,10 +221,13 @@ var WindowButtons = new Lang.Class({
   },
 
   _maximizeWindow: function () {
-    if (this._activeWindow.get_maximized() === MAXIMIZED) {
-      this._activeWindow.unmaximize(MAXIMIZED);
+    let bothMaximized = Meta.MaximizeFlags.BOTH;
+    let maximizeState = this._activeWindow.get_maximized();
+
+    if (maximizeState === bothMaximized) {
+      this._activeWindow.unmaximize(bothMaximized);
     } else {
-      this._activeWindow.maximize(MAXIMIZED);
+      this._activeWindow.maximize(bothMaximized);
     }
   },
 
