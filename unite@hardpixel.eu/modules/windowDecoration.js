@@ -133,7 +133,7 @@ var WindowDecoration = new Lang.Class({
       let fileContent = GLib.file_get_contents(STYLESPATH);
 
       if (fileContent[0] == true) {
-        styleContent = fileContent[1].toString();
+        styleContent = String.fromCharCode.apply(null, fileContent[1]);
         styleContent = styleContent.replace(/@import.*unite@hardpixel\.eu.*css['"]\);\n/g, '');
       }
     }
