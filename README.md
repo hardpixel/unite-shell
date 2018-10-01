@@ -37,6 +37,9 @@ The easiest way to install this extension is via the official [Gnome Shell Exten
 ### Packages
 Arch Linux: [AUR package](https://aur.archlinux.org/packages/gnome-shell-extension-unite)
 
+## Contributing
+Bug reports and pull requests are welcome on GitHub at https://github.com/hardpixel/unite-shell.
+
 ## License
 Unite Shell is available as open source under the terms of the [GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)
 
