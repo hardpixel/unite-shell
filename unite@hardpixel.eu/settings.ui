@@ -227,7 +227,7 @@
         </child>
         <child>
           <object class="GtkComboBoxText" id="hide_activities_button">
-            <property name="width_request">150</property>
+            <property name="width_request">170</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="active_id">2</property>
@@ -271,7 +271,7 @@
         </child>
         <child>
           <object class="GtkComboBoxText" id="hide_window_titlebars">
-            <property name="width_request">150</property>
+            <property name="width_request">170</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="active_id">2</property>
@@ -316,7 +316,7 @@
         </child>
         <child>
           <object class="GtkComboBoxText" id="show_window_title">
-            <property name="width_request">150</property>
+            <property name="width_request">170</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="active_id">2</property>
@@ -362,7 +362,7 @@
         </child>
         <child>
           <object class="GtkComboBoxText" id="show_window_buttons">
-            <property name="width_request">150</property>
+            <property name="width_request">170</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="active_id">2</property>
@@ -409,7 +409,7 @@
         </child>
         <child>
           <object class="GtkComboBoxText" id="window_buttons_theme">
-            <property name="width_request">150</property>
+            <property name="width_request">170</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="active_id">0</property>
@@ -466,7 +466,7 @@
         </child>
         <child>
           <object class="GtkComboBoxText" id="notifications_position">
-            <property name="width_request">150</property>
+            <property name="width_request">170</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="active_id">2</property>
