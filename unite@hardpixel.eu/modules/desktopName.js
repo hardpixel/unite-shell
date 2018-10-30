@@ -24,12 +24,21 @@ var DesktopName = new Lang.Class({
     this._sdnHandlerID = this._settings.connect(
       'changed::show-desktop-name', Lang.bind(this, this._toggle)
     );
+
+    this._dntHandlerID = this._settings.connect(
+      'changed::desktop-name-text', Lang.bind(this, this._setLabelText)
+    );
   },
 
   _disconnectSettings: function() {
     if (this._sdnHandlerID) {
       this._settings.disconnect(this._sdnHandlerID);
       delete this._sdnHandlerID;
+    }
+
+    if (this._dntHandlerID) {
+      this._settings.disconnect(this._dntHandlerID);
+      delete this._dntHandlerID;
     }
   },
 
@@ -95,7 +104,7 @@ var DesktopName = new Lang.Class({
       this._labelActor = new St.Bin({ style_class: 'desktop-name' });
       this._labelBox.add_actor(this._labelActor);
 
-      this._labelText = new St.Label({ text: 'GNOME Desktop' });
+      this._labelText = new St.Label();
       this._labelActor.add_actor(this._labelText);
 
       let activities = Panel.statusArea.activities.actor.get_parent();
@@ -116,6 +125,11 @@ var DesktopName = new Lang.Class({
     }
   },
 
+  _setLabelText: function () {
+    let text = this._settings.get_string('desktop-name-text');
+    this._labelText.set_text(text);
+  },
+
   _toggle: function() {
     this._deactivate();
     this._activate();
@@ -126,6 +140,7 @@ var DesktopName = new Lang.Class({
 
     if (this._enabled) {
       this._createLabel();
+      this._setLabelText();
       this._updateVisibility();
       this._connectSignals();
     }

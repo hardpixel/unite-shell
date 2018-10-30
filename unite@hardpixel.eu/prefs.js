@@ -21,6 +21,7 @@ var PrefsWidget = new GObject.Class({
     this.add(prefsWidget);
 
     this._settings = Convenience.getSettings();
+    this._bindStrings();
     this._bindBooleans();
     this._bindEnumerations();
   },
@@ -28,6 +29,27 @@ var PrefsWidget = new GObject.Class({
   _getWidget: function(name) {
     let wname = name.replace(/-/g, '_');
     return this._buildable.get_object(wname);
+  },
+
+  _getStrings: function () {
+    let items = [
+      'desktop-name-text'
+    ];
+
+    return items;
+  },
+
+  _bindString: function (setting) {
+    let widget = this._getWidget(setting);
+    widget.set_text(this._settings.get_string(setting));
+
+    widget.connect('changed', Lang.bind(this, function(entry) {
+      this._settings.set_string(setting, entry.get_text());
+    }));
+  },
+
+  _bindStrings: function () {
+    this._getStrings().forEach(Lang.bind(this, this._bindString));
   },
 
   _getBooleans: function () {
@@ -68,7 +90,7 @@ var PrefsWidget = new GObject.Class({
     let widget = this._getWidget(setting);
     widget.set_active(this._settings.get_enum(setting));
 
-    widget.connect('changed', Lang.bind (this, function(combobox) {
+    widget.connect('changed', Lang.bind(this, function(combobox) {
       this._settings.set_enum(setting, combobox.get_active());
     }));
   },

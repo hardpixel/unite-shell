@@ -79,6 +79,11 @@
       <summary>Show desktop name in top bar.</summary>
     </key>
 
+    <key name="desktop-name-text" type="s">
+      <default>"GNOME Desktop"</default>
+      <summary>Set the top bar desktop name text.</summary>
+    </key>
+
     <key name="show-window-title" enum="org.gnome.shell.extensions.unite.showTitle">
       <default>"maximized"</default>
       <summary>Use window title to replace the app-menu label.</summary>
