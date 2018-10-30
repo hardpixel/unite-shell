@@ -4,37 +4,37 @@
 }
 
 .close .icon {
-  background-image: url("close_focused_normal.svg");
+  background-image: url("close.svg");
 }
 
 .close:hover .icon {
-  background-image: url("close_focused_prelight.svg");
+  background-image: url("close-hover.svg");
 }
 
 .close:active .icon {
-  background-image: url("close_focused_pressed.svg");
+  background-image: url("close-active.svg");
 }
 
 .minimize .icon {
-  background-image: url("minimize_focused_normal.svg");
+  background-image: url("minimize.svg");
 }
 
 .minimize:hover .icon {
-  background-image: url("minimize_focused_prelight.svg");
+  background-image: url("minimize-hover.svg");
 }
 
 .minimize:active .icon {
-  background-image: url("minimize_focused_pressed.svg");
+  background-image: url("minimize-active.svg");
 }
 
 .maximize .icon {
-  background-image: url("maximize_focused_normal.svg");
+  background-image: url("maximize.svg");
 }
 
 .maximize:hover .icon {
-  background-image: url("maximize_focused_prelight.svg");
+  background-image: url("maximize-hover.svg");
 }
 
 .maximize:active .icon {
-  background-image: url("maximize_focused_pressed.svg");
+  background-image: url("maximize-active.svg");
 }

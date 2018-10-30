@@ -8,11 +8,11 @@
 }
 
 .close:hover .icon {
-  background-image: url("close_prelight.svg");
+  background-image: url("close-hover.svg");
 }
 
 .close:active .icon {
-  background-image: url("close_pressed.svg");
+  background-image: url("close-active.svg");
 }
 
 .minimize .icon {
@@ -20,11 +20,11 @@
 }
 
 .minimize:hover .icon {
-  background-image: url("minimize_prelight.svg");
+  background-image: url("minimize-hover.svg");
 }
 
 .minimize:active .icon {
-  background-image: url("minimize_pressed.svg");
+  background-image: url("minimize-active.svg");
 }
 
 .maximize .icon {
@@ -32,9 +32,9 @@
 }
 
 .maximize:hover .icon {
-  background-image: url("maximize_prelight.svg");
+  background-image: url("maximize-hover.svg");
 }
 
 .maximize:active .icon {
-  background-image: url("maximize_pressed.svg");
+  background-image: url("maximize-active.svg");
 }
