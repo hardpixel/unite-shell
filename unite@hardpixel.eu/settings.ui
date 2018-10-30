@@ -130,7 +130,7 @@
       </packing>
     </child>
     <child>
-      <object class="GtkBox" id="show_desktop_name_section">
+      <object class="GtkBox" id="autofocus_windows_section">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="spacing">50</property>
@@ -139,7 +139,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="valign">center</property>
-            <property name="label" translatable="yes">Show desktop name in top bar</property>
+            <property name="label" translatable="yes">Auto focus new windows</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -148,7 +148,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkSwitch" id="show_desktop_name">
+          <object class="GtkSwitch" id="autofocus_windows">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="valign">center</property>
@@ -169,7 +169,7 @@
       </packing>
     </child>
     <child>
-      <object class="GtkBox" id="autofocus_windows_section">
+      <object class="GtkBox" id="show_desktop_name_section">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="spacing">50</property>
@@ -178,7 +178,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="valign">center</property>
-            <property name="label" translatable="yes">Auto focus new windows</property>
+            <property name="label" translatable="yes">Show desktop name in top bar</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -187,7 +187,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkSwitch" id="autofocus_windows">
+          <object class="GtkSwitch" id="show_desktop_name">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="valign">center</property>
@@ -248,7 +248,7 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">5</property>
+        <property name="position">6</property>
       </packing>
     </child>
     <child>
@@ -293,7 +293,7 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">6</property>
+        <property name="position">7</property>
       </packing>
     </child>
     <child>
@@ -339,7 +339,7 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">7</property>
+        <property name="position">8</property>
       </packing>
     </child>
     <child>
@@ -385,7 +385,7 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">8</property>
+        <property name="position">9</property>
       </packing>
     </child>
     <child>
@@ -443,7 +443,7 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">9</property>
+        <property name="position">10</property>
       </packing>
     </child>
     <child>
@@ -487,7 +487,7 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">10</property>
+        <property name="position">11</property>
       </packing>
     </child>
   </object>
