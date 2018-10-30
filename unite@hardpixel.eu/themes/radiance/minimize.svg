@@ -4,12 +4,12 @@
     <stop offset=".50001228" stop-color="#ece8e4"/>
     <stop offset="1" stop-color="#f7f4f3"/>
   </linearGradient>
-  <linearGradient id="b" gradientUnits="userSpaceOnUse" x1="7" x2="15.2133" xlink:href="#c" y1="9.499995" y2="9.499995"/>
-  <linearGradient id="c">
+  <linearGradient id="b" x1="7" x2="15.2133" xlink:href="#c" y1="9.499995" y2="9.499995"/>
+  <linearGradient id="c" gradientUnits="userSpaceOnUse">
     <stop offset="0" stop-color="#fff"/>
     <stop offset="1" stop-color="#fff" stop-opacity="0"/>
   </linearGradient>
-  <linearGradient id="d" gradientUnits="userSpaceOnUse" x1="6.999977" x2="15.213378" xlink:href="#c" y1="9.499995" y2="9.499995"/>
+  <linearGradient id="d" x1="6.999977" x2="15.213378" xlink:href="#c" y1="9.499995" y2="9.499995"/>
   <circle cx="9.499992" cy="9.499983" fill="#d0c7bf" r="8.5"/>
   <circle cx="-9.500003" cy="9.499995" fill="url(#a)" r="7.49998" transform="rotate(-90)"/>
   <g fill="none">

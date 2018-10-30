@@ -3,12 +3,12 @@
     <stop offset="0" stop-color="#f08054"/>
     <stop offset="1" stop-color="#f07c4e"/>
   </linearGradient>
-  <linearGradient id="b" gradientUnits="userSpaceOnUse" x1="-16.999965" x2="-1.999965" xlink:href="#c" y1="8.999996" y2="8.999996"/>
-  <linearGradient id="c">
+  <linearGradient id="b" x1="-16.999965" x2="-1.999965" xlink:href="#c" y1="8.999996" y2="8.999996"/>
+  <linearGradient id="c" gradientUnits="userSpaceOnUse">
     <stop offset="0" stop-color="#fff"/>
     <stop offset="1" stop-color="#bd9e82"/>
   </linearGradient>
-  <linearGradient id="d" gradientUnits="userSpaceOnUse" x1="-16.999991" x2="-1.999984" xlink:href="#c" y1="9.499995" y2="9.499995"/>
+  <linearGradient id="d" x1="-16.999991" x2="-1.999984" xlink:href="#c" y1="9.499995" y2="9.499995"/>
   <circle cx="9.500002" cy="9.499983" fill="#d0c7bf" r="8.5"/>
   <circle cx="-9.499992" cy="9.500005" fill="url(#a)" r="7.49998" transform="rotate(-90)"/>
   <g fill="none">
@@ -16,6 +16,8 @@
     <circle cx="-9.499983" cy="9.499995" opacity=".05" r="7.24998" stroke="url(#d)" stroke-width=".5" transform="rotate(-90)"/>
     <path d="m.000003 0h19v19h-19z"/>
   </g>
-  <path d="m11.80078 6.42295-.39063.3886-4.5996 4.5996-.38868.3887.77735.7774.39062-.3887 4.59961-4.5996.38867-.3887z" fill="#7f4025"/>
-  <path d="m7.19922 6.42295-.77735.7773.38868.3887 4.5996 4.5996.39063.3887.77734-.7774-.38867-.3887-4.59961-4.5996z" fill="#7f4025"/>
+  <g fill="#7f4025">
+    <path d="m11.80078 6.42295-.39063.3886-4.5996 4.5996-.38868.3887.77735.7774.39062-.3887 4.59961-4.5996.38867-.3887z"/>
+    <path d="m7.19922 6.42295-.77735.7773.38868.3887 4.5996 4.5996.39063.3887.77734-.7774-.38867-.3887-4.59961-4.5996z"/>
+  </g>
 </svg>

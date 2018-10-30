@@ -3,12 +3,12 @@
     <stop offset="0" stop-color="#fcfbf8"/>
     <stop offset="1" stop-color="#fbf9f6"/>
   </linearGradient>
-  <linearGradient id="b" gradientUnits="userSpaceOnUse" x1="-16.999991" x2="-1.999984" xlink:href="#c" y1="9.499995" y2="9.499995"/>
-  <linearGradient id="c">
+  <linearGradient id="b" x1="-16.999991" x2="-1.999984" xlink:href="#c" y1="9.499995" y2="9.499995"/>
+  <linearGradient id="c" gradientUnits="userSpaceOnUse">
     <stop offset="0" stop-color="#fff"/>
     <stop offset="1" stop-color="#bd9e82"/>
   </linearGradient>
-  <linearGradient id="d" gradientUnits="userSpaceOnUse" x1="-16.999965" x2="-1.999965" xlink:href="#c" y1="8.999996" y2="8.999996"/>
+  <linearGradient id="d" x1="-16.999965" x2="-1.999965" xlink:href="#c" y1="8.999996" y2="8.999996"/>
   <circle cx="9.500002" cy="9.499983" fill="#ddd4cb" r="8.5"/>
   <circle cx="-9.499983" cy="9.499995" fill="url(#a)" r="7.49998" transform="rotate(-90)"/>
   <g fill="none">

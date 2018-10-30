@@ -3,12 +3,12 @@
     <stop offset="0" stop-color="#77766f"/>
     <stop offset="1" stop-color="#74736c"/>
   </linearGradient>
-  <linearGradient id="b">
+  <linearGradient id="b" gradientUnits="userSpaceOnUse">
     <stop offset="0" stop-color="#fff"/>
     <stop offset="1"/>
   </linearGradient>
-  <linearGradient id="c" gradientTransform="matrix(0 -1 1 0 .00001 -1053.36223)" gradientUnits="userSpaceOnUse" x1="-1070.3622" x2="-1055.3622" xlink:href="#b" y1="8.999996" y2="8.999996"/>
-  <linearGradient id="d" gradientTransform="matrix(0 -1.0357118 1.0357118 0 -.339252 -1091.3189)" gradientUnits="userSpaceOnUse" x1="-1070.1036" x2="-1055.6208" xlink:href="#b" y1="9.499995" y2="9.499995"/>
+  <linearGradient id="c" gradientTransform="matrix(0 -1 1 0 .00001 -1053.36223)" x1="-1070.3622" x2="-1055.3622" xlink:href="#b" y1="8.999996" y2="8.999996"/>
+  <linearGradient id="d" gradientTransform="matrix(0 -1.0357118 1.0357118 0 -.339252 -1091.3189)" x1="-1070.1036" x2="-1055.6208" xlink:href="#b" y1="9.499995" y2="9.499995"/>
   <circle cx="9.500002" cy="9.499983" fill="#383734" r="8.5"/>
   <circle cx="-9.499983" cy="9.499995" fill="url(#a)" r="7.49998" transform="rotate(-90)"/>
   <path d="m2.00001 9.4991c0 4.1362 3.363788 7.5 7.5 7.5s7.5-3.3638 7.5-7.5-3.363788-7.5-7.5-7.5-7.5 3.3638-7.5 7.5zm1 0c0-3.5957 2.9042281-6.5 6.5-6.5 3.595772 0 6.5 2.9043 6.5 6.5 0 3.5958-2.904228 6.5-6.5 6.5-3.5957719 0-6.5-2.9042-6.5-6.5z" fill="url(#c)" opacity=".05"/>
