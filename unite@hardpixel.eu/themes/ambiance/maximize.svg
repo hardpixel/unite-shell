@@ -1,5 +1,5 @@
-<svg height="19" viewBox="0 0 19 19" width="19" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <linearGradient id="a" gradientUnits="userSpaceOnUse" x1="-1070.362185" x2="-1055.362225" y1="9.5" y2="9.5">
+<svg height="19" width="19" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <linearGradient id="a" gradientUnits="userSpaceOnUse" x1="-16.999985" x2="-2.000025" y1="9.5" y2="9.5">
     <stop offset="0" stop-color="#5a5955"/>
     <stop offset=".50001228" stop-color="#75746d"/>
     <stop offset="1" stop-color="#8e8d88"/>
@@ -8,17 +8,13 @@
     <stop offset="0" stop-color="#fff"/>
     <stop offset="1" stop-color="#fff" stop-opacity="0"/>
   </linearGradient>
-  <linearGradient id="c" gradientTransform="matrix(0 1 1 0 0 2125.7244)" gradientUnits="userSpaceOnUse" x1="-1070.3622" x2="-1055.3622" xlink:href="#b" y1="9.499995" y2="9.499995"/>
-  <linearGradient id="d" gradientTransform="matrix(0 1.0357118 1.0357118 0 -.339262 2163.6811)" gradientUnits="userSpaceOnUse" x1="-1070.3622" x2="-1055.3622" xlink:href="#b" y1="9.499995" y2="9.499995"/>
-  <g transform="translate(287.35715 -522.86219)">
-    <g transform="translate(-287.35714 -530.49999)">
-      <circle cx="9.499992" cy="1062.8622" fill="#383734" r="8.5"/>
-      <circle cx="-1062.8622" cy="9.499995" fill="url(#a)" r="7.49998" transform="rotate(-90)"/>
-      <path d="m2 1062.8613c0-4.1362 3.363788-7.5 7.5-7.5s7.5 3.3638 7.5 7.5-3.363788 7.5-7.5 7.5-7.5-3.3638-7.5-7.5zm1 0c0 3.5958 2.9042281 6.5 6.5 6.5 3.595772 0 6.5-2.9042 6.5-6.5 0-3.5957-2.904228-6.5-6.5-6.5-3.5957719 0-6.5 2.9043-6.5 6.5z" fill="url(#c)" opacity=".07"/>
-      <path d="m2 1062.8613c0-4.1391 3.3608366-7.5 7.5-7.5 4.139163 0 7.5 3.3609 7.5 7.5 0 4.1392-3.360837 7.5-7.5 7.5-4.1391634 0-7.5-3.3608-7.5-7.5zm.5 0c0 3.869 3.1310567 7 7 7 3.868943 0 7-3.131 7-7 0-3.8689-3.131057-7-7-7-3.8689433 0-7 3.1311-7 7z" fill="url(#d)" opacity=".07"/>
-      <path d="m-.000007 1053.3622h19v19h-19z" fill="none"/>
-    </g>
-    <path d="m-281.35742 529.86133v.5 6.5h7v-7zm1 1h5v5h-5z" fill="#fff" opacity=".1"/>
-    <path d="m-281.35742 528.86133v.5 6.5h7v-7zm1 1h5v5h-5z" fill="#3d3c37"/>
-  </g>
+  <linearGradient id="c" gradientTransform="matrix(0 1 1 0 .00001 1072.3622)" gradientUnits="userSpaceOnUse" x1="-1070.3622" x2="-1055.3622" xlink:href="#b" y1="9.499995" y2="9.499995"/>
+  <linearGradient id="d" gradientTransform="matrix(0 1.0357118 1.0357118 0 -.339252 1110.3189)" gradientUnits="userSpaceOnUse" x1="-1070.3622" x2="-1055.3622" xlink:href="#b" y1="9.499995" y2="9.499995"/>
+  <circle cx="9.500002" cy="9.499983" fill="#383734" r="8.5"/>
+  <circle cx="-9.499983" cy="9.499995" fill="url(#a)" r="7.49998" transform="rotate(-90)"/>
+  <path d="m2.00001 9.4991c0-4.1362 3.363788-7.5 7.5-7.5s7.5 3.3638 7.5 7.5-3.363788 7.5-7.5 7.5-7.5-3.3638-7.5-7.5zm1 0c0 3.5958 2.9042281 6.5 6.5 6.5 3.595772 0 6.5-2.9042 6.5-6.5 0-3.5957-2.904228-6.5-6.5-6.5-3.5957719 0-6.5 2.9043-6.5 6.5z" fill="url(#c)" opacity=".07"/>
+  <path d="m2.00001 9.4991c0-4.1391 3.3608366-7.5 7.5-7.5 4.139163 0 7.5 3.3609 7.5 7.5 0 4.1392-3.360837 7.5-7.5 7.5-4.1391634 0-7.5-3.3608-7.5-7.5zm.5 0c0 3.869 3.1310567 7 7 7 3.868943 0 7-3.131 7-7 0-3.8689-3.131057-7-7-7-3.8689433 0-7 3.1311-7 7z" fill="url(#d)" opacity=".07"/>
+  <path d="m.000003 0h19v19h-19z" fill="none"/>
+  <path d="m5.99973 6.99914v.5 6.5h7v-7zm1 1h5v5h-5z" fill="#fff" opacity=".1"/>
+  <path d="m5.99973 5.99914v.5 6.5h7v-7zm1 1h5v5h-5z" fill="#3d3c37"/>
 </svg>
