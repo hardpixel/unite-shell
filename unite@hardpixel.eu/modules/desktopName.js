@@ -81,31 +81,35 @@ var DesktopName = new Lang.Class({
     let show = AppMenu._targetApp == null && !Main.overview.visibleTarget;
 
     if (show) {
-      this._labelActor.show();
+      this._labelBox.show();
     } else {
-      this._labelActor.hide();
+      this._labelBox.hide();
     }
   },
 
   _createLabel: function () {
-    if (!this._labelActor) {
+    if (!this._labelBox) {
+      this._labelBox = new St.BoxLayout({ style_class: 'panel-button' });
+      this._labelBox.hide();
+
       this._labelActor = new St.Bin({ style_class: 'desktop-name' });
-      this._labelActor.hide();
+      this._labelBox.add_actor(this._labelActor);
 
       this._labelText = new St.Label({ text: 'GNOME Desktop' });
       this._labelActor.add_actor(this._labelText);
 
       let activities = Panel.statusArea.activities.actor.get_parent();
-      Panel._leftBox.insert_child_below(this._labelActor, activities);
+      Panel._leftBox.insert_child_below(this._labelBox, activities);
 
       Panel._desktopName = true;
     }
   },
 
   _destroyLabel: function () {
-    if (this._labelActor) {
-      this._labelActor.destroy();
+    if (this._labelBox) {
+      this._labelBox.destroy();
 
+      delete this._labelBox;
       delete this._labelActor;
       delete this._labelText;
       delete Panel._desktopName;
