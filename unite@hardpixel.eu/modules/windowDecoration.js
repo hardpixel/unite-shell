@@ -71,22 +71,6 @@ var WindowDecoration = new Lang.Class({
     }
   },
 
-  _toggleMaximize: function (win) {
-    let remaximize    = Helpers.getVersion() < 3.24;
-    let maximizeState = win && win.get_maximized();
-
-    if (remaximize && maximizeState > 0) {
-      win._doingMaxUnmax = true;
-
-      Mainloop.timeout_add(50, function () {
-        win.unmaximize(maximizeState);
-        win.maximize(maximizeState);
-
-        win._doingMaxUnmax = false;
-      });
-    }
-  },
-
   _updateTitlebar: function () {
     let window = global.display.focus_window;
     let toggle = window;
@@ -105,24 +89,16 @@ var WindowDecoration = new Lang.Class({
   },
 
   _showTitlebar: function (win) {
-    let undecorated = win && win._decorationOFF;
-
-    if (undecorated && !win._doingMaxUnmax) {
+    if (win && win._decorationOFF) {
       win._decorationOFF = false;
-
       this._toggleTitlebar(win, false);
-      this._toggleMaximize(win);
     }
   },
 
   _hideTitlebar: function (win) {
-    let decorated = win && !win._decorationOFF && win.decorated;
-
-    if (decorated && !win._doingMaxUnmax) {
+    if (win && !win._decorationOFF && win.decorated) {
       win._decorationOFF = true;
-
       this._toggleTitlebar(win, true);
-      this._toggleMaximize(win);
     }
   },
 
@@ -186,7 +162,6 @@ var WindowDecoration = new Lang.Class({
 
         delete win._decorationOFF;
         delete win._windowXID;
-        delete win._doingMaxUnmax;
       }));
     }));
   },
