@@ -1,4 +1,4 @@
-<svg height="24" opacity=".87" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="12" cy="12" opacity=".3" r="10"/>
-  <path d="m8 14h8v2h-8z"/>
+<svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="12" cy="12" opacity=".7" r="10" fill="#d0cfcf"/>
+  <path d="m8 14h8v2h-8z" fill="#574f4a"/>
 </svg>
