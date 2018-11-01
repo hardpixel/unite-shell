@@ -6,6 +6,14 @@ const SettingsHandler = Unite.imports.handlers.SettingsHandler;
 
 var BaseModule = new Lang.Class({
   Name: 'Unite.BaseModule',
+  EnableKey: null,
+  EnableValue: null,
+
+  _onInitialize() {},
+  _onActivate() {},
+  _onDeactivate() {},
+  _onReload() {},
+  _onDestroy() {},
 
   _init() {
     this._signals  = new SignalsHandler(this);
@@ -13,14 +21,14 @@ var BaseModule = new Lang.Class({
 
     this._onInitialize();
     this._activate();
+
+    this._settings.connect(`changed::${this.EnableKey}`, this._reload);
   },
 
-  _onActivate() {},
-  _onDeactivate() {},
-  _onReload() {},
-  _onDestroy() {},
-
   _activate() {
+    let setting = this._settings.get(this.EnableKey);
+    if (!setting == this.EnableValue) return;
+
     this._onActivate();
   },
 
