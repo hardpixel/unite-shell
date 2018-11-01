@@ -17,17 +17,22 @@ var BaseModule = new Lang.Class({
 
   _connectSettings() {},
   _connnectSignals() {},
-  _onActivate() {},
-  _onDeactivate() {},
+
+  _runCallback(name) {
+    let callback = this[name];
+    if (typeof callback != 'function') return;
+
+    callback();
+  },
 
   _activate() {
     this._connnectSignals();
-    this._onActivate();
+    this._runCallback('_onActivate');
   },
 
   _deactivate() {
     this._signals.disconnectAll();
-    this._onDeactivate();
+    this._runCallback('_onDeactivate');
   },
 
   _reload() {
