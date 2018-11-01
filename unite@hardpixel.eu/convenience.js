@@ -1,9 +1,53 @@
+const Lang           = imports.lang;
 const Gettext        = imports.gettext;
 const Gio            = imports.gi.Gio;
 const Config         = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
 const GioSSS         = Gio.SettingsSchemaSource;
+
+var SettingsManager = new Lang.Class({
+  Name: 'Unite.Settings',
+
+  Types: {
+    'autofocus-windows':      'boolean',
+    'hide-activities-button': 'enum',
+    'show-window-title':      'enum',
+    'show-desktop-name':      'boolean',
+    'desktop-name-text':      'string',
+    'extend-left-box':        'boolean',
+    'notifications-position': 'enum',
+    'show-legacy-tray':       'boolean',
+    'greyscale-tray-icons':   'boolean',
+    'show-window-buttons':    'enum',
+    'window-buttons-theme':   'enum',
+    'hide-window-titlebars':  'enum'
+  },
+
+  _init(gioSettings) {
+    this._gioSettings = gioSettings;
+  },
+
+  getSettingType(key) {
+    return this.Types[key] || 'string';
+  },
+
+  getTypeSettings(type) {
+    return Object.keys(this.Types).filter(key => this.Types[key] == type);
+  },
+
+  getSetting(key) {
+    let type  = this.getSettingType(key);
+    let value = null;
+
+    if (type == 'boolean')
+      value = this._gioSettings.get_boolean(key);
+    else
+      value = this._gioSettings.get_string(key);
+
+    return value;
+  }
+});
 
 function initTranslations(domain) {
   domain = domain || Unite.metadata['gettext-domain'];
@@ -37,4 +81,8 @@ function getSettings(schema) {
   }
 
   return new Gio.Settings({ settings_schema: schemaObj });
+}
+
+function getSettingsManager(schema) {
+  return new SettingsManager(getSettings(schema));
 }
