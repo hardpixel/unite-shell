@@ -8,6 +8,7 @@ const GioSSS         = Gio.SettingsSchemaSource;
 
 var SettingsManager = new Lang.Class({
   Name: 'Unite.Settings',
+  Extends: Gio.Settings,
 
   Types: {
     'autofocus-windows':      'boolean',
@@ -24,10 +25,6 @@ var SettingsManager = new Lang.Class({
     'hide-window-titlebars':  'enum'
   },
 
-  _init(gioSettings) {
-    this._gioSettings = gioSettings;
-  },
-
   getSettingType(key) {
     return this.Types[key] || 'string';
   },
@@ -41,9 +38,9 @@ var SettingsManager = new Lang.Class({
     let value = null;
 
     if (type == 'boolean')
-      value = this._gioSettings.get_boolean(key);
+      value = this.get_boolean(key);
     else
-      value = this._gioSettings.get_string(key);
+      value = this.get_string(key);
 
     return value;
   }
@@ -80,9 +77,5 @@ function getSettings(schema) {
     throw new Error(message + '. Please check your installation.');
   }
 
-  return new Gio.Settings({ settings_schema: schemaObj });
-}
-
-function getSettingsManager(schema) {
-  return new SettingsManager(getSettings(schema));
+  return new SettingsManager({ settings_schema: schemaObj });
 }

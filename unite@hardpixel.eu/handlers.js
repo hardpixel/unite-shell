@@ -50,7 +50,7 @@ var SettingsHandler = new Lang.Class({
   _init(context) {
     this._signals  = {};
     this._context  = context;
-    this._settings = Convenience.getSettingsManager();
+    this._settings = Convenience.getSettings();
   },
 
   connect(signalName, callback) {
