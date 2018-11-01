@@ -7,12 +7,12 @@ const Convenience    = Unite.imports.convenience;
 var SignalsHandler = new Lang.Class({
   Name: 'Unite.SignalsHandler',
 
-  _init: function (context) {
+  _init(context) {
     this._signals = {};
     this._context = context;
   },
 
-  connect: function (object, signalName, callback) {
+  connect(object, signalName, callback) {
     let signalKey = `${object}/${signalName}#${callback}`;
 
     if (!this._signals[signalKey]) {
@@ -29,7 +29,7 @@ var SignalsHandler = new Lang.Class({
     return signalKey;
   },
 
-  disconnect: function (signalKey) {
+  disconnect(signalKey) {
     let signalData = this._signals[signalKey];
     if (!signalData) return;
 
@@ -37,7 +37,7 @@ var SignalsHandler = new Lang.Class({
     delete this._signals[signalKey];
   },
 
-  disconnectAll: function () {
+  disconnectAll() {
     for (let signalKey in this._signals) {
       this.disconnect(signalKey);
     }
@@ -47,13 +47,13 @@ var SignalsHandler = new Lang.Class({
 var SettingsHandler = new Lang.Class({
   Name: 'Unite.SettingsHandler',
 
-  _init: function(context) {
+  _initcontext) {
     this._signals  = {};
     this._context  = context;
     this._settings = Convenience.getSettingsManager();
   },
 
-  connect: function (signalName, callback) {
+  connect(signalName, callback) {
     let signalId = `${signalName}#${callback}`;
 
     if (!this._signals[signalId]) {
@@ -65,7 +65,7 @@ var SettingsHandler = new Lang.Class({
     return signalId;
   },
 
-  disconnect: function (signalKey) {
+  disconnect(signalKey) {
     let signalId = this._signals[signalKey];
     if (!signalId) return;
 
@@ -73,13 +73,13 @@ var SettingsHandler = new Lang.Class({
     delete this._signals[signalId];
   },
 
-  disconnectAll: function () {
+  disconnectAll() {
     for (let signalKey in this._signals) {
       this.disconnect(signalKey);
     }
   },
 
-  get: function (settingKey) {
+  get(settingKey) {
     return this._settings.getSetting(settingKey);
   }
 });
