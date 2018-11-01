@@ -11,6 +11,7 @@ var BaseModule = new Lang.Class({
     this._signals  = new SignalsHandler(this);
     this._settings = new SettingsHandler(this);
 
+    this._onInitialize();
     this._activate();
   },
 
@@ -24,8 +25,8 @@ var BaseModule = new Lang.Class({
   },
 
   _deactivate() {
-    this._signals.disconnectAll();
     this._onDeactivate();
+    this._signals.disconnectAll();
   },
 
   _reload() {
@@ -36,7 +37,7 @@ var BaseModule = new Lang.Class({
 
   destroy() {
     this._deactivate();
-    this._settings.disconnectAll();
     this._onDestroy();
+    this._settings.disconnectAll();
   }
 });
