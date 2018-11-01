@@ -12,36 +12,31 @@ var BaseModule = new Lang.Class({
     this._settings = new SettingsHandler(this);
 
     this._activate();
-    this._connectSettings();
   },
 
-  _connectSettings() {},
-  _connnectSignals() {},
-
-  _runCallback(name) {
-    let callback = this[name];
-
-    if (typeof callback == 'function')
-      callback();
-  },
+  _onActivate() {},
+  _onDeactivate() {},
+  _onReload() {},
+  _onDestroy() {},
 
   _activate() {
-    this._connnectSignals();
-    this._runCallback('_onActivate');
+    this._onActivate();
   },
 
   _deactivate() {
     this._signals.disconnectAll();
-    this._runCallback('_onDeactivate');
+    this._onDeactivate();
   },
 
   _reload() {
     this._deactivate();
     this._activate();
+    this._onReload();
   },
 
   destroy() {
     this._deactivate();
     this._settings.disconnectAll();
+    this._onDestroy();
   }
 });
