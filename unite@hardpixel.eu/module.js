@@ -20,9 +20,9 @@ var BaseModule = new Lang.Class({
 
   _runCallback(name) {
     let callback = this[name];
-    if (typeof callback != 'function') return;
 
-    callback();
+    if (typeof callback == 'function')
+      callback();
   },
 
   _activate() {
