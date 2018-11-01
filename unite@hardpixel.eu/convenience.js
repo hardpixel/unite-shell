@@ -34,15 +34,8 @@ var SettingsManager = new Lang.Class({
   },
 
   getSetting(key) {
-    let type  = this.getSettingType(key);
-    let value = null;
-
-    if (type == 'boolean')
-      value = this.get_boolean(key);
-    else
-      value = this.get_string(key);
-
-    return value;
+    let type = this.getSettingType(key);
+    return type == 'boolean' ? this.get_boolean(key) : this.get_string(key);
   }
 });
 
@@ -62,19 +55,21 @@ function getSettings(schema) {
   schema = schema || Unite.metadata['settings-schema'];
 
   let schemaDir    = Unite.dir.get_child('schemas');
-  let schemaSource = null;
+  let schemaSource = GioSSS.get_default();
 
   if (schemaDir.query_exists(null)) {
-    schemaSource = GioSSS.new_from_directory(schemaDir.get_path(), GioSSS.get_default(), false);
-  } else {
-    schemaSource = GioSSS.get_default();
+    schemaSource = GioSSS.new_from_directory(
+      schemaDir.get_path(), schemaSource, false
+    );
   }
 
   let schemaObj = schemaSource.lookup(schema, true);
 
   if (!schemaObj) {
-    let message = 'Schema ' + schema + ' could not be found for extension ' + Unite.metadata.uuid;
-    throw new Error(message + '. Please check your installation.');
+    let metaId  = Unite.metadata.uuid
+    let message = `Schema ${schema} could not be found for extension ${metaId}.`;
+
+    throw new Error(`${message} Please check your installation.`);
   }
 
   return new SettingsManager({ settings_schema: schemaObj });
