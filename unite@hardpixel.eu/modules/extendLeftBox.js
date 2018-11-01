@@ -1,56 +1,33 @@
-const Clutter        = imports.gi.Clutter;
 const Lang           = imports.lang;
+const Clutter        = imports.gi.Clutter;
 const Main           = imports.ui.main;
-const Panel          = Main.panel;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
-const Convenience    = Unite.imports.convenience;
+const BaseModule     = Unite.imports.module.BaseModule;
 
 var ExtendLeftBox = new Lang.Class({
   Name: 'Unite.ExtendLeftBox',
+  Extends: BaseModule,
 
-  _init: function() {
-    this._settings = Convenience.getSettings();
-
-    this._activate();
-    this._connectSettings();
+  _onActivate() {
+    this._signals.connect(Main.panel.actor, 'allocate', this._extendBox);
   },
 
-  _connectSettings: function() {
-    this._elbHandlerID = this._settings.connect(
-      'changed::extend-left-box', Lang.bind(this, this._toggle)
-    );
+  _onReload() {
+    Main.panel.actor.queue_relayout();
   },
 
-  _disconnectSettings: function() {
-    if (this._elbHandlerID) {
-      this._settings.disconnect(this._elbHandlerID);
-      delete this._elbHandlerID;
-    }
-  },
+  _extendBox(actor, box, flags) {
+    let leftBox   = Main.panel._leftBox;
+    let centerBox = Main.panel._centerBox;
+    let rightBox  = Main.panel._rightBox;
 
-  _connnectSignals: function() {
-    if (!this._handlerID) {
-      this._handlerID = Panel.actor.connect(
-        'allocate', Lang.bind(this, this._extendBox)
-      );
-    }
-  },
-
-  _disconnectSignals: function() {
-    if (this._handlerID) {
-      Panel.actor.disconnect(this._handlerID);
-      delete this._handlerID;
-    }
-  },
-
-  _extendBox: function (actor, box, flags) {
     let allocWidth  = box.x2 - box.x1;
     let allocHeight = box.y2 - box.y1;
 
-    let [leftMinWidth, leftNaturalWidth]     = Panel._leftBox.get_preferred_width(-1);
-    let [centerMinWidth, centerNaturalWidth] = Panel._centerBox.get_preferred_width(-1);
-    let [rightMinWidth, rightNaturalWidth]   = Panel._rightBox.get_preferred_width(-1);
+    let [leftMinWidth, leftNaturalWidth]     = leftBox.get_preferred_width(-1);
+    let [centerMinWidth, centerNaturalWidth] = centerBox.get_preferred_width(-1);
+    let [rightMinWidth, rightNaturalWidth]   = rightBox.get_preferred_width(-1);
 
     let sideWidth = allocWidth - rightNaturalWidth - centerNaturalWidth;
     let childBox  = new Clutter.ActorBox();
@@ -58,7 +35,7 @@ var ExtendLeftBox = new Lang.Class({
     childBox.y1 = 0;
     childBox.y2 = allocHeight;
 
-    if (Panel.actor.get_text_direction() == Clutter.TextDirection.RTL) {
+    if (actor.get_text_direction() == Clutter.TextDirection.RTL) {
       childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth), leftNaturalWidth);
       childBox.x2 = allocWidth;
     } else {
@@ -66,12 +43,12 @@ var ExtendLeftBox = new Lang.Class({
       childBox.x2 = Math.min(Math.floor(sideWidth), leftNaturalWidth);
     }
 
-    Panel._leftBox.allocate(childBox, flags);
+    leftBox.allocate(childBox, flags);
 
     childBox.y1 = 0;
     childBox.y2 = allocHeight;
 
-    if (Panel.actor.get_text_direction() == Clutter.TextDirection.RTL) {
+    if (actor.get_text_direction() == Clutter.TextDirection.RTL) {
       childBox.x1 = rightNaturalWidth;
       childBox.x2 = childBox.x1 + centerNaturalWidth;
     } else {
@@ -79,12 +56,12 @@ var ExtendLeftBox = new Lang.Class({
       childBox.x2 = childBox.x1 + centerNaturalWidth;
     }
 
-    Panel._centerBox.allocate(childBox, flags);
+    centerBox.allocate(childBox, flags);
 
     childBox.y1 = 0;
     childBox.y2 = allocHeight;
 
-    if (Panel.actor.get_text_direction() == Clutter.TextDirection.RTL) {
+    if (actor.get_text_direction() == Clutter.TextDirection.RTL) {
       childBox.x1 = 0;
       childBox.x2 = rightNaturalWidth;
     } else {
@@ -92,30 +69,6 @@ var ExtendLeftBox = new Lang.Class({
       childBox.x2 = allocWidth;
     }
 
-    Panel._rightBox.allocate(childBox, flags);
-  },
-
-  _toggle: function() {
-    this._deactivate();
-    this._activate();
-  },
-
-  _activate: function() {
-    this._enabled = this._settings.get_boolean('extend-left-box');
-
-    if (this._enabled) {
-      this._connnectSignals();
-      Panel.actor.queue_relayout();
-    }
-  },
-
-  _deactivate: function() {
-    this._disconnectSignals();
-    Panel.actor.queue_relayout();
-  },
-
-  destroy: function() {
-    this._deactivate();
-    this._disconnectSettings();
+    rightBox.allocate(childBox, flags);
   }
 });
