@@ -50,7 +50,7 @@ var SettingsHandler = new Lang.Class({
   _init: function(context) {
     this._signals  = {};
     this._context  = context;
-    this._settings = Convenience.getSettings();
+    this._settings = Convenience.getSettingsManager();
   },
 
   connect: function (signalName, callback) {
@@ -79,11 +79,7 @@ var SettingsHandler = new Lang.Class({
     }
   },
 
-  get_boolean: function (settingKey) {
-    return this._settings.get_boolean(settingKey);
-  },
-
-  get_string: function (settingKey) {
-    return this._settings.get_string(settingKey);
+  get: function (settingKey) {
+    return this._settings.getSetting(settingKey);
   }
 });
