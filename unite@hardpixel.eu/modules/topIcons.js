@@ -63,7 +63,7 @@ var TopIcons = new Lang.Class({
     this._icons = [];
     this._destroyIconsContainer();
 
-    this._tray = null;
+    delete this._tray;
     System.gc();
   },
 
