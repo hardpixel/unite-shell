@@ -47,7 +47,7 @@ var SignalsHandler = new Lang.Class({
 var SettingsHandler = new Lang.Class({
   Name: 'Unite.SettingsHandler',
 
-  _initcontext) {
+  _init(context) {
     this._signals  = {};
     this._context  = context;
     this._settings = Convenience.getSettingsManager();
