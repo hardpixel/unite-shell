@@ -18,109 +18,108 @@ var TopIcons = new Lang.Class({
 
   _onInitialize() {
     this._icons = [];
+    this._iSize = Helpers.scaleSize(20);
+
     this._settings.connect('greyscale-tray-icons', this._desaturateIcons);
   },
 
   _onActivate() {
-    Mainloop.idle_add(Lang.bind(this, this._createTray));
+    this._createContainer();
+    this._createTray();
   },
 
   _onDeactivate() {
-    Mainloop.idle_add(Lang.bind(this, this._destroyTray));
+    this._icons = [];
+
+    this._destroyContainer();
+    this._destroyTray();
   },
 
   _createTray() {
-    this._createIconsContainer();
-
     this._tray = new Shell.TrayManager();
     this._tray.connect('tray-icon-added', Lang.bind(this, this._addTrayIcon));
     this._tray.connect('tray-icon-removed', Lang.bind(this, this._removeTrayIcon));
 
-    if (global.screen) {
+    if (global.screen)
       this._tray.manage_screen(global.screen, Main.panel.actor);
-    } else {
+    else
       this._tray.manage_screen(Main.panel.actor);
-    }
   },
 
   _destroyTray() {
-    this._icons = [];
-    this._destroyIconsContainer();
-
     delete this._tray;
     System.gc();
   },
 
-  _createIconsContainer() {
+  _createContainer() {
     this._iconsBoxLayout = new St.BoxLayout({ style_class: 'tray-icons-box' });
     this._iconsContainer = new PanelMenu.ButtonBox({ visible: false });
     this._iconsContainer.actor.add_actor(this._iconsBoxLayout);
 
     let parent = this._iconsContainer.actor.get_parent();
+    parent.remove_actor(this._iconsContainer.actor);
+
     let agmenu = Main.panel.statusArea.aggregateMenu.actor.get_parent();
-
-    if (parent) {
-      parent.remove_actor(this._iconsContainer.actor);
-    }
-
     Main.panel._rightBox.insert_child_below(this._iconsContainer.actor, agmenu);
   },
 
-  _destroyIconsContainer() {
-    if (this._iconsBoxLayout) {
-      this._iconsBoxLayout.destroy();
-      delete this._iconsBoxLayout;
-    }
+  _destroyContainer() {
+    if (!this._iconsContainer) return;
 
-    if (this._iconsContainer) {
-      this._iconsContainer.actor.destroy();
-      delete this._iconsContainer;
-    }
+    this._iconsBoxLayout.actor.destroy();
+    delete this._iconsBoxLayout;
+
+    this._iconsContainer.actor.destroy();
+    delete this._iconsContainer;
   },
 
   _addTrayIcon(o, icon, role) {
     this._icons.push(icon);
 
-    let buttonMask    = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE;
-    let iconContainer = new St.Button({ child: icon, button_mask: buttonMask });
+    let buttonMask = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE;
+    let iconButton = new St.Button({ child: icon, button_mask: buttonMask });
 
     icon.connect('destroy', function() {
-      iconContainer.destroy();
+      iconButton.destroy();
     });
 
-    iconContainer.connect('button-release-event', function (actor, event) {
+    iconButton.connect('button-release-event', function(actor, event) {
       icon.click(event);
     });
 
-    this._setIcon(icon);
+    this._iconsBoxLayout.insert_child_at_index(iconButton, 0);
 
+    this._createIcon(icon);
+    this._showContainer();
+  },
+
+  _removeTrayIcon(trayManager, icon) {
+    let iconContainer = icon.get_parent() || icon;
+    iconContainer.destroy();
+
+    let iconindex = this._icons.indexOf(icon);
+    this._icons.splice(iconindex, 1);
+
+    this._hideContainer();
+  },
+
+  _showContainer() {
     this._iconsContainer.actor.show();
     this._iconsContainer.container.show();
-    this._iconsBoxLayout.insert_child_at_index(iconContainer, 0);
   },
 
-  _removeTrayIcon(o, icon) {
-    let parent = icon.get_parent();
+  _hideContainer() {
+    let emptyContainer = this._iconsBoxLayout.get_n_children() === 0;
+    if (!emptyContainer) return;
 
-    if (parent) {
-      parent.destroy();
-    } else {
-      icon.destroy();
-    }
-
-    this._icons.splice(this._icons.indexOf(icon), 1);
-
-    if (this._iconsBoxLayout.get_n_children() === 0) {
-      this._iconsContainer.actor.hide();
-      this._iconsContainer.container.hide();
-    }
+    this._iconsContainer.actor.hide();
+    this._iconsContainer.container.hide();
   },
 
-  _setIcon(icon) {
-    let size = Helpers.scaleSize(20);
-
+  _createIcon(icon) {
     icon.reactive = true;
-    icon.set_size(size, size);
+
+    icon.set_size(this._iSize, this._iSize);
     this._desaturateIcon(icon);
   },
 
