@@ -37,7 +37,7 @@ var ActivitiesButton = new Lang.Class({
     let appmenu  = target && !overview;
     let hidden   = this._enabled == 'always' || appmenu;
 
-    if (!hidden && Main.panel._desktopName)
+    if (!hidden && this._settings.get('show-desktop-name'))
       hidden = !target && !overview;
 
     hidden ? this._container.hide() : this._container.show()

@@ -67,7 +67,5 @@ var DesktopName = new Lang.Class({
 
     let activities = Main.panel.statusArea.activities.actor.get_parent();
     Main.panel._leftBox.insert_child_below(this._labelBox, activities);
-
-    Main.panel._desktopName = true;
   }
 });
