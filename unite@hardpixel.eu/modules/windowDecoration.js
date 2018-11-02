@@ -1,64 +1,33 @@
-const Meta           = imports.gi.Meta;
-const GLib           = imports.gi.GLib;
-const Mainloop       = imports.mainloop;
-const Util           = imports.misc.util;
-const Lang           = imports.lang;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Unite          = ExtensionUtils.getCurrentExtension();
-const Helpers        = Unite.imports.helpers;
-const Convenience    = Unite.imports.convenience;
-const STYLESPATH     = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
+const Lang     = imports.lang;
+const Mainloop = imports.mainloop;
+const GLib     = imports.gi.GLib;
+const Meta     = imports.gi.Meta;
+const Util     = imports.misc.util;
+const Unite    = imports.misc.extensionUtils.getCurrentExtension();
+const Base     = Unite.imports.module.BaseModule;
+const Helpers  = Unite.imports.helpers;
+const STYLES   = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
 
 var WindowDecoration = new Lang.Class({
   Name: 'Unite.WindowDecoration',
+  Extends: Base,
+  EnableKey: 'hide-window-titlebars',
+  DisableValue: 'never',
 
-  _init: function() {
-    this._settings = Convenience.getSettings();
+  _onActivate() {
+    this._signals.connect(global.display, 'notify::focus-window', this._updateTitlebar);
+    this._signals.connect(global.window_manager, 'size-change', this._updateTitlebar);
 
-    this._activate();
-    this._connectSettings();
+    this._addUserStyles();
+    this._undecorateWindows();
   },
 
-  _connectSettings: function() {
-    this._hwtHandlerID = this._settings.connect(
-      'changed::hide-window-titlebars', Lang.bind(this, this._toggle)
-    );
+  _onDeactivate() {
+    this._removeUserStyles();
+    this._decorateWindows();
   },
 
-  _disconnectSettings: function() {
-    if (this._hwtHandlerID) {
-      this._settings.disconnect(this._hwtHandlerID);
-      delete this._hwtHandlerID;
-    }
-  },
-
-  _connectSignals: function () {
-    if (!this._dsHandlerID) {
-      this._dsHandlerID = global.display.connect(
-        'notify::focus-window', Lang.bind(this, this._updateTitlebar)
-      );
-    }
-
-    if (!this._wmHandlerID) {
-      this._wmHandlerID = global.window_manager.connect(
-        'size-change', Lang.bind(this, this._updateTitlebar)
-      );
-    }
-  },
-
-  _disconnectSignals: function() {
-    if (this._dsHandlerID) {
-      global.display.disconnect(this._dsHandlerID);
-      delete this._dsHandlerID;
-    }
-
-    if (this._wmHandlerID) {
-      global.window_manager.disconnect(this._wmHandlerID);
-      delete this._wmHandlerID;
-    }
-  },
-
-  _toggleTitlebar: function (win, hide) {
+  _toggleTitlebar(win, hide) {
     if (!win._windowXID) {
       win._windowXID = Helpers.getXWindow(win);
     }
@@ -71,7 +40,7 @@ var WindowDecoration = new Lang.Class({
     }
   },
 
-  _updateTitlebar: function () {
+  _updateTitlebar() {
     let window = global.display.focus_window;
     let toggle = window;
 
@@ -88,25 +57,25 @@ var WindowDecoration = new Lang.Class({
     }
   },
 
-  _showTitlebar: function (win) {
+  _showTitlebar(win) {
     if (win && win._decorationOFF) {
       win._decorationOFF = false;
       this._toggleTitlebar(win, false);
     }
   },
 
-  _hideTitlebar: function (win) {
+  _hideTitlebar(win) {
     if (win && !win._decorationOFF && win.decorated) {
       win._decorationOFF = true;
       this._toggleTitlebar(win, true);
     }
   },
 
-  _updateUserStyles: function () {
+  _updateUserStyles() {
     let styleContent = '';
 
-    if (GLib.file_test(STYLESPATH, GLib.FileTest.EXISTS)) {
-      let fileContent = GLib.file_get_contents(STYLESPATH);
+    if (GLib.file_test(STYLES, GLib.FileTest.EXISTS)) {
+      let fileContent = GLib.file_get_contents(STYLES);
 
       if (fileContent[0] == true) {
         styleContent = String.fromCharCode.apply(null, fileContent[1]);
@@ -117,7 +86,7 @@ var WindowDecoration = new Lang.Class({
     return styleContent;
   },
 
-  _addUserStyles: function () {
+  _addUserStyles() {
     let buttonsPosition = Helpers.getWindowButtons('position');
 
     if (buttonsPosition) {
@@ -129,16 +98,16 @@ var WindowDecoration = new Lang.Class({
         styleImport = styleImport + "@import url('" + styleFilePath + "-tiled.css');\n";
       }
 
-      GLib.file_set_contents(STYLESPATH, styleImport + styleContent);
+      GLib.file_set_contents(STYLES, styleImport + styleContent);
     }
   },
 
-  _removeUserStyles: function () {
+  _removeUserStyles() {
     let styleContent = this._updateUserStyles();
-    GLib.file_set_contents(STYLESPATH, styleContent);
+    GLib.file_set_contents(STYLES, styleContent);
   },
 
-  _undecorateWindows: function () {
+  _undecorateWindows() {
     let windows = Helpers.getAllWindows();
 
     windows.forEach(Lang.bind(this, function (win) {
@@ -152,7 +121,7 @@ var WindowDecoration = new Lang.Class({
     }));
   },
 
-  _decorateWindows: function () {
+  _decorateWindows() {
     let windows = Helpers.getAllWindows();
 
     windows.forEach(Lang.bind(this, function (win) {
@@ -164,31 +133,5 @@ var WindowDecoration = new Lang.Class({
         delete win._windowXID;
       }));
     }));
-  },
-
-  _toggle: function() {
-    this._deactivate();
-    this._activate();
-  },
-
-  _activate: function() {
-    this._enabled = this._settings.get_string('hide-window-titlebars');
-
-    if (this._enabled != 'never') {
-      this._addUserStyles();
-      this._undecorateWindows();
-      this._connectSignals();
-    }
-  },
-
-  _deactivate: function() {
-    this._removeUserStyles();
-    this._decorateWindows();
-    this._disconnectSignals();
-  },
-
-  destroy: function() {
-    this._deactivate();
-    this._disconnectSettings();
   }
 });

@@ -1,9 +1,43 @@
-const Gettext        = imports.gettext;
-const Gio            = imports.gi.Gio;
-const Config         = imports.misc.config;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Unite          = ExtensionUtils.getCurrentExtension();
-const GioSSS         = Gio.SettingsSchemaSource;
+const Lang    = imports.lang;
+const Gettext = imports.gettext;
+const Gio     = imports.gi.Gio;
+const Config  = imports.misc.config;
+const Unite   = imports.misc.extensionUtils.getCurrentExtension();
+const GioSSS  = Gio.SettingsSchemaSource;
+
+var SettingsManager = new Lang.Class({
+  Name: 'Unite.Settings',
+  Extends: Gio.Settings,
+  DEFAULT_BINDING: Gio.SettingsBindFlags.DEFAULT,
+
+  Types: {
+    'autofocus-windows':      'boolean',
+    'hide-activities-button': 'enum',
+    'show-window-title':      'enum',
+    'show-desktop-name':      'boolean',
+    'desktop-name-text':      'string',
+    'extend-left-box':        'boolean',
+    'notifications-position': 'enum',
+    'show-legacy-tray':       'boolean',
+    'greyscale-tray-icons':   'boolean',
+    'show-window-buttons':    'enum',
+    'window-buttons-theme':   'enum',
+    'hide-window-titlebars':  'enum'
+  },
+
+  getSettingType(key) {
+    return this.Types[key] || 'string';
+  },
+
+  getTypeSettings(type) {
+    return Object.keys(this.Types).filter(key => this.Types[key] == type);
+  },
+
+  getSetting(key) {
+    let type = this.getSettingType(key);
+    return type == 'boolean' ? this.get_boolean(key) : this.get_string(key);
+  }
+});
 
 function initTranslations(domain) {
   domain = domain || Unite.metadata['gettext-domain'];
@@ -21,20 +55,22 @@ function getSettings(schema) {
   schema = schema || Unite.metadata['settings-schema'];
 
   let schemaDir    = Unite.dir.get_child('schemas');
-  let schemaSource = null;
+  let schemaSource = GioSSS.get_default();
 
   if (schemaDir.query_exists(null)) {
-    schemaSource = GioSSS.new_from_directory(schemaDir.get_path(), GioSSS.get_default(), false);
-  } else {
-    schemaSource = GioSSS.get_default();
+    schemaSource = GioSSS.new_from_directory(
+      schemaDir.get_path(), schemaSource, false
+    );
   }
 
   let schemaObj = schemaSource.lookup(schema, true);
 
   if (!schemaObj) {
-    let message = 'Schema ' + schema + ' could not be found for extension ' + Unite.metadata.uuid;
-    throw new Error(message + '. Please check your installation.');
+    let metaId  = Unite.metadata.uuid
+    let message = `Schema ${schema} could not be found for extension ${metaId}.`;
+
+    throw new Error(`${message} Please check your installation.`);
   }
 
-  return new Gio.Settings({ settings_schema: schemaObj });
+  return new SettingsManager({ settings_schema: schemaObj });
 }

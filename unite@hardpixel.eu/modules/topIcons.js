@@ -1,51 +1,35 @@
-const Clutter        = imports.gi.Clutter;
-const Main           = imports.ui.main;
-const Shell          = imports.gi.Shell;
-const Mainloop       = imports.mainloop;
-const St             = imports.gi.St;
-const System         = imports.system;
-const Lang           = imports.lang;
-const PanelMenu      = imports.ui.panelMenu;
-const Panel          = Main.panel;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Unite          = ExtensionUtils.getCurrentExtension();
-const Helpers        = Unite.imports.helpers;
-const Convenience    = Unite.imports.convenience;
+const Lang      = imports.lang;
+const System    = imports.system;
+const Mainloop  = imports.mainloop;
+const Clutter   = imports.gi.Clutter;
+const Shell     = imports.gi.Shell;
+const St        = imports.gi.St;
+const Main      = imports.ui.main;
+const PanelMenu = imports.ui.panelMenu;
+const Unite     = imports.misc.extensionUtils.getCurrentExtension();
+const Base      = Unite.imports.module.BaseModule;
+const Helpers   = Unite.imports.helpers;
 
 var TopIcons = new Lang.Class({
   Name: 'Unite.TopIcons',
-  _icons: [],
+  Extends: Base,
+  EnableKey: 'show-legacy-tray',
+  EnableValue: true,
 
-  _init: function() {
-    this._settings = Convenience.getSettings();
-
-    this._activate();
-    this._connectSettings();
+  _onInitialize() {
+    this._icons = [];
+    this._settings.connect('greyscale-tray-icons', this._desaturateIcons);
   },
 
-  _connectSettings: function() {
-    this._sltHandlerID = this._settings.connect(
-      'changed::show-legacy-tray', Lang.bind(this, this._toggle)
-    );
-
-    this._gtiHandlerID = this._settings.connect(
-      'changed::greyscale-tray-icons', Lang.bind(this, this._desaturateIcons)
-    );
+  _onActivate() {
+    Mainloop.idle_add(Lang.bind(this, this._createTray));
   },
 
-  _disconnectSettings: function() {
-    if (this._sltHandlerID) {
-      this._settings.disconnect(this._sltHandlerID);
-      delete this._sltHandlerID;
-    }
-
-    if (this._gtiHandlerID) {
-      this._settings.disconnect(this._gtiHandlerID);
-      delete this._gtiHandlerID;
-    }
+  _onDeactivate() {
+    Mainloop.idle_add(Lang.bind(this, this._destroyTray));
   },
 
-  _createTray: function () {
+  _createTray() {
     this._createIconsContainer();
 
     this._tray = new Shell.TrayManager();
@@ -53,13 +37,13 @@ var TopIcons = new Lang.Class({
     this._tray.connect('tray-icon-removed', Lang.bind(this, this._removeTrayIcon));
 
     if (global.screen) {
-      this._tray.manage_screen(global.screen, Panel.actor);
+      this._tray.manage_screen(global.screen, Main.panel.actor);
     } else {
-      this._tray.manage_screen(Panel.actor);
+      this._tray.manage_screen(Main.panel.actor);
     }
   },
 
-  _destroyTray: function () {
+  _destroyTray() {
     this._icons = [];
     this._destroyIconsContainer();
 
@@ -67,7 +51,7 @@ var TopIcons = new Lang.Class({
     System.gc();
   },
 
-  _createIconsContainer: function () {
+  _createIconsContainer() {
     this._iconsBoxLayout = new St.BoxLayout({ style_class: 'tray-icons-box' });
     this._iconsContainer = new PanelMenu.ButtonBox({ visible: false });
     this._iconsContainer.actor.add_actor(this._iconsBoxLayout);
@@ -79,10 +63,10 @@ var TopIcons = new Lang.Class({
       parent.remove_actor(this._iconsContainer.actor);
     }
 
-    Panel._rightBox.insert_child_below(this._iconsContainer.actor, agmenu);
+    Main.panel._rightBox.insert_child_below(this._iconsContainer.actor, agmenu);
   },
 
-  _destroyIconsContainer: function () {
+  _destroyIconsContainer() {
     if (this._iconsBoxLayout) {
       this._iconsBoxLayout.destroy();
       delete this._iconsBoxLayout;
@@ -94,7 +78,7 @@ var TopIcons = new Lang.Class({
     }
   },
 
-  _addTrayIcon: function (o, icon, role) {
+  _addTrayIcon(o, icon, role) {
     this._icons.push(icon);
 
     let buttonMask    = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE;
@@ -115,7 +99,7 @@ var TopIcons = new Lang.Class({
     this._iconsBoxLayout.insert_child_at_index(iconContainer, 0);
   },
 
-  _removeTrayIcon: function (o, icon) {
+  _removeTrayIcon(o, icon) {
     let parent = icon.get_parent();
 
     if (parent) {
@@ -132,7 +116,7 @@ var TopIcons = new Lang.Class({
     }
   },
 
-  _setIcon: function (icon) {
+  _setIcon(icon) {
     let size = Helpers.scaleSize(20);
 
     icon.reactive = true;
@@ -140,45 +124,23 @@ var TopIcons = new Lang.Class({
     this._desaturateIcon(icon);
   },
 
-  _desaturateIcon: function (icon) {
-    let greyscale = this._settings.get_boolean('greyscale-tray-icons');
+  _desaturateIcon(icon) {
+    let greyscale = this._settings.get('greyscale-tray-icons');
     icon.clear_effects();
 
-    if (greyscale) {
-      let desEffect = new Clutter.DesaturateEffect({ factor : 1.0 });
-      let briEffect = new Clutter.BrightnessContrastEffect({});
+    if (!greyscale) return;
 
-      briEffect.set_brightness(0.2);
-      briEffect.set_contrast(0.3);
+    let desEffect = new Clutter.DesaturateEffect({ factor : 1.0 });
+    let briEffect = new Clutter.BrightnessContrastEffect({});
 
-      icon.add_effect_with_name('desaturate', desEffect);
-      icon.add_effect_with_name('brightness-contrast', briEffect);
-    }
+    briEffect.set_brightness(0.2);
+    briEffect.set_contrast(0.3);
+
+    icon.add_effect_with_name('desaturate', desEffect);
+    icon.add_effect_with_name('brightness-contrast', briEffect);
   },
 
-  _desaturateIcons: function () {
+  _desaturateIcons() {
     this._icons.forEach(Lang.bind(this, this._desaturateIcon));
-  },
-
-  _toggle: function() {
-    this._deactivate();
-    this._activate();
-  },
-
-  _activate: function() {
-    this._enabled = this._settings.get_boolean('show-legacy-tray');
-
-    if (this._enabled) {
-      Mainloop.idle_add(Lang.bind(this, this._createTray));
-    }
-  },
-
-  _deactivate: function() {
-    Mainloop.idle_add(Lang.bind(this, this._destroyTray));
-  },
-
-  destroy: function() {
-    this._deactivate();
-    this._disconnectSettings();
   }
 });

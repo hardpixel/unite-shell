@@ -1,7 +1,6 @@
 const Lang             = imports.lang;
 const Main             = imports.ui.main;
-const ExtensionUtils   = imports.misc.extensionUtils;
-const Unite            = ExtensionUtils.getCurrentExtension();
+const Unite            = imports.misc.extensionUtils.getCurrentExtension();
 const ActivateWindow   = Unite.imports.modules.activateWindow.ActivateWindow;
 const ExtendLeftBox    = Unite.imports.modules.extendLeftBox.ExtendLeftBox;
 const DesktopName      = Unite.imports.modules.desktopName.DesktopName;
@@ -15,7 +14,7 @@ const TopIcons         = Unite.imports.modules.topIcons.TopIcons;
 var UniteShell = new Lang.Class({
   Name: 'Unite',
 
-  _init: function() {
+  _init() {
     this._activateWindow   = new ActivateWindow();
     this._extendLeftBox    = new ExtendLeftBox();
     this._desktopName      = new DesktopName();
@@ -29,7 +28,7 @@ var UniteShell = new Lang.Class({
     Main.panel._addStyleClassName('unite-shell');
   },
 
-  destroy: function() {
+  destroy() {
     this._activateWindow.destroy();
     this._extendLeftBox.destroy();
     this._desktopName.destroy();

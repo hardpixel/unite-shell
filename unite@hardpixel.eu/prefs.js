@@ -1,102 +1,61 @@
-const Lang           = imports.lang;
-const GObject        = imports.gi.GObject;
-const Gio            = imports.gi.Gio;
-const Gtk            = imports.gi.Gtk;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Unite          = ExtensionUtils.getCurrentExtension();
-const Convenience    = Unite.imports.convenience;
+const GObject     = imports.gi.GObject;
+const Gtk         = imports.gi.Gtk;
+const Unite       = imports.misc.extensionUtils.getCurrentExtension();
+const Convenience = Unite.imports.convenience;
 
 var PrefsWidget = new GObject.Class({
   Name: 'Unite.PrefsWidget',
   GTypeName: 'PrefsWidget',
   Extends: Gtk.Box,
 
-  _init: function(params) {
+  _init(params) {
+    this._settings = Convenience.getSettings();
+
     this.parent(params);
 
     this._buildable = new Gtk.Builder();
-    this._buildable.add_from_file(Unite.path + '/settings.ui');
+    this._buildable.add_from_file(`${Unite.path}/settings.ui`);
 
-    let prefsWidget = this._getWidget('prefs_widget');
-    this.add(prefsWidget);
+    this._container = this._getWidget('prefs_widget');
+    this.add(this._container);
 
-    this._settings = Convenience.getSettings();
     this._bindStrings();
     this._bindBooleans();
     this._bindEnumerations();
   },
 
-  _getWidget: function(name) {
-    let wname = name.replace(/-/g, '_');
-    return this._buildable.get_object(wname);
+  _getWidget(name) {
+    let widgetName = name.replace(/-/g, '_');
+    return this._buildable.get_object(widgetName);
   },
 
-  _getStrings: function () {
-    let items = [
-      'desktop-name-text'
-    ];
-
-    return items;
-  },
-
-  _bindString: function (setting) {
+  _bindInput(setting, prop) {
     let widget = this._getWidget(setting);
-    widget.set_text(this._settings.get_string(setting));
-
-    widget.connect('changed', Lang.bind(this, function(entry) {
-      this._settings.set_string(setting, entry.get_text());
-    }));
+    this._settings.bind(setting, widget, prop, this._settings.DEFAULT_BINDING);
   },
 
-  _bindStrings: function () {
-    this._getStrings().forEach(Lang.bind(this, this._bindString));
-  },
-
-  _getBooleans: function () {
-    let items = [
-      'extend-left-box',
-      'show-legacy-tray',
-      'greyscale-tray-icons',
-      'show-desktop-name',
-      'autofocus-windows'
-    ];
-
-    return items;
-  },
-
-  _bindBoolean: function (setting) {
-    let widget = this._getWidget(setting);
-    this._settings.bind(setting, widget, 'active', Gio.SettingsBindFlags.DEFAULT);
-  },
-
-  _bindBooleans: function () {
-    this._getBooleans().forEach(Lang.bind(this, this._bindBoolean));
-  },
-
-  _getEnumerations: function () {
-    let items = [
-      'hide-activities-button',
-      'hide-window-titlebars',
-      'show-window-title',
-      'show-window-buttons',
-      'window-buttons-theme',
-      'notifications-position'
-    ];
-
-    return items;
-  },
-
-  _bindEnumeration: function (setting) {
+  _bindSelect(setting) {
     let widget = this._getWidget(setting);
     widget.set_active(this._settings.get_enum(setting));
 
-    widget.connect('changed', Lang.bind(this, function(combobox) {
+    widget.connect('changed', (combobox) => {
       this._settings.set_enum(setting, combobox.get_active());
-    }));
+    });
   },
 
-  _bindEnumerations: function () {
-    this._getEnumerations().forEach(Lang.bind(this, this._bindEnumeration));
+  _bindStrings() {
+    let settings = this._settings.getTypeSettings('string');
+    settings.forEach(setting => { this._bindInput(setting, 'text') });
+  },
+
+  _bindBooleans() {
+    let settings = this._settings.getTypeSettings('boolean');
+    settings.forEach(setting => { this._bindInput(setting, 'active') });
+  },
+
+  _bindEnumerations() {
+    let settings = this._settings.getTypeSettings('enum');
+    settings.forEach(setting => { this._bindSelect(setting) });
   }
 });
 
