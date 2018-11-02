@@ -2,69 +2,21 @@ const Lang           = imports.lang;
 const Main           = imports.ui.main;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Unite          = ExtensionUtils.getCurrentExtension();
-const Convenience    = Unite.imports.convenience;
+const BaseModule     = Unite.imports.module.BaseModule;
 
 var ActivateWindow = new Lang.Class({
   Name: 'Unite.ActivateWindow',
+  Extends: BaseModule,
+  EnableKey: 'autofocus-windows',
+  EnableValue: true,
 
-  _init: function() {
-    this._settings = Convenience.getSettings();
-
-    this._activate();
-    this._connectSettings();
-  },
-
-  _connectSettings: function() {
-    this._awHandlerID = this._settings.connect(
-      'changed::autofocus-windows', Lang.bind(this, this._toggle)
+  _onActivate() {
+    this._signals.connect(
+      global.display, 'window-demands-attention', this._activateWindow
     );
   },
 
-  _disconnectSettings: function() {
-    if (this._awHandlerID) {
-      this._settings.disconnect(this._awHandlerID);
-      delete this._awHandlerID;
-    }
-  },
-
-  _connectSignals: function() {
-    if (!this._handlerID) {
-      this._handlerID = global.display.connect(
-        'window-demands-attention', Lang.bind(this, this._activateWindow)
-      );
-    }
-  },
-
-  _disconnectSignals: function() {
-    if (this._handlerID) {
-      global.display.disconnect(this._handlerID);
-      delete this._handlerID;
-    }
-  },
-
-  _activateWindow: function (actor, win) {
+  _activateWindow(actor, win) {
     Main.activateWindow(win);
-  },
-
-  _toggle: function() {
-    this._deactivate();
-    this._activate();
-  },
-
-  _activate: function() {
-    this._enabled = this._settings.get_boolean('autofocus-windows');
-
-    if (this._enabled) {
-      this._connectSignals();
-    }
-  },
-
-  _deactivate: function() {
-    this._disconnectSignals();
-  },
-
-  destroy: function() {
-    this._deactivate();
-    this._disconnectSettings();
   }
 });
