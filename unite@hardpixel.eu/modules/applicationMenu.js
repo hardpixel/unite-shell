@@ -1,150 +1,75 @@
-const Lang           = imports.lang;
-const Main           = imports.ui.main;
-const Gtk            = imports.gi.Gtk;
-const GtkSettings    = Gtk.Settings.get_default();
-const Shell          = imports.gi.Shell;
-const WindowTracker  = Shell.WindowTracker.get_default();
-const AppSystem      = Shell.AppSystem.get_default();
-const AppMenu        = Main.panel.statusArea.appMenu;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Unite          = ExtensionUtils.getCurrentExtension();
-const Helpers        = Unite.imports.helpers;
-const Convenience    = Unite.imports.convenience;
+const Lang    = imports.lang;
+const Shell   = imports.gi.Shell;
+const Gtk     = imports.gi.Gtk;
+const Main    = imports.ui.main;
+const Unite   = imports.misc.extensionUtils.getCurrentExtension();
+const Base    = Unite.imports.module.BaseModule;
+const Helpers = Unite.imports.helpers;
 
 var ApplicationMenu = new Lang.Class({
   Name: 'Unite.ApplicationMenu',
+  Extends: Base,
+  EnableKey: 'show-window-title',
+  DisableValue: 'never',
 
-  _init: function() {
-    this._settings = Convenience.getSettings();
-
-    this._activate();
-    this._connectSettings();
+  _onInitialize() {
+    this._appMenu     = Main.panel.statusArea.appMenu;
+    this._gtkSettings = Gtk.Settings.get_default();
+    this._winTracker  = Shell.WindowTracker.get_default();
+    this._appSystem   = Shell.AppSystem.get_default();
   },
 
-  _connectSettings: function() {
-    this._swtHandlerID = this._settings.connect(
-      'changed::show-window-title', Lang.bind(this, this._toggle)
-    );
+  _onActivate() {
+    this._signals.connect(global.display, 'notify::focus-window', this._updateMenu);
+    this._signals.connect(global.window_manager, 'size-change', this._updateMenu);
+
+    this._signals.connect(this._gtkSettings, 'notify::gtk-shell-shows-app-menu', this._syncMenu);
+    this._signals.connect(Main.overview, 'hiding', this._showMenu);
+
+    this._signals.connect(this._winTracker, 'notify::focus-app', this._showMenu);
+    this._signals.connect(this._appSystem, 'app-state-changed', this._showMenu);
+
+    this._syncMenu();
+    this._updateMenu();
   },
 
-  _disconnectSettings: function() {
-    if (this._swtHandlerID) {
-      this._settings.disconnect(this._swtHandlerID);
-      delete this._swtHandlerID;
-    }
+  _onDeactivate() {
+    this._syncMenu();
+    this._showMenu();
   },
 
-  _connectSignals: function () {
-    if (!this._gsHandlerID) {
-      this._gsHandlerID = GtkSettings.connect(
-        'notify::gtk-shell-shows-app-menu', Lang.bind(this, this._syncMenu)
-      );
-    }
+  _syncMenu() {
+    this._appMenuEnabled = this._gtkSettings.gtk_shell_shows_app_menu;
+  },
 
-    if (!this._wtHandlerID) {
-      this._wtHandlerID = WindowTracker.connect(
-        'notify::focus-app', Lang.bind(this, this._showMenu)
-      );
-    }
-
-    if (!this._dsHandlerID) {
-      this._dsHandlerID = global.display.connect(
-        'notify::focus-window', Lang.bind(this, this._updateMenu)
-      );
-    }
-
-    if (!this._asHandlerID) {
-      this._asHandlerID = AppSystem.connect(
-        'app-state-changed', Lang.bind(this, this._showMenu)
-      );
-    }
-
-    if (!this._ovHandlerID) {
-      this._ovHandlerID = Main.overview.connect(
-        'hiding', Lang.bind(this, this._showMenu)
-      );
-    }
-
-    if (!this._wmHandlerID) {
-      this._wmHandlerID = global.window_manager.connect(
-        'size-change', Lang.bind(this, this._updateMenu)
-      );
+  _resetMenu() {
+    if (this._appMenu._nonSensitive) {
+      this._appMenu.setSensitive(true);
+      delete this._appMenu._nonSensitive;
     }
   },
 
-  _disconnectSignals: function() {
-    let windows = Helpers.getAllWindows();
+  _forceShowMenu() {
+    let visible = this._appMenu._targetApp != null && !Main.overview.visibleTarget;
 
-    windows.forEach(function(win) {
-      if (win._updateTitleID) {
-        win.disconnect(win._updateTitleID);
-        delete win._updateTitleID;
-      }
-    });
+    if (!this._appMenu._visible && visible) {
+      this._appMenu.show();
+      this._appMenu.setSensitive(false);
 
-    if (this._gsHandlerID) {
-      GtkSettings.disconnect(this._gsHandlerID);
-      delete this._gsHandlerID;
-    }
-
-    if (this._wtHandlerID) {
-      WindowTracker.disconnect(this._wtHandlerID);
-      delete this._wtHandlerID;
-    }
-
-    if (this._dsHandlerID) {
-      global.display.disconnect(this._dsHandlerID);
-      delete this._dsHandlerID;
-    }
-
-    if (this._asHandlerID) {
-      AppSystem.disconnect(this._asHandlerID);
-      delete this._asHandlerID;
-    }
-
-    if (this._ovHandlerID) {
-      Main.overview.disconnect(this._ovHandlerID);
-      delete this._ovHandlerID;
-    }
-
-    if (this._wmHandlerID) {
-      global.window_manager.disconnect(this._wmHandlerID);
-      delete this._wmHandlerID;
+      this._appMenu._nonSensitive = true;
     }
   },
 
-  _syncMenu: function () {
-    this._appMenu = GtkSettings.gtk_shell_shows_app_menu;
-  },
-
-  _resetMenu: function () {
-    if (AppMenu._nonSensitive) {
-      AppMenu.setSensitive(true);
-      delete AppMenu._nonSensitive;
-    }
-  },
-
-  _forceShowMenu: function () {
-    let visible = AppMenu._targetApp != null && !Main.overview.visibleTarget;
-
-    if (!AppMenu._visible && visible) {
-      AppMenu.show();
-      AppMenu.setSensitive(false);
-
-      AppMenu._nonSensitive = true;
-    }
-  },
-
-  _showMenu: function () {
-    if (this._appMenu) {
+  _showMenu() {
+    if (this._appMenuEnabled) {
       this._resetMenu();
     } else {
       this._forceShowMenu();
     }
   },
 
-  _updateMenu: function () {
-    this._activeApp    = WindowTracker.focus_app;
+  _updateMenu() {
+    this._activeApp    = this._winTracker.focus_app;
     this._activeWindow = global.display.focus_window;
 
     if (Helpers.isValidWindow(this._activeWindow)) {
@@ -159,9 +84,9 @@ var ApplicationMenu = new Lang.Class({
     }
   },
 
-  _updateTitle: function () {
+  _updateTitle() {
     let title     = null;
-    let current   = AppMenu._label.get_text();
+    let current   = this._appMenu._label.get_text();
     let maximized = Helpers.isMaximized(this._activeWindow, this._enabled);
     let always    = this._enabled == 'always' && this._activeWindow;
 
@@ -174,33 +99,7 @@ var ApplicationMenu = new Lang.Class({
     }
 
     if (title && title != current) {
-      AppMenu._label.set_text(title);
+      this._appMenu._label.set_text(title);
     }
-  },
-
-  _toggle: function() {
-    this._deactivate();
-    this._activate();
-  },
-
-  _activate: function() {
-    this._enabled = this._settings.get_string('show-window-title');
-
-    if (this._enabled != 'never') {
-      this._syncMenu();
-      this._updateMenu();
-      this._connectSignals();
-    }
-  },
-
-  _deactivate: function() {
-    this._syncMenu();
-    this._showMenu();
-    this._disconnectSignals();
-  },
-
-  destroy: function() {
-    this._deactivate();
-    this._disconnectSettings();
   }
 });
