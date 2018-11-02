@@ -20,10 +20,7 @@ var SignalsHandler = new Lang.Class({
         signalName, Lang.bind(this._context, callback)
       );
 
-      this._signals[signalKey] = {
-        object: object,
-        signalId: signalId
-      }
+      this._signals[signalKey] = { object: object, signalId: signalId };
     }
 
     return signalKey;
