@@ -22,7 +22,7 @@ var BaseModule = new Lang.Class({
     this._onInitialize();
     this._activate();
 
-    this._settings.connect(`changed::${this.EnableKey}`, this._reload);
+    this._settings.connect(this.EnableKey, this._reload);
   },
 
   _activate() {

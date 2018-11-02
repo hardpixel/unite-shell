@@ -53,7 +53,7 @@ var SettingsHandler = new Lang.Class({
 
     if (!this._signals[signalId]) {
       this._signals[signalId] = this._settings.connect(
-        signalName, Lang.bind(this._context, callback)
+        `changed::${signalName}`, Lang.bind(this._context, callback)
       );
     }
 
