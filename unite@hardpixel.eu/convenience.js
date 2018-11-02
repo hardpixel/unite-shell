@@ -40,14 +40,13 @@ var SettingsManager = new Lang.Class({
 });
 
 function initTranslations(domain) {
-  domain = domain || Unite.metadata['gettext-domain'];
-
-  let localeDir = Unite.dir.get_child('locale');
+  let textDomain = domain || Unite.metadata['gettext-domain'];
+  let localeDir  = Unite.dir.get_child('locale');
 
   if (localeDir.query_exists(null)) {
-    Gettext.bindtextdomain(domain, localeDir.get_path());
+    Gettext.bindtextdomain(textDomain, localeDir.get_path());
   } else {
-    Gettext.bindtextdomain(domain, Config.LOCALEDIR);
+    Gettext.bindtextdomain(textDomain, Config.LOCALEDIR);
   }
 }
 
@@ -58,9 +57,8 @@ function getSettings(schema) {
   let schemaSource = GioSSS.get_default();
 
   if (schemaDir.query_exists(null)) {
-    schemaSource = GioSSS.new_from_directory(
-      schemaDir.get_path(), schemaSource, false
-    );
+    schemaDir    = schemaDir.get_path();
+    schemaSource = GioSSS.new_from_directory(schemaDir, schemaSource, false);
   }
 
   let schemaObj = schemaSource.lookup(schema, true);
