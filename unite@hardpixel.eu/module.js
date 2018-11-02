@@ -1,13 +1,13 @@
-const Lang            = imports.lang;
-const ExtensionUtils  = imports.misc.extensionUtils;
-const Unite           = ExtensionUtils.getCurrentExtension();
-const SignalsHandler  = Unite.imports.handlers.SignalsHandler;
-const SettingsHandler = Unite.imports.handlers.SettingsHandler;
+const Lang     = imports.lang;
+const Unite    = imports.misc.extensionUtils.getCurrentExtension();
+const Signals  = Unite.imports.handlers.SignalsHandler;
+const Settings = Unite.imports.handlers.SettingsHandler;
 
 var BaseModule = new Lang.Class({
   Name: 'Unite.BaseModule',
   EnableKey: null,
   EnableValue: null,
+  DisableValue: null,
 
   _onInitialize() {},
   _onActivate() {},
@@ -16,8 +16,8 @@ var BaseModule = new Lang.Class({
   _onDestroy() {},
 
   _init() {
-    this._signals  = new SignalsHandler(this);
-    this._settings = new SettingsHandler(this);
+    this._signals  = new Signals(this);
+    this._settings = new Settings(this);
 
     this._onInitialize();
     this._activate();
@@ -26,8 +26,13 @@ var BaseModule = new Lang.Class({
   },
 
   _activate() {
-    let setting = this._settings.get(this.EnableKey);
-    if (!setting == this.EnableValue) return;
+    this._enabled = this._settings.get(this.EnableKey);
+
+    let enabled = this._enabled == this.EnableValue;
+    if (this.EnableValue != null && !enabled) return;
+
+    let disabled = this._enabled == this.DisableValue;
+    if (this.DisableValue != null && disabled) return;
 
     this._onActivate();
   },

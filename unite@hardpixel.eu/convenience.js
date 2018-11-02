@@ -1,14 +1,14 @@
-const Lang           = imports.lang;
-const Gettext        = imports.gettext;
-const Gio            = imports.gi.Gio;
-const Config         = imports.misc.config;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Unite          = ExtensionUtils.getCurrentExtension();
-const GioSSS         = Gio.SettingsSchemaSource;
+const Lang    = imports.lang;
+const Gettext = imports.gettext;
+const Gio     = imports.gi.Gio;
+const Config  = imports.misc.config;
+const Unite   = imports.misc.extensionUtils.getCurrentExtension();
+const GioSSS  = Gio.SettingsSchemaSource;
 
 var SettingsManager = new Lang.Class({
   Name: 'Unite.Settings',
   Extends: Gio.Settings,
+  DEFAULT_BINDING: Gio.SettingsBindFlags.DEFAULT,
 
   Types: {
     'autofocus-windows':      'boolean',

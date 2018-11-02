@@ -1,8 +1,6 @@
-const Lang           = imports.lang;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Unite          = ExtensionUtils.getCurrentExtension();
-const Helpers        = Unite.imports.helpers;
-const Convenience    = Unite.imports.convenience;
+const Lang        = imports.lang;
+const Unite       = imports.misc.extensionUtils.getCurrentExtension();
+const Convenience = Unite.imports.convenience;
 
 var SignalsHandler = new Lang.Class({
   Name: 'Unite.SignalsHandler',

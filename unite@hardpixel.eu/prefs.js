@@ -1,9 +1,7 @@
-const GObject        = imports.gi.GObject;
-const Gio            = imports.gi.Gio;
-const Gtk            = imports.gi.Gtk;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Unite          = ExtensionUtils.getCurrentExtension();
-const Convenience    = Unite.imports.convenience;
+const GObject     = imports.gi.GObject;
+const Gtk         = imports.gi.Gtk;
+const Unite       = imports.misc.extensionUtils.getCurrentExtension();
+const Convenience = Unite.imports.convenience;
 
 var PrefsWidget = new GObject.Class({
   Name: 'Unite.PrefsWidget',
@@ -33,7 +31,7 @@ var PrefsWidget = new GObject.Class({
 
   _bindInput(setting, prop) {
     let widget = this._getWidget(setting);
-    this._settings.bind(setting, widget, prop, Gio.SettingsBindFlags.DEFAULT);
+    this._settings.bind(setting, widget, prop, this._settings.DEFAULT_BINDING);
   },
 
   _bindSelect(setting) {
