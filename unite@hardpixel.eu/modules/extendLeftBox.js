@@ -1,13 +1,12 @@
-const Lang           = imports.lang;
-const Clutter        = imports.gi.Clutter;
-const Main           = imports.ui.main;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Unite          = ExtensionUtils.getCurrentExtension();
-const BaseModule     = Unite.imports.module.BaseModule;
+const Lang    = imports.lang;
+const Clutter = imports.gi.Clutter;
+const Main    = imports.ui.main;
+const Unite   = imports.misc.extensionUtils.getCurrentExtension();
+const Base    = Unite.imports.module.BaseModule;
 
 var ExtendLeftBox = new Lang.Class({
   Name: 'Unite.ExtendLeftBox',
-  Extends: BaseModule,
+  Extends: Base,
   EnableKey: 'extend-left-box',
   EnableValue: true,
 
