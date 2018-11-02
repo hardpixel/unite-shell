@@ -1,113 +1,46 @@
-const Main           = imports.ui.main;
-const Meta           = imports.gi.Meta;
-const Shell          = imports.gi.Shell;
-const Panel          = Main.panel;
-const AppMenu        = Panel.statusArea.appMenu;
-const St             = imports.gi.St;
-const Gio            = imports.gi.Gio;
-const GLib           = imports.gi.GLib;
-const Lang           = imports.lang;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Unite          = ExtensionUtils.getCurrentExtension();
-const Helpers        = Unite.imports.helpers;
-const Convenience    = Unite.imports.convenience;
+const Lang    = imports.lang;
+const St      = imports.gi.St;
+const Gio     = imports.gi.Gio;
+const GLib    = imports.gi.GLib;
+const Shell   = imports.gi.Shell;
+const Meta    = imports.gi.Meta;
+const Main    = imports.ui.main;
+const Unite   = imports.misc.extensionUtils.getCurrentExtension();
+const Base    = Unite.imports.module.BaseModule;
+const Helpers = Unite.imports.helpers;
 
 var WindowButtons = new Lang.Class({
   Name: 'Unite.WindowButtons',
+  Extends: Base,
+  EnableKey: 'show-window-buttons',
+  DisableValue: 'never',
 
-  _init: function() {
-    this._dwmprefs = Helpers.wmPreferences();
-    this._settings = Convenience.getSettings();
-
-    this._activate();
-    this._connectSettings();
+  _onInitialize() {
+    this._settings.connect('window-buttons-theme', this._updateTheme);
   },
 
-  _connectSettings: function() {
-    this._swbHandlerID = this._settings.connect(
-      'changed::show-window-buttons', Lang.bind(this, this._toggle)
-    );
+  _onActivate() {
+    let wmPrefs = Helpers.wmPreferences();
+    this._signals.connect(wmPrefs, 'changed::button-layout', this._updateButtons);
 
-    this._wbtHandlerID = this._settings.connect(
-      'changed::window-buttons-theme', Lang.bind(this, this._updateTheme)
-    );
+    this._signals.connect(global.display, 'notify::focus-window', this._toggleButtons);
+    this._signals.connect(global.window_manager, 'size-change', this._toggleButtons);
+    this._signals.connect(global.window_manager, 'destroy', this._toggleButtons);
+
+    this._signals.connect(Main.overview, 'showing', this._toggleButtons);
+    this._signals.connect(Main.overview, 'hiding', this._toggleButtons);
+
+    this._createButtons();
+    this._toggleButtons();
+    this._loadTheme();
   },
 
-  _disconnectSettings: function() {
-    if (this._swbHandlerID) {
-      this._settings.disconnect(this._swbHandlerID);
-      delete this._swbHandlerID;
-    }
-
-    if (this._wbtHandlerID) {
-      this._settings.disconnect(this._wbtHandlerID);
-      delete this._wbtHandlerID;
-    }
+  _onDeactivate() {
+    this._destroyButtons();
+    this._unloadTheme();
   },
 
-  _connectSignals: function () {
-    if (!this._dpHandlerID) {
-      this._dpHandlerID = this._dwmprefs.connect(
-        'changed::button-layout', Lang.bind(this, this._updateButtons)
-      );
-    }
-
-    if (!this._dsHandlerID) {
-      this._dsHandlerID = global.display.connect(
-        'notify::focus-window', Lang.bind(this, this._updateVisibility)
-      );
-    }
-
-    if (!this._ovHandlerIDs) {
-      let ovEvents = ['showing', 'hiding'];
-
-      this._ovHandlerIDs = ovEvents.map(Lang.bind(this, function (eventName) {
-        return Main.overview.connect(
-          eventName, Lang.bind(this, this._updateVisibility)
-        );
-      }));
-    }
-
-    if (!this._wmHandlerIDs) {
-      let wmEvents = ['size-change', 'destroy'];
-
-      this._wmHandlerIDs = wmEvents.map(Lang.bind(this, function (eventName) {
-        return global.window_manager.connect(
-          eventName, Lang.bind(this, this._updateVisibility)
-        );
-      }));
-    }
-  },
-
-  _disconnectSignals: function() {
-    if (this._dpHandlerID) {
-      this._dwmprefs.disconnect(this._dpHandlerID);
-      delete this._dpHandlerID;
-    }
-
-    if (this._dsHandlerID) {
-      global.display.disconnect(this._dsHandlerID);
-      delete this._dsHandlerID;
-    }
-
-    if (this._ovHandlerIDs) {
-      this._ovHandlerIDs.forEach(function (handler) {
-        Main.overview.disconnect(handler);
-      });
-
-      delete this._ovHandlerIDs;
-    }
-
-    if (this._wmHandlerIDs) {
-      this._wmHandlerIDs.forEach(function (handler) {
-        global.window_manager.disconnect(handler);
-      });
-
-      delete this._wmHandlerIDs;
-    }
-  },
-
-  _createButtons: function () {
+  _createButtons() {
     [this._position, this._buttons] = Helpers.getWindowButtons();
 
     if (this._buttons && !this._buttonsActor) {
@@ -132,16 +65,16 @@ var WindowButtons = new Lang.Class({
 
       if (this._position == 'left') {
         let appmenu = Main.panel.statusArea.appMenu.actor.get_parent();
-        Panel._leftBox.insert_child_below(this._buttonsActor, appmenu);
+        Main.panel._leftBox.insert_child_below(this._buttonsActor, appmenu);
       }
 
       if (this._position == 'right') {
-        Panel._rightBox.add_child(this._buttonsActor);
+        Main.panel._rightBox.add_child(this._buttonsActor);
       }
     }
   },
 
-  _destroyButtons: function () {
+  _destroyButtons() {
     if (this._buttonsBox) {
       this._buttonsBox.destroy();
       delete this._buttonsBox;
@@ -153,21 +86,21 @@ var WindowButtons = new Lang.Class({
     }
   },
 
-  _updateButtons: function () {
+  _updateButtons() {
     if (this._buttonsActor) {
       this._destroyButtons();
       this._createButtons();
     }
   },
 
-  _updateTheme: function () {
+  _updateTheme() {
     this._unloadTheme();
     this._loadTheme();
   },
 
-  _loadTheme: function () {
+  _loadTheme() {
     let context = St.ThemeContext.get_for_stage(global.stage).get_theme();
-    let theme   = this._settings.get_string('window-buttons-theme');
+    let theme   = this._settings.get('window-buttons-theme');
     let cssPath = GLib.build_filenamev([Unite.path, 'themes', theme, 'stylesheet.css']);
 
     if (GLib.file_test(cssPath, GLib.FileTest.EXISTS)) {
@@ -184,9 +117,9 @@ var WindowButtons = new Lang.Class({
     }
   },
 
-  _unloadTheme: function () {
+  _unloadTheme() {
     if (this._buttonsTheme) {
-      let theme   = this._settings.get_string('window-buttons-theme');
+      let theme   = this._settings.get('window-buttons-theme');
       let context = St.ThemeContext.get_for_stage(global.stage).get_theme();
       context.unload_stylesheet(this._buttonsTheme);
 
@@ -198,7 +131,7 @@ var WindowButtons = new Lang.Class({
     }
   },
 
-  _onButtonClick: function (actor, event) {
+  _onButtonClick(actor, event) {
     if (this._activeWindow) {
       switch (actor._windowAction) {
         case 'minimize':
@@ -214,13 +147,13 @@ var WindowButtons = new Lang.Class({
     }
   },
 
-  _minimizeWindow: function () {
+  _minimizeWindow() {
     if (!this._activeWindow.minimized) {
       this._activeWindow.minimize();
     }
   },
 
-  _maximizeWindow: function () {
+  _maximizeWindow() {
     let bothMaximized = Meta.MaximizeFlags.BOTH;
     let maximizeState = this._activeWindow.get_maximized();
 
@@ -231,17 +164,17 @@ var WindowButtons = new Lang.Class({
     }
   },
 
-  _closeWindow: function () {
+  _closeWindow() {
     this._activeWindow.delete(global.get_current_time());
   },
 
-  _updateVisibility: function () {
+  _toggleButtons() {
     this._activeWindow = global.display.focus_window;
 
     if (this._buttonsActor) {
       let valid    = Helpers.isValidWindow(this._activeWindow);
       let overview = Main.overview.visibleTarget;
-      let target   = AppMenu._targetApp;
+      let target   = Main.panel.statusArea.appMenu._targetApp;
       let running  = target != null && target.get_state() == Shell.AppState.RUNNING;
       let visible  = running && !overview;
 
@@ -258,32 +191,5 @@ var WindowButtons = new Lang.Class({
         this._buttonsActor.hide();
       }
     }
-  },
-
-  _toggle: function() {
-    this._deactivate();
-    this._activate();
-  },
-
-  _activate: function() {
-    this._enabled = this._settings.get_string('show-window-buttons');
-
-    if (this._enabled != 'never') {
-      this._createButtons();
-      this._updateVisibility();
-      this._connectSignals();
-      this._loadTheme();
-    }
-  },
-
-  _deactivate: function() {
-    this._destroyButtons();
-    this._disconnectSignals();
-    this._unloadTheme();
-  },
-
-  destroy: function() {
-    this._deactivate();
-    this._disconnectSettings();
   }
 });
