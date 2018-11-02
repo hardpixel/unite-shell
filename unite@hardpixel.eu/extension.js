@@ -15,7 +15,7 @@ const TopIcons         = Unite.imports.modules.topIcons.TopIcons;
 var UniteShell = new Lang.Class({
   Name: 'Unite',
 
-  _init: function() {
+  _init() {
     this._activateWindow   = new ActivateWindow();
     this._extendLeftBox    = new ExtendLeftBox();
     this._desktopName      = new DesktopName();
@@ -29,7 +29,7 @@ var UniteShell = new Lang.Class({
     Main.panel._addStyleClassName('unite-shell');
   },
 
-  destroy: function() {
+  destroy() {
     this._activateWindow.destroy();
     this._extendLeftBox.destroy();
     this._desktopName.destroy();

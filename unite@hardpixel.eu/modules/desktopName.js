@@ -41,19 +41,19 @@ var DesktopName = new Lang.Class({
     delete Main.panel._desktopName;
   },
 
-  _setLabelText: function () {
+  _setLabelText() {
     let text = this._settings.get('desktop-name-text');
     this._labelText.set_text(text);
   },
 
-  _toggleLabel: function() {
+  _toggleLabel() {
     let show = Main.panel.statusArea.appMenu._targetApp == null
       && !Main.overview.visibleTarget;
 
     show ? this._labelBox.show() : this._labelBox.hide()
   },
 
-  _createLabel: function () {
+  _createLabel() {
     if (this._labelBox) return;
 
     this._labelBox = new St.BoxLayout({ style_class: 'panel-button' });

@@ -23,7 +23,7 @@ var MessageTray = new Lang.Class({
     this._banner.set_width(Helpers.scaleSize(390));
   },
 
-  _onDeactivate: function() {
+  _onDeactivate() {
     this._banner.set_x_align(Clutter.ActorAlign.CENTER);
     this._banner.set_width(-1);
   }
