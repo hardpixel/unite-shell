@@ -10,9 +10,11 @@ var ActivitiesButton = new Lang.Class({
   EnableKey: 'hide-activities-button',
   DisableValue: 'never',
 
-  _onActivate() {
-    this.container = Main.panel.statusArea.activities.container;
+  _onInitialize() {
+    this._container = Main.panel.statusArea.activities.container;
+  },
 
+  _onActivate() {
     let appSystem  = Shell.AppSystem.get_default();
     let winTracker = Shell.WindowTracker.get_default();
 
@@ -26,7 +28,7 @@ var ActivitiesButton = new Lang.Class({
   },
 
   _onDeactivate() {
-    this.container.show();
+    this._container.show();
   },
 
   _toggleButton() {
@@ -38,6 +40,6 @@ var ActivitiesButton = new Lang.Class({
     if (!hidden && Main.panel._desktopName)
       hidden = !target && !overview;
 
-    hidden ? this.container.hide() : this.container.show()
+    hidden ? this._container.hide() : this._container.show()
   }
 });

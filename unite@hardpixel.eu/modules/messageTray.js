@@ -11,9 +11,11 @@ var MessageTray = new Lang.Class({
   EnableKey: 'notifications-position',
   DisableValue: 'center',
 
-  _onActivate() {
+  _onInitialize() {
     this._banner = Main.messageTray._bannerBin;
+  },
 
+  _onActivate() {
     let mappings = { center: 'CENTER', left: 'START', right: 'END' };
     let position = mappings[this._enabled]
 
