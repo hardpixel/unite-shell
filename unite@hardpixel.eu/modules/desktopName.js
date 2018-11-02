@@ -31,7 +31,19 @@ var DesktopName = new Lang.Class({
   },
 
   _onDeactivate() {
-    this._destroyLabel();
+    if (!this._labelBox) return;
+
+    this._labelBox.destroy();
+
+    delete this._labelBox;
+    delete this._labelActor;
+    delete this._labelText;
+    delete Main.panel._desktopName;
+  },
+
+  _setLabelText: function () {
+    let text = this._settings.get('desktop-name-text');
+    this._labelText.set_text(text);
   },
 
   _toggleLabel: function() {
@@ -57,21 +69,5 @@ var DesktopName = new Lang.Class({
     Main.panel._leftBox.insert_child_below(this._labelBox, activities);
 
     Main.panel._desktopName = true;
-  },
-
-  _destroyLabel: function () {
-    if (!this._labelBox) return;
-
-    this._labelBox.destroy();
-
-    delete this._labelBox;
-    delete this._labelActor;
-    delete this._labelText;
-    delete Main.panel._desktopName;
-  },
-
-  _setLabelText: function () {
-    let text = this._settings.get('desktop-name-text');
-    this._labelText.set_text(text);
   }
 });
