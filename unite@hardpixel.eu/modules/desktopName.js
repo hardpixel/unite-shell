@@ -35,10 +35,9 @@ var DesktopName = new Lang.Class({
 
     this._labelBox.destroy();
 
-    delete this._labelBox;
-    delete this._labelActor;
-    delete this._labelText;
-    delete Main.panel._desktopName;
+    this._labelBox   = null;
+    this._labelActor = null;
+    this._labelText  = null;
   },
 
   _setLabelText() {
@@ -47,10 +46,11 @@ var DesktopName = new Lang.Class({
   },
 
   _toggleLabel() {
-    let show = Main.panel.statusArea.appMenu._targetApp == null
-      && !Main.overview.visibleTarget;
+    let appMenu  = Main.panel.statusArea.appMenu._targetApp != null;
+    let overview = Main.overview.visibleTarget;
+    let visible  = !appMenu && !overview;
 
-    show ? this._labelBox.show() : this._labelBox.hide()
+    visible ? this._labelBox.show() : this._labelBox.hide()
   },
 
   _createLabel() {
