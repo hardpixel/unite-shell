@@ -32,13 +32,12 @@ var ActivitiesButton = new Lang.Class({
   },
 
   _toggleButton() {
+    let appMenu  = Main.panel.statusArea.appMenu._targetApp != null;
     let overview = Main.overview.visibleTarget;
-    let target   = Main.panel.statusArea.appMenu._targetApp != null;
-    let appmenu  = target && !overview;
-    let hidden   = this._enabled == 'always' || appmenu;
+    let hidden   = this._enabled == 'always' || (appMenu && !overview);
 
     if (!hidden && this._settings.get('show-desktop-name'))
-      hidden = !target && !overview;
+      hidden = !appMenu && !overview;
 
     hidden ? this._container.hide() : this._container.show()
   }
