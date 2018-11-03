@@ -66,17 +66,19 @@ var WindowDecoration = new Lang.Class({
   },
 
   _showTitlebar(win) {
-    if (win && win._decorationOFF) {
-      win._decorationOFF = false;
-      this._toggleDecorations(win, false);
-    }
+    let undecorated = win && win._decorationOFF;
+    if (!undecorated) return;
+
+    win._decorationOFF = false;
+    this._toggleDecorations(win, false);
   },
 
   _hideTitlebar(win) {
-    if (win && !win._decorationOFF && win.decorated) {
-      win._decorationOFF = true;
-      this._toggleDecorations(win, true);
-    }
+    let decorated = win && !win._decorationOFF && win.decorated;
+    if (!decorated) return;
+
+    win._decorationOFF = true;
+    this._toggleDecorations(win, true);
   },
 
   _toggleTitlebar(win) {
