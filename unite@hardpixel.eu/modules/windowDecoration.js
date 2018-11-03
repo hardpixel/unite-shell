@@ -55,16 +55,14 @@ var WindowDecoration = new Lang.Class({
   },
 
   _updateTitlebar() {
-    let window = global.display.focus_window;
-    let toggle = window;
+    let focusWindow = global.display.focus_window;
+    let toggleDecor = focusWindow;
 
-    if (this._enabled == 'both') {
-      toggle = window && window.get_maximized() !== 0;
-    }
+    if (this._enabled == 'both')
+      toggleDecor = focusWindow && focusWindow.get_maximized() !== 0;
 
-    if (toggle && Helpers.isValidWindow(window)) {
-      this._toggleTitlebar(window);
-    }
+    if (toggleDecor && Helpers.isValidWindow(focusWindow))
+      this._toggleTitlebar(focusWindow);
   },
 
   _showTitlebar(win) {
