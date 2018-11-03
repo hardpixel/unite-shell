@@ -43,45 +43,40 @@ var ApplicationMenu = new Lang.Class({
   },
 
   _resetMenu() {
-    if (this._appMenu._nonSensitive) {
-      this._appMenu.setSensitive(true);
-      delete this._appMenu._nonSensitive;
-    }
+    if (!this._appMenu._nonSensitive) return;
+
+    this._appMenu.setSensitive(true);
+    delete this._appMenu._nonSensitive;
   },
 
   _forceShowMenu() {
     let visible = this._appMenu._targetApp != null && !Main.overview.visibleTarget;
+    if (!visible && this._appMenu._visible) return;
 
-    if (!this._appMenu._visible && visible) {
-      this._appMenu.show();
-      this._appMenu.setSensitive(false);
+    this._appMenu.show();
+    this._appMenu.setSensitive(false);
 
-      this._appMenu._nonSensitive = true;
-    }
+    this._appMenu._nonSensitive = true;
   },
 
   _showMenu() {
-    if (this._appMenuEnabled) {
-      this._resetMenu();
-    } else {
-      this._forceShowMenu();
-    }
+    this._appMenuEnabled ? this._resetMenu() : this._forceShowMenu()
   },
 
   _updateMenu() {
     this._activeApp    = this._winTracker.focus_app;
     this._activeWindow = global.display.focus_window;
 
-    if (Helpers.isValidWindow(this._activeWindow)) {
-      if (this._activeWindow && !this._activeWindow._updateTitleID) {
-        this._activeWindow._updateTitleID = this._activeWindow.connect(
-          'notify::title', Lang.bind(this, this._updateTitle)
-        );
-      }
+    if (!Helpers.isValidWindow(this._activeWindow)) return;
 
-      this._updateTitle();
-      this._showMenu();
+    if (!this._activeWindow._updateTitleID) {
+      this._activeWindow._updateTitleID = this._activeWindow.connect(
+        'notify::title', Lang.bind(this, this._updateTitle)
+      );
     }
+
+    this._updateTitle();
+    this._showMenu();
   },
 
   _updateTitle() {
@@ -90,16 +85,13 @@ var ApplicationMenu = new Lang.Class({
     let maximized = Helpers.isMaximized(this._activeWindow, this._enabled);
     let always    = this._enabled == 'always' && this._activeWindow;
 
-    if (always || maximized) {
+    if (always || maximized)
       title = this._activeWindow.title;
-    }
 
-    if (!title && this._activeApp) {
+    if (!title && this._activeApp)
       title = this._activeApp.get_name();
-    }
 
-    if (title && title != current) {
+    if (title && title != current)
       this._appMenu._label.set_text(title);
-    }
   }
 });
