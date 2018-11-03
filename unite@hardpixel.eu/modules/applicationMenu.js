@@ -42,6 +42,10 @@ var ApplicationMenu = new Lang.Class({
     this._appMenuEnabled = this._gtkSettings.gtk_shell_shows_app_menu;
   },
 
+  _showMenu() {
+    this._appMenuEnabled ? this._resetMenu() : this._forceShowMenu()
+  },
+
   _resetMenu() {
     if (!this._appMenu._nonSensitive) return;
 
@@ -57,10 +61,6 @@ var ApplicationMenu = new Lang.Class({
     this._appMenu.setSensitive(false);
 
     this._appMenu._nonSensitive = true;
-  },
-
-  _showMenu() {
-    this._appMenuEnabled ? this._resetMenu() : this._forceShowMenu()
   },
 
   _updateMenu() {
