@@ -98,10 +98,3 @@ function isMaximized(win, match_state) {
 
   return check;
 }
-
-function scaleSize(initial_size) {
-  let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-  let size  = initial_size * scale;
-
-  return size;
-}

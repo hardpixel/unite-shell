@@ -20,7 +20,7 @@ var MessageTray = new Lang.Class({
     let position = mappings[this._enabled]
 
     this._banner.set_x_align(Clutter.ActorAlign[position]);
-    this._banner.set_width(Helpers.scaleSize(390));
+    this._banner.set_width(this.scaleSize(390));
   },
 
   _onDeactivate() {

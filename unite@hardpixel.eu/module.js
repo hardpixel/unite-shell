@@ -86,5 +86,10 @@ var BaseModule = new Lang.Class({
   unloadStylesheet(gioFile) {
     let theme = this.getTheme();
     theme.unload_stylesheet(gioFile);
+  },
+
+  scaleSize(initial_size) {
+    let context = this.getThemeContext();
+    return initial_size * context.scale_factor;
   }
 });
