@@ -1,4 +1,7 @@
 const Lang     = imports.lang;
+const Gio      = imports.gi.Gio;
+const GLib     = imports.gi.GLib;
+const St       = imports.gi.St;
 const Unite    = imports.misc.extensionUtils.getCurrentExtension();
 const Signals  = Unite.imports.handlers.SignalsHandler;
 const Settings = Unite.imports.handlers.SettingsHandler;
@@ -52,5 +55,36 @@ var BaseModule = new Lang.Class({
     this._deactivate();
     this._onDestroy();
     this._settings.disconnectAll();
+  },
+
+  getThemeContext() {
+    return St.ThemeContext.get_for_stage(global.stage);
+  },
+
+  getTheme() {
+    let context = this.getThemeContext();
+    return context.get_theme();
+  },
+
+  getGioFile(filePath) {
+    let absPath = GLib.build_filenamev([Unite.path, filePath]);
+
+    if (GLib.file_test(absPath, GLib.FileTest.EXISTS))
+      return Gio.file_new_for_path(absPath);
+  },
+
+  loadStylesheet(filePath) {
+    let gioFile = this.getGioFile(filePath);
+    if (!gioFile) return;
+
+    let theme = this.getTheme();
+    theme.load_stylesheet(gioFile);
+
+    return gioFile;
+  },
+
+  unloadStylesheet(gioFile) {
+    let theme = this.getTheme();
+    theme.unload_stylesheet(gioFile);
   }
 });

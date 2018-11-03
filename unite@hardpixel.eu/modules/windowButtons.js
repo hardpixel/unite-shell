@@ -1,7 +1,5 @@
 const Lang    = imports.lang;
 const St      = imports.gi.St;
-const Gio     = imports.gi.Gio;
-const GLib    = imports.gi.GLib;
 const Shell   = imports.gi.Shell;
 const Meta    = imports.gi.Meta;
 const Main    = imports.ui.main;
@@ -36,8 +34,8 @@ var WindowButtons = new Lang.Class({
   },
 
   _onDeactivate() {
-    this._destroyButtons();
     this._unloadTheme();
+    this._destroyButtons();
   },
 
   _createButton(action) {
@@ -101,27 +99,20 @@ var WindowButtons = new Lang.Class({
     if (this._buttonsTheme || !this._buttonsBox) return;
 
     let theme   = this._settings.get('window-buttons-theme');
-    let cssPath = GLib.build_filenamev([Unite.path, 'themes', theme, 'stylesheet.css']);
-    if (!GLib.file_test(cssPath, GLib.FileTest.EXISTS)) return;
+    let cssPath = `themes/${theme}/stylesheet.css`;
 
-    this._buttonsTheme = Gio.file_new_for_path(cssPath);
-
-    let context = St.ThemeContext.get_for_stage(global.stage).get_theme();
-    context.load_stylesheet(this._buttonsTheme);
-
+    this._buttonsTheme = this.loadStylesheet(cssPath);
     this._buttonsBox.add_style_class_name(`${theme}-buttons`);
   },
 
   _unloadTheme() {
-    if (!this._buttonsTheme) return;
+    if (!this._buttonsTheme || !this._buttonsBox) return;
 
-    let context = St.ThemeContext.get_for_stage(global.stage).get_theme();
-    context.unload_stylesheet(this._buttonsTheme);
+    let theme   = this._settings.get('window-buttons-theme');
+    let gioFile = this._buttonsTheme;
 
-    if (this._buttonsBox) {
-      let theme = this._settings.get('window-buttons-theme');
-      this._buttonsBox.remove_style_class_name(`${theme}-buttons`);
-    }
+    this.unloadStylesheet(gioFile);
+    this._buttonsBox.remove_style_class_name(`${theme}-buttons`);
 
     delete this._buttonsTheme;
   },
