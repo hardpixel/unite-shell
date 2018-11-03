@@ -123,23 +123,21 @@ var WindowDecoration = new Lang.Class({
     GLib.file_set_contents(STYLES, content);
   },
 
+  _undecorateWindow(win) {
+    Mainloop.idle_add(() => { this._toggleTitlebar(win) });
+  },
+
   _undecorateWindows() {
     let windows = this._getAllWindows();
+    windows.forEach(Lang.bind(this, this._undecorateWindow));
+  },
 
-    windows.forEach(Lang.bind(this, function (win) {
-      Mainloop.idle_add(Lang.bind(this, function () {
-        this._toggleTitlebar(win);
-      }));
-    }));
+  _decorateWindow(win) {
+    Mainloop.idle_add(() => { this._resetDecorations(win) });
   },
 
   _decorateWindows() {
     let windows = this._getAllWindows();
-
-    windows.forEach(Lang.bind(this, function (win) {
-      Mainloop.idle_add(Lang.bind(this, function () {
-        this._resetDecorations(win);
-      }));
-    }));
+    windows.forEach(Lang.bind(this, this._decorateWindow));
   }
 });
