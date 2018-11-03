@@ -66,6 +66,7 @@ var TopIcons = new Lang.Class({
     if (!this._iconsContainer) return;
 
     this._iconsContainer.destroy();
+
     this._iconsContainer = null;
     this._iconsBoxLayout = null;
   },
