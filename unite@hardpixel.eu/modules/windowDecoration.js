@@ -27,17 +27,19 @@ var WindowDecoration = new Lang.Class({
     this._decorateWindows();
   },
 
+  _getWindowXID(win) {
+    win._windowXID = win._windowXID || win.get_description().match(/0x[0-9a-f]+/)[0];
+    return win._windowXID;
+  },
+
   _toggleTitlebar(win, hide) {
-    if (!win._windowXID) {
-      win._windowXID = Helpers.getXWindow(win);
-    }
+    let winId = this._getWindowXID(win);
+    if (!winId) return;
 
-    if (win._windowXID) {
-      let prop  = '_GTK_HIDE_TITLEBAR_WHEN_MAXIMIZED';
-      let value = hide ? '0x1' : '0x0';
+    let prop  = '_GTK_HIDE_TITLEBAR_WHEN_MAXIMIZED';
+    let value = hide ? '0x1' : '0x0';
 
-      Util.spawn(['xprop', '-id', win._windowXID, '-f', prop, '32c', '-set', prop, value]);
-    }
+    Util.spawn(['xprop', '-id', winId, '-f', prop, '32c', '-set', prop, value]);
   },
 
   _updateTitlebar() {
