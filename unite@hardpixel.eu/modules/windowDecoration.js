@@ -32,6 +32,11 @@ var WindowDecoration = new Lang.Class({
     return win._windowXID;
   },
 
+  _getAllWindows() {
+    let windows = global.get_window_actors().map(win => win.meta_window);
+    return windows.filter(win => Helpers.isValidWindow(win));
+  },
+
   _toggleDecorations(win, hide) {
     let winId = this._getWindowXID(win);
     if (!winId) return;
@@ -109,7 +114,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _undecorateWindows() {
-    let windows = Helpers.getAllWindows();
+    let windows = this._getAllWindows();
 
     windows.forEach(Lang.bind(this, function (win) {
       Mainloop.idle_add(Lang.bind(this, function () {
@@ -123,7 +128,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _decorateWindows() {
-    let windows = Helpers.getAllWindows();
+    let windows = this._getAllWindows();
 
     windows.forEach(Lang.bind(this, function (win) {
       Mainloop.idle_add(Lang.bind(this, function () {
