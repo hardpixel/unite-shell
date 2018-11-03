@@ -32,7 +32,7 @@ var WindowDecoration = new Lang.Class({
     return win._windowXID;
   },
 
-  _toggleTitlebar(win, hide) {
+  _toggleDecorations(win, hide) {
     let winId = this._getWindowXID(win);
     if (!winId) return;
 
@@ -62,14 +62,14 @@ var WindowDecoration = new Lang.Class({
   _showTitlebar(win) {
     if (win && win._decorationOFF) {
       win._decorationOFF = false;
-      this._toggleTitlebar(win, false);
+      this._toggleDecorations(win, false);
     }
   },
 
   _hideTitlebar(win) {
     if (win && !win._decorationOFF && win.decorated) {
       win._decorationOFF = true;
-      this._toggleTitlebar(win, true);
+      this._toggleDecorations(win, true);
     }
   },
 
