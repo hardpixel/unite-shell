@@ -70,9 +70,11 @@ var ApplicationMenu = new Lang.Class({
     if (!Helpers.isValidWindow(this._activeWindow)) return;
 
     if (!this._activeWindow._updateTitleID) {
-      this._activeWindow._updateTitleID = this._activeWindow.connect(
+      let handler = this._activeWindow.connect(
         'notify::title', Lang.bind(this, this._updateTitle)
       );
+
+      this._activeWindow._updateTitleID = handler;
     }
 
     this._updateTitle();
