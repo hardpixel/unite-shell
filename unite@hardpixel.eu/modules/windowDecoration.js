@@ -71,40 +71,39 @@ var WindowDecoration = new Lang.Class({
     }
   },
 
-  _updateUserStyles() {
-    let styleContent = '';
+  _getUserStyles() {
+    if (!GLib.file_test(STYLES, GLib.FileTest.EXISTS)) return '';
 
-    if (GLib.file_test(STYLES, GLib.FileTest.EXISTS)) {
-      let fileContent = GLib.file_get_contents(STYLES);
+    let file  = GLib.file_get_contents(STYLES);
+    let style = String.fromCharCode.apply(null, file[1]);
 
-      if (fileContent[0] == true) {
-        styleContent = String.fromCharCode.apply(null, fileContent[1]);
-        styleContent = styleContent.replace(/@import.*unite@hardpixel\.eu.*css['"]\);\n/g, '');
-      }
-    }
-
-    return styleContent;
+    return style.replace(/@import.*unite@hardpixel\.eu.*css['"]\);\n/g, '');
   },
 
   _addUserStyles() {
     let buttonsPosition = Helpers.getWindowButtons('position');
+    if (!buttonsPosition) return;
 
-    if (buttonsPosition) {
-      let styleContent  = this._updateUserStyles();
-      let styleFilePath = Unite.path + '/styles/buttons-' + buttonsPosition;
-      let styleImport   = "@import url('" + styleFilePath + ".css');\n";
+    let content   = this._getUserStyles();
+    let filePath  = `${Unite.path}/styles/buttons-${buttonsPosition}`;
+    let maximized = `@import url('${filePath}.css');\n`;
+    let tiled     = `@import url('${filePath}-tiled.css');\n`;
 
-      if (this._enabled == 'both' || this._enabled == 'tiled') {
-        styleImport = styleImport + "@import url('" + styleFilePath + "-tiled.css');\n";
-      }
+    if (this._enabled == 'both')
+      content = maximized + tiled + content;
 
-      GLib.file_set_contents(STYLES, styleImport + styleContent);
-    }
+    if (this._enabled == 'maximized')
+      content = maximized + content;
+
+    if (this._enabled == 'tiled')
+      content = tiled + content;
+
+    GLib.file_set_contents(STYLES, content);
   },
 
   _removeUserStyles() {
-    let styleContent = this._updateUserStyles();
-    GLib.file_set_contents(STYLES, styleContent);
+    let content = this._getUserStyles();
+    GLib.file_set_contents(STYLES, content);
   },
 
   _undecorateWindows() {
