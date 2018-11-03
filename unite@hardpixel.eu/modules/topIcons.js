@@ -65,7 +65,7 @@ var TopIcons = new Lang.Class({
   _destroyContainer() {
     if (!this._iconsContainer) return;
 
-    this._iconsContainer.destroy();
+    this._iconsContainer.actor.destroy();
 
     this._iconsContainer = null;
     this._iconsBoxLayout = null;
