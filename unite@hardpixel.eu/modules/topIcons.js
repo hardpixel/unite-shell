@@ -1,6 +1,5 @@
 const Lang      = imports.lang;
 const System    = imports.system;
-const Mainloop  = imports.mainloop;
 const Clutter   = imports.gi.Clutter;
 const Shell     = imports.gi.Shell;
 const St        = imports.gi.St;
@@ -47,7 +46,7 @@ var TopIcons = new Lang.Class({
   },
 
   _destroyTray() {
-    delete this._tray;
+    this._tray = null;
     System.gc();
   },
 
@@ -66,14 +65,12 @@ var TopIcons = new Lang.Class({
   _destroyContainer() {
     if (!this._iconsContainer) return;
 
-    this._iconsBoxLayout.actor.destroy();
-    delete this._iconsBoxLayout;
-
-    this._iconsContainer.actor.destroy();
-    delete this._iconsContainer;
+    this._iconsContainer.destroy();
+    this._iconsContainer = null;
+    this._iconsBoxLayout = null;
   },
 
-  _addTrayIcon(o, icon, role) {
+  _addTrayIcon(trayManager, icon) {
     this._icons.push(icon);
 
     let buttonMask = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE;
@@ -89,8 +86,8 @@ var TopIcons = new Lang.Class({
 
     this._iconsBoxLayout.insert_child_at_index(iconButton, 0);
 
-    this._createIcon(icon);
-    this._showContainer();
+    this._transformIcon(icon);
+    this._toggleContainer();
   },
 
   _removeTrayIcon(trayManager, icon) {
@@ -100,23 +97,17 @@ var TopIcons = new Lang.Class({
     let iconindex = this._icons.indexOf(icon);
     this._icons.splice(iconindex, 1);
 
-    this._hideContainer();
+    this._toggleContainer();
   },
 
-  _showContainer() {
-    this._iconsContainer.actor.show();
-    this._iconsContainer.container.show();
+  _toggleContainer() {
+    if (this._iconsBoxLayout.get_n_children() == 0)
+      this._iconsContainer.actor.hide();
+    else
+      this._iconsContainer.actor.show();
   },
 
-  _hideContainer() {
-    let emptyContainer = this._iconsBoxLayout.get_n_children() === 0;
-    if (!emptyContainer) return;
-
-    this._iconsContainer.actor.hide();
-    this._iconsContainer.container.hide();
-  },
-
-  _createIcon(icon) {
+  _transformIcon(icon) {
     icon.reactive = true;
 
     icon.set_size(this._iSize, this._iSize);
