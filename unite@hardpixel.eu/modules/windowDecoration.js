@@ -47,6 +47,13 @@ var WindowDecoration = new Lang.Class({
     Util.spawn(['xprop', '-id', winId, '-f', prop, '32c', '-set', prop, value]);
   },
 
+  _resetDecorations(win) {
+    this._toggleDecorations(win, false);
+
+    delete win._decorationOFF;
+    delete win._windowXID;
+  },
+
   _updateTitlebar() {
     let window = global.display.focus_window;
     let toggle = window;
@@ -131,11 +138,7 @@ var WindowDecoration = new Lang.Class({
 
     windows.forEach(Lang.bind(this, function (win) {
       Mainloop.idle_add(Lang.bind(this, function () {
-        win._decorationOFF = true;
-        this._showTitlebar(win);
-
-        delete win._decorationOFF;
-        delete win._windowXID;
+        this._resetDecorations(win);
       }));
     }));
   }
