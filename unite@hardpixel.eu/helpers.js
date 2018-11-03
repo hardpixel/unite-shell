@@ -1,7 +1,6 @@
 const Config = imports.misc.config;
 const Gio    = imports.gi.Gio;
 const St     = imports.gi.St;
-const Main   = imports.ui.main;
 const Meta   = imports.gi.Meta;
 
 function wmPreferences() {
@@ -26,26 +25,6 @@ function isValidWindow(win) {
   }
 
   return valid;
-}
-
-function getXWindow(win) {
-  try {
-    return win.get_description().match(/0x[0-9a-f]+/)[0];
-  } catch (err) {
-    return null;
-  }
-}
-
-function getAllWindows() {
-  let windows = global.get_window_actors().map(function (win) {
-    return win.meta_window;
-  });
-
-  windows = windows.filter(function(win) {
-    return isValidWindow(win);
-  });
-
-  return windows;
 }
 
 function getWindowButtons(return_only) {
@@ -118,11 +97,6 @@ function isMaximized(win, match_state) {
   }
 
   return check;
-}
-
-function getVersion() {
-  let version = Config.PACKAGE_VERSION.match(/\d+.\d+/);
-  return parseFloat(version);
 }
 
 function scaleSize(initial_size) {
