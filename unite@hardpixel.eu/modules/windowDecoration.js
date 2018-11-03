@@ -56,11 +56,7 @@ var WindowDecoration = new Lang.Class({
     }
 
     if (toggle && Helpers.isValidWindow(window)) {
-      if (Helpers.isMaximized(window, this._enabled)) {
-        this._hideTitlebar(window);
-      } else {
-        this._showTitlebar(window);
-      }
+      this._toggleTitlebar(window);
     }
   },
 
@@ -76,6 +72,13 @@ var WindowDecoration = new Lang.Class({
       win._decorationOFF = true;
       this._toggleDecorations(win, true);
     }
+  },
+
+  _toggleTitlebar(win) {
+    if (Helpers.isMaximized(win, this._enabled))
+      this._hideTitlebar(win);
+    else
+      this._showTitlebar(win);
   },
 
   _getUserStyles() {
@@ -118,11 +121,7 @@ var WindowDecoration = new Lang.Class({
 
     windows.forEach(Lang.bind(this, function (win) {
       Mainloop.idle_add(Lang.bind(this, function () {
-        if (Helpers.isMaximized(win, this._enabled)) {
-          this._hideTitlebar(win);
-        } else {
-          this._showTitlebar(win);
-        }
+        this._toggleTitlebar(win);
       }));
     }));
   },
