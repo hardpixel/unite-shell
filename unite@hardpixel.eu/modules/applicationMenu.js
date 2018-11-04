@@ -1,9 +1,11 @@
-const Lang  = imports.lang;
-const Shell = imports.gi.Shell;
-const Gtk   = imports.gi.Gtk;
-const Main  = imports.ui.main;
-const Unite = imports.misc.extensionUtils.getCurrentExtension();
-const Base  = Unite.imports.module.BaseModule;
+const Lang        = imports.lang;
+const Shell       = imports.gi.Shell;
+const Gtk         = imports.gi.Gtk;
+const Main        = imports.ui.main;
+const Unite       = imports.misc.extensionUtils.getCurrentExtension();
+const Base        = Unite.imports.module.BaseModule;
+const isWindow    = Unite.imports.helpers.isWindow;
+const isMaximized = Unite.imports.helpers.isMaximized;
 
 var ApplicationMenu = new Lang.Class({
   Name: 'Unite.ApplicationMenu',
@@ -67,7 +69,7 @@ var ApplicationMenu = new Lang.Class({
     this._activeApp    = this._winTracker.focus_app;
     this._activeWindow = global.display.focus_window;
 
-    if (!this.isValidWindow(this._activeWindow)) return;
+    if (!isWindow(this._activeWindow)) return;
 
     if (!this._activeWindow._updateTitleID) {
       let handler = this._activeWindow.connect(
@@ -84,7 +86,7 @@ var ApplicationMenu = new Lang.Class({
   _updateTitle() {
     let title     = null;
     let current   = this._appMenu._label.get_text();
-    let maximized = this.isMaximized(this._activeWindow, this._enabled);
+    let maximized = isMaximized(this._activeWindow, this._enabled);
     let always    = this._enabled == 'always' && this._activeWindow;
 
     if (always || maximized)

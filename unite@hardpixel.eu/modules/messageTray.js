@@ -1,8 +1,9 @@
-const Lang    = imports.lang;
-const Clutter = imports.gi.Clutter;
-const Main    = imports.ui.main;
-const Unite   = imports.misc.extensionUtils.getCurrentExtension();
-const Base    = Unite.imports.module.BaseModule;
+const Lang      = imports.lang;
+const Clutter   = imports.gi.Clutter;
+const Main      = imports.ui.main;
+const Unite     = imports.misc.extensionUtils.getCurrentExtension();
+const Base      = Unite.imports.module.BaseModule;
+const scaleSize = Unite.imports.helpers.scaleSize;
 
 var MessageTray = new Lang.Class({
   Name: 'Unite.MessageTray',
@@ -20,7 +21,7 @@ var MessageTray = new Lang.Class({
     let position = mappings[this._enabled] || 'CENTER';
 
     this._banner.set_x_align(Clutter.ActorAlign[position]);
-    this._banner.set_width(this.scaleSize(390));
+    this._banner.set_width(scaleSize(390));
   },
 
   _onDeactivate() {

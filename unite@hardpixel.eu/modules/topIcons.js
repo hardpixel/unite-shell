@@ -7,6 +7,7 @@ const Main      = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const Unite     = imports.misc.extensionUtils.getCurrentExtension();
 const Base      = Unite.imports.module.BaseModule;
+const scaleSize = Unite.imports.helpers.scaleSize;
 
 var TopIcons = new Lang.Class({
   Name: 'Unite.TopIcons',
@@ -17,7 +18,7 @@ var TopIcons = new Lang.Class({
 
   _onInitialize() {
     this._icons = [];
-    this._iSize = this.scaleSize(20);
+    this._iSize = scaleSize(20);
   },
 
   _onActivate() {

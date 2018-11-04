@@ -1,10 +1,14 @@
-const Lang  = imports.lang;
-const St    = imports.gi.St;
-const Shell = imports.gi.Shell;
-const Meta  = imports.gi.Meta;
-const Main  = imports.ui.main;
-const Unite = imports.misc.extensionUtils.getCurrentExtension();
-const Base  = Unite.imports.module.BaseModule;
+const Lang         = imports.lang;
+const St           = imports.gi.St;
+const Shell        = imports.gi.Shell;
+const Meta         = imports.gi.Meta;
+const Main         = imports.ui.main;
+const Unite        = imports.misc.extensionUtils.getCurrentExtension();
+const Base         = Unite.imports.module.BaseModule;
+const isWindow     = Unite.imports.helpers.isWindow;
+const isMaximized  = Unite.imports.helpers.isMaximized;
+const loadStyles   = Unite.imports.helpers.loadStyles;
+const unloadStyles = Unite.imports.helpers.unloadStyles;
 
 var WindowButtons = new Lang.Class({
   Name: 'Unite.WindowButtons',
@@ -99,7 +103,7 @@ var WindowButtons = new Lang.Class({
     let theme   = this._settings.get('window-buttons-theme');
     let cssPath = `themes/${theme}/stylesheet.css`;
 
-    this._buttonsTheme = this.loadStylesheet(cssPath);
+    this._buttonsTheme = loadStyles(cssPath);
     this._buttonsBox.add_style_class_name(`${theme}-buttons`);
   },
 
@@ -109,10 +113,8 @@ var WindowButtons = new Lang.Class({
     let theme   = this._settings.get('window-buttons-theme');
     let gioFile = this._buttonsTheme;
 
-    this.unloadStylesheet(gioFile);
+    this._buttonsTheme = unloadStyles(gioFile);
     this._buttonsBox.remove_style_class_name(`${theme}-buttons`);
-
-    delete this._buttonsTheme;
   },
 
   _onButtonClick(actor, event) {
@@ -149,11 +151,11 @@ var WindowButtons = new Lang.Class({
     if (!this._buttonsActor) return;
 
     let overview = Main.overview.visibleTarget;
-    let valid    = this.isValidWindow(this._activeWindow);
+    let valid    = isWindow(this._activeWindow);
     let visible  = false;
 
     if (!overview && valid) {
-      let maxed   = this.isMaximized(this._activeWindow, this._enabled);
+      let maxed   = isMaximized(this._activeWindow, this._enabled);
       let always  = this._enabled == 'always' && this._activeWindow;
 
       visible = always || maxed;

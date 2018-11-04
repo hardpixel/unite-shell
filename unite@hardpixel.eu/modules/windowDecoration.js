@@ -1,11 +1,13 @@
-const Lang     = imports.lang;
-const Mainloop = imports.mainloop;
-const GLib     = imports.gi.GLib;
-const Meta     = imports.gi.Meta;
-const Util     = imports.misc.util;
-const Unite    = imports.misc.extensionUtils.getCurrentExtension();
-const Base     = Unite.imports.module.BaseModule;
-const STYLES   = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
+const Lang        = imports.lang;
+const Mainloop    = imports.mainloop;
+const GLib        = imports.gi.GLib;
+const Meta        = imports.gi.Meta;
+const Util        = imports.misc.util;
+const Unite       = imports.misc.extensionUtils.getCurrentExtension();
+const Base        = Unite.imports.module.BaseModule;
+const isWindow    = Unite.imports.helpers.isWindow;
+const isMaximized = Unite.imports.helpers.isMaximized;
+const STYLES      = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
 
 var WindowDecoration = new Lang.Class({
   Name: 'Unite.WindowDecoration',
@@ -37,7 +39,7 @@ var WindowDecoration = new Lang.Class({
 
   _getAllWindows() {
     let windows = global.get_window_actors().map(win => win.meta_window);
-    return windows.filter(win => this.isValidWindow(win));
+    return windows.filter(win => isWindow(win));
   },
 
   _toggleDecorations(win, hide) {
@@ -64,7 +66,7 @@ var WindowDecoration = new Lang.Class({
     if (this._enabled == 'both')
       toggleDecor = focusWindow && focusWindow.get_maximized() !== 0;
 
-    if (toggleDecor && this.isValidWindow(focusWindow))
+    if (toggleDecor && isWindow(focusWindow))
       this._toggleTitlebar(focusWindow);
   },
 
@@ -85,7 +87,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _toggleTitlebar(win) {
-    if (this.isMaximized(win, this._enabled))
+    if (isMaximized(win, this._enabled))
       this._hideTitlebar(win);
     else
       this._showTitlebar(win);
