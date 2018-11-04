@@ -7,8 +7,9 @@ const Base  = Unite.imports.module.BaseModule;
 var ActivitiesButton = new Lang.Class({
   Name: 'Unite.ActivitiesButton',
   Extends: Base,
-  EnableKey: 'hide-activities-button',
-  DisableValue: 'never',
+
+  _enableKey: 'hide-activities-button',
+  _disableValue: 'never',
 
   _onInitialize() {
     this._container = Main.panel.statusArea.activities.container;

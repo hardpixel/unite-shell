@@ -9,9 +9,10 @@ const Settings = Unite.imports.handlers.SettingsHandler;
 
 var BaseModule = new Lang.Class({
   Name: 'Unite.BaseModule',
-  EnableKey: null,
-  EnableValue: null,
-  DisableValue: null,
+
+  _enableKey: null,
+  _enableValue: null,
+  _disableValue: null,
 
   _onInitialize() {},
   _onActivate() {},
@@ -26,17 +27,17 @@ var BaseModule = new Lang.Class({
     this._onInitialize();
     this._activate();
 
-    this._settings.enable(this.EnableKey, this._reload);
+    this._settings.enable(this._enableKey, this._reload);
   },
 
   _activate() {
-    this._enabled = this._settings.get(this.EnableKey);
+    this._enabled = this._settings.get(this._enableKey);
 
-    let enabled = this._enabled == this.EnableValue;
-    if (this.EnableValue != null && !enabled) return;
+    let enabled = this._enabled == this._enableValue;
+    if (this._enableValue != null && !enabled) return;
 
-    let disabled = this._enabled == this.DisableValue;
-    if (this.DisableValue != null && disabled) return;
+    let disabled = this._enabled == this._disableValue;
+    if (this._disableValue != null && disabled) return;
 
     this._onActivate();
   },

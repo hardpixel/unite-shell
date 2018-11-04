@@ -7,8 +7,9 @@ const Base    = Unite.imports.module.BaseModule;
 var ExtendLeftBox = new Lang.Class({
   Name: 'Unite.ExtendLeftBox',
   Extends: Base,
-  EnableKey: 'extend-left-box',
-  EnableValue: true,
+
+  _enableKey: 'extend-left-box',
+  _enableValue: true,
 
   _onActivate() {
     this._signals.connect(Main.panel.actor, 'allocate', this._extendBox);

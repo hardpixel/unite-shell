@@ -8,8 +8,9 @@ const Base  = Unite.imports.module.BaseModule;
 var ApplicationMenu = new Lang.Class({
   Name: 'Unite.ApplicationMenu',
   Extends: Base,
-  EnableKey: 'show-window-title',
-  DisableValue: 'never',
+
+  _enableKey: 'show-window-title',
+  _disableValue: 'never',
 
   _onInitialize() {
     this._appMenu     = Main.panel.statusArea.appMenu;

@@ -6,8 +6,9 @@ const Base  = Unite.imports.module.BaseModule;
 var ActivateWindow = new Lang.Class({
   Name: 'Unite.ActivateWindow',
   Extends: Base,
-  EnableKey: 'autofocus-windows',
-  EnableValue: true,
+
+  _enableKey: 'autofocus-windows',
+  _enableValue: true,
 
   _onActivate() {
     let signalName = 'window-demands-attention';

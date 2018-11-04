@@ -11,8 +11,9 @@ const Base      = Unite.imports.module.BaseModule;
 var TopIcons = new Lang.Class({
   Name: 'Unite.TopIcons',
   Extends: Base,
-  EnableKey: 'show-legacy-tray',
-  EnableValue: true,
+
+  _enableKey: 'show-legacy-tray',
+  _enableValue: true,
 
   _onInitialize() {
     this._icons = [];

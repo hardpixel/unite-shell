@@ -8,8 +8,9 @@ const Base  = Unite.imports.module.BaseModule;
 var DesktopName = new Lang.Class({
   Name: 'Unite.DesktopName',
   Extends: Base,
-  EnableKey: 'show-desktop-name',
-  EnableValue: true,
+
+  _enableKey: 'show-desktop-name',
+  _enableValue: true,
 
   _onActivate() {
     let appSystem  = Shell.AppSystem.get_default();

@@ -10,8 +10,9 @@ const STYLES   = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
 var WindowDecoration = new Lang.Class({
   Name: 'Unite.WindowDecoration',
   Extends: Base,
-  EnableKey: 'hide-window-titlebars',
-  DisableValue: 'never',
+
+  _enableKey: 'hide-window-titlebars',
+  _disableValue: 'never',
 
   _onActivate() {
     this._signals.connect(global.display, 'notify::focus-window', this._updateTitlebar);

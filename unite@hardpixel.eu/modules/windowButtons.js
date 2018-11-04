@@ -9,8 +9,9 @@ const Base  = Unite.imports.module.BaseModule;
 var WindowButtons = new Lang.Class({
   Name: 'Unite.WindowButtons',
   Extends: Base,
-  EnableKey: 'show-window-buttons',
-  DisableValue: 'never',
+
+  _enableKey: 'show-window-buttons',
+  _disableValue: 'never',
 
   _onActivate() {
     this._signals.connect(global.display, 'notify::focus-window', this._toggleButtons);

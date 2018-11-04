@@ -7,8 +7,9 @@ const Base    = Unite.imports.module.BaseModule;
 var MessageTray = new Lang.Class({
   Name: 'Unite.MessageTray',
   Extends: Base,
-  EnableKey: 'notifications-position',
-  DisableValue: 'center',
+
+  _enableKey: 'notifications-position',
+  _disableValue: 'center',
 
   _onInitialize() {
     this._banner = Main.messageTray._bannerBin;
