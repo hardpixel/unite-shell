@@ -10,8 +10,17 @@ var SignalsHandler = new Lang.Class({
     this._context = context;
   },
 
-  _connectHandler(object, name, callback) {
+  _getCallbackFunction(callback) {
+    if (typeof callback == 'string')
+      callback = this._context[callback] || this._context[`_${callback}`];
+
+    return callback;
+  },
+
+  _connectHandler(object, name, callbackObj) {
+    let callback = this._getCallbackFunction(callbackObj);
     let signalId = object.connect(name, Lang.bind(this._context, callback));
+
     return { object: object, signalId: signalId }
   },
 

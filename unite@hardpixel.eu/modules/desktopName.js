@@ -16,13 +16,13 @@ var DesktopName = new Lang.Class({
     let appSystem  = Shell.AppSystem.get_default();
     let winTracker = Shell.WindowTracker.get_default();
 
-    this._signals.connect(appSystem, 'app-state-changed', this._toggleLabel);
-    this._signals.connect(winTracker, 'notify::focus-app', this._toggleLabel);
+    this._signals.connect(appSystem, 'app-state-changed', 'toggleLabel');
+    this._signals.connect(winTracker, 'notify::focus-app', 'toggleLabel');
 
-    this._signals.connect(Main.overview, 'showing', this._toggleLabel);
-    this._signals.connect(Main.overview, 'hiding', this._toggleLabel);
+    this._signals.connect(Main.overview, 'showing', 'toggleLabel');
+    this._signals.connect(Main.overview, 'hiding', 'toggleLabel');
 
-    this._settings.connect('desktop-name-text', this._setLabelText);
+    this._settings.connect('desktop-name-text', 'setLabelText');
 
     this._createLabel();
     this._setLabelText();

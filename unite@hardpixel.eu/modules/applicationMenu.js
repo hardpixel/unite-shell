@@ -20,14 +20,14 @@ var ApplicationMenu = new Lang.Class({
   },
 
   _onActivate() {
-    this._signals.connect(global.display, 'notify::focus-window', this._updateMenu);
-    this._signals.connect(global.window_manager, 'size-change', this._updateMenu);
+    this._signals.connect(global.display, 'notify::focus-window', 'updateMenu');
+    this._signals.connect(global.window_manager, 'size-change', 'updateMenu');
 
-    this._signals.connect(this._gtkSettings, 'notify::gtk-shell-shows-app-menu', this._syncMenu);
-    this._signals.connect(Main.overview, 'hiding', this._showMenu);
+    this._signals.connect(this._gtkSettings, 'notify::gtk-shell-shows-app-menu', 'syncMenu');
+    this._signals.connect(Main.overview, 'hiding', 'showMenu');
 
-    this._signals.connect(this._winTracker, 'notify::focus-app', this._showMenu);
-    this._signals.connect(this._appSystem, 'app-state-changed', this._showMenu);
+    this._signals.connect(this._winTracker, 'notify::focus-app', 'showMenu');
+    this._signals.connect(this._appSystem, 'app-state-changed', 'showMenu');
 
     this._syncMenu();
     this._updateMenu();

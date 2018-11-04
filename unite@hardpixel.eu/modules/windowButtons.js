@@ -14,15 +14,15 @@ var WindowButtons = new Lang.Class({
   _disableValue: 'never',
 
   _onActivate() {
-    this._signals.connect(global.display, 'notify::focus-window', this._toggleButtons);
-    this._signals.connect(global.window_manager, 'size-change', this._toggleButtons);
-    this._signals.connect(global.window_manager, 'destroy', this._toggleButtons);
+    this._signals.connect(global.display, 'notify::focus-window', 'toggleButtons');
+    this._signals.connect(global.window_manager, 'size-change', 'toggleButtons');
+    this._signals.connect(global.window_manager, 'destroy', 'toggleButtons');
 
-    this._signals.connect(Main.overview, 'showing', this._toggleButtons);
-    this._signals.connect(Main.overview, 'hiding', this._toggleButtons);
+    this._signals.connect(Main.overview, 'showing', 'toggleButtons');
+    this._signals.connect(Main.overview, 'hiding', 'toggleButtons');
 
-    this._settings.connect('window-buttons-theme', this._updateTheme);
-    this._settings.connect('button-layout', this._updateButtons);
+    this._settings.connect('window-buttons-theme', 'updateTheme');
+    this._settings.connect('button-layout', 'updateButtons');
 
     this._createButtons();
     this._toggleButtons();

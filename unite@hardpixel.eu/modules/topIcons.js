@@ -21,7 +21,7 @@ var TopIcons = new Lang.Class({
   },
 
   _onActivate() {
-    this._settings.connect('greyscale-tray-icons', this._desaturateIcons);
+    this._settings.connect('greyscale-tray-icons', 'desaturateIcons');
 
     this._createContainer();
     this._createTray();

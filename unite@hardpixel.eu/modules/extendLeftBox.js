@@ -12,7 +12,7 @@ var ExtendLeftBox = new Lang.Class({
   _enableValue: true,
 
   _onActivate() {
-    this._signals.connect(Main.panel.actor, 'allocate', this._extendBox);
+    this._signals.connect(Main.panel.actor, 'allocate', 'extendBox');
   },
 
   _onReload() {
