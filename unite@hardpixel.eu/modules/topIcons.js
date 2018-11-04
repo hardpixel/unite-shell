@@ -18,11 +18,11 @@ var TopIcons = new Lang.Class({
   _onInitialize() {
     this._icons = [];
     this._iSize = this.scaleSize(20);
-
-    this._settings.connect('greyscale-tray-icons', this._desaturateIcons);
   },
 
   _onActivate() {
+    this._settings.connect('greyscale-tray-icons', this._desaturateIcons);
+
     this._createContainer();
     this._createTray();
   },

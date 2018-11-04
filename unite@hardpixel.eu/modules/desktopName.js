@@ -12,7 +12,6 @@ var DesktopName = new Lang.Class({
   EnableValue: true,
 
   _onInitialize() {
-    this._settings.connect('desktop-name-text', this._setLabelText);
   },
 
   _onActivate() {
@@ -24,6 +23,8 @@ var DesktopName = new Lang.Class({
 
     this._signals.connect(Main.overview, 'showing', this._toggleLabel);
     this._signals.connect(Main.overview, 'hiding', this._toggleLabel);
+
+    this._settings.connect('desktop-name-text', this._setLabelText);
 
     this._createLabel();
     this._setLabelText();

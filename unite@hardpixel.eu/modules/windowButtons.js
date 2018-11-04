@@ -13,10 +13,6 @@ var WindowButtons = new Lang.Class({
   EnableKey: 'show-window-buttons',
   DisableValue: 'never',
 
-  _onInitialize() {
-    this._settings.connect('window-buttons-theme', this._updateTheme);
-  },
-
   _onActivate() {
     let wmPrefs = Helpers.wmPreferences();
     this._signals.connect(wmPrefs, 'changed::button-layout', this._updateButtons);
@@ -27,6 +23,8 @@ var WindowButtons = new Lang.Class({
 
     this._signals.connect(Main.overview, 'showing', this._toggleButtons);
     this._signals.connect(Main.overview, 'hiding', this._toggleButtons);
+
+    this._settings.connect('window-buttons-theme', this._updateTheme);
 
     this._createButtons();
     this._toggleButtons();

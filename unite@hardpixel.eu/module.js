@@ -26,7 +26,7 @@ var BaseModule = new Lang.Class({
     this._onInitialize();
     this._activate();
 
-    this._settings.connect(this.EnableKey, this._reload);
+    this._settings.enable(this.EnableKey, this._reload);
   },
 
   _activate() {
@@ -43,6 +43,8 @@ var BaseModule = new Lang.Class({
 
   _deactivate() {
     this._onDeactivate();
+
+    this._settings.disconnectAll();
     this._signals.disconnectAll();
   },
 
@@ -55,7 +57,7 @@ var BaseModule = new Lang.Class({
   destroy() {
     this._deactivate();
     this._onDestroy();
-    this._settings.disconnectAll();
+    this._settings.disable();
   },
 
   getThemeContext() {

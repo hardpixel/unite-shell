@@ -43,19 +43,23 @@ var SettingsHandler = new Lang.Class({
   Name: 'Unite.SettingsHandler',
 
   _init(context) {
+    this._enabler  = null;
     this._signals  = {};
     this._context  = context;
     this._settings = Convenience.getSettings();
   },
 
+  _connectHandler(signalName, callback) {
+    return this._settings.connect(
+      `changed::${signalName}`, Lang.bind(this._context, callback)
+    );
+  },
+
   connect(signalName, callback) {
     let signalId = `${signalName}#${callback}`;
 
-    if (!this._signals[signalId]) {
-      this._signals[signalId] = this._settings.connect(
-        `changed::${signalName}`, Lang.bind(this._context, callback)
-      );
-    }
+    if (!this._signals[signalId])
+      this._signals[signalId] = this._connectHandler(signalName, callback);
 
     return signalId;
   },
@@ -72,6 +76,15 @@ var SettingsHandler = new Lang.Class({
     for (let signalKey in this._signals) {
       this.disconnect(signalKey);
     }
+  },
+
+  enable(signalName, callback) {
+    this._enabler = this._connectHandler(signalName, callback);
+  },
+
+  disable() {
+    if (!this._enabler) return;
+    this._settings.disconnect(this._enabler);
   },
 
   get(settingKey) {
