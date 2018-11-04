@@ -81,9 +81,8 @@ var SettingsHandler = new Lang.Class({
   enable(name, callback) {
     if (this._enabler) return;
 
-    this._enabler = this._connectHandler(
-      this._settings, `changed::${name}`, callback
-    );
+    let signalObj = this._settings;
+    this._enabler = this._connectHandler(signalObj, `changed::${name}`, callback);
   },
 
   disable() {
@@ -94,7 +93,7 @@ var SettingsHandler = new Lang.Class({
   },
 
   get(settingKey) {
-    let targetObj = this._getSettingObject(settingKey);
-    return targetObj.getSetting(settingKey);
+    let object = this._getSettingObject(settingKey);
+    return object.getSetting(settingKey);
   }
 });
