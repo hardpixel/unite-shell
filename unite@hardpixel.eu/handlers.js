@@ -70,7 +70,11 @@ var SettingsHandler = new Lang.Class({
   },
 
   enable(name, callback) {
-    this._enabler = this._connectHandler(this._settings, `changed::${name}`, callback);
+    if (this._enabler) return;
+
+    this._enabler = this._connectHandler(
+      this._settings, `changed::${name}`, callback
+    );
   },
 
   disable() {
