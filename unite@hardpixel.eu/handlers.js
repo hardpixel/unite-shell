@@ -41,6 +41,7 @@ var SignalsHandler = new Lang.Class({
 
 var SettingsHandler = new Lang.Class({
   Name: 'Unite.SettingsHandler',
+  Extends: SignalsHandler,
 
   _init(context) {
     this._enabler  = null;
@@ -55,11 +56,6 @@ var SettingsHandler = new Lang.Class({
     return isSetting ? this._settings : this._wmPrefs;
   },
 
-  _connectHandler(object, name, callback) {
-    let signalId = object.connect(name, Lang.bind(this._context, callback));
-    return { object: object, signalId: signalId }
-  },
-
   connect(name, callback) {
     let signalId = `${name}#${callback}`;
 
@@ -71,20 +67,6 @@ var SettingsHandler = new Lang.Class({
     }
 
     return signalId;
-  },
-
-  disconnect(signalKey) {
-    let signalData = this._signals[signalKey];
-    if (!signalData) return;
-
-    signalData.object.disconnect(signalData.signalId);
-    delete this._signals[signalKey];
-  },
-
-  disconnectAll() {
-    for (let signalKey in this._signals) {
-      this.disconnect(signalKey);
-    }
   },
 
   enable(name, callback) {
