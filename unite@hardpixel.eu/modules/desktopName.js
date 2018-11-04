@@ -11,9 +11,6 @@ var DesktopName = new Lang.Class({
   EnableKey: 'show-desktop-name',
   EnableValue: true,
 
-  _onInitialize() {
-  },
-
   _onActivate() {
     let appSystem  = Shell.AppSystem.get_default();
     let winTracker = Shell.WindowTracker.get_default();
