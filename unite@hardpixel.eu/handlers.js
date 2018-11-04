@@ -10,16 +10,16 @@ var SignalsHandler = new Lang.Class({
     this._context = context;
   },
 
-  connect(object, signalName, callback) {
-    let signalKey = `${object}/${signalName}#${callback}`;
+  _connectHandler(object, name, callback) {
+    let signalId = object.connect(name, Lang.bind(this._context, callback));
+    return { object: object, signalId: signalId }
+  },
 
-    if (!this._signals[signalKey]) {
-      let signalId = object.connect(
-        signalName, Lang.bind(this._context, callback)
-      );
+  connect(object, name, callback) {
+    let signalKey = `${object}/${name}#${callback}`;
 
-      this._signals[signalKey] = { object: object, signalId: signalId };
-    }
+    if (!this._signals[signalKey])
+      this._signals[signalKey] = this._connectHandler(object, name, callback);
 
     return signalKey;
   },
