@@ -45,6 +45,32 @@ var SettingsManager = new Lang.Class({
   }
 });
 
+var PreferencesManager = new Lang.Class({
+  Name: 'Unite.Preferences',
+  Extends: Gio.Settings,
+
+  _window_buttons_position() {
+    let setting = this.get_string('button-layout');
+    return /(close|minimize|maximize).*:/.test(setting) ? 'left' : 'right';
+  },
+
+  _window_buttons_layout() {
+    let setting = this.get_string('button-layout');
+    return setting.match(/(close|minimize|maximize)/g);
+  },
+
+  exists(key) {
+    return this[key] || this.list_keys().includes(key);
+  },
+
+  getSetting(key) {
+    let method = `_${key.replace(/-/g, '_')}`;
+
+    if (this.exists(method)) return this[method]();
+    if (this.exists(key))    return this.get_string(key);
+  }
+});
+
 function initTranslations(domain) {
   let textDomain = domain || Unite.metadata['gettext-domain'];
   let localeDir  = Unite.dir.get_child('locale');
@@ -77,4 +103,9 @@ function getSettings(schema) {
   }
 
   return new SettingsManager({ settings_schema: schemaObj });
+}
+
+function getPreferences() {
+  let schemaId = 'org.gnome.desktop.wm.preferences';
+  return new PreferencesManager({ schema_id: schemaId });
 }
