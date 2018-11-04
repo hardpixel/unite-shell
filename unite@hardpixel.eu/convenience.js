@@ -60,15 +60,15 @@ var PreferencesManager = new Lang.Class({
   },
 
   exists(key) {
-    let method = key.replace(/-/g, '_');
-    return (method in this) || this.list_keys().includes(key);
+    let fun = key.replace(/-/g, '_');
+    return (fun in this) || this.list_keys().includes(key);
   },
 
   getSetting(key) {
-    if (!this.exists(key)) return;
+    let fun = key.replace(/-/g, '_');
 
-    let method = key.replace(/-/g, '_');
-    return this[method] || this.get_string(key);
+    if (this.exists(fun)) return this[fun];
+    if (this.exists(key)) return this.get_string(key);
   }
 });
 
