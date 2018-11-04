@@ -121,15 +121,9 @@ var WindowButtons = new Lang.Class({
     if (!this._activeWindow) return;
 
     switch (actor._windowAction) {
-      case 'minimize':
-        this._minimizeWindow();
-        break;
-      case 'maximize':
-        this._maximizeWindow();
-        break;
-      case 'close':
-        this._closeWindow();
-        break;
+      case 'minimize': return this._minimizeWindow();
+      case 'maximize': return this._maximizeWindow();
+      case 'close':    return this._closeWindow();
     }
   },
 
