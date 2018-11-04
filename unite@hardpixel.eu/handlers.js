@@ -24,13 +24,17 @@ var SignalsHandler = new Lang.Class({
     return { object: object, signalId: signalId }
   },
 
-  connect(object, name, callback) {
-    let signalKey = `${object}/${name}#${callback}`;
+  _addHandler(object, name, callback) {
+    let signalKey = `${object}[${name}#${callback}]`;
 
     if (!this._signals[signalKey])
       this._signals[signalKey] = this._connectHandler(object, name, callback);
 
     return signalKey;
+  },
+
+  connect(object, name, callback) {
+    return this._addHandler(object, name, callback);
   },
 
   disconnect(signalKey) {
@@ -66,16 +70,8 @@ var SettingsHandler = new Lang.Class({
   },
 
   connect(name, callback) {
-    let signalId = `${name}#${callback}`;
-
-    if (!this._signals[signalId]) {
-      let object  = this._getSettingObject(name);
-      let handler = this._connectHandler(object, `changed::${name}`, callback);
-
-      this._signals[signalId] = handler;
-    }
-
-    return signalId;
+    let object = this._getSettingObject(name);
+    return this._addHandler(object, `changed::${name}`, callback);
   },
 
   enable(name, callback) {
