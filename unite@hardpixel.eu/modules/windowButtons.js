@@ -21,6 +21,7 @@ var WindowButtons = new Lang.Class({
     this._signals.connect(Main.overview, 'hiding', this._toggleButtons);
 
     this._settings.connect('window-buttons-theme', this._updateTheme);
+    this._settings.connect('button-layout', this._updateButtons);
 
     this._createButtons();
     this._toggleButtons();

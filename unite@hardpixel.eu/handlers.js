@@ -50,27 +50,35 @@ var SettingsHandler = new Lang.Class({
     this._wmPrefs  = Convenience.getPreferences();
   },
 
-  _connectHandler(signalName, callback) {
-    return this._settings.connect(
-      `changed::${signalName}`, Lang.bind(this._context, callback)
-    );
+  _getSettingObject(settingKey) {
+    let isSetting = this._settings.exists(settingKey);
+    return isSetting ? this._settings : this._wmPrefs;
   },
 
-  connect(signalName, callback) {
-    let signalId = `${signalName}#${callback}`;
+  _connectHandler(object, name, callback) {
+    let signalId = object.connect(name, Lang.bind(this._context, callback));
+    return { object: object, signalId: signalId }
+  },
 
-    if (!this._signals[signalId])
-      this._signals[signalId] = this._connectHandler(signalName, callback);
+  connect(name, callback) {
+    let signalId = `${name}#${callback}`;
+
+    if (!this._signals[signalId]) {
+      let object  = this._getSettingObject(name);
+      let handler = this._connectHandler(object, `changed::${name}`, callback);
+
+      this._signals[signalId] = handler;
+    }
 
     return signalId;
   },
 
   disconnect(signalKey) {
-    let signalId = this._signals[signalKey];
-    if (!signalId) return;
+    let signalData = this._signals[signalKey];
+    if (!signalData) return;
 
-    this._settings.disconnect(signalId);
-    delete this._signals[signalId];
+    signalData.object.disconnect(signalData.signalId);
+    delete this._signals[signalKey];
   },
 
   disconnectAll() {
@@ -79,19 +87,19 @@ var SettingsHandler = new Lang.Class({
     }
   },
 
-  enable(signalName, callback) {
-    this._enabler = this._connectHandler(signalName, callback);
+  enable(name, callback) {
+    this._enabler = this._connectHandler(this._settings, `changed::${name}`, callback);
   },
 
   disable() {
     if (!this._enabler) return;
-    this._settings.disconnect(this._enabler);
+
+    this._settings.disconnect(this._enabler.signalId);
+    this._enabler = null;
   },
 
   get(settingKey) {
-    let isSetting = this._settings.exists(settingKey);
-    let targetObj = isSetting ? this._settings : this._wmPrefs;
-
+    let targetObj = this._getSettingObject(settingKey);
     return targetObj.getSetting(settingKey);
   }
 });
