@@ -1,13 +1,12 @@
-const Lang        = imports.lang;
-const Mainloop    = imports.mainloop;
-const GLib        = imports.gi.GLib;
-const Meta        = imports.gi.Meta;
-const Util        = imports.misc.util;
-const Unite       = imports.misc.extensionUtils.getCurrentExtension();
-const Base        = Unite.imports.module.BaseModule;
-const isWindow    = Unite.imports.helpers.isWindow;
-const isMaximized = Unite.imports.helpers.isMaximized;
-const STYLES      = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
+const Lang            = imports.lang;
+const Mainloop        = imports.mainloop;
+const Util            = imports.misc.util;
+const Unite           = imports.misc.extensionUtils.getCurrentExtension();
+const Base            = Unite.imports.module.BaseModule;
+const isWindow        = Unite.imports.helpers.isWindow;
+const isMaximized     = Unite.imports.helpers.isMaximized;
+const loadUserStyles  = Unite.imports.helpers.loadUserStyles;
+const resetUserStyles = Unite.imports.helpers.resetUserStyles;
 
 var WindowDecoration = new Lang.Class({
   Name: 'Unite.WindowDecoration',
@@ -20,15 +19,15 @@ var WindowDecoration = new Lang.Class({
     this._signals.connect(global.display, 'notify::focus-window', 'updateTitlebar');
     this._signals.connect(global.window_manager, 'size-change', 'updateTitlebar');
 
-    this._settings.connect('hide-window-titlebars', 'addUserStyles');
-    this._settings.connect('button-layout', 'addUserStyles');
+    this._settings.connect('hide-window-titlebars', 'updateUserStyles');
+    this._settings.connect('button-layout', 'updateUserStyles');
 
-    this._addUserStyles();
+    this._updateUserStyles();
     this._undecorateWindows();
   },
 
   _onDeactivate() {
-    this._removeUserStyles();
+    this._updateUserStyles();
     this._decorateWindows();
   },
 
@@ -93,39 +92,23 @@ var WindowDecoration = new Lang.Class({
       this._showTitlebar(win);
   },
 
-  _getUserStyles() {
-    if (!GLib.file_test(STYLES, GLib.FileTest.EXISTS)) return '';
-
-    let file  = GLib.file_get_contents(STYLES);
-    let style = String.fromCharCode.apply(null, file[1]);
-
-    return style.replace(/@import.*unite@hardpixel\.eu.*css['"]\);\n/g, '');
-  },
-
-  _addUserStyles() {
-    let buttonsPosition = this._settings.get('window-buttons-position');
-    if (!buttonsPosition) return;
-
-    let content   = this._getUserStyles();
-    let filePath  = `${Unite.path}/styles/buttons-${buttonsPosition}`;
+  _updateUserStyles() {
+    let position  = this._settings.get('window-buttons-position');
+    let filePath  = `${Unite.path}/styles/buttons-${position}`;
     let maximized = `@import url('${filePath}.css');\n`;
     let tiled     = `@import url('${filePath}-tiled.css');\n`;
 
     if (this._enabled == 'both')
-      content = maximized + tiled + content;
+      loadUserStyles(maximized + tiled);
 
     if (this._enabled == 'maximized')
-      content = maximized + content;
+      loadUserStyles(maximized);
 
     if (this._enabled == 'tiled')
-      content = tiled + content;
+      loadUserStyles(tiled);
 
-    GLib.file_set_contents(STYLES, content);
-  },
-
-  _removeUserStyles() {
-    let content = this._getUserStyles();
-    GLib.file_set_contents(STYLES, content);
+    if (this._enabled == 'never')
+      resetUserStyles();
   },
 
   _undecorateWindow(win) {
