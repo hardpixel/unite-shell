@@ -65,8 +65,11 @@ var SettingsHandler = new Lang.Class({
   },
 
   _getSettingObject(settingKey) {
-    let isSetting = this._settings.exists(settingKey);
-    return isSetting ? this._settings : this._wmPrefs;
+    if (this._settings.exists(settingKey))
+      return this._settings;
+
+    if (this._wmPrefs.exists(settingKey))
+      return this._wmPrefs;
   },
 
   connect(name, callback) {
@@ -90,6 +93,6 @@ var SettingsHandler = new Lang.Class({
 
   get(settingKey) {
     let object = this._getSettingObject(settingKey);
-    return object.getSetting(settingKey);
+    if (object) return object.getSetting(settingKey);
   }
 });

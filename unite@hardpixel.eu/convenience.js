@@ -40,8 +40,8 @@ var SettingsManager = new Lang.Class({
   getSetting(key) {
     if (!this.exists(key)) return;
 
-    let type = this.getSettingType(key);
-    return type == 'boolean' ? this.get_boolean(key) : this.get_string(key);
+    let boolean = this.getSettingType(key) == 'boolean';
+    return boolean ? this.get_boolean(key) : this.get_string(key);
   }
 });
 
@@ -49,25 +49,26 @@ var PreferencesManager = new Lang.Class({
   Name: 'Unite.Preferences',
   Extends: Gio.Settings,
 
-  _window_buttons_position() {
+  get window_buttons_position() {
     let setting = this.get_string('button-layout');
     return /(close|minimize|maximize).*:/.test(setting) ? 'left' : 'right';
   },
 
-  _window_buttons_layout() {
+  get window_buttons_layout() {
     let setting = this.get_string('button-layout');
     return setting.match(/(close|minimize|maximize)/g);
   },
 
   exists(key) {
-    return this[key] || this.list_keys().includes(key);
+    let method = key.replace(/-/g, '_');
+    return (method in this) || this.list_keys().includes(key);
   },
 
   getSetting(key) {
-    let method = `_${key.replace(/-/g, '_')}`;
+    if (!this.exists(key)) return;
 
-    if (this.exists(method)) return this[method]();
-    if (this.exists(key))    return this.get_string(key);
+    let method = key.replace(/-/g, '_');
+    return this[method] || this.get_string(key);
   }
 });
 
