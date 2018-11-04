@@ -1,10 +1,9 @@
-const Lang    = imports.lang;
-const Shell   = imports.gi.Shell;
-const Gtk     = imports.gi.Gtk;
-const Main    = imports.ui.main;
-const Unite   = imports.misc.extensionUtils.getCurrentExtension();
-const Base    = Unite.imports.module.BaseModule;
-const Helpers = Unite.imports.helpers;
+const Lang  = imports.lang;
+const Shell = imports.gi.Shell;
+const Gtk   = imports.gi.Gtk;
+const Main  = imports.ui.main;
+const Unite = imports.misc.extensionUtils.getCurrentExtension();
+const Base  = Unite.imports.module.BaseModule;
 
 var ApplicationMenu = new Lang.Class({
   Name: 'Unite.ApplicationMenu',

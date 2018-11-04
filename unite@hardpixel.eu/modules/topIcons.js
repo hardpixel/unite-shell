@@ -7,7 +7,6 @@ const Main      = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const Unite     = imports.misc.extensionUtils.getCurrentExtension();
 const Base      = Unite.imports.module.BaseModule;
-const Helpers   = Unite.imports.helpers;
 
 var TopIcons = new Lang.Class({
   Name: 'Unite.TopIcons',

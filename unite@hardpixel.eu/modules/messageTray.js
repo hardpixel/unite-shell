@@ -3,7 +3,6 @@ const Clutter = imports.gi.Clutter;
 const Main    = imports.ui.main;
 const Unite   = imports.misc.extensionUtils.getCurrentExtension();
 const Base    = Unite.imports.module.BaseModule;
-const Helpers = Unite.imports.helpers;
 
 var MessageTray = new Lang.Class({
   Name: 'Unite.MessageTray',
