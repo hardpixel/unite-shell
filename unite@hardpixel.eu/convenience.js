@@ -75,11 +75,12 @@ function initTranslations(domain) {
   let textDomain = domain || Unite.metadata['gettext-domain'];
   let localeDir  = Unite.dir.get_child('locale');
 
-  if (localeDir.query_exists(null)) {
-    Gettext.bindtextdomain(textDomain, localeDir.get_path());
-  } else {
-    Gettext.bindtextdomain(textDomain, Config.LOCALEDIR);
-  }
+  if (localeDir.query_exists(null))
+    localeDir = localeDir.get_path()
+  else
+    localeDir = Config.LOCALEDIR
+
+  Gettext.bindtextdomain(textDomain, localeDir);
 }
 
 function getSettings(schema) {
