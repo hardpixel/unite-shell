@@ -17,6 +17,9 @@ var WindowDecoration = new Lang.Class({
     this._signals.connect(global.display, 'notify::focus-window', this._updateTitlebar);
     this._signals.connect(global.window_manager, 'size-change', this._updateTitlebar);
 
+    this._settings.connect('hide-window-titlebars', this._addUserStyles);
+    this._settings.connect('button-layout', this._addUserStyles);
+
     this._addUserStyles();
     this._undecorateWindows();
   },
