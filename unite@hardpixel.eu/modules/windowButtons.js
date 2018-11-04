@@ -1,11 +1,10 @@
-const Lang    = imports.lang;
-const St      = imports.gi.St;
-const Shell   = imports.gi.Shell;
-const Meta    = imports.gi.Meta;
-const Main    = imports.ui.main;
-const Unite   = imports.misc.extensionUtils.getCurrentExtension();
-const Base    = Unite.imports.module.BaseModule;
-const Helpers = Unite.imports.helpers;
+const Lang  = imports.lang;
+const St    = imports.gi.St;
+const Shell = imports.gi.Shell;
+const Meta  = imports.gi.Meta;
+const Main  = imports.ui.main;
+const Unite = imports.misc.extensionUtils.getCurrentExtension();
+const Base  = Unite.imports.module.BaseModule;
 
 var WindowButtons = new Lang.Class({
   Name: 'Unite.WindowButtons',
@@ -14,9 +13,6 @@ var WindowButtons = new Lang.Class({
   DisableValue: 'never',
 
   _onActivate() {
-    let wmPrefs = Helpers.wmPreferences();
-    this._signals.connect(wmPrefs, 'changed::button-layout', this._updateButtons);
-
     this._signals.connect(global.display, 'notify::focus-window', this._toggleButtons);
     this._signals.connect(global.window_manager, 'size-change', this._toggleButtons);
     this._signals.connect(global.window_manager, 'destroy', this._toggleButtons);
@@ -52,8 +48,10 @@ var WindowButtons = new Lang.Class({
   },
 
   _createButtons() {
-    [this._position, this._buttons] = Helpers.getWindowButtons();
-    if (!this._buttons || this._buttonsActor) return;
+    let position = this._settings.get('window-buttons-position');
+    let buttons  = this._settings.get('window-buttons-layout');
+
+    if (!buttons || this._buttonsActor) return;
 
     this._buttonsActor = new St.Bin();
     this._buttonsBox   = new St.BoxLayout({ style_class: 'window-buttons-box' });
@@ -61,14 +59,14 @@ var WindowButtons = new Lang.Class({
     this._buttonsActor.add_actor(this._buttonsBox);
     this._buttonsActor.hide();
 
-    this._buttons.forEach(Lang.bind(this, this._createButton));
+    buttons.forEach(Lang.bind(this, this._createButton));
 
-    if (this._position == 'left') {
+    if (position == 'left') {
       let appmenu = Main.panel.statusArea.appMenu.actor.get_parent();
       Main.panel._leftBox.insert_child_below(this._buttonsActor, appmenu);
     }
 
-    if (this._position == 'right')
+    if (position == 'right')
       Main.panel._rightBox.add_child(this._buttonsActor);
   },
 

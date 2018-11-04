@@ -47,6 +47,7 @@ var SettingsHandler = new Lang.Class({
     this._signals  = {};
     this._context  = context;
     this._settings = Convenience.getSettings();
+    this._wmPrefs  = Convenience.getPreferences();
   },
 
   _connectHandler(signalName, callback) {
@@ -88,6 +89,9 @@ var SettingsHandler = new Lang.Class({
   },
 
   get(settingKey) {
-    return this._settings.getSetting(settingKey);
+    let isSetting = this._settings.exists(settingKey);
+    let targetObj = isSetting ? this._settings : this._wmPrefs;
+
+    return targetObj.getSetting(settingKey);
   }
 });

@@ -5,7 +5,6 @@ const Meta     = imports.gi.Meta;
 const Util     = imports.misc.util;
 const Unite    = imports.misc.extensionUtils.getCurrentExtension();
 const Base     = Unite.imports.module.BaseModule;
-const Helpers  = Unite.imports.helpers;
 const STYLES   = GLib.get_user_config_dir() + '/gtk-3.0/gtk.css';
 
 var WindowDecoration = new Lang.Class({
@@ -98,7 +97,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _addUserStyles() {
-    let buttonsPosition = Helpers.getWindowButtons('position');
+    let buttonsPosition = this._settings.get('window-buttons-position');
     if (!buttonsPosition) return;
 
     let content   = this._getUserStyles();
