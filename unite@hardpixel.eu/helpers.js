@@ -58,9 +58,9 @@ function unloadStyles(gioFile) {
   return null;
 }
 
-function scaleSize(initial_size) {
+function scaleSize(initialSize) {
   let context = getThemeContext();
-  return initial_size * context.scale_factor;
+  return initialSize * context.scale_factor;
 }
 
 function isWindow(win) {
@@ -72,7 +72,7 @@ function isWindow(win) {
   return types.includes(win.window_type);
 }
 
-function isMaximized(win, match_state) {
+function isMaximized(win, matchState) {
   if (!win) return;
 
   let flags         = Meta.MaximizeFlags;
@@ -82,7 +82,7 @@ function isMaximized(win, match_state) {
   let fullMaximized = maximized == flags.BOTH;
   let bothMaximized = fullMaximized || tileMaximized;
 
-  switch (match_state) {
+  switch (matchState) {
     case 'both':      return primaryScreen && bothMaximized;
     case 'maximized': return primaryScreen && fullMaximized;
     case 'tiled':     return primaryScreen && tileMaximized;
