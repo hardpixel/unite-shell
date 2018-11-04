@@ -16,7 +16,7 @@ var MessageTray = new Lang.Class({
 
   _onActivate() {
     let mappings = { center: 'CENTER', left: 'START', right: 'END' };
-    let position = mappings[this._enabled]
+    let position = mappings[this._enabled] || 'CENTER';
 
     this._banner.set_x_align(Clutter.ActorAlign[position]);
     this._banner.set_width(this.scaleSize(390));
