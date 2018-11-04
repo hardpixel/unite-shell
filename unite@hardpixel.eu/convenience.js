@@ -25,8 +25,12 @@ var SettingsManager = new Lang.Class({
     'hide-window-titlebars':  'enum'
   },
 
+  exists(key) {
+    return Object.keys(this.Types).includes(key);
+  },
+
   getSettingType(key) {
-    return this.Types[key] || 'string';
+    return this.Types[key] || 'invalid';
   },
 
   getTypeSettings(type) {
@@ -34,6 +38,8 @@ var SettingsManager = new Lang.Class({
   },
 
   getSetting(key) {
+    if (!this.exists(key)) return;
+
     let type = this.getSettingType(key);
     return type == 'boolean' ? this.get_boolean(key) : this.get_string(key);
   }
