@@ -47,9 +47,9 @@ let uniteShell;
 
 function enable() {
   uniteShell = new UniteShell();
-};
+}
 
 function disable() {
   uniteShell.destroy();
   uniteShell = null;
-};
+}
