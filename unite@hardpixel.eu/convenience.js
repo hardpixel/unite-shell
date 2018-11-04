@@ -10,7 +10,7 @@ var SettingsManager = new Lang.Class({
   Extends: Gio.Settings,
   DEFAULT_BINDING: Gio.SettingsBindFlags.DEFAULT,
 
-  Types: {
+  _types: {
     'autofocus-windows':      'boolean',
     'hide-activities-button': 'enum',
     'show-window-title':      'enum',
@@ -26,15 +26,15 @@ var SettingsManager = new Lang.Class({
   },
 
   exists(key) {
-    return Object.keys(this.Types).includes(key);
+    return Object.keys(this._types).includes(key);
   },
 
   getSettingType(key) {
-    return this.Types[key] || 'invalid';
+    return this._types[key] || 'invalid';
   },
 
   getTypeSettings(type) {
-    return Object.keys(this.Types).filter(key => this.Types[key] == type);
+    return Object.keys(this._types).filter(key => this._types[key] == type);
   },
 
   getSetting(key) {
