@@ -34,7 +34,7 @@ var WindowDecoration = new Lang.Class({
 
   _getAllWindows() {
     let windows = global.get_window_actors().map(win => win.meta_window);
-    return windows.filter(win => Helpers.isValidWindow(win));
+    return windows.filter(win => this.isValidWindow(win));
   },
 
   _toggleDecorations(win, hide) {
@@ -61,7 +61,7 @@ var WindowDecoration = new Lang.Class({
     if (this._enabled == 'both')
       toggleDecor = focusWindow && focusWindow.get_maximized() !== 0;
 
-    if (toggleDecor && Helpers.isValidWindow(focusWindow))
+    if (toggleDecor && this.isValidWindow(focusWindow))
       this._toggleTitlebar(focusWindow);
   },
 
@@ -82,7 +82,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _toggleTitlebar(win) {
-    if (Helpers.isMaximized(win, this._enabled))
+    if (this.isMaximized(win, this._enabled))
       this._hideTitlebar(win);
     else
       this._showTitlebar(win);

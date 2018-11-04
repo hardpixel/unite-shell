@@ -1,30 +1,10 @@
-const Config = imports.misc.config;
-const Gio    = imports.gi.Gio;
-const St     = imports.gi.St;
-const Meta   = imports.gi.Meta;
+const Gio = imports.gi.Gio;
 
 function wmPreferences() {
   let schema = 'org.gnome.desktop.wm.preferences';
   let prefs  = new Gio.Settings({ schema_id: schema });
 
   return prefs;
-}
-
-function isValidWindow(win) {
-  let valid = false;
-
-  if (win) {
-    let valid_types = [
-      Meta.WindowType.NORMAL,
-      Meta.WindowType.DIALOG,
-      Meta.WindowType.MODAL_DIALOG,
-      Meta.WindowType.UTILITY
-    ];
-
-    valid = valid_types.indexOf(win.window_type) > -1;
-  }
-
-  return valid;
 }
 
 function getWindowButtons(return_only) {
@@ -70,31 +50,4 @@ function collectWindowButtons(layout_items) {
   }
 
   return items;
-}
-
-function isMaximized(win, match_state) {
-  let check = false;
-  let flags = Meta.MaximizeFlags;
-
-  if (win) {
-    let maximized     = win.get_maximized()
-    let primaryScreen = win.is_on_primary_monitor();
-    let tileMaximized = maximized == flags.HORIZONTAL || maximized == flags.VERTICAL;
-    let fullMaximized = maximized == flags.BOTH;
-    let bothMaximized = fullMaximized || tileMaximized;
-
-    switch (match_state) {
-      case 'both':
-        check = primaryScreen && bothMaximized;
-        break;
-      case 'maximized':
-        check = primaryScreen && fullMaximized;
-        break;
-      case 'tiled':
-        check = primaryScreen && tileMaximized;
-        break;
-    }
-  }
-
-  return check;
 }

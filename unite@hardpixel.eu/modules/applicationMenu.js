@@ -67,7 +67,7 @@ var ApplicationMenu = new Lang.Class({
     this._activeApp    = this._winTracker.focus_app;
     this._activeWindow = global.display.focus_window;
 
-    if (!Helpers.isValidWindow(this._activeWindow)) return;
+    if (!this.isValidWindow(this._activeWindow)) return;
 
     if (!this._activeWindow._updateTitleID) {
       let handler = this._activeWindow.connect(
@@ -84,7 +84,7 @@ var ApplicationMenu = new Lang.Class({
   _updateTitle() {
     let title     = null;
     let current   = this._appMenu._label.get_text();
-    let maximized = Helpers.isMaximized(this._activeWindow, this._enabled);
+    let maximized = this.isMaximized(this._activeWindow, this._enabled);
     let always    = this._enabled == 'always' && this._activeWindow;
 
     if (always || maximized)

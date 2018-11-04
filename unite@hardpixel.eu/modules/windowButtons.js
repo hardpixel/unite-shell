@@ -157,11 +157,11 @@ var WindowButtons = new Lang.Class({
     if (!this._buttonsActor) return;
 
     let overview = Main.overview.visibleTarget;
-    let valid    = Helpers.isValidWindow(this._activeWindow);
+    let valid    = this.isValidWindow(this._activeWindow);
     let visible  = false;
 
     if (!overview && valid) {
-      let maxed   = Helpers.isMaximized(this._activeWindow, this._enabled);
+      let maxed   = this.isMaximized(this._activeWindow, this._enabled);
       let always  = this._enabled == 'always' && this._activeWindow;
 
       visible = always || maxed;

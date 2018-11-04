@@ -2,6 +2,7 @@ const Lang     = imports.lang;
 const Gio      = imports.gi.Gio;
 const GLib     = imports.gi.GLib;
 const St       = imports.gi.St;
+const Meta     = imports.gi.Meta;
 const Unite    = imports.misc.extensionUtils.getCurrentExtension();
 const Signals  = Unite.imports.handlers.SignalsHandler;
 const Settings = Unite.imports.handlers.SettingsHandler;
@@ -91,5 +92,35 @@ var BaseModule = new Lang.Class({
   scaleSize(initial_size) {
     let context = this.getThemeContext();
     return initial_size * context.scale_factor;
+  },
+
+  isValidWindow(win) {
+    if (!win) return;
+
+    let types = [
+      Meta.WindowType.NORMAL,
+      Meta.WindowType.DIALOG,
+      Meta.WindowType.MODAL_DIALOG,
+      Meta.WindowType.UTILITY
+    ];
+
+    return types.indexOf(win.window_type) > -1;
+  },
+
+  isMaximized(win, match_state) {
+    if (!win) return;
+
+    let flags         = Meta.MaximizeFlags;
+    let maximized     = win.get_maximized()
+    let primaryScreen = win.is_on_primary_monitor();
+    let tileMaximized = maximized == flags.HORIZONTAL || maximized == flags.VERTICAL;
+    let fullMaximized = maximized == flags.BOTH;
+    let bothMaximized = fullMaximized || tileMaximized;
+
+    switch (match_state) {
+      case 'both':      return primaryScreen && bothMaximized;
+      case 'maximized': return primaryScreen && fullMaximized;
+      case 'tiled':     return primaryScreen && tileMaximized;
+    }
   }
 });
