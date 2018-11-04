@@ -14,7 +14,7 @@ var ActivateWindow = new Lang.Class({
     this._signals.connect(global.display, signalName, this._focusWindow);
   },
 
-  _focusWindow(actor, window) {
-    Main.activateWindow(window);
+  _focusWindow(actor, win) {
+    Main.activateWindow(win);
   }
 });

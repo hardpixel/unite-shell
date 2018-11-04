@@ -99,14 +99,10 @@ var BaseModule = new Lang.Class({
   isValidWindow(win) {
     if (!win) return;
 
-    let types = [
-      Meta.WindowType.NORMAL,
-      Meta.WindowType.DIALOG,
-      Meta.WindowType.MODAL_DIALOG,
-      Meta.WindowType.UTILITY
-    ];
+    let meta  = Meta.WindowType;
+    let types = [meta.NORMAL, meta.DIALOG, meta.MODAL_DIALOG, meta.UTILITY];
 
-    return types.indexOf(win.window_type) > -1;
+    return types.includes(win.window_type);
   },
 
   isMaximized(win, match_state) {
