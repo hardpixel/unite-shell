@@ -25,11 +25,6 @@ function loadUserStyles(styles) {
   GLib.file_set_contents(USER_STYLES, styles + existing);
 }
 
-function resetUserStyles() {
-  let content = getUserStyles();
-  GLib.file_set_contents(USER_STYLES, content);
-}
-
 function getThemeContext() {
   return St.ThemeContext.get_for_stage(global.stage);
 }

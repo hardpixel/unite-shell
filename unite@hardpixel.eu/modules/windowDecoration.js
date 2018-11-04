@@ -1,12 +1,11 @@
-const Lang            = imports.lang;
-const Mainloop        = imports.mainloop;
-const Util            = imports.misc.util;
-const Unite           = imports.misc.extensionUtils.getCurrentExtension();
-const Base            = Unite.imports.module.BaseModule;
-const isWindow        = Unite.imports.helpers.isWindow;
-const isMaximized     = Unite.imports.helpers.isMaximized;
-const loadUserStyles  = Unite.imports.helpers.loadUserStyles;
-const resetUserStyles = Unite.imports.helpers.resetUserStyles;
+const Lang           = imports.lang;
+const Mainloop       = imports.mainloop;
+const Util           = imports.misc.util;
+const Unite          = imports.misc.extensionUtils.getCurrentExtension();
+const Base           = Unite.imports.module.BaseModule;
+const isWindow       = Unite.imports.helpers.isWindow;
+const isMaximized    = Unite.imports.helpers.isMaximized;
+const loadUserStyles = Unite.imports.helpers.loadUserStyles;
 
 var WindowDecoration = new Lang.Class({
   Name: 'Unite.WindowDecoration',
@@ -108,7 +107,7 @@ var WindowDecoration = new Lang.Class({
       loadUserStyles(tiled);
 
     if (this._enabled == 'never')
-      resetUserStyles();
+      loadUserStyles('');
   },
 
   _undecorateWindow(win) {
