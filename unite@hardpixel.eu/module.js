@@ -10,20 +10,18 @@ var BaseModule = new Lang.Class({
   _enableValue: null,
   _disableValue: null,
 
-  _onInitialize() {},
-  _onActivate() {},
-  _onDeactivate() {},
-  _onReload() {},
-  _onDestroy() {},
-
   _init() {
     this._signals  = new Signals(this);
     this._settings = new Settings(this);
 
-    this._onInitialize();
+    this._runCallback('_onInitialize');
     this._activate();
 
     this._settings.enable(this._enableKey, this._reload);
+  },
+
+  _runCallback(name) {
+    if (typeof this[name] === 'function') this[name]();
   },
 
   _activate() {
@@ -39,7 +37,7 @@ var BaseModule = new Lang.Class({
   },
 
   _deactivate() {
-    this._onDeactivate();
+    this._runCallback('_onDeactivate');
 
     this._settings.disconnectAll();
     this._signals.disconnectAll();
@@ -48,12 +46,13 @@ var BaseModule = new Lang.Class({
   _reload() {
     this._deactivate();
     this._activate();
-    this._onReload();
+    this._runCallback('_onReload');
   },
 
   destroy() {
     this._deactivate();
-    this._onDestroy();
+    this._runCallback('_onDestroy');
+
     this._settings.disable();
   }
 });
