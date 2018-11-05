@@ -11,8 +11,8 @@ const WindowButtons    = Unite.imports.modules.windowButtons.WindowButtons;
 const WindowDecoration = Unite.imports.modules.windowDecoration.WindowDecoration;
 const TopIcons         = Unite.imports.modules.topIcons.TopIcons;
 
-var UniteShell = new Lang.Class({
-  Name: 'Unite',
+var UniteExtension = new Lang.Class({
+  Name: 'Unite.Extension',
 
   _init() {
     this._activateWindow   = new ActivateWindow();
@@ -43,13 +43,13 @@ var UniteShell = new Lang.Class({
   }
 });
 
-let uniteShell;
+let uniteExtension;
 
 function enable() {
-  uniteShell = new UniteShell();
+  uniteExtension = new UniteExtension();
 }
 
 function disable() {
-  uniteShell.destroy();
-  uniteShell = null;
+  uniteExtension.destroy();
+  uniteExtension = null;
 }
