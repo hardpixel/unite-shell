@@ -13,6 +13,7 @@ var BaseModule = new Lang.Class({
   _init() {
     this._signals  = new Signals(this);
     this._settings = new Settings(this);
+    this._setting  = this._settings.get(this._enableKey);
 
     this._runCallback('_onInitialize');
     this._activate();
@@ -20,20 +21,22 @@ var BaseModule = new Lang.Class({
     this._settings.enable(this._enableKey, 'reload');
   },
 
+  get _enabled() {
+    if (this._enableValue != null)
+      return this._setting == this._enableValue;
+
+    if (this._disableValue != null)
+      return this._setting != this._disableValue;
+  },
+
   _runCallback(name) {
-    if (typeof this[name] === 'function') this[name]();
+    if (typeof this[name] === 'function')
+      this[name]();
   },
 
   _activate() {
-    this._enabled = this._settings.get(this._enableKey);
-
-    let enabled = this._enabled == this._enableValue;
-    if (this._enableValue != null && !enabled) return;
-
-    let disabled = this._enabled == this._disableValue;
-    if (this._disableValue != null && disabled) return;
-
-    this._onActivate();
+    if (this._enabled)
+      this._runCallback('_onActivate');
   },
 
   _deactivate() {
@@ -44,8 +47,11 @@ var BaseModule = new Lang.Class({
   },
 
   _reload() {
+    this._setting = this._settings.get(this._enableKey);
+
     this._deactivate();
     this._activate();
+
     this._runCallback('_onReload');
   },
 

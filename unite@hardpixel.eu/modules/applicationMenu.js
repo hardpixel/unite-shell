@@ -86,8 +86,8 @@ var ApplicationMenu = new Lang.Class({
   _updateTitle() {
     let title     = null;
     let current   = this._appMenu._label.get_text();
-    let maximized = isMaximized(this._activeWindow, this._enabled);
-    let always    = this._enabled == 'always' && this._activeWindow;
+    let maximized = isMaximized(this._activeWindow, this._setting);
+    let always    = this._setting == 'always' && this._activeWindow;
 
     if (always || maximized)
       title = this._activeWindow.title;

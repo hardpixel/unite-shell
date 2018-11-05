@@ -61,7 +61,7 @@ var WindowDecoration = new Lang.Class({
     let focusWindow = global.display.focus_window;
     let toggleDecor = focusWindow;
 
-    if (this._enabled == 'both')
+    if (this._setting == 'both')
       toggleDecor = focusWindow && focusWindow.get_maximized() !== 0;
 
     if (toggleDecor && isWindow(focusWindow))
@@ -85,7 +85,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _toggleTitlebar(win) {
-    if (isMaximized(win, this._enabled))
+    if (isMaximized(win, this._setting))
       this._hideTitlebar(win);
     else
       this._showTitlebar(win);
@@ -97,16 +97,16 @@ var WindowDecoration = new Lang.Class({
     let maximized = `@import url('${filePath}.css');\n`;
     let tiled     = `@import url('${filePath}-tiled.css');\n`;
 
-    if (this._enabled == 'both')
+    if (this._setting == 'both')
       loadUserStyles(maximized + tiled);
 
-    if (this._enabled == 'maximized')
+    if (this._setting == 'maximized')
       loadUserStyles(maximized);
 
-    if (this._enabled == 'tiled')
+    if (this._setting == 'tiled')
       loadUserStyles(tiled);
 
-    if (this._enabled == 'never')
+    if (this._setting == 'never')
       loadUserStyles('');
   },
 
