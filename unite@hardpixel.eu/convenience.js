@@ -3,7 +3,6 @@ const Gettext = imports.gettext;
 const Gio     = imports.gi.Gio;
 const Config  = imports.misc.config;
 const Unite   = imports.misc.extensionUtils.getCurrentExtension();
-const GioSSS  = Gio.SettingsSchemaSource;
 
 var SettingsManager = new Lang.Class({
   Name: 'Unite.Settings',
@@ -87,12 +86,13 @@ function initTranslations(domain) {
 function getSettings(schema) {
   schema = schema || Unite.metadata['settings-schema'];
 
+  let gioSSS       = Gio.SettingsSchemaSource;
   let schemaDir    = Unite.dir.get_child('schemas');
-  let schemaSource = GioSSS.get_default();
+  let schemaSource = gioSSS.get_default();
 
   if (schemaDir.query_exists(null)) {
     schemaDir    = schemaDir.get_path();
-    schemaSource = GioSSS.new_from_directory(schemaDir, schemaSource, false);
+    schemaSource = gioSSS.new_from_directory(schemaDir, schemaSource, false);
   }
 
   let schemaObj = schemaSource.lookup(schema, true);
