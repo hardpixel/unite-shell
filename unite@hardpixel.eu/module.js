@@ -17,7 +17,7 @@ var BaseModule = new Lang.Class({
     this._runCallback('_onInitialize');
     this._activate();
 
-    this._settings.enable(this._enableKey, this._reload);
+    this._settings.enable(this._enableKey, 'reload');
   },
 
   _runCallback(name) {
