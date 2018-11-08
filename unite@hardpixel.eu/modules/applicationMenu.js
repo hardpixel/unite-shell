@@ -15,87 +15,84 @@ var ApplicationMenu = new Lang.Class({
   _disableValue: 'never',
 
   _onInitialize() {
-    this._appMenu     = Main.panel.statusArea.appMenu;
-    this._gtkSettings = Gtk.Settings.get_default();
-    this._winTracker  = Shell.WindowTracker.get_default();
-    this._appSystem   = Shell.AppSystem.get_default();
+    this.appMenu    = Main.panel.statusArea.appMenu;
+    this.winTracker = Shell.WindowTracker.get_default();
+    this.appSystem  = Shell.AppSystem.get_default();
   },
 
   _onActivate() {
     this._signals.connect(global.display, 'notify::focus-window', 'updateMenu');
     this._signals.connect(global.window_manager, 'size-change', 'updateMenu');
 
-    this._signals.connect(this._gtkSettings, 'notify::gtk-shell-shows-app-menu', 'syncMenu');
     this._signals.connect(Main.overview, 'hiding', 'showMenu');
+    this._signals.connect(this.winTracker, 'notify::focus-app', 'showMenu');
+    this._signals.connect(this.appSystem, 'app-state-changed', 'showMenu');
 
-    this._signals.connect(this._winTracker, 'notify::focus-app', 'showMenu');
-    this._signals.connect(this._appSystem, 'app-state-changed', 'showMenu');
-
-    this._syncMenu();
     this._updateMenu();
   },
 
   _onDeactivate() {
-    this._syncMenu();
     this._showMenu();
   },
 
-  _syncMenu() {
-    this._appMenuEnabled = this._gtkSettings.gtk_shell_shows_app_menu;
-  },
-
   _showMenu() {
-    this._appMenuEnabled ? this._resetMenu() : this._forceShowMenu()
+    let settings  = Gtk.Settings.get_default();
+    let showsMenu = settings.gtk_shell_shows_app_menu;
+
+    if (showsMenu)
+      this._resetMenu();
+    else
+      this._forceShowMenu();
   },
 
   _resetMenu() {
-    if (!this._appMenu._nonSensitive) return;
+    if (!this.appMenu._nonSensitive) return;
 
-    this._appMenu.setSensitive(true);
-    delete this._appMenu._nonSensitive;
+    this.appMenu.setSensitive(true);
+    delete this.appMenu._nonSensitive;
   },
 
   _forceShowMenu() {
-    let visible = this._appMenu._targetApp != null && !Main.overview.visibleTarget;
-    if (!visible && this._appMenu._visible) return;
+    let visible = this.appMenu._targetApp != null && !Main.overview.visibleTarget;
+    if (!visible && this.appMenu._visible) return;
 
-    this._appMenu.show();
-    this._appMenu.setSensitive(false);
+    this.appMenu.show();
+    this.appMenu.setSensitive(false);
 
-    this._appMenu._nonSensitive = true;
+    this.appMenu._nonSensitive = true;
+  },
+
+  _handleWindowTitle(win) {
+    if (!isWindow(win) || win._updateTitleID) return;
+
+    win._updateTitleID = win.connect(
+      'notify::title', Lang.bind(this, this._updateTitle)
+    );
   },
 
   _updateMenu() {
-    this._activeApp    = this._winTracker.focus_app;
-    this._activeWindow = global.display.focus_window;
-
-    if (!isWindow(this._activeWindow)) return;
-
-    if (!this._activeWindow._updateTitleID) {
-      let handler = this._activeWindow.connect(
-        'notify::title', Lang.bind(this, this._updateTitle)
-      );
-
-      this._activeWindow._updateTitleID = handler;
-    }
+    let focusWindow = global.display.focus_window;
+    this._handleWindowTitle(focusWindow);
 
     this._updateTitle();
     this._showMenu();
   },
 
   _updateTitle() {
-    let title     = null;
-    let current   = this._appMenu._label.get_text();
-    let maximized = isMaximized(this._activeWindow, this._setting);
-    let always    = this._setting == 'always' && this._activeWindow;
+    let focusApp    = this.winTracker.focus_app;
+    let focusWindow = global.display.focus_window;
+    let current     = this.appMenu._label.get_text();
+    let maximized   = isMaximized(focusWindow, this._setting);
+    let always      = this._setting == 'always' && focusWindow;
+    let title       = null;
 
     if (always || maximized)
-      title = this._activeWindow.title;
+      title = focusWindow.title;
 
-    if (!title && this._activeApp)
-      title = this._activeApp.get_name();
+    if (!title && focusApp)
+      title = focusApp.get_name();
 
     if (title && title != current)
-      this._appMenu._label.set_text(title);
+      this.appMenu._label.set_text(title);
   }
 });
