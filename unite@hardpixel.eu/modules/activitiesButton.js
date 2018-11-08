@@ -39,6 +39,9 @@ var ActivitiesButton = new Lang.Class({
     if (!hidden && this._settings.get('show-desktop-name'))
       hidden = !appMenu && !overview;
 
-    hidden ? this._container.hide() : this._container.show()
+    if (hidden)
+      this._container.hide();
+    else
+      this._container.show();
   }
 });

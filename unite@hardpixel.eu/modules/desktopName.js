@@ -51,7 +51,10 @@ var DesktopName = new Lang.Class({
     let overview = Main.overview.visibleTarget;
     let visible  = !appMenu && !overview;
 
-    visible ? this._labelBox.show() : this._labelBox.hide()
+    if (visible)
+      this._labelBox.show();
+    else
+      this._labelBox.hide();
   },
 
   _createLabel() {
