@@ -11,8 +11,7 @@ var ActivateWindow = new Lang.Class({
   _enableValue: true,
 
   _onActivate() {
-    let signalName = 'window-demands-attention';
-    this._signals.connect(global.display, signalName, 'focusWindow');
+    this._signals.connect(global.display, 'window-demands-attention', 'focusWindow');
   },
 
   _focusWindow(actor, win) {

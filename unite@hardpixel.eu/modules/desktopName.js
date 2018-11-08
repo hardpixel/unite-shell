@@ -12,12 +12,14 @@ var DesktopName = new Lang.Class({
   _enableKey: 'show-desktop-name',
   _enableValue: true,
 
-  _onActivate() {
-    let appSystem  = Shell.AppSystem.get_default();
-    let winTracker = Shell.WindowTracker.get_default();
+  _onInitialize() {
+    this.appSystem  = Shell.AppSystem.get_default();
+    this.winTracker = Shell.WindowTracker.get_default();
+  },
 
-    this._signals.connect(appSystem, 'app-state-changed', 'toggleLabel');
-    this._signals.connect(winTracker, 'notify::focus-app', 'toggleLabel');
+  _onActivate() {
+    this._signals.connect(this.appSystem, 'app-state-changed', 'toggleLabel');
+    this._signals.connect(this.winTracker, 'notify::focus-app', 'toggleLabel');
 
     this._signals.connect(Main.overview, 'showing', 'toggleLabel');
     this._signals.connect(Main.overview, 'hiding', 'toggleLabel');

@@ -13,14 +13,13 @@ var ActivitiesButton = new Lang.Class({
 
   _onInitialize() {
     this._container = Main.panel.statusArea.activities.container;
+    this.appSystem  = Shell.AppSystem.get_default();
+    this.winTracker = Shell.WindowTracker.get_default();
   },
 
   _onActivate() {
-    let appSystem  = Shell.AppSystem.get_default();
-    let winTracker = Shell.WindowTracker.get_default();
-
-    this._signals.connect(appSystem, 'app-state-changed', 'toggleButton');
-    this._signals.connect(winTracker, 'notify::focus-app', 'toggleButton');
+    this._signals.connect(this.appSystem, 'app-state-changed', 'toggleButton');
+    this._signals.connect(this.winTracker, 'notify::focus-app', 'toggleButton');
 
     this._signals.connect(Main.overview, 'showing', 'toggleButton');
     this._signals.connect(Main.overview, 'hiding', 'toggleButton');
