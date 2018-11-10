@@ -118,54 +118,58 @@ var WindowButtons = new Lang.Class({
   },
 
   _onButtonClick(actor, event) {
-    if (!this._activeWindow) return;
+    let focusWindow = global.display.focus_window;
+    if (!focusWindow) return;
 
     switch (actor._windowAction) {
-      case 'minimize': return this._minimizeWindow();
-      case 'maximize': return this._maximizeWindow();
-      case 'close':    return this._closeWindow();
+      case 'minimize': return this._minimizeWindow(focusWindow);
+      case 'maximize': return this._maximizeWindow(focusWindow);
+      case 'close':    return this._closeWindow(focusWindow);
     }
   },
 
-  _minimizeWindow() {
-    if (!this._activeWindow.minimized)
-      this._activeWindow.minimize();
+  _minimizeWindow(win) {
+    if (!win.minimized) win.minimize();
   },
 
-  _maximizeWindow() {
+  _maximizeWindow(win) {
     let bothMaximized = Meta.MaximizeFlags.BOTH;
-    let maximizeState = this._activeWindow.get_maximized();
+    let maximizeState = win.get_maximized();
 
     if (maximizeState === bothMaximized)
-      this._activeWindow.unmaximize(bothMaximized);
+      win.unmaximize(bothMaximized);
     else
-      this._activeWindow.maximize(bothMaximized);
+      win.maximize(bothMaximized);
   },
 
-  _closeWindow() {
-    this._activeWindow.delete(global.get_current_time());
+  _closeWindow(win) {
+    win.delete(global.get_current_time());
   },
 
   _toggleButtons() {
-    this._activeWindow = global.display.focus_window;
     if (!this._buttonsActor) return;
 
-    let overview = Main.overview.visibleTarget;
-    let valid    = isWindow(this._activeWindow);
-    let visible  = false;
+    let focusWindow = global.display.focus_window;
+    let overview    = Main.overview.visibleTarget;
+    let valid       = isWindow(focusWindow);
+    let visible     = false;
 
     if (!overview && valid) {
-      let maxed   = isMaximized(this._activeWindow, this._setting);
-      let always  = this._setting == 'always' && this._activeWindow;
+      let maxed   = isMaximized(focusWindow, this._setting);
+      let always  = this._setting == 'always' && focusWindow;
 
       visible = always || maxed;
     } else {
       let target  = Main.panel.statusArea.appMenu._targetApp;
-      let running = target != null && target.get_state() == Shell.AppState.RUNNING;
+      let state   = target != null && target.get_state();
+      let running = state == Shell.AppState.RUNNING;
 
       visible = running && !overview;
     }
 
-    visible ? this._buttonsActor.show() : this._buttonsActor.hide()
+    if (visible)
+      this._buttonsActor.show();
+    else
+      this._buttonsActor.hide();
   }
 });
