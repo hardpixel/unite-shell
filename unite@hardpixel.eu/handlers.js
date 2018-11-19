@@ -50,7 +50,7 @@ var SignalsHandler = new Lang.Class({
   },
 
   disconnectAll() {
-    this.disconnectMany(this._signals.keys());
+    this.disconnectMany(Object.keys(this._signals));
   }
 });
 
