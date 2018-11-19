@@ -45,10 +45,12 @@ var SignalsHandler = new Lang.Class({
     delete this._signals[signalKey];
   },
 
+  disconnectMany(signalKeys) {
+    signalKeys.forEach(signalKey => { this.disconnect(signalKey) });
+  },
+
   disconnectAll() {
-    for (let signalKey in this._signals) {
-      this.disconnect(signalKey);
-    }
+    this.disconnectMany(this._signals.keys());
   }
 });
 
