@@ -15,51 +15,63 @@ var ApplicationMenu = new Lang.Class({
   _disableValue: 'never',
 
   _onInitialize() {
-    this.appMenu    = Main.panel.statusArea.appMenu;
-    this.winTracker = Shell.WindowTracker.get_default();
-    this.appSystem  = Shell.AppSystem.get_default();
+    this.appMenu     = Main.panel.statusArea.appMenu;
+    this.winTracker  = Shell.WindowTracker.get_default();
+    this.appSystem   = Shell.AppSystem.get_default();
+    this.gtkSettings = Gtk.Settings.get_default();
   },
 
   _onActivate() {
     this._signals.connect(global.display, 'notify::focus-window', 'updateTitle');
     this._signals.connect(global.window_manager, 'size-change', 'updateTitle');
+    this._signals.connect(this.gtkSettings, 'notify::gtk-shell-shows-app-menu', 'showsMenu');
 
-    this._signals.connect(Main.overview, 'hiding', 'showMenu');
-    this._signals.connect(this.winTracker, 'notify::focus-app', 'showMenu');
-    this._signals.connect(this.appSystem, 'app-state-changed', 'showMenu');
-
+    this._enableShowsMenu();
     this._updateTitle();
   },
 
   _onDeactivate() {
-    this._showMenu();
+    this._resetShowsMenu();
   },
 
-  _showMenu() {
-    let settings  = Gtk.Settings.get_default();
-    let showsMenu = settings.gtk_shell_shows_app_menu;
-
-    if (showsMenu)
-      this._resetMenu();
-    else
-      this._forceShowMenu();
+  _showsMenu() {
+    this._resetShowsMenu();
+    this._enableShowsMenu();
   },
 
-  _resetMenu() {
-    if (!this.appMenu._nonSensitive) return;
+  _enableShowsMenu() {
+    if (this.gtkSettings.gtk_shell_shows_app_menu) return;
 
+    this._showsMenuSignals = [
+      this._signals.connect(Main.overview, 'hiding', 'toggleMenu'),
+      this._signals.connect(this.winTracker, 'notify::focus-app', 'toggleMenu'),
+      this._signals.connect(this.appSystem, 'app-state-changed', 'toggleMenu')
+    ];
+
+    this._toggleMenu();
+  },
+
+  _resetShowsMenu() {
+    if (!this._showsMenuSignals) return;
+
+    this._signals.disconnectMany(this._showsMenuSignals);
     this.appMenu.setSensitive(true);
-    delete this.appMenu._nonSensitive;
   },
 
-  _forceShowMenu() {
-    let visible = this.appMenu._targetApp != null && !Main.overview.visibleTarget;
-    if (!visible && this.appMenu._visible) return;
+  _toggleMenu() {
+    let target   = this.appMenu._targetApp != null;
+    let overview = Main.overview.visibleTarget;
+    let visible  = target && !overview
 
-    this.appMenu.show();
-    this.appMenu.setSensitive(false);
+    if (visible && !this.appMenu_visible) {
+      this.appMenu.show();
+      this.appMenu.setSensitive(false);
+    }
 
-    this.appMenu._nonSensitive = true;
+    if (!visible && this.appMenu_visible) {
+      this.appMenu.hide();
+      this.appMenu.setSensitive(true);
+    }
   },
 
   _handleWindowTitle(win) {
