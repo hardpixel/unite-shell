@@ -21,14 +21,14 @@ var ApplicationMenu = new Lang.Class({
   },
 
   _onActivate() {
-    this._signals.connect(global.display, 'notify::focus-window', 'updateMenu');
-    this._signals.connect(global.window_manager, 'size-change', 'updateMenu');
+    this._signals.connect(global.display, 'notify::focus-window', 'updateTitle');
+    this._signals.connect(global.window_manager, 'size-change', 'updateTitle');
 
     this._signals.connect(Main.overview, 'hiding', 'showMenu');
     this._signals.connect(this.winTracker, 'notify::focus-app', 'showMenu');
     this._signals.connect(this.appSystem, 'app-state-changed', 'showMenu');
 
-    this._updateMenu();
+    this._updateTitle();
   },
 
   _onDeactivate() {
@@ -66,19 +66,18 @@ var ApplicationMenu = new Lang.Class({
     if (!isWindow(win) || win._updateTitleID) return;
 
     win._updateTitleID = win.connect(
-      'notify::title', Lang.bind(this, this._updateTitle)
+      'notify::title', Lang.bind(this, this._updateTitleText)
     );
   },
 
-  _updateMenu() {
+  _updateTitle() {
     let focusWindow = global.display.focus_window;
-    this._handleWindowTitle(focusWindow);
 
-    this._updateTitle();
-    this._showMenu();
+    this._handleWindowTitle(focusWindow);
+    this._updateTitleText();
   },
 
-  _updateTitle() {
+  _updateTitleText() {
     let focusApp    = this.winTracker.focus_app;
     let focusWindow = global.display.focus_window;
     let current     = this.appMenu._label.get_text();
