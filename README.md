@@ -1,5 +1,5 @@
 # Unite Shell
-[<img src="https://raw.githubusercontent.com/andyholmes/gnome-shell-extensions-badge/master/get-it-on-ego.svg?sanitize=true" height="100" style="float: right;margin-left:20px">](https://extensions.gnome.org/extension/1287/unite/)
+[<img src="https://raw.githubusercontent.com/andyholmes/gnome-shell-extensions-badge/master/get-it-on-ego.svg?sanitize=true" height="100" align="right">](https://extensions.gnome.org/extension/1287/unite/)
 Unite is a GNOME Shell extension which makes a few layout tweaks to the top panel and removes window decorations to make it look like Ubuntu Unity Shell.
 
 * Adds window buttons to the top panel for maximized windows.
