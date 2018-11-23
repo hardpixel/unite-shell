@@ -92,22 +92,19 @@ var WindowDecoration = new Lang.Class({
   },
 
   _updateUserStyles() {
+    let styles    = '';
     let position  = this._settings.get('window-buttons-position');
     let filePath  = `${Unite.path}/styles/buttons-${position}`;
     let maximized = `@import url('${filePath}.css');\n`;
     let tiled     = `@import url('${filePath}-tiled.css');\n`;
 
-    if (this._setting == 'both')
-      loadUserStyles(maximized + tiled);
+    switch (this._setting) {
+      case 'both':      styles = maximized + tiled; break;
+      case 'maximized': styles = maximized; break;
+      case 'tiled':     styles = tiled; break;
+    }
 
-    if (this._setting == 'maximized')
-      loadUserStyles(maximized);
-
-    if (this._setting == 'tiled')
-      loadUserStyles(tiled);
-
-    if (this._setting == 'never')
-      loadUserStyles('');
+    loadUserStyles(styles);
   },
 
   _undecorateWindow(win) {
