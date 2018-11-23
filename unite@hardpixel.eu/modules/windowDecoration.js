@@ -1,5 +1,5 @@
 const Lang           = imports.lang;
-const Mainloop       = imports.mainloop;
+const GLib           = imports.gi.GLib;
 const Util           = imports.misc.util;
 const Unite          = imports.misc.extensionUtils.getCurrentExtension();
 const Base           = Unite.imports.module.BaseModule;
@@ -111,7 +111,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _undecorateWindow(win) {
-    Mainloop.idle_add(() => { this._toggleTitlebar(win) });
+    GLib.idle_add(() => { this._toggleTitlebar(win) });
   },
 
   _undecorateWindows() {
@@ -120,7 +120,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _decorateWindow(win) {
-    Mainloop.idle_add(() => { this._resetDecorations(win) });
+    GLib.idle_add(() => { this._resetDecorations(win) });
   },
 
   _decorateWindows() {
