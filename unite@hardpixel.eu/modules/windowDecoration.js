@@ -108,7 +108,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _undecorateWindow(win) {
-    GLib.idle_add(() => { this._toggleTitlebar(win) });
+    GLib.idle_add(0, () => { this._toggleTitlebar(win) });
   },
 
   _undecorateWindows() {
@@ -117,7 +117,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _decorateWindow(win) {
-    GLib.idle_add(() => { this._resetDecorations(win) });
+    GLib.idle_add(0, () => { this._resetDecorations(win) });
   },
 
   _decorateWindows() {
