@@ -41,6 +41,17 @@ var DesktopName = new Lang.Class({
     this._labelText  = null;
   },
 
+  _visibleWindows() {
+    let windows = global.get_window_actors().find(win => {
+      let desktop = win.metaWindow.get_wm_class() == 'Gnome-shell';
+      let visible = win.metaWindow.showing_on_its_workspace();
+
+      return !desktop && visible;
+    });
+
+    return windows;
+  },
+
   _setLabelText() {
     let text = this._settings.get('desktop-name-text');
     this._labelText.set_text(text);
@@ -49,7 +60,7 @@ var DesktopName = new Lang.Class({
   _toggleLabel() {
     let appMenu  = Main.panel.statusArea.appMenu._targetApp != null;
     let overview = Main.overview.visibleTarget;
-    let visible  = !appMenu && !overview;
+    let visible  = !appMenu && !overview && !this._visibleWindows();
 
     if (visible)
       this._labelBox.show();
