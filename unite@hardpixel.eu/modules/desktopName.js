@@ -15,6 +15,7 @@ var DesktopName = new Lang.Class({
   _onInitialize() {
     this.appSystem  = Shell.AppSystem.get_default();
     this.winTracker = Shell.WindowTracker.get_default();
+    this.appMenu    = Main.panel.statusArea.appMenu;
   },
 
   _onActivate() {
@@ -52,20 +53,36 @@ var DesktopName = new Lang.Class({
     return windows;
   },
 
+  _toggleAppMenu(hide) {
+    let container = this.appMenu.container;
+
+    if (hide && container.visible)
+      container.hide();
+
+    if (!hide && !container.visible)
+      container.show();
+  },
+
   _setLabelText() {
     let text = this._settings.get('desktop-name-text');
     this._labelText.set_text(text);
   },
 
   _toggleLabel() {
-    let appMenu  = Main.panel.statusArea.appMenu._targetApp != null;
+    let appMenu  = this.appMenu._targetApp != null;
     let overview = Main.overview.visibleTarget;
-    let visible  = !appMenu && !overview && !this._visibleWindows();
+    let visible  = !appMenu && !overview;
 
     if (visible)
+      visible = visible && !this._visibleWindows();
+
+    if (visible) {
+      this._toggleAppMenu(true);
       this._labelBox.show();
-    else
+    } else {
       this._labelBox.hide();
+      this._toggleAppMenu(false);
+    }
   },
 
   _createLabel() {
