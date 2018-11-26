@@ -9,6 +9,7 @@ const isWindow     = Unite.imports.helpers.isWindow;
 const isMaximized  = Unite.imports.helpers.isMaximized;
 const loadStyles   = Unite.imports.helpers.loadStyles;
 const unloadStyles = Unite.imports.helpers.unloadStyles;
+const toggleWidget = Unite.imports.helpers.toggleWidget;
 
 var WindowButtons = new Lang.Class({
   Name: 'Unite.WindowButtons',
@@ -167,9 +168,6 @@ var WindowButtons = new Lang.Class({
       visible = running && !overview;
     }
 
-    if (visible)
-      this._buttonsActor.show();
-    else
-      this._buttonsActor.hide();
+    toggleWidget(this._buttonsActor, !visible);
   }
 });

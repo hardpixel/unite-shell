@@ -88,3 +88,11 @@ function isMaximized(win, matchState) {
     case 'tiled':     return primaryScreen && tileMaximized;
   }
 }
+
+function toggleWidget(widget, hide) {
+  if (hide && widget.visible)
+    widget.hide();
+
+  if (!hide && !widget.visible)
+    widget.show();
+}

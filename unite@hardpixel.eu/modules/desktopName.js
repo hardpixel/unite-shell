@@ -1,9 +1,10 @@
-const Lang  = imports.lang;
-const St    = imports.gi.St;
-const Shell = imports.gi.Shell;
-const Main  = imports.ui.main;
-const Unite = imports.misc.extensionUtils.getCurrentExtension();
-const Base  = Unite.imports.module.BaseModule;
+const Lang         = imports.lang;
+const St           = imports.gi.St;
+const Shell        = imports.gi.Shell;
+const Main         = imports.ui.main;
+const Unite        = imports.misc.extensionUtils.getCurrentExtension();
+const Base         = Unite.imports.module.BaseModule;
+const toggleWidget = Unite.imports.helpers.toggleWidget;
 
 var DesktopName = new Lang.Class({
   Name: 'Unite.DesktopName',
@@ -53,16 +54,6 @@ var DesktopName = new Lang.Class({
     return windows;
   },
 
-  _toggleAppMenu(hide) {
-    let container = this.appMenu.container;
-
-    if (hide && container.visible)
-      container.hide();
-
-    if (!hide && !container.visible)
-      container.show();
-  },
-
   _setLabelText() {
     let text = this._settings.get('desktop-name-text');
     this._labelText.set_text(text);
@@ -76,13 +67,8 @@ var DesktopName = new Lang.Class({
     if (visible)
       visible = visible && !this._visibleWindows();
 
-    if (visible) {
-      this._toggleAppMenu(true);
-      this._labelBox.show();
-    } else {
-      this._labelBox.hide();
-      this._toggleAppMenu(false);
-    }
+    toggleWidget(this._labelBox, !visible);
+    toggleWidget(this.appMenu.container, visible);
   },
 
   _createLabel() {

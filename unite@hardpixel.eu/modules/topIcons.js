@@ -1,13 +1,14 @@
-const Lang      = imports.lang;
-const System    = imports.system;
-const Clutter   = imports.gi.Clutter;
-const Shell     = imports.gi.Shell;
-const St        = imports.gi.St;
-const Main      = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
-const Unite     = imports.misc.extensionUtils.getCurrentExtension();
-const Base      = Unite.imports.module.BaseModule;
-const scaleSize = Unite.imports.helpers.scaleSize;
+const Lang         = imports.lang;
+const System       = imports.system;
+const Clutter      = imports.gi.Clutter;
+const Shell        = imports.gi.Shell;
+const St           = imports.gi.St;
+const Main         = imports.ui.main;
+const PanelMenu    = imports.ui.panelMenu;
+const Unite        = imports.misc.extensionUtils.getCurrentExtension();
+const Base         = Unite.imports.module.BaseModule;
+const scaleSize    = Unite.imports.helpers.scaleSize;
+const toggleWidget = Unite.imports.helpers.toggleWidget;
 
 var TopIcons = new Lang.Class({
   Name: 'Unite.TopIcons',
@@ -103,10 +104,8 @@ var TopIcons = new Lang.Class({
   },
 
   _toggleContainer() {
-    if (this._iconsBoxLayout.get_n_children() == 0)
-      this._iconsContainer.actor.hide();
-    else
-      this._iconsContainer.actor.show();
+    let hidden = this._iconsBoxLayout.get_n_children() == 0;
+    toggleWidget(this._iconsContainer.actor, hidden);
   },
 
   _transformIcon(icon) {

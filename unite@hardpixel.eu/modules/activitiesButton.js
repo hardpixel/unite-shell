@@ -1,8 +1,9 @@
-const Lang  = imports.lang;
-const Shell = imports.gi.Shell;
-const Main  = imports.ui.main;
-const Unite = imports.misc.extensionUtils.getCurrentExtension();
-const Base  = Unite.imports.module.BaseModule;
+const Lang         = imports.lang;
+const Shell        = imports.gi.Shell;
+const Main         = imports.ui.main;
+const Unite        = imports.misc.extensionUtils.getCurrentExtension();
+const Base         = Unite.imports.module.BaseModule;
+const toggleWidget = Unite.imports.helpers.toggleWidget;
 
 var ActivitiesButton = new Lang.Class({
   Name: 'Unite.ActivitiesButton',
@@ -39,9 +40,6 @@ var ActivitiesButton = new Lang.Class({
     if (!hidden && this._settings.get('show-desktop-name'))
       hidden = !appMenu && !overview;
 
-    if (hidden)
-      this._container.hide();
-    else
-      this._container.show();
+    toggleWidget(this._container, hidden);
   }
 });
