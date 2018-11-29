@@ -64,7 +64,7 @@ function scaleSize(initialSize) {
 }
 
 function getWindowXID(win) {
-  let desc  = win.get_description().toString();
+  let desc  = win.get_description() || '';
   let match = desc.match(/0x[0-9a-f]+/) || [null];
 
   return match[0];
