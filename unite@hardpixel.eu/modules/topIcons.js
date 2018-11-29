@@ -109,9 +109,9 @@ var TopIcons = new Lang.Class({
   },
 
   _transformIcon(icon) {
-    icon.reactive = true;
-
+    icon.set_reactive(true);
     icon.set_size(this._iSize, this._iSize);
+
     this._desaturateIcon(icon);
   },
 
