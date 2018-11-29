@@ -63,6 +63,13 @@ function scaleSize(initialSize) {
   return initialSize * context.scale_factor;
 }
 
+function getWindowXID(win) {
+  let desc  = win.get_description().toString();
+  let match = desc.match(/0x[0-9a-f]+/) || [null];
+
+  return match[0];
+}
+
 function isWindow(win) {
   if (!win) return;
 

@@ -3,6 +3,7 @@ const GLib           = imports.gi.GLib;
 const Util           = imports.misc.util;
 const Unite          = imports.misc.extensionUtils.getCurrentExtension();
 const Base           = Unite.imports.module.BaseModule;
+const getWindowXID   = Unite.imports.helpers.getWindowXID;
 const isWindow       = Unite.imports.helpers.isWindow;
 const isMaximized    = Unite.imports.helpers.isMaximized;
 const loadUserStyles = Unite.imports.helpers.loadUserStyles;
@@ -31,7 +32,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _getWindowXID(win) {
-    win._windowXID = win._windowXID || win.get_description().match(/0x[0-9a-f]+/)[0];
+    win._windowXID = win._windowXID || getWindowXID(win);
     return win._windowXID;
   },
 
