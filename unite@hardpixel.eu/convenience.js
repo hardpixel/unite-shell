@@ -1,11 +1,12 @@
-const Lang    = imports.lang;
 const Gettext = imports.gettext;
+const GObject = imports.gi.GObject;
 const Gio     = imports.gi.Gio;
 const Config  = imports.misc.config;
 const Unite   = imports.misc.extensionUtils.getCurrentExtension();
 
-var SettingsManager = new Lang.Class({
+var SettingsManager = new GObject.Class({
   Name: 'Unite.Settings',
+  GTypeName: 'Settings',
   Extends: Gio.Settings,
   DEFAULT_BINDING: Gio.SettingsBindFlags.DEFAULT,
 
@@ -44,8 +45,9 @@ var SettingsManager = new Lang.Class({
   }
 });
 
-var PreferencesManager = new Lang.Class({
+var PreferencesManager = new GObject.Class({
   Name: 'Unite.Preferences',
+  GTypeName: 'Preferences',
   Extends: Gio.Settings,
 
   get window_buttons_position() {
