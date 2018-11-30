@@ -15,6 +15,6 @@ var ActivateWindow = new Lang.Class({
   },
 
   _focusWindow(actor, win) {
-    Main.activateWindow(win);
+    Main.activateWindow(win, global.get_current_time());
   }
 });
