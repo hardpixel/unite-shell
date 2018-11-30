@@ -45,10 +45,10 @@ var DesktopName = new Lang.Class({
 
   _visibleWindows() {
     let windows = global.get_window_actors().find(win => {
-      let desktop = win.metaWindow.get_wm_class() == 'Gnome-shell';
       let visible = win.metaWindow.showing_on_its_workspace();
+      let skipped = win.metaWindow.skip_taskbar;
 
-      return !desktop && visible;
+      return visible && !skipped;
     });
 
     return windows;
