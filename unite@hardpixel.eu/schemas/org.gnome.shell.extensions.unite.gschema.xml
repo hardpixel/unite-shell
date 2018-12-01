@@ -16,6 +16,8 @@
     <value value="13" nick="pop-light" />
     <value value="14" nick="vimix" />
     <value value="15" nick="yaru" />
+		<value value="16" nick="arrongin" />
+		<value value="17" nick="telinkrin" />
   </enum>
 
   <enum id="org.gnome.shell.extensions.unite.hideTitlebars">
