@@ -469,6 +469,8 @@
               <item id="13" translatable="yes">Pop Light</item>
               <item id="14" translatable="yes">Vimix</item>
               <item id="15" translatable="yes">Yaru</item>
+							<item id="16" translatable="yes">Arrongin</item>
+							<item id="17" translatable="yes">Telinkrin</item>
             </items>
           </object>
           <packing>
