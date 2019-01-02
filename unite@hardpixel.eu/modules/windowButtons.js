@@ -66,7 +66,7 @@ var WindowButtons = new Lang.Class({
     this._buttonsActor.add_actor(this._buttonsBox);
     this._buttonsActor.hide();
 
-    buttons.forEach(Lang.bind(this, this._createButton));
+    buttons.forEach(action => { this._createButton(action) });
 
     if (position == 'left') {
       let appmenu = Main.panel.statusArea.appMenu.actor.get_parent();

@@ -132,6 +132,6 @@ var TopIcons = new Lang.Class({
   },
 
   _desaturateIcons() {
-    this._icons.forEach(Lang.bind(this, this._desaturateIcon));
+    this._icons.forEach(icon => { this._desaturateIcon(icon) });
   }
 });

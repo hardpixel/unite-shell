@@ -118,7 +118,7 @@ var WindowDecoration = new Lang.Class({
 
   _undecorateWindows() {
     let windows = this._getAllWindows();
-    windows.forEach(Lang.bind(this, this._undecorateWindow));
+    windows.forEach(win => { this._undecorateWindow(win) });
   },
 
   _decorateWindow(win) {
@@ -127,6 +127,6 @@ var WindowDecoration = new Lang.Class({
 
   _decorateWindows() {
     let windows = this._getAllWindows();
-    windows.forEach(Lang.bind(this, this._decorateWindow));
+    windows.forEach(win => { this._decorateWindow(win) });
   }
 });
