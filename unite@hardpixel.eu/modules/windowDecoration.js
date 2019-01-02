@@ -27,7 +27,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _onDeactivate() {
-    this._updateUserStyles();
+    this._removeUserStyles();
     this._decorateWindows();
   },
 
@@ -106,6 +106,10 @@ var WindowDecoration = new Lang.Class({
     }
 
     loadUserStyles(styles);
+  },
+
+  _removeUserStyles() {
+    loadUserStyles('');
   },
 
   _undecorateWindow(win) {
