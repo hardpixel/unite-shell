@@ -83,7 +83,6 @@ var DesktopName = new Lang.Class({
     this._labelText = new St.Label();
     this._labelActor.add_actor(this._labelText);
 
-    let activities = Main.panel.statusArea.activities.actor.get_parent();
-    Main.panel._leftBox.insert_child_below(this._labelBox, activities);
+    Main.panel._leftBox.insert_child_at_index(this._labelBox, 1);
   }
 });
