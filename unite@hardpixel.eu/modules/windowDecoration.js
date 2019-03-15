@@ -67,6 +67,9 @@ var WindowDecoration = new Lang.Class({
   },
 
   _resetDecorations(win) {
+    if (!this._handleWindow(win))
+      return;
+
     this._toggleDecorations(win, false);
 
     delete win._decorationOFF;
@@ -85,23 +88,22 @@ var WindowDecoration = new Lang.Class({
   },
 
   _showTitlebar(win) {
-    if (!win._decorationOFF) return;
+    if (!this._handleWindow(win) || !win._decorationOFF)
+      return;
 
     win._decorationOFF = false;
     this._toggleDecorations(win, false);
   },
 
   _hideTitlebar(win) {
-    if (win._decorationOFF) return;
+    if (!this._handleWindow(win) || win._decorationOFF)
+      return;
 
     win._decorationOFF = true;
     this._toggleDecorations(win, true);
   },
 
   _toggleTitlebar(win) {
-    if (!this._handleWindow(win))
-      return;
-
     if (isMaximized(win, this._setting))
       this._hideTitlebar(win);
     else
@@ -129,8 +131,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _undecorateWindow(win) {
-    if (this._handleWindow(win))
-      GLib.idle_add(0, () => { this._toggleTitlebar(win) });
+    GLib.idle_add(0, () => { this._toggleTitlebar(win) });
   },
 
   _undecorateWindows() {
@@ -139,8 +140,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _decorateWindow(win) {
-    if (this._handleWindow(win))
-      GLib.idle_add(0, () => { this._resetDecorations(win) });
+    GLib.idle_add(0, () => { this._resetDecorations(win) });
   },
 
   _decorateWindows() {
