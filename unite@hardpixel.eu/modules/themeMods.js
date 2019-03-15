@@ -1,18 +1,16 @@
-const Lang     = imports.lang;
-const Gtk      = imports.gi.Gtk;
-const Main     = imports.ui.main;
-const Unite    = imports.misc.extensionUtils.getCurrentExtension();
-const Base     = Unite.imports.module.BaseModule;
-const getTheme = Unite.imports.helpers.getTheme;
+const Lang  = imports.lang;
+const Gtk   = imports.gi.Gtk;
+const Main  = imports.ui.main;
+const Unite = imports.misc.extensionUtils.getCurrentExtension();
+const Base  = Unite.imports.module.BaseModule;
 
 var ThemeMods = new Lang.Class({
   Name: 'Unite.ThemeMods',
   Extends: Base,
 
   _onInitialize() {
-    this.shellTheme  = getTheme();
     this.gtkSettings = Gtk.Settings.get_default();
-    this._mainStyle  = Main.uiGroup.get_style();
+    this._mainStyles = Main.uiGroup.get_style();
   },
 
   _onActivate() {
@@ -33,6 +31,6 @@ var ThemeMods = new Lang.Class({
   },
 
   _resetStyles() {
-    Main.uiGroup.set_style(this._mainStyle);
+    Main.uiGroup.set_style(this._mainStyles);
   }
 });
