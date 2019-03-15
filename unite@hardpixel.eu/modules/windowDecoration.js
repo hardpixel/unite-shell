@@ -16,9 +16,11 @@ var WindowDecoration = new Lang.Class({
   _enableKey: 'hide-window-titlebars',
   _disableValue: 'never',
 
-  _onActivate() {
-    this._useMotifHints = versionCheck('3.30.0');
+  _onInitialize() {
+    this._useMotifHints = versionCheck('3.30.0', '>');
+  },
 
+  _onActivate() {
     this._signals.connect(global.display, 'notify::focus-window', 'updateTitlebar');
     this._signals.connect(global.window_manager, 'size-change', 'updateTitlebar');
 

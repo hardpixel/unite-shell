@@ -8,14 +8,25 @@ const Unite  = imports.misc.extensionUtils.getCurrentExtension();
 const USER_CONFIG = GLib.get_user_config_dir();
 const USER_STYLES = `${USER_CONFIG}/gtk-3.0/gtk.css`;
 
-function versionCheck(version) {
-  const aParts = version.split('.');
-  const bParts = Config.PACKAGE_VERSION.split('.');
+function versionCompare(aVersion, bVersion) {
+  const aParts = aVersion.replace(/(\.0+)+$/, '').split('.');
+  const bParts = bVersion.replace(/(\.0+)+$/, '').split('.');
+  const length = Math.min(aParts.length, bParts.length);
 
-  for (let i = 0; i < aParts.length; i++) {
-    if (parseInt(aParts[i]) < parseInt(bParts[i] || 0))
-      return true;
+  for (let i = 0; i < length; i++) {
+    let diff = parseInt(aParts[i], 10) - parseInt(bParts[i], 10);
+    if (diff) return diff;
   }
+
+  return aParts.length - bParts.length;
+}
+
+function versionCheck(version, compare = '=') {
+  const diff = versionCompare(Config.PACKAGE_VERSION, version);
+
+  if (compare == '>' && diff > 0)  return true;
+  if (compare == '<' && diff < 0)  return true;
+  if (compare == '=' && diff == 0) return true;
 
   return false;
 }
