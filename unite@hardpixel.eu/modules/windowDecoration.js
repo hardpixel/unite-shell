@@ -45,12 +45,10 @@ var WindowDecoration = new Lang.Class({
   },
 
   _handleWindow(win) {
-    if (!isWindow(win)) return;
-
     if (this._useMotifHints)
-      return win && !win.is_client_decorated();
+      return isWindow(win) && !win.is_client_decorated();
     else
-      return win && win.decorated;
+      return isWindow(win) && win.decorated;
   },
 
   _toggleDecorations(win, hide) {
@@ -58,7 +56,7 @@ var WindowDecoration = new Lang.Class({
     if (!winId) return;
 
     if (this._useMotifHints)
-      this._toggleDecorationsMotif(winId, hide, win.decorated);
+      this._toggleDecorationsMotif(winId, hide);
     else
       this._toggleDecorationsGtk(winId, hide);
   },
@@ -70,10 +68,7 @@ var WindowDecoration = new Lang.Class({
     Util.spawn(['xprop', '-id', winId, '-f', prop, '32c', '-set', prop, value]);
   },
 
-  _toggleDecorationsMotif(winId, hide, decorated) {
-    if ((hide && !decorated) || (!hide && decorated))
-      return;
-
+  _toggleDecorationsMotif(winId, hide) {
     let prop  = '_MOTIF_WM_HINTS';
     let value = hide ? '0x2, 0x0, 0x0, 0x0, 0x0' : '0x2, 0x0, 0x1, 0x0, 0x0';
 
@@ -97,27 +92,28 @@ var WindowDecoration = new Lang.Class({
     if (!this._useMotifHints && this._setting == 'both')
       toggleDecor = focusWindow && focusWindow.get_maximized() !== 0;
 
-    if (toggleDecor && isWindow(focusWindow))
+    if (toggleDecor)
       this._toggleTitlebar(focusWindow);
   },
 
   _showTitlebar(win) {
-    if (!this._handleWindow(win) || !win._decorationOFF)
-      return;
+    if (!win._decorationOFF) return;
 
     win._decorationOFF = false;
     this._toggleDecorations(win, false);
   },
 
   _hideTitlebar(win) {
-    if (!this._handleWindow(win) || win._decorationOFF)
-      return;
+    if (win._decorationOFF) return;
 
     win._decorationOFF = true;
     this._toggleDecorations(win, true);
   },
 
   _toggleTitlebar(win) {
+    if (!this._handleWindow(win))
+      return;
+
     if (isMaximized(win, this._setting))
       this._hideTitlebar(win);
     else
