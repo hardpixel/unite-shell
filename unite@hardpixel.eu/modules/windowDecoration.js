@@ -1,5 +1,6 @@
 const Lang           = imports.lang;
 const GLib           = imports.gi.GLib;
+const Meta           = imports.gi.Meta;
 const Util           = imports.misc.util;
 const Unite          = imports.misc.extensionUtils.getCurrentExtension();
 const Base           = Unite.imports.module.BaseModule;
@@ -17,12 +18,14 @@ var WindowDecoration = new Lang.Class({
   _disableValue: 'never',
 
   _onInitialize() {
+    this.monitorManager = Meta.MonitorManager.get();
     this._useMotifHints = versionCheck('> 3.30.0');
   },
 
   _onActivate() {
     this._signals.connect(global.display, 'notify::focus-window', 'updateTitlebar');
     this._signals.connect(global.window_manager, 'size-change', 'updateTitlebar');
+    this._signals.connect(this.monitorManager, 'monitors-changed', 'undecorateWindows');
 
     this._settings.connect('hide-window-titlebars', 'updateUserStyles');
     this._settings.connect('button-layout', 'updateUserStyles');
