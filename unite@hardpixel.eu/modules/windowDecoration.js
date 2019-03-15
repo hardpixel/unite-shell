@@ -41,10 +41,12 @@ var WindowDecoration = new Lang.Class({
 
   _getAllWindows() {
     let windows = global.get_window_actors().map(win => win.meta_window);
-    return windows.filter(win => isWindow(win));
+    return windows.filter(win => this._handleWindow(win));
   },
 
   _handleWindow(win) {
+    if (!isWindow(win)) return;
+
     if (this._useMotifHints)
       return win && !win.is_client_decorated();
     else
