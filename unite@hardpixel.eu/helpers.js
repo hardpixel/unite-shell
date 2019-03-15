@@ -1,11 +1,24 @@
-const Gio   = imports.gi.Gio;
-const GLib  = imports.gi.GLib;
-const St    = imports.gi.St;
-const Meta  = imports.gi.Meta;
-const Unite = imports.misc.extensionUtils.getCurrentExtension();
+const Gio    = imports.gi.Gio;
+const GLib   = imports.gi.GLib;
+const St     = imports.gi.St;
+const Meta   = imports.gi.Meta;
+const Config = imports.misc.config;
+const Unite  = imports.misc.extensionUtils.getCurrentExtension();
 
 const USER_CONFIG = GLib.get_user_config_dir();
 const USER_STYLES = `${USER_CONFIG}/gtk-3.0/gtk.css`;
+
+function versionCheck(version) {
+  const aParts = version.split('.');
+  const bParts = Config.PACKAGE_VERSION.split('.');
+
+  for (let i = 0; i < aParts.length; i++) {
+    if (parseInt(aParts[i]) < parseInt(bParts[i] || 0))
+      return true;
+  }
+
+  return false;
+}
 
 function fileExists(path) {
   return GLib.file_test(path, GLib.FileTest.EXISTS)
