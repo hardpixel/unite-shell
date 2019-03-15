@@ -61,7 +61,7 @@ var ApplicationMenu = new Lang.Class({
   _toggleMenu() {
     let target   = this.appMenu._targetApp != null;
     let overview = Main.overview.visibleTarget;
-    let visible  = target && !overview
+    let visible  = target && !overview;
 
     if (visible && !this.appMenu_visible) {
       this.appMenu.show();

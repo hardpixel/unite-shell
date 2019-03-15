@@ -78,9 +78,9 @@ function initTranslations(domain) {
   let localeDir  = Unite.dir.get_child('locale');
 
   if (localeDir.query_exists(null))
-    localeDir = localeDir.get_path()
+    localeDir = localeDir.get_path();
   else
-    localeDir = Config.LOCALEDIR
+    localeDir = Config.LOCALEDIR;
 
   Gettext.bindtextdomain(textDomain, localeDir);
 }
@@ -100,7 +100,7 @@ function getSettings(schema) {
   let schemaObj = schemaSource.lookup(schema, true);
 
   if (!schemaObj) {
-    let metaId  = Unite.metadata.uuid
+    let metaId  = Unite.metadata.uuid;
     let message = `Schema ${schema} could not be found for extension ${metaId}.`;
 
     throw new Error(`${message} Please check your installation.`);

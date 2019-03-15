@@ -21,7 +21,7 @@ function versionCheck(version) {
 }
 
 function fileExists(path) {
-  return GLib.file_test(path, GLib.FileTest.EXISTS)
+  return GLib.file_test(path, GLib.FileTest.EXISTS);
 }
 
 function getUserStyles() {
@@ -96,7 +96,7 @@ function isMaximized(win, matchState) {
   if (!win) return;
 
   let flags         = Meta.MaximizeFlags;
-  let maximized     = win.get_maximized()
+  let maximized     = win.get_maximized();
   let primaryScreen = win.is_on_primary_monitor();
   let tileMaximized = maximized == flags.HORIZONTAL || maximized == flags.VERTICAL;
   let fullMaximized = maximized == flags.BOTH;
