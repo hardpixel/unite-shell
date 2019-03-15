@@ -10,6 +10,7 @@ const ApplicationMenu  = Unite.imports.modules.applicationMenu.ApplicationMenu;
 const WindowButtons    = Unite.imports.modules.windowButtons.WindowButtons;
 const WindowDecoration = Unite.imports.modules.windowDecoration.WindowDecoration;
 const TopIcons         = Unite.imports.modules.topIcons.TopIcons;
+const ThemeMods        = Unite.imports.modules.themeMods.ThemeMods;
 
 var UniteExtension = new Lang.Class({
   Name: 'Unite.Extension',
@@ -24,6 +25,7 @@ var UniteExtension = new Lang.Class({
     this._windowButtons    = new WindowButtons();
     this._windowDecoration = new WindowDecoration();
     this._topIcons         = new TopIcons();
+    this._themeMods        = new ThemeMods();
 
     Main.panel._addStyleClassName('unite-shell');
   },
@@ -38,6 +40,7 @@ var UniteExtension = new Lang.Class({
     this._windowButtons.destroy();
     this._windowDecoration.destroy();
     this._topIcons.destroy();
+    this._themeMods.destroy();
 
     Main.panel._removeStyleClassName('unite-shell');
   }
