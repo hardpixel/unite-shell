@@ -17,6 +17,8 @@ var WindowDecoration = new Lang.Class({
   _disableValue: 'never',
 
   _onActivate() {
+    this._useMotifHints = versionCheck('3.30.0');
+
     this._signals.connect(global.display, 'notify::focus-window', 'updateTitlebar');
     this._signals.connect(global.window_manager, 'size-change', 'updateTitlebar');
 
@@ -43,7 +45,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _handleWindow(win) {
-    if (versionCheck('3.30.0'))
+    if (this._useMotifHints)
       return win && !win.is_client_decorated();
     else
       return win && win.decorated;
@@ -56,9 +58,9 @@ var WindowDecoration = new Lang.Class({
     let prop  = '_GTK_HIDE_TITLEBAR_WHEN_MAXIMIZED';
     let value = hide ? '0x1' : '0x0';
 
-    if (versionCheck('3.30.0')) {
+    if (this._useMotifHints) {
       prop  = '_MOTIF_WM_HINTS';
-      value = hide ? '0x2, 0x0, 0x0, 0x0, 0x0' : '0x0, 0x0, 0x0, 0x0, 0x0';
+      value = hide ? '0x2, 0x0, 0x0, 0x0, 0x0' : '0x2, 0x0, 0x1, 0x0, 0x0';
     }
 
     Util.spawn(['xprop', '-id', winId, '-f', prop, '32c', '-set', prop, value]);
@@ -75,7 +77,7 @@ var WindowDecoration = new Lang.Class({
     let focusWindow = global.display.focus_window;
     let toggleDecor = focusWindow;
 
-    if (this._setting == 'both')
+    if (!this._useMotifHints && this._setting == 'both')
       toggleDecor = focusWindow && focusWindow.get_maximized() !== 0;
 
     if (toggleDecor && isWindow(focusWindow))
@@ -83,22 +85,23 @@ var WindowDecoration = new Lang.Class({
   },
 
   _showTitlebar(win) {
-    let undecorated = this._handleWindow(win) && win._decorationOFF;
-    if (!undecorated) return;
+    if (!win._decorationOFF) return;
 
     win._decorationOFF = false;
     this._toggleDecorations(win, false);
   },
 
   _hideTitlebar(win) {
-    let decorated = this._handleWindow(win) && !win._decorationOFF;
-    if (!decorated) return;
+    if (win._decorationOFF) return;
 
     win._decorationOFF = true;
     this._toggleDecorations(win, true);
   },
 
   _toggleTitlebar(win) {
+    if (!this._handleWindow(win))
+      return;
+
     if (isMaximized(win, this._setting))
       this._hideTitlebar(win);
     else
