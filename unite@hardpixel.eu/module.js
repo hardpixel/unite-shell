@@ -29,8 +29,12 @@ var BaseModule = new Lang.Class({
       return this._setting != this._disableValue;
   },
 
+  _hasCallback(name) {
+    return typeof(this[name]) === 'function';
+  },
+
   _runCallback(name) {
-    if (typeof this[name] === 'function')
+    if (this._hasCallback(name))
       this[name]();
   },
 
@@ -49,10 +53,14 @@ var BaseModule = new Lang.Class({
   _reload() {
     this._setting = this._settings.get(this._enableKey);
 
-    this._deactivate();
-    this._activate();
+    if (this._hasCallback('_onReset')) {
+      this._runCallback('_onReset');
+    } else {
+      this._deactivate();
+      this._activate();
 
-    this._runCallback('_onReload');
+      this._runCallback('_onReload');
+    }
   },
 
   destroy() {

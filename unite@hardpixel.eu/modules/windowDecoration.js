@@ -34,6 +34,13 @@ var WindowDecoration = new Lang.Class({
     this._decorateWindows();
   },
 
+  _onReset() {
+    this._removeUserStyles();
+    this._updateUserStyles();
+
+    this._undecorateWindows();
+  },
+
   _getWindowXID(win) {
     win._windowXID = win._windowXID || getWindowXID(win);
     return win._windowXID;
