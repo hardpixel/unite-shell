@@ -51,9 +51,10 @@ var BaseModule = new Lang.Class({
   },
 
   _reload() {
+    let prevState = this._enabled;
     this._setting = this._settings.get(this._enableKey);
 
-    if (this._hasCallback('_onReset')) {
+    if (prevState == this._enabled) {
       this._runCallback('_onReset');
     } else {
       this._deactivate();
