@@ -17,7 +17,7 @@ var WindowDecoration = new Lang.Class({
   _disableValue: 'never',
 
   _onInitialize() {
-    this._useMotifHints = versionCheck('3.30.0', '>');
+    this._useMotifHints = versionCheck('> 3.30.0');
   },
 
   _onActivate() {

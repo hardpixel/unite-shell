@@ -21,12 +21,13 @@ function versionCompare(aVersion, bVersion) {
   return aParts.length - bParts.length;
 }
 
-function versionCheck(version, compare = '=') {
-  const diff = versionCompare(Config.PACKAGE_VERSION, version);
+function versionCheck(version) {
+  const [cmp, ver] = version.split(' ');
+  const difference = versionCompare(Config.PACKAGE_VERSION, ver);
 
-  if (compare == '>' && diff > 0)  return true;
-  if (compare == '<' && diff < 0)  return true;
-  if (compare == '=' && diff == 0) return true;
+  if (cmp == '>' && difference > 0)  return true;
+  if (cmp == '<' && difference < 0)  return true;
+  if (cmp == '=' && difference == 0) return true;
 
   return false;
 }
