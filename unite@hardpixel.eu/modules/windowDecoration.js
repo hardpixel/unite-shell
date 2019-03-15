@@ -3,6 +3,7 @@ const GLib           = imports.gi.GLib;
 const Util           = imports.misc.util;
 const Unite          = imports.misc.extensionUtils.getCurrentExtension();
 const Base           = Unite.imports.module.BaseModule;
+const versionCheck   = Unite.imports.helpers.versionCheck;
 const getWindowXID   = Unite.imports.helpers.getWindowXID;
 const isWindow       = Unite.imports.helpers.isWindow;
 const isMaximized    = Unite.imports.helpers.isMaximized;
@@ -41,12 +42,24 @@ var WindowDecoration = new Lang.Class({
     return windows.filter(win => isWindow(win));
   },
 
+  _handleWindow(win) {
+    if (versionCheck('3.30.0'))
+      return win && !win.is_client_decorated();
+    else
+      return win && win.decorated;
+  },
+
   _toggleDecorations(win, hide) {
     let winId = this._getWindowXID(win);
     if (!winId) return;
 
     let prop  = '_GTK_HIDE_TITLEBAR_WHEN_MAXIMIZED';
     let value = hide ? '0x1' : '0x0';
+
+    if (versionCheck('3.30.0')) {
+      prop  = '_MOTIF_WM_HINTS';
+      value = hide ? '0x2, 0x0, 0x0, 0x0, 0x0' : '0x0, 0x0, 0x0, 0x0, 0x0';
+    }
 
     Util.spawn(['xprop', '-id', winId, '-f', prop, '32c', '-set', prop, value]);
   },
@@ -70,7 +83,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _showTitlebar(win) {
-    let undecorated = win && win._decorationOFF;
+    let undecorated = this._handleWindow(win) && win._decorationOFF;
     if (!undecorated) return;
 
     win._decorationOFF = false;
@@ -78,7 +91,7 @@ var WindowDecoration = new Lang.Class({
   },
 
   _hideTitlebar(win) {
-    let decorated = win && !win._decorationOFF && win.decorated;
+    let decorated = this._handleWindow(win) && !win._decorationOFF;
     if (!decorated) return;
 
     win._decorationOFF = true;
