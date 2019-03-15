@@ -22,6 +22,9 @@ var BaseModule = new Lang.Class({
   },
 
   get _enabled() {
+    if (this._enableKey == null)
+      return true;
+
     if (this._enableValue != null)
       return this._setting == this._enableValue;
 

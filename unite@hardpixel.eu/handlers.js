@@ -94,6 +94,8 @@ var SettingsHandler = new Lang.Class({
   },
 
   get(settingKey) {
+    if (settingKey == null) return;
+
     let object = this._getSettingObject(settingKey);
     if (object) return object.getSetting(settingKey);
   }
