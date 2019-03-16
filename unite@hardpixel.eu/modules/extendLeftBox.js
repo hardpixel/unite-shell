@@ -1,9 +1,9 @@
-const Lang         = imports.lang;
-const Clutter      = imports.gi.Clutter;
-const Main         = imports.ui.main;
-const Unite        = imports.misc.extensionUtils.getCurrentExtension();
-const Base         = Unite.imports.module.BaseModule;
-const versionCheck = Unite.imports.helpers.versionCheck;
+const Lang    = imports.lang;
+const Gi      = imports._gi;
+const Clutter = imports.gi.Clutter;
+const Main    = imports.ui.main;
+const Unite   = imports.misc.extensionUtils.getCurrentExtension();
+const Base    = Unite.imports.module.BaseModule;
 
 var ExtendLeftBox = new Lang.Class({
   Name: 'Unite.ExtendLeftBox',
@@ -12,15 +12,18 @@ var ExtendLeftBox = new Lang.Class({
   _enableKey: 'extend-left-box',
   _enableValue: true,
 
-  _onInitialize() {
-    this._allocateSignal = versionCheck('< 3.32');
+  _onActivate() {
+    if (Main.panel.vfunc_allocate) {
+      this._vfuncAllocate();
+    } else {
+      this._signalAllocate();
+    }
   },
 
-  _onActivate() {
-    if (this._allocateSignal) {
-      this._signalAllocate();
-    } else {
-      this._vfuncAllocate();
+  _onDeactivate() {
+    if (this._oldAllocate) {
+      Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', this._oldAllocate);
+      this._oldAllocate = null;
     }
   },
 
@@ -29,7 +32,12 @@ var ExtendLeftBox = new Lang.Class({
   },
 
   _vfuncAllocate() {
-    log('unite: extend left box not implemented for gnome-shell 3.32');
+    this._oldAllocate = Main.panel.__proto__.vfunc_allocate;
+
+    Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box, flags) => {
+      Main.panel.vfunc_allocate.call(Main.panel, box, flags);
+      this._extendBox(Main.panel, box, flags);
+    });
   },
 
   _signalAllocate() {
