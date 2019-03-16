@@ -3,7 +3,6 @@ const GLib           = imports.gi.GLib;
 const Gdk            = imports.gi.Gdk;
 const GdkX11         = imports.gi.GdkX11;
 const Meta           = imports.gi.Meta;
-const Util           = imports.misc.util;
 const Unite          = imports.misc.extensionUtils.getCurrentExtension();
 const Base           = Unite.imports.module.BaseModule;
 const versionCheck   = Unite.imports.helpers.versionCheck;
