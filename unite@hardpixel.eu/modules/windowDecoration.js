@@ -1,5 +1,7 @@
 const Lang           = imports.lang;
 const GLib           = imports.gi.GLib;
+const Gdk            = imports.gi.Gdk;
+const GdkX11         = imports.gi.GdkX11;
 const Meta           = imports.gi.Meta;
 const Util           = imports.misc.util;
 const Unite          = imports.misc.extensionUtils.getCurrentExtension();
@@ -67,24 +69,23 @@ var WindowDecoration = new Lang.Class({
     let winId = this._getWindowXID(win);
     if (!winId) return;
 
-    if (this._useMotifHints)
-      this._toggleDecorationsMotif(winId, hide);
-    else
-      this._toggleDecorationsGtk(winId, hide);
-  },
+    let display = Gdk.Display.get_default();
+    let xWindow = GdkX11.X11Window.foreign_new_for_display(display, winId);
+    if (!xWindow) return;
 
-  _toggleDecorationsGtk(winId, hide) {
-    let prop  = '_GTK_HIDE_TITLEBAR_WHEN_MAXIMIZED';
-    let value = hide ? '0x1' : '0x0';
+    if (this._useMotifHints) {
+      let hideFlag  = Gdk.WMDecoration.BORDER;
+      let showFlag  = Gdk.WMDecoration.ALL;
+      let [_, flag] = xWindow.get_decorations();
 
-    Util.spawn(['xprop', '-id', winId, '-f', prop, '32c', '-set', prop, value]);
-  },
+      if (hide && flag != hideFlag)
+        xWindow.set_decorations(hideFlag);
 
-  _toggleDecorationsMotif(winId, hide) {
-    let prop  = '_MOTIF_WM_HINTS';
-    let value = hide ? '0x2, 0x0, 0x0, 0x0, 0x0' : '0x2, 0x0, 0x1, 0x0, 0x0';
-
-    Util.spawn(['xprop', '-id', winId, '-f', prop, '32c', '-set', prop, value]);
+      if (!hide && flag != showFlag)
+        xWindow.set_decorations(showFlag);
+    } else {
+      xWindow.set_hide_titlebar_when_maximized(hide);
+    }
   },
 
   _resetDecorations(win) {
