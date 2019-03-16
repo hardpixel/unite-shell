@@ -103,7 +103,11 @@ var ApplicationMenu = new Lang.Class({
     if (!title && focusApp)
       title = focusApp.get_name();
 
-    if (title && title != current)
+    if (title && title != current) {
       this.appMenu._label.set_text(title);
+
+      this.appMenu.container.hide();
+      this.appMenu.container.show();
+    }
   }
 });
