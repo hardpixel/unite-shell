@@ -1,3 +1,6 @@
+imports.gi.versions.Gdk    = '3.0';
+imports.gi.versions.GdkX11 = '3.0';
+
 const Lang           = imports.lang;
 const GLib           = imports.gi.GLib;
 const Gdk            = imports.gi.Gdk;
