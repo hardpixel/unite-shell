@@ -83,10 +83,10 @@ var WindowDecoration = new Lang.Class({
 
   _toggleDecorationsMotif(winId, hide) {
     let prop  = '_MOTIF_WM_HINTS';
-    let value = hide ? '0x2, 0x0, 0x0, 0x0, 0x0' : '0x2, 0x0, 0x1, 0x0, 0x0';
-
-    if (hide && this._isWaylandComp)
-      value = '0x2, 0x0, 0x2, 0x0, 0x0';
+    let flag  = '0x2, 0x0, %s, 0x0, 0x0';
+    let value = hide
+      ? flag.format(this._isWaylandComp ? '0x2': '0x0')
+      : flag.format('0x1');
 
     Util.spawn(['xprop', '-id', winId, '-f', prop, '32c', '-set', prop, value]);
   },
