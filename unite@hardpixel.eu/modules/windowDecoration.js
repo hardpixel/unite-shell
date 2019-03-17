@@ -68,10 +68,12 @@ var WindowDecoration = new Lang.Class({
     let winId = this._getWindowXID(win);
     if (!winId) return;
 
-    if (this._useMotifHints)
-      this._toggleDecorationsMotif(winId, hide);
-    else
-      this._toggleDecorationsGtk(winId, hide);
+    GLib.idle_add(0, () => {
+      if (this._useMotifHints)
+        this._toggleDecorationsMotif(winId, hide);
+      else
+        this._toggleDecorationsGtk(winId, hide);
+    });
   },
 
   _toggleDecorationsGtk(winId, hide) {
@@ -156,21 +158,13 @@ var WindowDecoration = new Lang.Class({
     loadUserStyles('');
   },
 
-  _undecorateWindow(win) {
-    GLib.idle_add(0, () => { this._toggleTitlebar(win) });
-  },
-
   _undecorateWindows() {
     let windows = this._getAllWindows();
-    windows.forEach(win => { this._undecorateWindow(win) });
-  },
-
-  _decorateWindow(win) {
-    GLib.idle_add(0, () => { this._resetDecorations(win) });
+    windows.forEach(win => { this._toggleTitlebar(win) });
   },
 
   _decorateWindows() {
     let windows = this._getAllWindows();
-    windows.forEach(win => { this._decorateWindow(win) });
+    windows.forEach(win => { this._resetDecorations(win) });
   }
 });
