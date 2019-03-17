@@ -1,4 +1,5 @@
 const Lang           = imports.lang;
+const ByteArray      = imports.byteArray;
 const GLib           = imports.gi.GLib;
 const Meta           = imports.gi.Meta;
 const Util           = imports.misc.util;
@@ -52,16 +53,64 @@ var WindowDecoration = new Lang.Class({
     return win._windowXID;
   },
 
+  _getHintValue(win, hint) {
+    let winId = this._getWindowXID(win);
+    if (!winId) return;
+
+    let result = GLib.spawn_command_line_sync(`xprop -id ${winId} ${hint}`);
+    let string = ByteArray.toString(result[1]);
+    if (!string.match(/=/)) return;
+
+    string = string.split('=')[1].trim().split(',').map(part => {
+      part = part.trim();
+      return part.match(/\dx/) ? part : `0x${part}`
+    });
+
+    return string;
+  },
+
+  _setHintValue(win, hint, value) {
+    let winId = this._getWindowXID(win);
+    if (!winId) return;
+
+    Util.spawn(['xprop', '-id', winId, '-f', hint, '32c', '-set', hint, value]);
+  },
+
+  _getMotifHints(win) {
+    if (!win._uniteOriginalState) {
+      let state = this._getHintValue(win, '_UNITE_ORIGINAL_STATE');
+
+      if (!state)
+        state = this._getHintValue(win, '_MOTIF_WM_HINTS');
+
+      if (!state)
+        state = ['0x2', '0x0', '0x1', '0x0', '0x0'];
+
+      win._uniteOriginalState = state;
+      this._setHintValue(win, '_UNITE_ORIGINAL_STATE', state.join(', '));
+    }
+
+    return win._uniteOriginalState;
+  },
+
   _getAllWindows() {
     let windows = global.get_window_actors().map(win => win.meta_window);
     return windows.filter(win => this._handleWindow(win));
   },
 
   _handleWindow(win) {
-    if (this._useMotifHints)
-      return isWindow(win) && !win.is_client_decorated();
-    else
-      return isWindow(win) && win.decorated;
+    let handleWin = false;
+    if (!isWindow(win)) return;
+
+    if (this._useMotifHints) {
+      let state = this._getMotifHints(win);
+      handleWin = !win.is_client_decorated();
+      handleWin = handleWin && (state[2] != '0x2' && state[2] != '0x0');
+    } else {
+      handleWin = win.decorated;
+    }
+
+    return handleWin;
   },
 
   _toggleDecorations(win, hide) {
