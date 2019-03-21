@@ -80,14 +80,14 @@ var WindowDecoration = new Lang.Class({
     if (!win._uniteOriginalState) {
       let state = this._getHintValue(win, '_UNITE_ORIGINAL_STATE');
 
-      if (!state)
+      if (!state) {
         state = this._getHintValue(win, '_MOTIF_WM_HINTS');
+        state = state || ['0x2', '0x0', '0x1', '0x0', '0x0'];
 
-      if (!state)
-        state = ['0x2', '0x0', '0x1', '0x0', '0x0'];
+        this._setHintValue(win, '_UNITE_ORIGINAL_STATE', state.join(', '));
+      }
 
       win._uniteOriginalState = state;
-      this._setHintValue(win, '_UNITE_ORIGINAL_STATE', state.join(', '));
     }
 
     return win._uniteOriginalState;
