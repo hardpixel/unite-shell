@@ -20,7 +20,7 @@ var WindowDecoration = new Lang.Class({
 
   _onInitialize() {
     this.monitorManager = Meta.MonitorManager.get();
-    this._useMotifHints = versionCheck('> 3.30.0');
+    this._useMotifHints = versionCheck('> 3.30.2');
     this._isWaylandComp = Meta.is_wayland_compositor();
   },
 
