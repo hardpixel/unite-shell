@@ -6,6 +6,7 @@ const GLib           = imports.gi.GLib;
 const Gdk            = imports.gi.Gdk;
 const GdkX11         = imports.gi.GdkX11;
 const Meta           = imports.gi.Meta;
+const Util           = imports.misc.util;
 const Unite          = imports.misc.extensionUtils.getCurrentExtension();
 const Base           = Unite.imports.module.BaseModule;
 const versionCheck   = Unite.imports.helpers.versionCheck;
@@ -71,23 +72,8 @@ var WindowDecoration = new Lang.Class({
     let winId = this._getWindowXID(win);
     if (!winId) return;
 
-    let display = Gdk.Display.get_default();
-    let xWindow = GdkX11.X11Window.foreign_new_for_display(display, winId);
-    if (!xWindow) return;
-
-    if (this._useMotifHints) {
-      let hideFlag  = Gdk.WMDecoration.BORDER;
-      let showFlag  = Gdk.WMDecoration.ALL;
-      let [_, flag] = xWindow.get_decorations();
-
-      if (hide && flag != hideFlag)
-        xWindow.set_decorations(hideFlag);
-
-      if (!hide && flag != showFlag)
-        xWindow.set_decorations(showFlag);
-    } else {
-      xWindow.set_hide_titlebar_when_maximized(hide);
-    }
+    let script = `${Unite.path}/scripts/xprop.py`;
+    Util.spawn(['python', script, winId, `${hide}`, `${this._useMotifHints}`]);
   },
 
   _resetDecorations(win) {
