@@ -28,6 +28,10 @@ var ActivitiesButton = new Lang.Class({
     this._toggleButton();
   },
 
+  _onReset() {
+    this._toggleButton();
+  },
+
   _onDeactivate() {
     this._container.show();
   },

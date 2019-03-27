@@ -34,6 +34,10 @@ var WindowButtons = new Lang.Class({
     this._loadTheme();
   },
 
+  _onReset() {
+    this._toggleButtons();
+  },
+
   _onDeactivate() {
     this._unloadTheme();
     this._destroyButtons();

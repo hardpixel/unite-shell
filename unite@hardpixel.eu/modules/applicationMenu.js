@@ -30,6 +30,10 @@ var ApplicationMenu = new Lang.Class({
     this._updateTitle();
   },
 
+  _onReset() {
+    this._updateTitle();
+  },
+
   _onDeactivate() {
     this._resetShowsMenu();
   },
