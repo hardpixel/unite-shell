@@ -18,10 +18,15 @@ var WindowButtons = new Lang.Class({
   _enableKey: 'show-window-buttons',
   _disableValue: 'never',
 
+  _onInitialize() {
+    this.monitorManager = Meta.MonitorManager.get();
+  },
+
   _onActivate() {
     this._signals.connect(global.display, 'notify::focus-window', 'toggleButtons');
     this._signals.connect(global.window_manager, 'size-change', 'toggleButtons');
     this._signals.connect(global.window_manager, 'destroy', 'toggleButtons');
+    this._signals.connect(this.monitorManager, 'monitors-changed', 'toggleButtons');
 
     this._signals.connect(Main.overview, 'showing', 'toggleButtons');
     this._signals.connect(Main.overview, 'hiding', 'toggleButtons');

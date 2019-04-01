@@ -1,6 +1,7 @@
 const Lang        = imports.lang;
 const Shell       = imports.gi.Shell;
 const Gtk         = imports.gi.Gtk;
+const Meta        = imports.gi.Meta;
 const Main        = imports.ui.main;
 const Unite       = imports.misc.extensionUtils.getCurrentExtension();
 const Base        = Unite.imports.module.BaseModule;
@@ -15,15 +16,17 @@ var ApplicationMenu = new Lang.Class({
   _disableValue: 'never',
 
   _onInitialize() {
-    this.appMenu     = Main.panel.statusArea.appMenu;
-    this.winTracker  = Shell.WindowTracker.get_default();
-    this.appSystem   = Shell.AppSystem.get_default();
-    this.gtkSettings = Gtk.Settings.get_default();
+    this.appMenu        = Main.panel.statusArea.appMenu;
+    this.winTracker     = Shell.WindowTracker.get_default();
+    this.appSystem      = Shell.AppSystem.get_default();
+    this.gtkSettings    = Gtk.Settings.get_default();
+    this.monitorManager = Meta.MonitorManager.get();
   },
 
   _onActivate() {
     this._signals.connect(global.display, 'notify::focus-window', 'updateTitle');
     this._signals.connect(global.window_manager, 'size-change', 'updateTitle');
+    this._signals.connect(this.monitorManager, 'monitors-changed', 'updateTitle');
     this._signals.connect(this.gtkSettings, 'notify::gtk-shell-shows-app-menu', 'showsMenu');
 
     this._enableShowsMenu();
