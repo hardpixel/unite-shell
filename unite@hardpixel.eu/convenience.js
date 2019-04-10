@@ -18,6 +18,7 @@ var SettingsManager = new GObject.Class({
     'desktop-name-text':      'string',
     'extend-left-box':        'boolean',
     'notifications-position': 'enum',
+    'use-system-fonts':       'boolean',
     'show-legacy-tray':       'boolean',
     'greyscale-tray-icons':   'boolean',
     'show-window-buttons':    'enum',

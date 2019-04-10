@@ -14,7 +14,8 @@ var ThemeMods = new Lang.Class({
   },
 
   _onActivate() {
-    this._signals.connect(this.gtkSettings, 'notify::gtk-font-name', 'setShellFont');
+    this._signals.connect(this.gtkSettings, 'notify::gtk-font-name', 'updateShellFont');
+    this._settings.connect('use-system-fonts', 'updateShellFont');
 
     this._setShellFont();
   },
@@ -24,10 +25,18 @@ var ThemeMods = new Lang.Class({
   },
 
   _setShellFont() {
-    const gtkFont  = this.gtkSettings.gtk_font_name;
-    const fontName = gtkFont.replace(/\s\d+$/, '');
+    const enabled = this._settings.get('use-system-fonts');
+    if (!enabled) return;
 
-    Main.uiGroup.set_style(`font-family: ${fontName};`);
+    const gtkFont = this.gtkSettings.gtk_font_name;
+    const cssFont = gtkFont.replace(/\s\d+$/, '');
+
+    Main.uiGroup.set_style(`font-family: ${cssFont};`);
+  },
+
+  _updateShellFont() {
+    this._resetStyles();
+    this._setShellFont();
   },
 
   _resetStyles() {

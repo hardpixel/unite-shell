@@ -56,6 +56,11 @@
   </enum>
 
   <schema id="org.gnome.shell.extensions.unite" path="/org/gnome/shell/extensions/unite/">
+    <key name="use-system-fonts" type="b">
+      <default>true</default>
+      <summary>Apply system fonts to shell interface.</summary>
+    </key>
+
     <key name="extend-left-box" type="b">
       <default>true</default>
       <summary>Extend top bar left box.</summary>
