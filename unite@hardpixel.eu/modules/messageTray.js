@@ -1,11 +1,11 @@
-const Lang      = imports.lang;
+const GObject   = imports.gi.GObject;
 const Clutter   = imports.gi.Clutter;
 const Main      = imports.ui.main;
 const Unite     = imports.misc.extensionUtils.getCurrentExtension();
 const Base      = Unite.imports.module.BaseModule;
 const scaleSize = Unite.imports.helpers.scaleSize;
 
-var MessageTray = new Lang.Class({
+var MessageTray = new GObject.Class({
   Name: 'Unite.MessageTray',
   Extends: Base,
 

@@ -1,9 +1,9 @@
-const Lang  = imports.lang;
-const Main  = imports.ui.main;
-const Unite = imports.misc.extensionUtils.getCurrentExtension();
-const Base  = Unite.imports.module.BaseModule;
+const GObject = imports.gi.GObject;
+const Main    = imports.ui.main;
+const Unite   = imports.misc.extensionUtils.getCurrentExtension();
+const Base    = Unite.imports.module.BaseModule;
 
-var ActivateWindow = new Lang.Class({
+var ActivateWindow = new GObject.Class({
   Name: 'Unite.ActivateWindow',
   Extends: Base,
 

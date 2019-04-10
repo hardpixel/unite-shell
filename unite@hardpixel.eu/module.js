@@ -1,9 +1,9 @@
-const Lang     = imports.lang;
+const GObject  = imports.gi.GObject;
 const Unite    = imports.misc.extensionUtils.getCurrentExtension();
 const Signals  = Unite.imports.handlers.SignalsHandler;
 const Settings = Unite.imports.handlers.SettingsHandler;
 
-var BaseModule = new Lang.Class({
+var BaseModule = new GObject.Class({
   Name: 'Unite.BaseModule',
 
   _enableKey: null,

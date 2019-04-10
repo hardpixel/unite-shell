@@ -1,5 +1,5 @@
-const Lang         = imports.lang;
 const System       = imports.system;
+const GObject      = imports.gi.GObject;
 const Clutter      = imports.gi.Clutter;
 const Shell        = imports.gi.Shell;
 const St           = imports.gi.St;
@@ -10,7 +10,7 @@ const Base         = Unite.imports.module.BaseModule;
 const scaleSize    = Unite.imports.helpers.scaleSize;
 const toggleWidget = Unite.imports.helpers.toggleWidget;
 
-var TopIcons = new Lang.Class({
+var TopIcons = new GObject.Class({
   Name: 'Unite.TopIcons',
   Extends: Base,
 

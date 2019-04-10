@@ -1,10 +1,10 @@
-const Lang  = imports.lang;
-const Gtk   = imports.gi.Gtk;
-const Main  = imports.ui.main;
-const Unite = imports.misc.extensionUtils.getCurrentExtension();
-const Base  = Unite.imports.module.BaseModule;
+const GObject = imports.gi.GObject;
+const Gtk     = imports.gi.Gtk;
+const Main    = imports.ui.main;
+const Unite   = imports.misc.extensionUtils.getCurrentExtension();
+const Base    = Unite.imports.module.BaseModule;
 
-var ThemeMods = new Lang.Class({
+var ThemeMods = new GObject.Class({
   Name: 'Unite.ThemeMods',
   Extends: Base,
 

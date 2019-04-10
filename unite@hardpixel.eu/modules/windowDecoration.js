@@ -1,5 +1,5 @@
-const Lang           = imports.lang;
 const ByteArray      = imports.byteArray;
+const GObject        = imports.gi.GObject;
 const GLib           = imports.gi.GLib;
 const Meta           = imports.gi.Meta;
 const Util           = imports.misc.util;
@@ -11,7 +11,7 @@ const isWindow       = Unite.imports.helpers.isWindow;
 const isMaximized    = Unite.imports.helpers.isMaximized;
 const loadUserStyles = Unite.imports.helpers.loadUserStyles;
 
-var WindowDecoration = new Lang.Class({
+var WindowDecoration = new GObject.Class({
   Name: 'Unite.WindowDecoration',
   Extends: Base,
 

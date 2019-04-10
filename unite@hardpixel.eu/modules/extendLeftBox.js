@@ -1,11 +1,11 @@
-const Lang    = imports.lang;
 const Gi      = imports._gi;
+const GObject = imports.gi.GObject;
 const Clutter = imports.gi.Clutter;
 const Main    = imports.ui.main;
 const Unite   = imports.misc.extensionUtils.getCurrentExtension();
 const Base    = Unite.imports.module.BaseModule;
 
-var ExtendLeftBox = new Lang.Class({
+var ExtendLeftBox = new GObject.Class({
   Name: 'Unite.ExtendLeftBox',
   Extends: Base,
 

@@ -1,4 +1,4 @@
-const Lang         = imports.lang;
+const GObject      = imports.gi.GObject;
 const St           = imports.gi.St;
 const Shell        = imports.gi.Shell;
 const Meta         = imports.gi.Meta;
@@ -11,7 +11,7 @@ const loadStyles   = Unite.imports.helpers.loadStyles;
 const unloadStyles = Unite.imports.helpers.unloadStyles;
 const toggleWidget = Unite.imports.helpers.toggleWidget;
 
-var WindowButtons = new Lang.Class({
+var WindowButtons = new GObject.Class({
   Name: 'Unite.WindowButtons',
   Extends: Base,
 

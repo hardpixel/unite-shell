@@ -1,4 +1,4 @@
-const Lang        = imports.lang;
+const GObject     = imports.gi.GObject;
 const Shell       = imports.gi.Shell;
 const Gtk         = imports.gi.Gtk;
 const Meta        = imports.gi.Meta;
@@ -8,7 +8,7 @@ const Base        = Unite.imports.module.BaseModule;
 const isWindow    = Unite.imports.helpers.isWindow;
 const isMaximized = Unite.imports.helpers.isMaximized;
 
-var ApplicationMenu = new Lang.Class({
+var ApplicationMenu = new GObject.Class({
   Name: 'Unite.ApplicationMenu',
   Extends: Base,
 

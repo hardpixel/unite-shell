@@ -1,8 +1,8 @@
-const Lang        = imports.lang;
+const GObject     = imports.gi.GObject;
 const Unite       = imports.misc.extensionUtils.getCurrentExtension();
 const Convenience = Unite.imports.convenience;
 
-var SignalsHandler = new Lang.Class({
+var SignalsHandler = new GObject.Class({
   Name: 'Unite.SignalsHandler',
 
   _init(context) {
@@ -56,7 +56,7 @@ var SignalsHandler = new Lang.Class({
   }
 });
 
-var SettingsHandler = new Lang.Class({
+var SettingsHandler = new GObject.Class({
   Name: 'Unite.SettingsHandler',
   Extends: SignalsHandler,
 

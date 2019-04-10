@@ -1,4 +1,4 @@
-const Lang             = imports.lang;
+const GObject          = imports.gi.GObject;
 const Main             = imports.ui.main;
 const Unite            = imports.misc.extensionUtils.getCurrentExtension();
 const ActivateWindow   = Unite.imports.modules.activateWindow.ActivateWindow;
@@ -12,7 +12,7 @@ const WindowDecoration = Unite.imports.modules.windowDecoration.WindowDecoration
 const TopIcons         = Unite.imports.modules.topIcons.TopIcons;
 const ThemeMods        = Unite.imports.modules.themeMods.ThemeMods;
 
-var UniteExtension = new Lang.Class({
+var UniteExtension = new GObject.Class({
   Name: 'Unite.Extension',
 
   _init() {
