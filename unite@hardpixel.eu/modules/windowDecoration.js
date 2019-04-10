@@ -21,7 +21,6 @@ var WindowDecoration = new Lang.Class({
   _onInitialize() {
     this.monitorManager = Meta.MonitorManager.get();
     this._useMotifHints = versionCheck('> 3.30.2');
-    this._isWaylandComp = Meta.is_wayland_compositor();
   },
 
   _onActivate() {
@@ -135,9 +134,7 @@ var WindowDecoration = new Lang.Class({
   _toggleDecorationsMotif(winId, hide) {
     let prop  = '_MOTIF_WM_HINTS';
     let flag  = '0x2, 0x0, %s, 0x0, 0x0';
-    let value = hide
-      ? flag.format(this._isWaylandComp ? '0x2': '0x0')
-      : flag.format('0x1');
+    let value = hide ? flag.format('0x2') : flag.format('0x1');
 
     Util.spawn(['xprop', '-id', winId, '-f', prop, '32c', '-set', prop, value]);
   },
