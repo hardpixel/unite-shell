@@ -14,6 +14,7 @@ const ThemeMods        = Unite.imports.modules.themeMods.ThemeMods;
 
 var UniteExtension = new GObject.Class({
   Name: 'Unite.Extension',
+  GTypeName: 'Extension',
 
   _init() {
     this._activateWindow   = new ActivateWindow();

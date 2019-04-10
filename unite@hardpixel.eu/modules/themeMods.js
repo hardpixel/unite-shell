@@ -6,6 +6,7 @@ const Base    = Unite.imports.module.BaseModule;
 
 var ThemeMods = new GObject.Class({
   Name: 'Unite.ThemeMods',
+  GTypeName: 'ThemeMods',
   Extends: Base,
 
   _onInitialize() {

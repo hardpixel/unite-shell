@@ -5,6 +5,7 @@ const Settings = Unite.imports.handlers.SettingsHandler;
 
 var BaseModule = new GObject.Class({
   Name: 'Unite.BaseModule',
+  GTypeName: 'BaseModule',
 
   _enableKey: null,
   _enableValue: null,

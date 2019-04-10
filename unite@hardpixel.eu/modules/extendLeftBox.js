@@ -7,6 +7,7 @@ const Base    = Unite.imports.module.BaseModule;
 
 var ExtendLeftBox = new GObject.Class({
   Name: 'Unite.ExtendLeftBox',
+  GTypeName: 'ExtendLeftBox',
   Extends: Base,
 
   _enableKey: 'extend-left-box',

@@ -7,6 +7,7 @@ const toggleWidget = Unite.imports.helpers.toggleWidget;
 
 var ActivitiesButton = new GObject.Class({
   Name: 'Unite.ActivitiesButton',
+  GTypeName: 'ActivitiesButton',
   Extends: Base,
 
   _enableKey: 'hide-activities-button',
