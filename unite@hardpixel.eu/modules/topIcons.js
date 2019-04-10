@@ -38,8 +38,14 @@ var TopIcons = new Lang.Class({
 
   _createTray() {
     this._tray = new Shell.TrayManager();
-    this._tray.connect('tray-icon-added', Lang.bind(this, this._addTrayIcon));
-    this._tray.connect('tray-icon-removed', Lang.bind(this, this._removeTrayIcon));
+
+    this._tray.connect('tray-icon-added', (trayManager, icon) => {
+      this._addTrayIcon(trayManager, icon);
+    });
+
+    this._tray.connect('tray-icon-removed', (trayManager, icon) => {
+      this._removeTrayIcon(trayManager, icon);
+    });
 
     if (global.screen)
       this._tray.manage_screen(global.screen, Main.panel.actor);

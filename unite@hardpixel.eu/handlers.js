@@ -19,7 +19,9 @@ var SignalsHandler = new Lang.Class({
 
   _connectHandler(object, name, callbackObj) {
     let callback = this._getCallbackFunction(callbackObj);
-    let signalId = object.connect(name, Lang.bind(this._context, callback));
+    let signalId = object.connect(name, () => {
+      callback.call(this._context, arguments);
+    });
 
     return { object: object, signalId: signalId };
   },

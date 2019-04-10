@@ -85,7 +85,7 @@ var ApplicationMenu = new Lang.Class({
     if (!isWindow(win) || win._updateTitleID) return;
 
     win._updateTitleID = win.connect(
-      'notify::title', Lang.bind(this, this._updateTitleText)
+      'notify::title', () => { this._updateTitleText() }
     );
   },
 

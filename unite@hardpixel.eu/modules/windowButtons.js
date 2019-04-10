@@ -56,9 +56,11 @@ var WindowButtons = new Lang.Class({
     let icon   = new St.Bin({ style_class: 'icon' });
 
     button._windowAction = action;
-
     button.add_actor(icon);
-    button.connect('clicked', Lang.bind(this, this._onButtonClick));
+
+    button.connect('clicked', (actor, event) => {
+      this._onButtonClick(actor, event);
+    });
 
     this._buttonsBox.add(button);
   },
