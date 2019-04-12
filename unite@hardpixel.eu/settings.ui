@@ -20,7 +20,7 @@
         <property name="orientation">vertical</property>
         <property name="spacing">15</property>
         <child>
-          <object class="GtkBox" id="use_system_fonts_section">
+          <object class="GtkBox" id="extend_left_box_section">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">50</property>
@@ -29,7 +29,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="valign">center</property>
-                <property name="label" translatable="yes">Apply system fonts to shell interface</property>
+                <property name="label" translatable="yes">Extend top bar left box</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -38,7 +38,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkSwitch" id="use_system_fonts">
+              <object class="GtkSwitch" id="extend_left_box">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="valign">center</property>
@@ -59,7 +59,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="extend_left_box_section">
+          <object class="GtkBox" id="use_system_fonts_section">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">50</property>
@@ -68,7 +68,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="valign">center</property>
-                <property name="label" translatable="yes">Extend top bar left box</property>
+                <property name="label" translatable="yes">Apply system fonts to shell theme</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -77,7 +77,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkSwitch" id="extend_left_box">
+              <object class="GtkSwitch" id="use_system_fonts">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="valign">center</property>
@@ -381,7 +381,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="notifications_position_section">
+          <object class="GtkBox" id="show_window_title_section">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">50</property>
@@ -390,7 +390,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="valign">center</property>
-                <property name="label" translatable="yes">Notification messages position</property>
+                <property name="label" translatable="yes">Show window title in app menu</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -399,15 +399,17 @@
               </packing>
             </child>
             <child>
-              <object class="GtkComboBoxText" id="notifications_position">
+              <object class="GtkComboBoxText" id="show_window_title">
                 <property name="width_request">170</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="active_id">2</property>
                 <items>
-                  <item id="0" translatable="yes">Center</item>
-                  <item id="1" translatable="yes">Left</item>
-                  <item id="2" translatable="yes">Right</item>
+                  <item id="0" translatable="yes">Never</item>
+                  <item id="1" translatable="yes">Tiled</item>
+                  <item id="2" translatable="yes">Maximized</item>
+                  <item id="3" translatable="yes">Both</item>
+                  <item id="4" translatable="yes">Always</item>
                 </items>
               </object>
               <packing>
@@ -422,6 +424,52 @@
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">9</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="show_window_buttons_section">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">50</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">Show window buttons in top bar</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBoxText" id="show_window_buttons">
+                <property name="width_request">170</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="active_id">2</property>
+                <items>
+                  <item id="0" translatable="yes">Never</item>
+                  <item id="1" translatable="yes">Tiled</item>
+                  <item id="2" translatable="yes">Maximized</item>
+                  <item id="3" translatable="yes">Both</item>
+                  <item id="4" translatable="yes">Always</item>
+                </items>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">10</property>
           </packing>
         </child>
         <child>
@@ -481,57 +529,11 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">10</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox" id="show_window_buttons_section">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="spacing">50</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="valign">center</property>
-                <property name="label" translatable="yes">Show window buttons in top bar</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkComboBoxText" id="show_window_buttons">
-                <property name="width_request">170</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="active_id">2</property>
-                <items>
-                  <item id="0" translatable="yes">Never</item>
-                  <item id="1" translatable="yes">Tiled</item>
-                  <item id="2" translatable="yes">Maximized</item>
-                  <item id="3" translatable="yes">Both</item>
-                  <item id="4" translatable="yes">Always</item>
-                </items>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
             <property name="position">11</property>
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="show_window_title_section">
+          <object class="GtkBox" id="notifications_position_section">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">50</property>
@@ -540,7 +542,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="valign">center</property>
-                <property name="label" translatable="yes">Show window title in app menu</property>
+                <property name="label" translatable="yes">Notification messages position</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -549,17 +551,15 @@
               </packing>
             </child>
             <child>
-              <object class="GtkComboBoxText" id="show_window_title">
+              <object class="GtkComboBoxText" id="notifications_position">
                 <property name="width_request">170</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="active_id">2</property>
                 <items>
-                  <item id="0" translatable="yes">Never</item>
-                  <item id="1" translatable="yes">Tiled</item>
-                  <item id="2" translatable="yes">Maximized</item>
-                  <item id="3" translatable="yes">Both</item>
-                  <item id="4" translatable="yes">Always</item>
+                  <item id="0" translatable="yes">Center</item>
+                  <item id="1" translatable="yes">Left</item>
+                  <item id="2" translatable="yes">Right</item>
                 </items>
               </object>
               <packing>
