@@ -4,7 +4,7 @@ const Convenience = Unite.imports.convenience;
 
 var SignalsHandler = new GObject.Class({
   Name: 'Unite.SignalsHandler',
-  GTypeName: 'SignalsHandler',
+  GTypeName: 'UniteSignalsHandler',
 
   _init(context) {
     this._signals = {};
@@ -60,7 +60,7 @@ var SignalsHandler = new GObject.Class({
 
 var SettingsHandler = new GObject.Class({
   Name: 'Unite.SettingsHandler',
-  GTypeName: 'SettingsHandler',
+  GTypeName: 'UniteSettingsHandler',
   Extends: SignalsHandler,
 
   _init(context) {

@@ -10,7 +10,7 @@ const isMaximized = Unite.imports.helpers.isMaximized;
 
 var ApplicationMenu = new GObject.Class({
   Name: 'Unite.ApplicationMenu',
-  GTypeName: 'ApplicationMenu',
+  GTypeName: 'UniteApplicationMenu',
   Extends: Base,
 
   _enableKey: 'show-window-title',

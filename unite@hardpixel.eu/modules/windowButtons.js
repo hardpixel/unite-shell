@@ -13,7 +13,7 @@ const toggleWidget = Unite.imports.helpers.toggleWidget;
 
 var WindowButtons = new GObject.Class({
   Name: 'Unite.WindowButtons',
-  GTypeName: 'WindowButtons',
+  GTypeName: 'UniteWindowButtons',
   Extends: Base,
 
   _enableKey: 'show-window-buttons',

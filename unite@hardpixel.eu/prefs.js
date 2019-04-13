@@ -5,7 +5,7 @@ const Convenience = Unite.imports.convenience;
 
 var PrefsWidget = new GObject.Class({
   Name: 'Unite.PrefsWidget',
-  GTypeName: 'PrefsWidget',
+  GTypeName: 'UnitePrefsWidget',
   Extends: Gtk.Box,
 
   _init(params) {

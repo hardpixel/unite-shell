@@ -8,7 +8,7 @@ const toggleWidget = Unite.imports.helpers.toggleWidget;
 
 var DesktopName = new GObject.Class({
   Name: 'Unite.DesktopName',
-  GTypeName: 'DesktopName',
+  GTypeName: 'UniteDesktopName',
   Extends: Base,
 
   _enableKey: 'show-desktop-name',

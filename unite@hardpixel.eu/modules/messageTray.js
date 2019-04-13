@@ -7,7 +7,7 @@ const scaleSize = Unite.imports.helpers.scaleSize;
 
 var MessageTray = new GObject.Class({
   Name: 'Unite.MessageTray',
-  GTypeName: 'MessageTray',
+  GTypeName: 'UniteMessageTray',
   Extends: Base,
 
   _enableKey: 'notifications-position',

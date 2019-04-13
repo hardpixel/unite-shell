@@ -13,7 +13,7 @@ const loadUserStyles = Unite.imports.helpers.loadUserStyles;
 
 var WindowDecoration = new GObject.Class({
   Name: 'Unite.WindowDecoration',
-  GTypeName: 'WindowDecoration',
+  GTypeName: 'UniteWindowDecoration',
   Extends: Base,
 
   _enableKey: 'hide-window-titlebars',

@@ -12,7 +12,7 @@ const toggleWidget = Unite.imports.helpers.toggleWidget;
 
 var TopIcons = new GObject.Class({
   Name: 'Unite.TopIcons',
-  GTypeName: 'TopIcons',
+  GTypeName: 'UniteTopIcons',
   Extends: Base,
 
   _enableKey: 'show-legacy-tray',
