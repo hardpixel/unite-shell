@@ -59,14 +59,5 @@
 }
 
 #panel #appMenu {
-  margin-left: 8px;
-  margin-right: 3px;
-}
-
-#panel #appMenu .popup-menu-arrow {
-  margin-left: 5px;
-}
-
-#panel #appMenu .app-menu-icon > StIcon {
-  icon-shadow: none;
+  margin: 0 8px;
 }

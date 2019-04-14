@@ -12,6 +12,7 @@ var ThemeMods = new GObject.Class({
   _onInitialize() {
     this.gtkSettings = Gtk.Settings.get_default();
     this._mainStyles = Main.uiGroup.get_style();
+    this._appMenu    = Main.panel.statusArea.appMenu;
   },
 
   _onActivate() {
@@ -19,9 +20,11 @@ var ThemeMods = new GObject.Class({
     this._settings.connect('use-system-fonts', 'updateShellFont');
 
     this._setShellFont();
+    this._hideAppMenuIcons();
   },
 
   _onDeactivate() {
+    this._showAppMenuIcons();
     this._resetStyles();
   },
 
@@ -38,6 +41,16 @@ var ThemeMods = new GObject.Class({
   _updateShellFont() {
     this._resetStyles();
     this._setShellFont();
+  },
+
+  _hideAppMenuIcons() {
+    this._appMenu._arrow.hide();
+    this._appMenu._iconBox.hide();
+  },
+
+  _showAppMenuIcons() {
+    this._appMenu._arrow.show();
+    this._appMenu._iconBox.show();
   },
 
   _resetStyles() {
