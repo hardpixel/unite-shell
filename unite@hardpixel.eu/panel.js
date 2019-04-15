@@ -86,3 +86,42 @@ var TrayIndicator = new GObject.Class({
     this._icons.forEach(icon => { callback.call(null, icon) });
   }
 });
+
+var WindowControls = new GObject.Class({
+  Name: 'Unite.WindowControls',
+  GTypeName: 'UniteWindowControls',
+  Extends: PanelMenu.Button,
+
+  _init() {
+    this.parent(0.0, 'WindowControls');
+
+    this._controls = new St.BoxLayout({ style_class: 'window-controls-box' });
+    this.actor.add_child(this._controls);
+
+    this.add_style_class_name('window-controls');
+  },
+
+  _addButton(action, callback) {
+    const bin = new St.Bin({ style_class: 'icon' });
+    const btn = new St.Button({ track_hover: true });
+
+    btn._windowAction = action;
+
+    btn.add_style_class_name(`window-button ${action}`);
+    btn.add_actor(bin);
+
+    btn.connect('clicked', (actor, event) => {
+      callback.call(null, actor, event);
+    });
+
+    this._controls.add_child(btn);
+  },
+
+  addButtons(buttons, callback) {
+    buttons.forEach(action => { this._addButton(action, callback) });
+  },
+
+  setVisible(visible) {
+    this.actor.visible = visible;
+  }
+});

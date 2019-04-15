@@ -11,19 +11,20 @@
   spacing: 10px;
 }
 
-#panel .window-buttons-box {
+#panel .window-controls {
+  -natural-hpadding: 0px;
+  -minimum-hpadding: 0px;
+}
+
+#panel .window-controls-box {
   spacing: 2px;
 }
 
-#panel .window-buttons-box:first-child .window-button:first-child {
-  padding-left: 2px;
-}
-
-#panel .window-buttons-box .window-button {
+#panel .window-controls-box .window-button {
   width: 22px;
 }
 
-#panel .window-buttons-box .icon {
+#panel .window-controls-box .icon {
   background-color: transparent;
   border-radius: 0;
   box-shadow: none;

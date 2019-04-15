@@ -1,15 +1,15 @@
-const GObject      = imports.gi.GObject;
-const St           = imports.gi.St;
-const Shell        = imports.gi.Shell;
-const Meta         = imports.gi.Meta;
-const Main         = imports.ui.main;
-const Unite        = imports.misc.extensionUtils.getCurrentExtension();
-const Base         = Unite.imports.module.BaseModule;
-const isWindow     = Unite.imports.helpers.isWindow;
-const isMaximized  = Unite.imports.helpers.isMaximized;
-const loadStyles   = Unite.imports.helpers.loadStyles;
-const unloadStyles = Unite.imports.helpers.unloadStyles;
-const toggleWidget = Unite.imports.helpers.toggleWidget;
+const GObject        = imports.gi.GObject;
+const St             = imports.gi.St;
+const Shell          = imports.gi.Shell;
+const Meta           = imports.gi.Meta;
+const Main           = imports.ui.main;
+const Unite          = imports.misc.extensionUtils.getCurrentExtension();
+const Base           = Unite.imports.module.BaseModule;
+const WindowControls = Unite.imports.panel.WindowControls;
+const isWindow       = Unite.imports.helpers.isWindow;
+const isMaximized    = Unite.imports.helpers.isMaximized;
+const loadStyles     = Unite.imports.helpers.loadStyles;
+const unloadStyles   = Unite.imports.helpers.unloadStyles;
 
 var WindowButtons = new GObject.Class({
   Name: 'Unite.WindowButtons',
@@ -49,59 +49,25 @@ var WindowButtons = new GObject.Class({
     this._destroyButtons();
   },
 
-  _createButton(action) {
-    if (!this._buttonsBox) return;
-
-    let style  = `window-button  ${action}`;
-    let button = new St.Button({ style_class: style, track_hover: true });
-    let icon   = new St.Bin({ style_class: 'icon' });
-
-    button._windowAction = action;
-    button.add_actor(icon);
-
-    button.connect('clicked', (actor, event) => {
-      this._onButtonClick(actor, event);
-    });
-
-    this._buttonsBox.add(button);
-  },
-
   _createButtons() {
     let position = this._settings.get('window-buttons-position');
     let buttons  = this._settings.get('window-buttons-layout');
 
-    if (!buttons || this._buttonsActor) return;
+    if (!buttons || this._controls) return;
 
-    this._buttonsActor = new St.Bin();
-    this._buttonsBox   = new St.BoxLayout({ style_class: 'window-buttons-box' });
+    this._controls = new WindowControls();
+    this._controls.addButtons(buttons, (actor, event) => {
+      this._onButtonClick(actor, event);
+    });
 
-    this._buttonsActor.add_actor(this._buttonsBox);
-    this._buttonsActor.set_fill(true, true);
-    this._buttonsActor.hide();
-
-    buttons.forEach(action => { this._createButton(action) });
-
-    if (position == 'left') {
-      let appmenu = Main.panel.statusArea.appMenu.actor.get_parent();
-      Main.panel._leftBox.insert_child_below(this._buttonsActor, appmenu);
-    }
-
-    if (position == 'right')
-      Main.panel._rightBox.add_child(this._buttonsActor);
+    Main.panel.addToStatusArea('uniteWindowControls', this._controls, 0, position);
   },
 
   _destroyButtons() {
-    if (!this._buttonsActor) return;
-
-    this._buttonsActor.destroy();
-
-    this._buttonsBox   = null;
-    this._buttonsActor = null;
+    this._controls.destroy();
   },
 
   _updateButtons() {
-    if (!this._buttonsActor) return;
-
     this._destroyButtons();
     this._createButtons();
   },
@@ -112,23 +78,23 @@ var WindowButtons = new GObject.Class({
   },
 
   _loadTheme() {
-    if (this._buttonsTheme || !this._buttonsBox) return;
+    if (this._buttonsTheme || !this._controls) return;
 
     let theme   = this._settings.get('window-buttons-theme');
     let cssPath = `themes/${theme}/stylesheet.css`;
 
     this._buttonsTheme = loadStyles(cssPath);
-    this._buttonsBox.add_style_class_name(`${theme}-buttons`);
+    this._controls.add_style_class_name(`${theme}-buttons`);
   },
 
   _unloadTheme() {
-    if (!this._buttonsTheme || !this._buttonsBox) return;
+    if (!this._buttonsTheme || !this._controls) return;
 
     let theme   = this._settings.get('window-buttons-theme');
     let gioFile = this._buttonsTheme;
 
     this._buttonsTheme = unloadStyles(gioFile);
-    this._buttonsBox.remove_style_class_name(`${theme}-buttons`);
+    this._controls.remove_style_class_name(`${theme}-buttons`);
   },
 
   _onButtonClick(actor, event) {
@@ -161,7 +127,7 @@ var WindowButtons = new GObject.Class({
   },
 
   _toggleButtons() {
-    if (!this._buttonsActor) return;
+    if (!this._controls) return;
 
     let focusWindow = global.display.focus_window;
     let overview    = Main.overview.visibleTarget;
@@ -181,6 +147,6 @@ var WindowButtons = new GObject.Class({
       visible = running && !overview;
     }
 
-    toggleWidget(this._buttonsActor, !visible);
+    this._controls.setVisible(visible);
   }
 });
