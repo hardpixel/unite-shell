@@ -30,15 +30,3 @@
   box-shadow: none;
   border: 0;
 }
-
-#panel .tray-icons-box {
-  spacing: 10px;
-}
-
-#panel .desktop-name {
-  padding: 0 8px;
-}
-
-#panel #appMenu {
-  margin: 0 8px;
-}
