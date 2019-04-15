@@ -119,6 +119,6 @@ var WindowControls = new Lang.Class({
   },
 
   setVisible(visible) {
-    this.actor.visible = visible;
+    this.container.visible = visible;
   }
 });

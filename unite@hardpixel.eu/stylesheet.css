@@ -16,8 +16,8 @@
 }
 
 #panel .window-controls {
-  -natural-hpadding: 4px;
-  -minimum-hpadding: 2px;
+  -natural-hpadding: 0px;
+  -minimum-hpadding: 0px;
 }
 
 #panel .window-controls-box {
@@ -28,9 +28,21 @@
   width: 22px;
 }
 
+#panelLeft .window-controls-box:first-child .window-button:first-child {
+  padding-left: 4px;
+}
+
+#panelRight .window-controls-box:last-child .window-button:last-child {
+  padding-right: 4px;
+}
+
 #panel .window-controls-box .icon {
   background-color: transparent;
   border-radius: 0;
   box-shadow: none;
   border: 0;
+}
+
+#panel #appMenu {
+  margin: 0 8px;
 }
