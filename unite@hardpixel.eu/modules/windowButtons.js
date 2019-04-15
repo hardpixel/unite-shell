@@ -50,21 +50,31 @@ var WindowButtons = new GObject.Class({
   },
 
   _createButtons() {
-    let position = this._settings.get('window-buttons-position');
-    let buttons  = this._settings.get('window-buttons-layout');
+    let buttons = this._settings.get('window-buttons-layout');
+    let side    = this._settings.get('window-buttons-position');
+    let index   = side == 'left' ? 1 : -1;
 
     if (!buttons || this._controls) return;
 
     this._controls = new WindowControls();
+
     this._controls.addButtons(buttons, (actor, event) => {
       this._onButtonClick(actor, event);
     });
 
-    Main.panel.addToStatusArea('uniteWindowControls', this._controls, 0, position);
+    Main.panel.addToStatusArea('uniteWindowControls', this._controls, index, side);
+
+    if (side == 'left')  {
+      const appMenu = Main.panel.statusArea.appMenu;
+      Main.panel._leftBox.set_child_below_sibling(this._controls, appMenu);
+    }
   },
 
   _destroyButtons() {
+    if (!this._controls) return;
+
     this._controls.destroy();
+    this._controls = null;
   },
 
   _updateButtons() {

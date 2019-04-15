@@ -28,12 +28,13 @@ var DesktopName = new GObject.Class({
     this._settings.connect('desktop-name-text', 'setLabelText');
 
     this._createLabel();
-    this._setLabelText();
-    this._toggleLabel();
   },
 
   _onDeactivate() {
+    if (!this._label) return;
+
     this._label.destroy();
+    this._label = null;
   },
 
   _visibleWindows() {
@@ -67,6 +68,9 @@ var DesktopName = new GObject.Class({
     if (this._label) return;
 
     this._label = new DesktopLabel();
+    this._setLabelText();
+    this._toggleLabel();
+
     Main.panel.addToStatusArea('uniteDesktopLabel', this._label, 1, 'left');
   }
 });
