@@ -1,3 +1,7 @@
+#panel.system-fonts {
+  font-size: 15px;
+}
+
 #panel .panel-button {
   -natural-hpadding: 8px;
   -minimum-hpadding: 6px;

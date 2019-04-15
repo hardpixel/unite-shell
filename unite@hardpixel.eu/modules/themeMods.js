@@ -32,9 +32,9 @@ var ThemeMods = new GObject.Class({
   },
 
   _onDeactivate() {
+    this._resetShellFont();
     this._showAppMenuIcon();
     this._resetPanelArrows();
-    this._resetStyles();
   },
 
   _setShellFont() {
@@ -45,10 +45,16 @@ var ThemeMods = new GObject.Class({
     const cssFont = gtkFont.replace(/\s\d+$/, '');
 
     Main.uiGroup.set_style(`font-family: ${cssFont};`);
+    Main.panel._addStyleClassName('system-fonts');
+  },
+
+  _resetShellFont() {
+    Main.uiGroup.set_style(this._mainStyles);
+    Main.panel._removeStyleClassName('system-fonts');
   },
 
   _updateShellFont() {
-    this._resetStyles();
+    this._resetShellFont();
     this._setShellFont();
   },
 
@@ -112,9 +118,5 @@ var ThemeMods = new GObject.Class({
         delete widget._arrowHidden;
       }
     }
-  },
-
-  _resetStyles() {
-    Main.uiGroup.set_style(this._mainStyles);
   }
 });
