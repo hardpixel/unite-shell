@@ -51,11 +51,15 @@ var TopIcons = new GObject.Class({
   },
 
   _createContainer() {
+    if (this._indicators) return;
+
     this._indicators = new TrayIndicator({ size: scaleSize(20) });
     Main.panel.addToStatusArea('uniteTrayIndicator', this._indicators);
   },
 
   _destroyContainer() {
+    if (!this._indicators) return;
+
     this._indicators.destroy();
     this._indicators = null;
   },
@@ -77,6 +81,8 @@ var TopIcons = new GObject.Class({
   },
 
   _desaturateIcons() {
+    if (!this._indicators) return;
+
     this._indicators.forEach(icon => { this._desaturateIcon(icon) });
   }
 });
