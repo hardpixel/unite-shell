@@ -1,12 +1,11 @@
+const Lang      = imports.lang;
 const St        = imports.gi.St;
-const GObject   = imports.gi.GObject;
 const Clutter   = imports.gi.Clutter;
 const Main      = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 
-var DesktopLabel = new GObject.Class({
+var DesktopLabel = new Lang.Class({
   Name: 'Unite.DesktopLabel',
-  GTypeName: 'UniteDesktopLabel',
   Extends: PanelMenu.Button,
 
   _init(params = { text: 'Desktop' }) {
@@ -34,9 +33,8 @@ var DesktopLabel = new GObject.Class({
   }
 });
 
-var TrayIndicator = new GObject.Class({
+var TrayIndicator = new Lang.Class({
   Name: 'Unite.TrayIndicator',
-  GTypeName: 'UniteTrayIndicator',
   Extends: PanelMenu.Button,
 
   _init(params = { size: 20 }) {
@@ -87,9 +85,8 @@ var TrayIndicator = new GObject.Class({
   }
 });
 
-var WindowControls = new GObject.Class({
+var WindowControls = new Lang.Class({
   Name: 'Unite.WindowControls',
-  GTypeName: 'UniteWindowControls',
   Extends: PanelMenu.Button,
 
   _init() {
@@ -98,7 +95,7 @@ var WindowControls = new GObject.Class({
     this._controls = new St.BoxLayout({ style_class: 'window-controls-box' });
     this.actor.add_child(this._controls);
 
-    this.add_style_class_name('window-controls');
+    this.actor.add_style_class_name('window-controls');
   },
 
   _addButton(action, callback) {
