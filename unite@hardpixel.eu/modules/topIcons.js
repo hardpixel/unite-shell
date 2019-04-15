@@ -1,14 +1,12 @@
-const System       = imports.system;
-const GObject      = imports.gi.GObject;
-const Clutter      = imports.gi.Clutter;
-const Shell        = imports.gi.Shell;
-const St           = imports.gi.St;
-const Main         = imports.ui.main;
-const PanelMenu    = imports.ui.panelMenu;
-const Unite        = imports.misc.extensionUtils.getCurrentExtension();
-const Base         = Unite.imports.module.BaseModule;
-const scaleSize    = Unite.imports.helpers.scaleSize;
-const toggleWidget = Unite.imports.helpers.toggleWidget;
+const System        = imports.system;
+const GObject       = imports.gi.GObject;
+const Clutter       = imports.gi.Clutter;
+const Shell         = imports.gi.Shell;
+const Main          = imports.ui.main;
+const Unite         = imports.misc.extensionUtils.getCurrentExtension();
+const Base          = Unite.imports.module.BaseModule;
+const TrayIndicator = Unite.imports.panel.TrayIndicator;
+const scaleSize     = Unite.imports.helpers.scaleSize;
 
 var TopIcons = new GObject.Class({
   Name: 'Unite.TopIcons',
@@ -18,11 +16,6 @@ var TopIcons = new GObject.Class({
   _enableKey: 'show-legacy-tray',
   _enableValue: true,
 
-  _onInitialize() {
-    this._icons = [];
-    this._iSize = scaleSize(20);
-  },
-
   _onActivate() {
     this._settings.connect('greyscale-tray-icons', 'desaturateIcons');
 
@@ -31,8 +24,6 @@ var TopIcons = new GObject.Class({
   },
 
   _onDeactivate() {
-    this._icons = [];
-
     this._destroyContainer();
     this._destroyTray();
   },
@@ -41,11 +32,12 @@ var TopIcons = new GObject.Class({
     this._tray = new Shell.TrayManager();
 
     this._tray.connect('tray-icon-added', (trayManager, icon) => {
-      this._addTrayIcon(trayManager, icon);
+      this._indicators.addIcon(icon);
+      this._desaturateIcon(icon);
     });
 
     this._tray.connect('tray-icon-removed', (trayManager, icon) => {
-      this._removeTrayIcon(trayManager, icon);
+      this._indicators.removeIcon(icon);
     });
 
     if (global.screen)
@@ -60,66 +52,13 @@ var TopIcons = new GObject.Class({
   },
 
   _createContainer() {
-    this._iconsBoxLayout = new St.BoxLayout({ style_class: 'tray-icons-box' });
-    this._iconsContainer = new PanelMenu.ButtonBox({ visible: false });
-    this._iconsContainer.actor.add_actor(this._iconsBoxLayout);
-
-    let parent = this._iconsContainer.actor.get_parent();
-    parent.remove_actor(this._iconsContainer.actor);
-
-    let agmenu = Main.panel.statusArea.aggregateMenu.actor.get_parent();
-    Main.panel._rightBox.insert_child_below(this._iconsContainer.actor, agmenu);
+    this._indicators = new TrayIndicator({ size: scaleSize(20) });
+    Main.panel.addToStatusArea('uniteTrayIndicator', this._indicators);
   },
 
   _destroyContainer() {
-    if (!this._iconsContainer) return;
-
-    this._iconsContainer.actor.destroy();
-
-    this._iconsContainer = null;
-    this._iconsBoxLayout = null;
-  },
-
-  _addTrayIcon(trayManager, icon) {
-    this._icons.push(icon);
-
-    let buttonMask = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE;
-    let iconButton = new St.Button({ child: icon, button_mask: buttonMask });
-
-    icon.connect('destroy', function() {
-      iconButton.destroy();
-    });
-
-    iconButton.connect('button-release-event', function(actor, event) {
-      icon.click(event);
-    });
-
-    this._iconsBoxLayout.insert_child_at_index(iconButton, 0);
-
-    this._transformIcon(icon);
-    this._toggleContainer();
-  },
-
-  _removeTrayIcon(trayManager, icon) {
-    let iconContainer = icon.get_parent() || icon;
-    iconContainer.destroy();
-
-    let iconindex = this._icons.indexOf(icon);
-    this._icons.splice(iconindex, 1);
-
-    this._toggleContainer();
-  },
-
-  _toggleContainer() {
-    let hidden = this._iconsBoxLayout.get_n_children() == 0;
-    toggleWidget(this._iconsContainer.actor, hidden);
-  },
-
-  _transformIcon(icon) {
-    icon.set_reactive(true);
-    icon.set_size(this._iSize, this._iSize);
-
-    this._desaturateIcon(icon);
+    this._indicators.destroy();
+    this._indicators = null;
   },
 
   _desaturateIcon(icon) {
@@ -139,6 +78,6 @@ var TopIcons = new GObject.Class({
   },
 
   _desaturateIcons() {
-    this._icons.forEach(icon => { this._desaturateIcon(icon) });
+    this._indicators.forEach(icon => { this._desaturateIcon(icon) });
   }
 });
