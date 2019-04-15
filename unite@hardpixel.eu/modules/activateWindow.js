@@ -4,8 +4,7 @@ const Unite   = imports.misc.extensionUtils.getCurrentExtension();
 const Base    = Unite.imports.module.BaseModule;
 
 var ActivateWindow = new GObject.Class({
-  Name: 'Unite.ActivateWindow',
-  GTypeName: 'UniteActivateWindow',
+  Name: 'UniteActivateWindow',
   Extends: Base,
 
   _enableKey: 'autofocus-windows',

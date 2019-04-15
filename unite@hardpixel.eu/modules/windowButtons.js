@@ -12,8 +12,7 @@ const loadStyles     = Unite.imports.helpers.loadStyles;
 const unloadStyles   = Unite.imports.helpers.unloadStyles;
 
 var WindowButtons = new GObject.Class({
-  Name: 'Unite.WindowButtons',
-  GTypeName: 'UniteWindowButtons',
+  Name: 'UniteWindowButtons',
   Extends: Base,
 
   _enableKey: 'show-window-buttons',

@@ -5,7 +5,7 @@ const Main      = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 
 var DesktopLabel = new Lang.Class({
-  Name: 'Unite.DesktopLabel',
+  Name: 'UniteDesktopLabel',
   Extends: PanelMenu.Button,
 
   _init(params = { text: 'Desktop' }) {
@@ -34,7 +34,7 @@ var DesktopLabel = new Lang.Class({
 });
 
 var TrayIndicator = new Lang.Class({
-  Name: 'Unite.TrayIndicator',
+  Name: 'UniteTrayIndicator',
   Extends: PanelMenu.Button,
 
   _init(params = { size: 20 }) {
@@ -86,7 +86,7 @@ var TrayIndicator = new Lang.Class({
 });
 
 var WindowControls = new Lang.Class({
-  Name: 'Unite.WindowControls',
+  Name: 'UniteWindowControls',
   Extends: PanelMenu.Button,
 
   _init() {

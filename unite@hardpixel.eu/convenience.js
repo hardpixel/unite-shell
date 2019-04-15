@@ -5,8 +5,7 @@ const Config  = imports.misc.config;
 const Unite   = imports.misc.extensionUtils.getCurrentExtension();
 
 var SettingsManager = new GObject.Class({
-  Name: 'Unite.Settings',
-  GTypeName: 'UniteSettings',
+  Name: 'UniteSettings',
   Extends: Gio.Settings,
   DEFAULT_BINDING: Gio.SettingsBindFlags.DEFAULT,
 
@@ -47,8 +46,7 @@ var SettingsManager = new GObject.Class({
 });
 
 var PreferencesManager = new GObject.Class({
-  Name: 'Unite.Preferences',
-  GTypeName: 'UnitePreferences',
+  Name: 'UnitePreferences',
   Extends: Gio.Settings,
 
   get window_buttons_position() {

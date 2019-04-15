@@ -6,8 +6,7 @@ const Base         = Unite.imports.module.BaseModule;
 const DesktopLabel = Unite.imports.panel.DesktopLabel;
 
 var DesktopName = new GObject.Class({
-  Name: 'Unite.DesktopName',
-  GTypeName: 'UniteDesktopName',
+  Name: 'UniteDesktopName',
   Extends: Base,
 
   _enableKey: 'show-desktop-name',

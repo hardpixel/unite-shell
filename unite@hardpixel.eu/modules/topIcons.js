@@ -9,8 +9,7 @@ const TrayIndicator = Unite.imports.panel.TrayIndicator;
 const scaleSize     = Unite.imports.helpers.scaleSize;
 
 var TopIcons = new GObject.Class({
-  Name: 'Unite.TopIcons',
-  GTypeName: 'UniteTopIcons',
+  Name: 'UniteTopIcons',
   Extends: Base,
 
   _enableKey: 'show-legacy-tray',

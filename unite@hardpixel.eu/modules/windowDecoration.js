@@ -12,8 +12,7 @@ const isMaximized    = Unite.imports.helpers.isMaximized;
 const loadUserStyles = Unite.imports.helpers.loadUserStyles;
 
 var WindowDecoration = new GObject.Class({
-  Name: 'Unite.WindowDecoration',
-  GTypeName: 'UniteWindowDecoration',
+  Name: 'UniteWindowDecoration',
   Extends: Base,
 
   _enableKey: 'hide-window-titlebars',

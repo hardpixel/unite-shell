@@ -4,8 +4,7 @@ const Signals  = Unite.imports.handlers.SignalsHandler;
 const Settings = Unite.imports.handlers.SettingsHandler;
 
 var BaseModule = new GObject.Class({
-  Name: 'Unite.BaseModule',
-  GTypeName: 'UniteBaseModule',
+  Name: 'UniteBaseModule',
 
   _enableKey: null,
   _enableValue: null,

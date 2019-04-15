@@ -5,8 +5,7 @@ const Unite   = imports.misc.extensionUtils.getCurrentExtension();
 const Base    = Unite.imports.module.BaseModule;
 
 var ActivitiesButton = new GObject.Class({
-  Name: 'Unite.ActivitiesButton',
-  GTypeName: 'UniteActivitiesButton',
+  Name: 'UniteActivitiesButton',
   Extends: Base,
 
   _enableKey: 'hide-activities-button',
