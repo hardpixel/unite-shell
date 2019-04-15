@@ -1,9 +1,8 @@
-const GObject      = imports.gi.GObject;
-const Shell        = imports.gi.Shell;
-const Main         = imports.ui.main;
-const Unite        = imports.misc.extensionUtils.getCurrentExtension();
-const Base         = Unite.imports.module.BaseModule;
-const toggleWidget = Unite.imports.helpers.toggleWidget;
+const GObject = imports.gi.GObject;
+const Shell   = imports.gi.Shell;
+const Main    = imports.ui.main;
+const Unite   = imports.misc.extensionUtils.getCurrentExtension();
+const Base    = Unite.imports.module.BaseModule;
 
 var ActivitiesButton = new GObject.Class({
   Name: 'Unite.ActivitiesButton',
@@ -45,6 +44,6 @@ var ActivitiesButton = new GObject.Class({
     if (!hidden && this._settings.get('show-desktop-name'))
       hidden = !appMenu && !overview;
 
-    toggleWidget(this._container, hidden);
+    this._container.visible = !hidden;
   }
 });
