@@ -65,8 +65,10 @@ var WindowButtons = new GObject.Class({
     Main.panel.addToStatusArea('uniteWindowControls', this._controls, index, side);
 
     if (side == 'left')  {
-      const appMenu = Main.panel.statusArea.appMenu;
-      Main.panel._leftBox.set_child_below_sibling(this._controls, appMenu);
+      const appMenu = Main.panel.statusArea.appMenu.actor.get_parent();
+      const buttons = this._controls.actor.get_parent();
+
+      Main.panel._leftBox.set_child_below_sibling(buttons, appMenu);
     }
   },
 
@@ -94,7 +96,7 @@ var WindowButtons = new GObject.Class({
     let cssPath = `themes/${theme}/stylesheet.css`;
 
     this._buttonsTheme = loadStyles(cssPath);
-    this._controls.add_style_class_name(`${theme}-buttons`);
+    this._controls.actor.add_style_class_name(`${theme}-buttons`);
   },
 
   _unloadTheme() {
@@ -104,7 +106,7 @@ var WindowButtons = new GObject.Class({
     let gioFile = this._buttonsTheme;
 
     this._buttonsTheme = unloadStyles(gioFile);
-    this._controls.remove_style_class_name(`${theme}-buttons`);
+    this._controls.actor.remove_style_class_name(`${theme}-buttons`);
   },
 
   _onButtonClick(actor, event) {
