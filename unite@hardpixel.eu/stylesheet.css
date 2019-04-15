@@ -16,8 +16,8 @@
 }
 
 #panel .window-controls {
-  -natural-hpadding: 0px;
-  -minimum-hpadding: 0px;
+  -natural-hpadding: 4px;
+  -minimum-hpadding: 2px;
 }
 
 #panel .window-controls-box {
