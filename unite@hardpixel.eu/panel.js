@@ -28,7 +28,7 @@ var DesktopLabel = new Lang.Class({
   },
 
   setVisible(visible) {
-    this.actor.visible = visible;
+    this.container.visible = visible;
     this.appMenu.container.visible = !visible;
   }
 });
