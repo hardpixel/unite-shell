@@ -69,7 +69,10 @@ var ThemeMods = new GObject.Class({
     let arrow = widget._arrow;
 
     if (!arrow) {
-      const actor = widget.get_last_child();
+      const item  = widget.get_children ? widget : widget.actor;
+      const last  = item.get_n_children() - 1;
+      const actor = item.get_children()[last];
+
       if (!actor) return;
 
       if (actor.has_style_class_name && actor.has_style_class_name('popup-menu-arrow'))
