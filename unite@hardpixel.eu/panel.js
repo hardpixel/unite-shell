@@ -1,6 +1,38 @@
 const St        = imports.gi.St;
 const GObject   = imports.gi.GObject;
+const Clutter   = imports.gi.Clutter;
+const Main      = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
+
+var DesktopLabel = new GObject.Class({
+  Name: 'Unite.DesktopLabel',
+  GTypeName: 'UniteDesktopLabel',
+  Extends: PanelMenu.Button,
+
+  _init(params = { text: 'Desktop' }) {
+    this.params  = params;
+    this.appMenu = Main.panel.statusArea.appMenu;
+
+    this.parent(0.0, 'DesktopLabel');
+
+    this._label = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
+    this.actor.add_actor(this._label);
+
+    this.actor.reactive = false;
+    this.actor.label_actor = this._label;
+
+    this.setText(params.text);
+  },
+
+  setText(text) {
+    this._label.set_text(text);
+  },
+
+  setVisible(visible) {
+    this.actor.visible = visible;
+    this.appMenu.container.visible = !visible;
+  }
+});
 
 var TrayIndicator = new GObject.Class({
   Name: 'Unite.TrayIndicator',
