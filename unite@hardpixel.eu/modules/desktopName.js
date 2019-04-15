@@ -67,9 +67,9 @@ var DesktopName = new GObject.Class({
     if (this._label) return;
 
     this._label = new DesktopLabel();
+    Main.panel.addToStatusArea('uniteDesktopLabel', this._label, 1, 'left');
+
     this._setLabelText();
     this._toggleLabel();
-
-    Main.panel.addToStatusArea('uniteDesktopLabel', this._label, 1, 'left');
   }
 });
