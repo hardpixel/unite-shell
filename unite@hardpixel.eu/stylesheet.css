@@ -29,11 +29,11 @@
 }
 
 #panelLeft .window-controls-box:first-child .window-button:first-child {
-  padding-left: 4px;
+  padding-left: 3px;
 }
 
 #panelRight .window-controls-box:last-child .window-button:last-child {
-  padding-right: 4px;
+  padding-right: 3px;
 }
 
 #panel .window-controls-box .icon {
