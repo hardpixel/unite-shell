@@ -18,11 +18,8 @@ var SignalsHandler = new GObject.Class({
   },
 
   _connectHandler(object, name, callbackObj) {
-    let _context = this._context;
     let callback = this._getCallbackFunction(callbackObj);
-    let signalId = object.connect(name, function() {
-      callback.apply(_context, arguments);
-    });
+    let signalId = object.connect(name, callback.bind(this._context));
 
     return { object: object, signalId: signalId };
   },
