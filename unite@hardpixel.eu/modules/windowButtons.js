@@ -89,23 +89,21 @@ var WindowButtons = new GObject.Class({
   },
 
   _loadTheme() {
-    if (this._buttonsTheme || !this._controls) return;
+    if (this._themeFile || !this._controls) return;
 
-    let theme   = this._settings.get('window-buttons-theme');
-    let cssPath = `themes/${theme}/stylesheet.css`;
+    this._themeName = this._settings.get('window-buttons-theme');
+    this._themeFile = loadStyles(`themes/${this._themeName}/stylesheet.css`);
 
-    this._buttonsTheme = loadStyles(cssPath);
-    this._controls.actor.add_style_class_name(`${theme}-buttons`);
+    this._controls.actor.add_style_class_name(`${this._themeName}-buttons`);
   },
 
   _unloadTheme() {
-    if (!this._buttonsTheme || !this._controls) return;
+    if (!this._themeFile || !this._controls) return;
 
-    let theme   = this._settings.get('window-buttons-theme');
-    let gioFile = this._buttonsTheme;
+    this._controls.actor.remove_style_class_name(`${this._themeName}-buttons`);
 
-    this._buttonsTheme = unloadStyles(gioFile);
-    this._controls.actor.remove_style_class_name(`${theme}-buttons`);
+    this._themeName = this._settings.get('window-buttons-theme');
+    this._themeFile = unloadStyles(this._themeFile);
   },
 
   _onButtonClick(actor, event) {
