@@ -10,19 +10,20 @@ var SettingsManager = new GObject.Class({
   DEFAULT_BINDING: Gio.SettingsBindFlags.DEFAULT,
 
   _types: {
-    'autofocus-windows':      'boolean',
-    'hide-activities-button': 'enum',
-    'show-window-title':      'enum',
-    'show-desktop-name':      'boolean',
-    'desktop-name-text':      'string',
-    'extend-left-box':        'boolean',
-    'notifications-position': 'enum',
-    'use-system-fonts':       'boolean',
-    'show-legacy-tray':       'boolean',
-    'greyscale-tray-icons':   'boolean',
-    'show-window-buttons':    'enum',
-    'window-buttons-theme':   'enum',
-    'hide-window-titlebars':  'enum'
+    'autofocus-windows':          'boolean',
+    'hide-activities-button':     'enum',
+    'show-window-title':          'enum',
+    'show-desktop-name':          'boolean',
+    'desktop-name-text':          'string',
+    'extend-left-box':            'boolean',
+    'notifications-position':     'enum',
+    'use-system-fonts':           'boolean',
+    'show-legacy-tray':           'boolean',
+    'greyscale-tray-icons':       'boolean',
+    'show-window-buttons':        'enum',
+    'window-buttons-theme':       'enum',
+    'hide-window-titlebars':      'enum',
+    'restrict-to-primary-screen': 'boolean'
   },
 
   exists(key) {

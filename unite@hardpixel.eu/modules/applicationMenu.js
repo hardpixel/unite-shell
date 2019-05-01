@@ -29,6 +29,8 @@ var ApplicationMenu = new GObject.Class({
     this._signals.connect(this.monitorManager, 'monitors-changed', 'updateTitle');
     this._signals.connect(this.gtkSettings, 'notify::gtk-shell-shows-app-menu', 'showsMenu');
 
+    this._settings.connect('restrict-to-primary-screen', 'enableShowsMenu');
+
     this._enableShowsMenu();
     this._updateTitle();
   },
@@ -97,12 +99,13 @@ var ApplicationMenu = new GObject.Class({
   },
 
   _updateTitleText() {
-    let focusApp    = this.winTracker.focus_app;
-    let focusWindow = global.display.focus_window;
-    let current     = this.appMenu._label.get_text();
-    let maximized   = isMaximized(focusWindow, this._setting);
-    let always      = this._setting == 'always' && focusWindow;
-    let title       = null;
+    let focusApp          = this.winTracker.focus_app;
+    let focusWindow       = global.display.focus_window;
+    let current           = this.appMenu._label.get_text();
+    let restrictToPrimary = this._settings.get('restrict-to-primary-screen');
+    let maximized         = isMaximized(focusWindow, this._setting, restrictToPrimary);
+    let always            = this._setting == 'always' && focusWindow;
+    let title             = null;
 
     if (always || maximized)
       title = focusWindow.title;
