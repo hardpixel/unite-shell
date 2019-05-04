@@ -29,6 +29,8 @@ var ApplicationMenu = new GObject.Class({
     this._signals.connect(this.monitorManager, 'monitors-changed', 'updateTitle');
     this._signals.connect(this.gtkSettings, 'notify::gtk-shell-shows-app-menu', 'showsMenu');
 
+    this._settings.connect('restrict-to-primary-screen', 'enableShowsMenu');
+
     this._enableShowsMenu();
     this._updateTitle();
   },

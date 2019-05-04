@@ -33,6 +33,7 @@ var WindowButtons = new GObject.Class({
 
     this._settings.connect('window-buttons-theme', 'updateTheme');
     this._settings.connect('button-layout', 'updateButtons');
+    this._settings.connect('restrict-to-primary-screen', 'updateButtons');
 
     this._createButtons();
     this._toggleButtons();
@@ -144,8 +145,8 @@ var WindowButtons = new GObject.Class({
     let visible     = false;
 
     if (!overview && valid) {
-      let maxed   = isMaximized(focusWindow, this._setting);
-      let always  = this._setting == 'always' && focusWindow;
+      let maxed  = isMaximized(focusWindow, this._setting);
+      let always = this._setting == 'always' && focusWindow;
 
       visible = always || maxed;
     } else {

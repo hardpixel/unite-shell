@@ -91,6 +91,11 @@
       <summary>Set the top bar desktop name text.</summary>
     </key>
 
+    <key name="restrict-to-primary-screen" type="b">
+      <default>true</default>
+      <summary>Restrict functionalities to the primary screen.</summary>
+    </key>
+
     <key name="show-window-title" enum="org.gnome.shell.extensions.unite.showTitle">
       <default>"maximized"</default>
       <summary>Use window title to replace the app-menu label.</summary>
@@ -120,5 +125,6 @@
       <default>"auto"</default>
       <summary>Hide top bar activities button.</summary>
     </key>
+
   </schema>
 </schemalist>

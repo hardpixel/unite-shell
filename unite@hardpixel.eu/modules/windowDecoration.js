@@ -30,6 +30,7 @@ var WindowDecoration = new GObject.Class({
 
     this._settings.connect('hide-window-titlebars', 'updateUserStyles');
     this._settings.connect('button-layout', 'updateUserStyles');
+    this._settings.connect('restrict-to-primary-screen', 'undecorateWindows');
 
     this._updateUserStyles();
     this._undecorateWindows();
