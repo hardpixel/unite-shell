@@ -179,7 +179,7 @@ var WindowDecoration = new GObject.Class({
     if (!this._handleWindow(win))
       return;
 
-    if (isMaximized(win, this._setting, this._settings.get('restrict-to-primary-screen')))
+    if (isMaximized(win, this._setting))
       this._hideTitlebar(win);
     else
       this._showTitlebar(win);

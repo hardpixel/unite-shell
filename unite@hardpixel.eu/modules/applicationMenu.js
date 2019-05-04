@@ -99,13 +99,12 @@ var ApplicationMenu = new GObject.Class({
   },
 
   _updateTitleText() {
-    let focusApp          = this.winTracker.focus_app;
-    let focusWindow       = global.display.focus_window;
-    let current           = this.appMenu._label.get_text();
-    let restrictToPrimary = this._settings.get('restrict-to-primary-screen');
-    let maximized         = isMaximized(focusWindow, this._setting, restrictToPrimary);
-    let always            = this._setting == 'always' && focusWindow;
-    let title             = null;
+    let focusApp    = this.winTracker.focus_app;
+    let focusWindow = global.display.focus_window;
+    let current     = this.appMenu._label.get_text();
+    let maximized   = isMaximized(focusWindow, this._setting);
+    let always      = this._setting == 'always' && focusWindow;
+    let title       = null;
 
     if (always || maximized)
       title = focusWindow.title;

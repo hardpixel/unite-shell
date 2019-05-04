@@ -145,9 +145,8 @@ var WindowButtons = new GObject.Class({
     let visible     = false;
 
     if (!overview && valid) {
-      let restrictToPrimary = this._settings.get('restrict-to-primary-screen');
-      let maxed             = isMaximized(focusWindow, this._setting, restrictToPrimary);
-      let always            = this._setting == 'always' && focusWindow;
+      let maxed  = isMaximized(focusWindow, this._setting);
+      let always = this._setting == 'always' && focusWindow;
 
       visible = always || maxed;
     } else {
