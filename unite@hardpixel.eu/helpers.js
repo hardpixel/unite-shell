@@ -110,14 +110,13 @@ function isMaximized(win, matchState) {
 
   let flags         = Meta.MaximizeFlags;
   let maximized     = win.get_maximized();
-  let primaryScreen = win.is_on_primary_monitor() || !(Settings.getSetting('restrict-to-primary-screen'));
   let tileMaximized = maximized == flags.HORIZONTAL || maximized == flags.VERTICAL;
   let fullMaximized = maximized == flags.BOTH;
   let bothMaximized = fullMaximized || tileMaximized;
 
   switch (matchState) {
-    case 'both':      return primaryScreen && bothMaximized;
-    case 'maximized': return primaryScreen && fullMaximized;
-    case 'tiled':     return primaryScreen && tileMaximized;
+    case 'both':      return bothMaximized;
+    case 'maximized': return fullMaximized;
+    case 'tiled':     return tileMaximized;
   }
 }
