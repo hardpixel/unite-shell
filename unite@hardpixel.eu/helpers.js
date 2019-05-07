@@ -1,9 +1,10 @@
-const Gio    = imports.gi.Gio;
-const GLib   = imports.gi.GLib;
-const St     = imports.gi.St;
-const Meta   = imports.gi.Meta;
-const Config = imports.misc.config;
-const Unite  = imports.misc.extensionUtils.getCurrentExtension();
+const Gio      = imports.gi.Gio;
+const GLib     = imports.gi.GLib;
+const St       = imports.gi.St;
+const Meta     = imports.gi.Meta;
+const Config   = imports.misc.config;
+const Unite    = imports.misc.extensionUtils.getCurrentExtension();
+const Settings = Unite.imports.convenience.getSettings();
 
 const USER_CONFIG = GLib.get_user_config_dir();
 const USER_STYLES = `${USER_CONFIG}/gtk-3.0/gtk.css`;
@@ -107,7 +108,6 @@ function isWindow(win) {
 function isMaximized(win, matchState) {
   if (!win) return;
 
-  const Settings    = Unite.imports.convenience.getSettings();
   let flags         = Meta.MaximizeFlags;
   let maximized     = win.get_maximized();
   let primaryScreen = win.is_on_primary_monitor() || !(Settings.getSetting('restrict-to-primary-screen'));
