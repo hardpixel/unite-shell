@@ -117,12 +117,10 @@ var WindowDecoration = new GObject.Class({
     let winId = this._getWindowXID(win);
     if (!winId) return;
 
-    GLib.idle_add(0, () => {
-      if (this._useMotifHints)
-        this._toggleDecorationsMotif(winId, hide);
-      else
-        this._toggleDecorationsGtk(winId, hide);
-    });
+    if (this._useMotifHints)
+      this._toggleDecorationsMotif(winId, hide);
+    else
+      this._toggleDecorationsGtk(winId, hide);
   },
 
   _toggleDecorationsGtk(winId, hide) {
