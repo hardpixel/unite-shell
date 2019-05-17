@@ -96,7 +96,7 @@ var ThemeMods = new GObject.Class({
 
   _removePanelArrows() {
     for (const [name, widget] of Object.entries(Main.panel.statusArea)) {
-      if (name != 'aggregateMenu' && !widget._arrowHandled) {
+      if (name != 'aggregateMenu' && widget && !widget._arrowHandled) {
         widget._arrowHandled = true;
         this._toggleWidgetArrow(widget, true);
       }
@@ -105,7 +105,7 @@ var ThemeMods = new GObject.Class({
 
   _resetPanelArrows() {
     for (const [name, widget] of Object.entries(Main.panel.statusArea)) {
-      if (name != 'aggregateMenu' && widget._arrowHandled) {
+      if (name != 'aggregateMenu' && widget && widget._arrowHandled) {
         this._toggleWidgetArrow(widget, false);
         delete widget._arrowHandled;
       }
