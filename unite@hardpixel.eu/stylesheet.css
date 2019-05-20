@@ -21,6 +21,7 @@
 }
 
 #panel .window-controls-box {
+  padding-bottom: 0.188em;
   spacing: 2px;
 }
 
@@ -45,4 +46,5 @@
 
 #panel #appMenu {
   margin: 0 8px;
+  padding-bottom: 0.063em;
 }
