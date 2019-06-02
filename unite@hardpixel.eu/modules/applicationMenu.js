@@ -72,12 +72,12 @@ var ApplicationMenu = new GObject.Class({
     let overview = Main.overview.visibleTarget;
     let visible  = target && !overview;
 
-    if (visible && !this.appMenu_visible) {
+    if (visible && !this.appMenu.visible) {
       this.appMenu.show();
       this.appMenu.setSensitive(false);
     }
 
-    if (!visible && this.appMenu_visible) {
+    if (!visible && this.appMenu.visible) {
       this.appMenu.hide();
       this.appMenu.setSensitive(true);
     }
