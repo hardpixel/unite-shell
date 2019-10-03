@@ -102,6 +102,11 @@
       <summary>Hide top bar dropdown arrows.</summary>
     </key>
 
+    <key name="hide-app-menu-icon" type="b">
+      <default>true</default>
+      <summary>Hide app menu application icon.</summary>
+    </key>
+
     <key name="fix-panel-spacing" type="b">
       <default>true</default>
       <summary>Fix top bar items spacing.</summary>
