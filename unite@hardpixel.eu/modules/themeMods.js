@@ -27,17 +27,31 @@ var ThemeMods = new GObject.Class({
     this._settings.connect('use-system-fonts', 'updateShellFont');
     this._settings.connect('hide-app-menu-icon', 'toggleAppMenuIcon');
 
+    this._addAppmenuSpacing();
+
     this._setShellFont();
     this._toggleAppMenuIcon();
-    this._addAppmenuSpacing();
     this._removePanelArrows();
   },
 
   _onDeactivate() {
+    this._removeAppmenuSpacing();
+
     this._resetShellFont();
     this._resetAppMenuIcon();
-    this._removeAppmenuSpacing();
     this._resetPanelArrows();
+  },
+
+  _addAppmenuSpacing() {
+    if (versionCheck('< 3.34.0')) {
+      Main.panel._addStyleClassName('appmenu-spacing');
+    }
+  },
+
+  _removeAppmenuSpacing() {
+    if (versionCheck('< 3.34.0')) {
+      Main.panel._removeStyleClassName('appmenu-spacing');
+    }
   },
 
   _setShellFont() {
@@ -73,18 +87,6 @@ var ThemeMods = new GObject.Class({
 
   _resetAppMenuIcon() {
     this._appMenu._iconBox.show();
-  },
-
-  _addAppmenuSpacing() {
-    if (versionCheck('< 3.34.0')) {
-      Main.panel._addStyleClassName('appmenu-spacing');
-    }
-  },
-
-  _removeAppmenuSpacing() {
-    if (versionCheck('< 3.34.0')) {
-      Main.panel._removeStyleClassName('appmenu-spacing');
-    }
   },
 
   _getWidgetArrow(widget) {
