@@ -6,58 +6,20 @@
     <property name="visible">True</property>
     <property name="can_focus">True</property>
     <property name="hexpand">True</property>
-    <property name="show_tabs">False</property>
     <property name="show_border">False</property>
     <property name="scrollable">True</property>
     <child>
       <object class="GtkBox" id="general_prefs">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="valign">start</property>
         <property name="margin_left">20</property>
         <property name="margin_right">20</property>
         <property name="margin_top">20</property>
         <property name="margin_bottom">20</property>
         <property name="orientation">vertical</property>
         <property name="spacing">15</property>
-        <child>
-          <object class="GtkBox" id="use_system_fonts_section">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="spacing">50</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="valign">center</property>
-                <property name="label" translatable="yes">Apply system fonts to shell theme</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="use_system_fonts">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="valign">center</property>
-                <property name="active">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
+        <property name="homogeneous">True</property>
         <child>
           <object class="GtkBox" id="extend_left_box_section">
             <property name="visible">True</property>
@@ -176,44 +138,6 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="greyscale_tray_icons_section">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="spacing">50</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="valign">center</property>
-                <property name="label" translatable="yes">Convert tray icons to greyscale</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="greyscale_tray_icons">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="valign">center</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">4</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkBox" id="show_desktop_name_section">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -289,45 +213,6 @@
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">6</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox" id="desktop_name_text_section">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="spacing">50</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="valign">center</property>
-                <property name="label" translatable="yes">Top bar desktop name text</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="desktop_name_text">
-                <property name="width_request">170</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="text" translatable="yes">GNOME Desktop</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">7</property>
           </packing>
         </child>
         <child>
@@ -513,66 +398,6 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="window_buttons_theme_section">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="no_show_all">True</property>
-            <property name="spacing">50</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="valign">center</property>
-                <property name="label" translatable="yes">Top bar window buttons theme</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkComboBoxText" id="window_buttons_theme">
-                <property name="width_request">170</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="active_id">0</property>
-                <items>
-                  <item id="0" translatable="yes">Default Dark</item>
-                  <item id="1" translatable="yes">Default Light</item>
-                  <item id="2" translatable="yes">Ambiance</item>
-                  <item id="3" translatable="yes">Radiance</item>
-                  <item id="4" translatable="yes">Arc Dark</item>
-                  <item id="5" translatable="yes">Arc Light</item>
-                  <item id="6" translatable="yes">United Dark</item>
-                  <item id="7" translatable="yes">United Light</item>
-                  <item id="8" translatable="yes">Materia Dark</item>
-                  <item id="9" translatable="yes">Materia Light</item>
-                  <item id="10" translatable="yes">OSX Arc</item>
-                  <item id="11" translatable="yes">Vertex</item>
-                  <item id="12" translatable="yes">Pop Dark</item>
-                  <item id="13" translatable="yes">Pop Light</item>
-                  <item id="14" translatable="yes">Vimix</item>
-                  <item id="15" translatable="yes">Yaru</item>
-                  <item id="16" translatable="yes">Arrongin</item>
-                  <item id="17" translatable="yes">Telinkrin</item>
-                </items>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">12</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkBox" id="notifications_position_section">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -635,12 +460,205 @@
       <object class="GtkBox" id="appearance_prefs">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="valign">start</property>
         <property name="margin_left">20</property>
         <property name="margin_right">20</property>
         <property name="margin_top">20</property>
         <property name="margin_bottom">20</property>
         <property name="orientation">vertical</property>
         <property name="spacing">15</property>
+        <property name="homogeneous">True</property>
+        <child>
+          <object class="GtkBox" id="use_system_fonts_section">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">50</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">Apply system fonts to shell theme</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSwitch" id="use_system_fonts">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="valign">center</property>
+                <property name="active">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="greyscale_tray_icons_section">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">50</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">Convert tray icons to greyscale</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSwitch" id="greyscale_tray_icons">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="valign">center</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="desktop_name_text_section">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">50</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">Top bar desktop name text</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="desktop_name_text">
+                <property name="width_request">170</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="text" translatable="yes">GNOME Desktop</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="window_buttons_theme_section">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="no_show_all">True</property>
+            <property name="spacing">50</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">Top bar window buttons theme</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBoxText" id="window_buttons_theme">
+                <property name="width_request">170</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="active_id">0</property>
+                <items>
+                  <item id="0" translatable="yes">Default Dark</item>
+                  <item id="1" translatable="yes">Default Light</item>
+                  <item id="2" translatable="yes">Ambiance</item>
+                  <item id="3" translatable="yes">Radiance</item>
+                  <item id="4" translatable="yes">Arc Dark</item>
+                  <item id="5" translatable="yes">Arc Light</item>
+                  <item id="6" translatable="yes">United Dark</item>
+                  <item id="7" translatable="yes">United Light</item>
+                  <item id="8" translatable="yes">Materia Dark</item>
+                  <item id="9" translatable="yes">Materia Light</item>
+                  <item id="10" translatable="yes">OSX Arc</item>
+                  <item id="11" translatable="yes">Vertex</item>
+                  <item id="12" translatable="yes">Pop Dark</item>
+                  <item id="13" translatable="yes">Pop Light</item>
+                  <item id="14" translatable="yes">Vimix</item>
+                  <item id="15" translatable="yes">Yaru</item>
+                  <item id="16" translatable="yes">Arrongin</item>
+                  <item id="17" translatable="yes">Telinkrin</item>
+                </items>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
         <child>
           <placeholder/>
         </child>
