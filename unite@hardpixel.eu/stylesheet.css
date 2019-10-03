@@ -12,7 +12,7 @@
 }
 
 #panel .panel-button .panel-status-indicators-box {
-  spacing: 10px;
+  spacing: 12px;
 }
 
 #panel .window-controls {
@@ -45,4 +45,8 @@
 
 #panel.appmenu-spacing #appMenu {
   margin: 0 8px;
+}
+
+#panel.appmenu-spacing .panel-button .panel-status-indicators-box {
+  spacing: 10px;
 }
