@@ -107,6 +107,11 @@
       <summary>Hide aggregate menu dropdown arrow.</summary>
     </key>
 
+    <key name="hide-app-menu-arrow" type="b">
+      <default>true</default>
+      <summary>Hide app menu dropdown arrow.</summary>
+    </key>
+
     <key name="hide-app-menu-icon" type="b">
       <default>true</default>
       <summary>Hide app menu application icon.</summary>
