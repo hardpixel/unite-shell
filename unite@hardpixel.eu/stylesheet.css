@@ -2,19 +2,6 @@
   font-size: 11.25pt;
 }
 
-#panel .panel-button {
-  -natural-hpadding: 8px;
-  -minimum-hpadding: 6px;
-}
-
-#panel .panel-button .system-status-icon {
-  padding: 0;
-}
-
-#panel .panel-button .panel-status-indicators-box {
-  spacing: 12px;
-}
-
 #panel .window-controls {
   -natural-hpadding: 0px;
   -minimum-hpadding: 0px;
@@ -43,10 +30,23 @@
   border: 0;
 }
 
-#panel.appmenu-spacing #appMenu {
-  margin: 0 8px;
+#panel.fix-spacing .panel-button {
+  -natural-hpadding: 8px;
+  -minimum-hpadding: 6px;
 }
 
-#panel.appmenu-spacing .panel-button .panel-status-indicators-box {
+#panel.fix-spacing .panel-button .system-status-icon {
+  padding: 0;
+}
+
+#panel.fix-spacing .panel-button .panel-status-indicators-box {
+  spacing: 12px;
+}
+
+#panel.fix-spacing.extra-spacing .panel-button .panel-status-indicators-box {
   spacing: 10px;
+}
+
+#panel.fix-spacing.extra-spacing #appMenu {
+  margin: 0 8px;
 }

@@ -97,6 +97,11 @@
       <summary>Restrict functionalities to the primary screen.</summary>
     </key>
 
+    <key name="fix-panel-spacing" type="b">
+      <default>true</default>
+      <summary>Fix top bar items spacing.</summary>
+    </key>
+
     <key name="show-window-title" enum="org.gnome.shell.extensions.unite.showTitle">
       <default>"maximized"</default>
       <summary>Use window title to replace the app-menu label.</summary>

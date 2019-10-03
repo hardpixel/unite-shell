@@ -11,6 +11,7 @@ var ThemeMods = new GObject.Class({
 
   _onInitialize() {
     this.gtkSettings = Gtk.Settings.get_default();
+    this._extraSpace = versionCheck('< 3.34.0');
     this._mainStyles = Main.uiGroup.get_style();
     this._appMenu    = Main.panel.statusArea.appMenu;
     this._leftBox    = Main.panel._leftBox;
@@ -26,32 +27,19 @@ var ThemeMods = new GObject.Class({
 
     this._settings.connect('use-system-fonts', 'updateShellFont');
     this._settings.connect('hide-app-menu-icon', 'toggleAppMenuIcon');
-
-    this._addAppmenuSpacing();
+    this._settings.connect('fix-panel-spacing', 'togglePanelSpacing');
 
     this._setShellFont();
     this._toggleAppMenuIcon();
+    this._togglePanelSpacing();
     this._removePanelArrows();
   },
 
   _onDeactivate() {
-    this._removeAppmenuSpacing();
-
     this._resetShellFont();
     this._resetAppMenuIcon();
+    this._resetPanelSpacing();
     this._resetPanelArrows();
-  },
-
-  _addAppmenuSpacing() {
-    if (versionCheck('< 3.34.0')) {
-      Main.panel._addStyleClassName('appmenu-spacing');
-    }
-  },
-
-  _removeAppmenuSpacing() {
-    if (versionCheck('< 3.34.0')) {
-      Main.panel._removeStyleClassName('appmenu-spacing');
-    }
   },
 
   _setShellFont() {
@@ -87,6 +75,28 @@ var ThemeMods = new GObject.Class({
 
   _resetAppMenuIcon() {
     this._appMenu._iconBox.show();
+  },
+
+  _togglePanelSpacing() {
+    const enabled = this._settings.get('fix-panel-spacing');
+
+    if (enabled) {
+      this._addClass('fix-spacing');
+    } else {
+      this._resetPanelSpacing();
+    }
+
+    if (this._extraSpace) {
+      this._addClass('extra-spacing');
+    }
+  },
+
+  _resetPanelSpacing() {
+    this._removeClass('fix-spacing');
+
+    if (this._extraSpace) {
+      this._removeClass('extra-spacing');
+    }
   },
 
   _getWidgetArrow(widget) {
