@@ -43,6 +43,6 @@
   border: 0;
 }
 
-#panel #appMenu {
+#panel.appmenu-spacing #appMenu {
   margin: 0 8px;
 }

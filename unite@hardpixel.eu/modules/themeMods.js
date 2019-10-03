@@ -1,8 +1,9 @@
-const GObject = imports.gi.GObject;
-const Gtk     = imports.gi.Gtk;
-const Main    = imports.ui.main;
-const Unite   = imports.misc.extensionUtils.getCurrentExtension();
-const Base    = Unite.imports.module.BaseModule;
+const GObject      = imports.gi.GObject;
+const Gtk          = imports.gi.Gtk;
+const Main         = imports.ui.main;
+const Unite        = imports.misc.extensionUtils.getCurrentExtension();
+const Base         = Unite.imports.module.BaseModule;
+const versionCheck = Unite.imports.helpers.versionCheck;
 
 var ThemeMods = new GObject.Class({
   Name: 'UniteThemeMods',
@@ -27,12 +28,14 @@ var ThemeMods = new GObject.Class({
 
     this._setShellFont();
     this._hideAppMenuIcon();
+    this._addAppmenuSpacing();
     this._removePanelArrows();
   },
 
   _onDeactivate() {
     this._resetShellFont();
     this._showAppMenuIcon();
+    this._removeAppmenuSpacing();
     this._resetPanelArrows();
   },
 
@@ -63,6 +66,18 @@ var ThemeMods = new GObject.Class({
 
   _showAppMenuIcon() {
     this._appMenu._iconBox.show();
+  },
+
+  _addAppmenuSpacing() {
+    if (versionCheck('< 3.34.0')) {
+      Main.panel._addStyleClassName('appmenu-spacing');
+    }
+  },
+
+  _removeAppmenuSpacing() {
+    if (versionCheck('< 3.34.0')) {
+      Main.panel._removeStyleClassName('appmenu-spacing');
+    }
   },
 
   _getWidgetArrow(widget) {
