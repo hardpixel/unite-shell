@@ -701,7 +701,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="fix_panel_spacing_section">
+          <object class="GtkBox" id="reduce_panel_spacing_section">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">50</property>
@@ -710,7 +710,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="valign">center</property>
-                <property name="label" translatable="yes">Fix top bar items spacing</property>
+                <property name="label" translatable="yes">Reduce top bar items spacing</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -719,7 +719,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkSwitch" id="fix_panel_spacing">
+              <object class="GtkSwitch" id="reduce_panel_spacing">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="valign">center</property>

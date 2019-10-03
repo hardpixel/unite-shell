@@ -117,9 +117,9 @@
       <summary>Hide app menu application icon.</summary>
     </key>
 
-    <key name="fix-panel-spacing" type="b">
+    <key name="reduce-panel-spacing" type="b">
       <default>true</default>
-      <summary>Fix top bar items spacing.</summary>
+      <summary>Reduce top bar items spacing.</summary>
     </key>
 
     <key name="window-buttons-placement" type="s">

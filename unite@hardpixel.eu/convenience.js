@@ -28,7 +28,7 @@ var SettingsManager = new GObject.Class({
     'hide-aggregate-menu-arrow':  'boolean',
     'hide-app-menu-arrow':        'boolean',
     'hide-app-menu-icon':         'boolean',
-    'fix-panel-spacing':          'boolean',
+    'reduce-panel-spacing':       'boolean',
     'restrict-to-primary-screen': 'boolean'
   },
 

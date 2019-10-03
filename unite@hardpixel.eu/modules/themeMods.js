@@ -28,7 +28,7 @@ var ThemeMods = new GObject.Class({
 
     this._settings.connect('use-system-fonts', 'updateShellFont');
     this._settings.connect('hide-app-menu-icon', 'toggleAppMenuIcon');
-    this._settings.connect('fix-panel-spacing', 'togglePanelSpacing');
+    this._settings.connect('reduce-panel-spacing', 'togglePanelSpacing');
     this._settings.connect('hide-dropdown-arrows', 'togglePanelArrows');
     this._settings.connect('hide-aggregate-menu-arrow', 'toggleAggMenuArrow');
     this._settings.connect('hide-app-menu-arrow', 'toggleAppMenuArrow');
@@ -86,10 +86,10 @@ var ThemeMods = new GObject.Class({
   },
 
   _togglePanelSpacing() {
-    const enabled = this._settings.get('fix-panel-spacing');
+    const enabled = this._settings.get('reduce-panel-spacing');
 
     if (enabled) {
-      this._addClass('fix-spacing');
+      this._addClass('small-spacing');
     } else {
       this._resetPanelSpacing();
     }
@@ -100,7 +100,7 @@ var ThemeMods = new GObject.Class({
   },
 
   _resetPanelSpacing() {
-    this._removeClass('fix-spacing');
+    this._removeClass('small-spacing');
 
     if (this._extraSpace) {
       this._removeClass('extra-spacing');
