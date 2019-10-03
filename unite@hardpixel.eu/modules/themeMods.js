@@ -62,12 +62,12 @@ var ThemeMods = new GObject.Class({
     const cssFont = gtkFont.replace(/\s\d+$/, '');
 
     Main.uiGroup.set_style(`font-family: ${cssFont};`);
-    Main.panel._addStyleClassName('system-fonts');
+    this._addClass('system-fonts');
   },
 
   _resetShellFont() {
     Main.uiGroup.set_style(this._mainStyles);
-    Main.panel._removeStyleClassName('system-fonts');
+    this._removeClass('system-fonts');
   },
 
   _updateShellFont() {
@@ -134,5 +134,13 @@ var ThemeMods = new GObject.Class({
         delete widget._arrowHandled;
       }
     }
+  },
+
+  _addClass(name) {
+    Main.panel._addStyleClassName(name);
+  },
+
+  _removeClass(name) {
+    Main.panel._removeStyleClassName(name);
   }
 });
