@@ -1,8 +1,30 @@
+#panel.fix-spacing .panel-button {
+  -natural-hpadding: 8px;
+  -minimum-hpadding: 6px;
+}
+
+#panel.fix-spacing .panel-button .system-status-icon {
+  padding: 0;
+}
+
+#panel.fix-spacing .panel-button .panel-status-indicators-box {
+  spacing: 12px;
+}
+
+#panel.fix-spacing.extra-spacing .panel-button .panel-status-indicators-box {
+  spacing: 10px;
+}
+
+#panel.fix-spacing.extra-spacing #appMenu {
+  margin: 0 8px;
+}
+
 #panel.system-fonts {
   font-size: 11.25pt;
 }
 
-#panel .window-controls {
+#panel .window-controls,
+#panel.fix-spacing .window-controls {
   -natural-hpadding: 0px;
   -minimum-hpadding: 0px;
 }
@@ -28,25 +50,4 @@
   border-radius: 0;
   box-shadow: none;
   border: 0;
-}
-
-#panel.fix-spacing .panel-button {
-  -natural-hpadding: 8px;
-  -minimum-hpadding: 6px;
-}
-
-#panel.fix-spacing .panel-button .system-status-icon {
-  padding: 0;
-}
-
-#panel.fix-spacing .panel-button .panel-status-indicators-box {
-  spacing: 12px;
-}
-
-#panel.fix-spacing.extra-spacing .panel-button .panel-status-indicators-box {
-  spacing: 10px;
-}
-
-#panel.fix-spacing.extra-spacing #appMenu {
-  margin: 0 8px;
 }
