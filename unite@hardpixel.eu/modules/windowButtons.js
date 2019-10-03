@@ -33,6 +33,7 @@ var WindowButtons = new GObject.Class({
 
     this._settings.connect('window-buttons-theme', 'updateTheme');
     this._settings.connect('button-layout', 'updateButtons');
+    this._settings.connect('window-buttons-placement', 'updateButtons');
     this._settings.connect('restrict-to-primary-screen', 'updateButtons');
 
     this._createButtons();
@@ -52,9 +53,24 @@ var WindowButtons = new GObject.Class({
   _createButtons() {
     let buttons = this._settings.get('window-buttons-layout');
     let side    = this._settings.get('window-buttons-position');
+    let place   = this._settings.get('window-buttons-placement');
     let index   = side == 'left' ? 1 : -1;
 
     if (!buttons || this._controls) return;
+
+    if ((place == 'right' || place == 'last') && side == 'left') {
+      buttons = buttons.reverse();
+    }
+
+    if (place == 'left' || place == 'first') {
+      side  = 'left';
+      index = 0;
+    }
+
+    if (place == 'right' || place == 'last') {
+      side  = 'right';
+      index = -1;
+    }
 
     this._controls = new WindowControls();
 
@@ -64,11 +80,16 @@ var WindowButtons = new GObject.Class({
 
     Main.panel.addToStatusArea('uniteWindowControls', this._controls, index, side);
 
-    if (side == 'left')  {
-      const appMenu = Main.panel.statusArea.appMenu.actor.get_parent();
-      const buttons = this._controls.actor.get_parent();
+    const widget  = this._controls.actor.get_parent();
+    const appMenu = Main.panel.statusArea.appMenu.actor.get_parent();
+    const aggMenu = Main.panel.statusArea.aggregateMenu.actor.get_parent();
 
-      Main.panel._leftBox.set_child_below_sibling(buttons, appMenu);
+    if (side == 'left' && place != 'first')  {
+      Main.panel._leftBox.set_child_below_sibling(widget, appMenu);
+    }
+
+    if (side == 'right' && place != 'last')  {
+      Main.panel._rightBox.set_child_below_sibling(widget, aggMenu);
     }
   },
 

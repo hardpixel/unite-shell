@@ -779,6 +779,53 @@
           </packing>
         </child>
         <child>
+          <object class="GtkBox" id="window_buttons_placement_section">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="no_show_all">True</property>
+            <property name="spacing">50</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">Top bar window buttons position</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBoxText" id="window_buttons_placement">
+                <property name="width_request">170</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="active_id">auto</property>
+                <items>
+                  <item id="auto" translatable="yes">Auto</item>
+                  <item id="left" translatable="yes">Left</item>
+                  <item id="right" translatable="yes">Right</item>
+                  <item id="first" translatable="yes">First</item>
+                  <item id="last" translatable="yes">Last</item>
+                </items>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">8</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkBox" id="window_buttons_theme_section">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -837,9 +884,6 @@
             <property name="fill">True</property>
             <property name="position">9</property>
           </packing>
-        </child>
-        <child>
-          <placeholder/>
         </child>
       </object>
       <packing>

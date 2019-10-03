@@ -122,6 +122,11 @@
       <summary>Fix top bar items spacing.</summary>
     </key>
 
+    <key name="window-buttons-placement" type="s">
+      <default>"auto"</default>
+      <summary>Top bar window buttons position.</summary>
+    </key>
+
     <key name="show-window-title" enum="org.gnome.shell.extensions.unite.showTitle">
       <default>"maximized"</default>
       <summary>Use window title to replace the app-menu label.</summary>

@@ -23,6 +23,7 @@ var SettingsManager = new GObject.Class({
     'show-window-buttons':        'enum',
     'window-buttons-theme':       'enum',
     'hide-window-titlebars':      'enum',
+    'window-buttons-placement':   'select',
     'hide-dropdown-arrows':       'boolean',
     'hide-aggregate-menu-arrow':  'boolean',
     'hide-app-menu-arrow':        'boolean',
