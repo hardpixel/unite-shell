@@ -1,0 +1,15 @@
+headerbar,
+.titlebar {
+  padding-right: 0;
+}
+
+headerbar > box.right,
+.titlebar > box.right {
+  margin: 0 -200px 0 0;
+  opacity: 0;
+}
+
+.titlebar.default-decoration {
+  margin: -200px 0 0;
+  opacity: 0;
+}

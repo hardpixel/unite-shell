@@ -25,6 +25,7 @@
     <value value="1" nick="tiled" />
     <value value="2" nick="maximized" />
     <value value="3" nick="both" />
+    <value value="4" nick="always" />
   </enum>
 
   <enum id="org.gnome.shell.extensions.unite.showTitle">

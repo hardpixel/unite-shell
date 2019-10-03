@@ -177,7 +177,10 @@ var WindowDecoration = new GObject.Class({
     if (!this._handleWindow(win))
       return;
 
-    if (isMaximized(win, this._setting))
+    let maxed  = isMaximized(win, this._setting)
+    let always = this._setting == 'always'
+
+    if (always || maxed)
       this._hideTitlebar(win);
     else
       this._showTitlebar(win);
@@ -189,11 +192,13 @@ var WindowDecoration = new GObject.Class({
     let filePath  = `${Unite.path}/styles/buttons-${position}`;
     let maximized = `@import url('${filePath}.css');\n`;
     let tiled     = `@import url('${filePath}-tiled.css');\n`;
+    let always    = `@import url('${filePath}-always.css');\n`;
 
     switch (this._setting) {
       case 'both':      styles = maximized + tiled; break;
       case 'maximized': styles = maximized; break;
       case 'tiled':     styles = tiled; break;
+      case 'always':    styles = always; break;
     }
 
     loadUserStyles(styles);
