@@ -19,6 +19,7 @@ var PrefsWidget = new GObject.Class({
     this.add(this._container);
 
     this._bindStrings();
+    this._bindSelects();
     this._bindBooleans();
     this._bindEnumerations();
   },
@@ -33,7 +34,7 @@ var PrefsWidget = new GObject.Class({
     this._settings.bind(setting, widget, prop, this._settings.DEFAULT_BINDING);
   },
 
-  _bindSelect(setting) {
+  _bindEnum(setting) {
     let widget = this._getWidget(setting);
     widget.set_active(this._settings.get_enum(setting));
 
@@ -47,6 +48,11 @@ var PrefsWidget = new GObject.Class({
     settings.forEach(setting => { this._bindInput(setting, 'text') });
   },
 
+  _bindSelects() {
+    let settings = this._settings.getTypeSettings('select');
+    settings.forEach(setting => { this._bindInput(setting, 'active-id') });
+  },
+
   _bindBooleans() {
     let settings = this._settings.getTypeSettings('boolean');
     settings.forEach(setting => { this._bindInput(setting, 'active') });
@@ -54,7 +60,7 @@ var PrefsWidget = new GObject.Class({
 
   _bindEnumerations() {
     let settings = this._settings.getTypeSettings('enum');
-    settings.forEach(setting => { this._bindSelect(setting) });
+    settings.forEach(setting => { this._bindEnum(setting) });
   }
 });
 
