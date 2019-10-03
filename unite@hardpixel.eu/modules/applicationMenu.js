@@ -1,12 +1,13 @@
-const GObject     = imports.gi.GObject;
-const Shell       = imports.gi.Shell;
-const Gtk         = imports.gi.Gtk;
-const Meta        = imports.gi.Meta;
-const Main        = imports.ui.main;
-const Unite       = imports.misc.extensionUtils.getCurrentExtension();
-const Base        = Unite.imports.module.BaseModule;
-const isWindow    = Unite.imports.helpers.isWindow;
-const isMaximized = Unite.imports.helpers.isMaximized;
+const GObject      = imports.gi.GObject;
+const Shell        = imports.gi.Shell;
+const Gtk          = imports.gi.Gtk;
+const Meta         = imports.gi.Meta;
+const Main         = imports.ui.main;
+const Unite        = imports.misc.extensionUtils.getCurrentExtension();
+const Base         = Unite.imports.module.BaseModule;
+const versionCheck = Unite.imports.helpers.versionCheck;
+const isWindow     = Unite.imports.helpers.isWindow;
+const isMaximized  = Unite.imports.helpers.isMaximized;
 
 var ApplicationMenu = new GObject.Class({
   Name: 'UniteApplicationMenu',
@@ -27,11 +28,8 @@ var ApplicationMenu = new GObject.Class({
     this._signals.connect(global.display, 'notify::focus-window', 'updateTitle');
     this._signals.connect(global.window_manager, 'size-change', 'updateTitle');
     this._signals.connect(this.monitorManager, 'monitors-changed', 'updateTitle');
-    this._signals.connect(this.gtkSettings, 'notify::gtk-shell-shows-app-menu', 'showsMenu');
 
-    this._settings.connect('restrict-to-primary-screen', 'showsMenu');
-
-    this._enableShowsMenu();
+    this._useShowsMenu();
     this._updateTitle();
   },
 
@@ -45,6 +43,15 @@ var ApplicationMenu = new GObject.Class({
 
   _showsMenu() {
     this._resetShowsMenu();
+    this._enableShowsMenu();
+  },
+
+  _useShowsMenu() {
+    if (versionCheck('> 3.30.2')) return;
+
+    this._signals.connect(this.gtkSettings, 'notify::gtk-shell-shows-app-menu', 'showsMenu');
+    this._settings.connect('restrict-to-primary-screen', 'showsMenu');
+
     this._enableShowsMenu();
   },
 
