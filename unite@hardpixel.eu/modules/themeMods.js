@@ -14,6 +14,7 @@ var ThemeMods = new GObject.Class({
     this._extraSpace = versionCheck('< 3.34.0');
     this._mainStyles = Main.uiGroup.get_style();
     this._appMenu    = Main.panel.statusArea.appMenu;
+    this._aggMenu    = Main.panel.statusArea.aggregateMenu;
     this._leftBox    = Main.panel._leftBox;
     this._centerBox  = Main.panel._centerBox;
     this._rightBox   = Main.panel._rightBox;
@@ -29,11 +30,13 @@ var ThemeMods = new GObject.Class({
     this._settings.connect('hide-app-menu-icon', 'toggleAppMenuIcon');
     this._settings.connect('fix-panel-spacing', 'togglePanelSpacing');
     this._settings.connect('hide-dropdown-arrows', 'togglePanelArrows');
+    this._settings.connect('hide-aggregate-menu-arrow', 'toggleAggMenuArrow');
 
     this._setShellFont();
     this._toggleAppMenuIcon();
     this._togglePanelSpacing();
     this._togglePanelArrows();
+    this._toggleAggMenuArrow();
   },
 
   _onDeactivate() {
@@ -41,6 +44,7 @@ var ThemeMods = new GObject.Class({
     this._resetAppMenuIcon();
     this._resetPanelSpacing();
     this._resetPanelArrows();
+    this._resetAggMenuArrow();
   },
 
   _setShellFont() {
@@ -123,16 +127,25 @@ var ThemeMods = new GObject.Class({
   },
 
   _toggleWidgetArrow(widget, hide) {
+    if (!widget) return;
+
     const arrow = this._getWidgetArrow(widget);
     if (!arrow) return;
 
-    arrow.visible = !hide;
+    if (hide && !widget._arrowHandled) {
+      arrow.visible = false;
+      widget._arrowHandled = true;
+    }
+
+    if (!hide && widget._arrowHandled) {
+      arrow.visible = true;
+      delete widget._arrowHandled;
+    }
   },
 
   _removePanelArrows() {
     for (const [name, widget] of Object.entries(Main.panel.statusArea)) {
-      if (name != 'aggregateMenu' && widget && !widget._arrowHandled) {
-        widget._arrowHandled = true;
+      if (name != 'aggregateMenu') {
         this._toggleWidgetArrow(widget, true);
       }
     }
@@ -140,9 +153,8 @@ var ThemeMods = new GObject.Class({
 
   _resetPanelArrows() {
     for (const [name, widget] of Object.entries(Main.panel.statusArea)) {
-      if (name != 'aggregateMenu' && widget && widget._arrowHandled) {
+      if (name != 'aggregateMenu') {
         this._toggleWidgetArrow(widget, false);
-        delete widget._arrowHandled;
       }
     }
   },
@@ -155,6 +167,20 @@ var ThemeMods = new GObject.Class({
     } else {
       this._resetPanelArrows();
     }
+  },
+
+  _toggleAggMenuArrow() {
+    const enabled = this._settings.get('hide-aggregate-menu-arrow');
+
+    if (enabled) {
+      this._toggleWidgetArrow(this._aggMenu, true);
+    } else {
+      this._resetAggMenuArrow();
+    }
+  },
+
+  _resetAggMenuArrow() {
+    this._toggleWidgetArrow(this._aggMenu, false);
   },
 
   _addClass(name) {

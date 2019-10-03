@@ -102,6 +102,11 @@
       <summary>Hide top bar dropdown arrows.</summary>
     </key>
 
+    <key name="hide-aggregate-menu-arrow" type="b">
+      <default>false</default>
+      <summary>Hide aggregate menu dropdown arrow.</summary>
+    </key>
+
     <key name="hide-app-menu-icon" type="b">
       <default>true</default>
       <summary>Hide app menu application icon.</summary>
