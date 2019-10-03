@@ -97,6 +97,11 @@
       <summary>Restrict functionalities to the primary screen.</summary>
     </key>
 
+    <key name="hide-dropdown-arrows" type="b">
+      <default>true</default>
+      <summary>Hide top bar dropdown arrows.</summary>
+    </key>
+
     <key name="fix-panel-spacing" type="b">
       <default>true</default>
       <summary>Fix top bar items spacing.</summary>

@@ -28,11 +28,12 @@ var ThemeMods = new GObject.Class({
     this._settings.connect('use-system-fonts', 'updateShellFont');
     this._settings.connect('hide-app-menu-icon', 'toggleAppMenuIcon');
     this._settings.connect('fix-panel-spacing', 'togglePanelSpacing');
+    this._settings.connect('hide-dropdown-arrows', 'togglePanelArrows');
 
     this._setShellFont();
     this._toggleAppMenuIcon();
     this._togglePanelSpacing();
-    this._removePanelArrows();
+    this._togglePanelArrows();
   },
 
   _onDeactivate() {
@@ -143,6 +144,16 @@ var ThemeMods = new GObject.Class({
         this._toggleWidgetArrow(widget, false);
         delete widget._arrowHandled;
       }
+    }
+  },
+
+  _togglePanelArrows() {
+    const enabled = this._settings.get('hide-dropdown-arrows');
+
+    if (enabled) {
+      this._removePanelArrows();
+    } else {
+      this._resetPanelArrows();
     }
   },
 

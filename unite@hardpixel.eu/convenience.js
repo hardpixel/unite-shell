@@ -23,6 +23,7 @@ var SettingsManager = new GObject.Class({
     'show-window-buttons':        'enum',
     'window-buttons-theme':       'enum',
     'hide-window-titlebars':      'enum',
+    'hide-dropdown-arrows':       'boolean',
     'hide-app-menu-icon':         'boolean',
     'fix-panel-spacing':          'boolean',
     'restrict-to-primary-screen': 'boolean'
