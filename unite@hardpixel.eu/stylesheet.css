@@ -23,8 +23,7 @@
   font-size: 11.25pt;
 }
 
-#panel .window-controls,
-#panel.small-spacing .window-controls {
+#panel .panel-button.window-controls {
   -natural-hpadding: 0px;
   -minimum-hpadding: 0px;
 }
