@@ -25,16 +25,17 @@ var ThemeMods = new GObject.Class({
     this._signals.connect(this._rightBox, 'actor_added', 'removePanelArrows');
 
     this._settings.connect('use-system-fonts', 'updateShellFont');
+    this._settings.connect('hide-app-menu-icon', 'toggleAppMenuIcon');
 
     this._setShellFont();
-    this._hideAppMenuIcon();
+    this._toggleAppMenuIcon();
     this._addAppmenuSpacing();
     this._removePanelArrows();
   },
 
   _onDeactivate() {
     this._resetShellFont();
-    this._showAppMenuIcon();
+    this._resetAppMenuIcon();
     this._removeAppmenuSpacing();
     this._resetPanelArrows();
   },
@@ -60,11 +61,17 @@ var ThemeMods = new GObject.Class({
     this._setShellFont();
   },
 
-  _hideAppMenuIcon() {
-    this._appMenu._iconBox.hide();
+  _toggleAppMenuIcon() {
+    const enabled = this._settings.get('hide-app-menu-icon');
+
+    if (enabled) {
+      this._appMenu._iconBox.hide();
+    } else {
+      this._resetAppMenuIcon();
+    }
   },
 
-  _showAppMenuIcon() {
+  _resetAppMenuIcon() {
     this._appMenu._iconBox.show();
   },
 

@@ -546,6 +546,45 @@
           </packing>
         </child>
         <child>
+          <object class="GtkBox" id="hide_app_menu_icon_section">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">50</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">Hide app menu application icon</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSwitch" id="hide_app_menu_icon">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="valign">center</property>
+                <property name="active">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">5</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkBox" id="desktop_name_text_section">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -643,9 +682,6 @@
             <property name="fill">True</property>
             <property name="position">3</property>
           </packing>
-        </child>
-        <child>
-          <placeholder/>
         </child>
         <child>
           <placeholder/>
