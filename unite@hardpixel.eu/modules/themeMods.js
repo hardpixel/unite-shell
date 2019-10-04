@@ -12,7 +12,8 @@ var ThemeMods = new GObject.Class({
   _onInitialize() {
     this.gtkSettings = Gtk.Settings.get_default();
     this._extraSpace = versionCheck('< 3.34.0');
-    this._mainStyles = Main.uiGroup.get_style();
+    this._mainStyle  = Main.uiGroup.get_style();
+    this._panelStyle = Main.panel.get_style();
     this._appMenu    = Main.panel.statusArea.appMenu;
     this._aggMenu    = Main.panel.statusArea.aggregateMenu;
     this._leftBox    = Main.panel._leftBox;
@@ -21,56 +22,80 @@ var ThemeMods = new GObject.Class({
   },
 
   _onActivate() {
-    this._signals.connect(this.gtkSettings, 'notify::gtk-font-name', 'updateShellFont');
+    this._signals.connect(this.gtkSettings, 'notify::gtk-font-name', 'setPanelStyle');
     this._signals.connect(this._leftBox, 'actor_added', 'removePanelArrows');
     this._signals.connect(this._centerBox, 'actor_added', 'removePanelArrows');
     this._signals.connect(this._rightBox, 'actor_added', 'removePanelArrows');
 
-    this._settings.connect('use-system-fonts', 'updateShellFont');
+    this._settings.connect('use-system-fonts', 'setPanelStyle');
+    this._settings.connect('reduce-panel-spacing', 'setPanelStyle');
     this._settings.connect('hide-app-menu-icon', 'toggleAppMenuIcon');
-    this._settings.connect('reduce-panel-spacing', 'togglePanelSpacing');
     this._settings.connect('hide-dropdown-arrows', 'togglePanelArrows');
     this._settings.connect('hide-aggregate-menu-arrow', 'toggleAggMenuArrow');
     this._settings.connect('hide-app-menu-arrow', 'toggleAppMenuArrow');
 
+    this._setExtraSpace();
+
     this._toggleAppMenuIcon();
-    this._togglePanelSpacing();
     this._togglePanelArrows();
     this._toggleAggMenuArrow();
     this._toggleAppMenuArrow();
 
-    this._setShellFont();
+    this._setPanelStyle();
   },
 
   _onDeactivate() {
+    this._unsetExtraSpace();
+
     this._resetAppMenuIcon();
-    this._resetPanelSpacing();
     this._resetPanelArrows();
     this._resetAggMenuArrow();
     this._resetAppMenuArrow();
 
-    this._unsetShellFont();
+    this._unsetPanelStyle();
   },
 
-  _setShellFont() {
-    const enabled = this._settings.get('use-system-fonts');
-    if (!enabled) return;
-
-    const gtkFont = this.gtkSettings.gtk_font_name;
-    const cssFont = gtkFont.replace(/\s\d+$/, '');
-
-    Main.uiGroup.set_style(`font-family: ${cssFont};`);
-    this._addClass('system-fonts');
+  _setExtraSpace() {
+    if (this._extraSpace) {
+      this._removeClass('extra-spacing');
+    }
   },
 
-  _unsetShellFont() {
-    Main.uiGroup.set_style(this._mainStyles);
+  _unsetExtraSpace() {
+    if (this._extraSpace) {
+      this._addClass('extra-spacing');
+    }
+  },
+
+  _setPanelStyle() {
+    this._unsetPanelStyle();
+
+    const fonts = this._settings.get('use-system-fonts');
+    const space = this._settings.get('reduce-panel-spacing');
+
+    if (!fonts && !space) return;
+
+    if (fonts) {
+      const gtkFont = this.gtkSettings.gtk_font_name;
+      const cssFont = gtkFont.replace(/\s\d+$/, '');
+
+      Main.uiGroup.set_style(`font-family: ${cssFont};`);
+      this._addClass('system-fonts');
+    }
+
+    if (space) {
+      this._addClass('small-spacing');
+    }
+
+    Main.panel.set_style('font-size: 11.25pt;');
+  },
+
+  _unsetPanelStyle() {
+    this._removeClass('small-spacing');
     this._removeClass('system-fonts');
-  },
 
-  _updateShellFont() {
-    this._unsetShellFont();
-    this._setShellFont();
+    Main.uiGroup.set_style(this._mainStyle);
+    Main.panel.set_style(this._panelStyle);
   },
 
   _toggleAppMenuIcon() {
@@ -85,28 +110,6 @@ var ThemeMods = new GObject.Class({
 
   _resetAppMenuIcon() {
     this._appMenu._iconBox.show();
-  },
-
-  _togglePanelSpacing() {
-    const enabled = this._settings.get('reduce-panel-spacing');
-
-    if (enabled) {
-      this._addClass('small-spacing');
-    } else {
-      this._resetPanelSpacing();
-    }
-
-    if (this._extraSpace) {
-      this._addClass('extra-spacing');
-    }
-  },
-
-  _resetPanelSpacing() {
-    this._removeClass('small-spacing');
-
-    if (this._extraSpace) {
-      this._removeClass('extra-spacing');
-    }
   },
 
   _getWidgetArrow(widget) {
