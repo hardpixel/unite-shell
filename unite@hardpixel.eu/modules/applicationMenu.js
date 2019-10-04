@@ -22,6 +22,7 @@ var ApplicationMenu = new GObject.Class({
     this.appSystem      = Shell.AppSystem.get_default();
     this.gtkSettings    = Gtk.Settings.get_default();
     this.monitorManager = Meta.MonitorManager.get();
+    this._isUpdating    = false;
   },
 
   _onActivate() {
@@ -108,6 +109,8 @@ var ApplicationMenu = new GObject.Class({
   },
 
   _updateTitleText() {
+    if (this._isUpdating) return;
+
     let focusApp    = this.winTracker.focus_app;
     let focusWindow = global.display.focus_window;
     let current     = this.appMenu._label.get_text();
@@ -122,7 +125,9 @@ var ApplicationMenu = new GObject.Class({
       title = focusApp.get_name();
 
     if (title && title != current) {
+      this._isUpdating = true;
       this.appMenu._label.set_text(title);
+      this._isUpdating = false;
     }
   }
 });
