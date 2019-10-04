@@ -26,8 +26,10 @@ var ApplicationMenu = new GObject.Class({
 
   _onActivate() {
     this._signals.connect(global.display, 'notify::focus-window', 'updateTitle');
-    this._signals.connect(global.window_manager, 'size-change', 'updateTitle');
     this._signals.connect(this.monitorManager, 'monitors-changed', 'updateTitle');
+
+    this._signals.connect(global.window_manager, 'size-change', 'updateTitleText');
+    this._signals.connect(this.appMenu._label, 'notify::text', 'updateTitleText');
 
     this._useShowsMenu();
     this._updateTitle();
@@ -121,9 +123,6 @@ var ApplicationMenu = new GObject.Class({
 
     if (title && title != current) {
       this.appMenu._label.set_text(title);
-
-      this.appMenu.container.hide();
-      this.appMenu.container.show();
     }
   }
 });
