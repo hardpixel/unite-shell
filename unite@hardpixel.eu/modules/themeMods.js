@@ -57,13 +57,13 @@ var ThemeMods = new GObject.Class({
 
   _setExtraSpace() {
     if (this._extraSpace) {
-      this._removeClass('extra-spacing');
+      this._addClass('extra-spacing');
     }
   },
 
   _unsetExtraSpace() {
     if (this._extraSpace) {
-      this._addClass('extra-spacing');
+      this._removeClass('extra-spacing');
     }
   },
 
