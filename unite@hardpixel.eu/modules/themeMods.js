@@ -33,21 +33,23 @@ var ThemeMods = new GObject.Class({
     this._settings.connect('hide-aggregate-menu-arrow', 'toggleAggMenuArrow');
     this._settings.connect('hide-app-menu-arrow', 'toggleAppMenuArrow');
 
-    this._setShellFont();
     this._toggleAppMenuIcon();
     this._togglePanelSpacing();
     this._togglePanelArrows();
     this._toggleAggMenuArrow();
     this._toggleAppMenuArrow();
+
+    this._setShellFont();
   },
 
   _onDeactivate() {
-    this._resetShellFont();
     this._resetAppMenuIcon();
     this._resetPanelSpacing();
     this._resetPanelArrows();
     this._resetAggMenuArrow();
     this._resetAppMenuArrow();
+
+    this._unsetShellFont();
   },
 
   _setShellFont() {
@@ -61,13 +63,13 @@ var ThemeMods = new GObject.Class({
     this._addClass('system-fonts');
   },
 
-  _resetShellFont() {
+  _unsetShellFont() {
     Main.uiGroup.set_style(this._mainStyles);
     this._removeClass('system-fonts');
   },
 
   _updateShellFont() {
-    this._resetShellFont();
+    this._unsetShellFont();
     this._setShellFont();
   },
 
