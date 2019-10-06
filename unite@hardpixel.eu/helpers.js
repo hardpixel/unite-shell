@@ -9,29 +9,7 @@ const Settings = Unite.imports.convenience.getSettings()
 const USER_CONFIG = GLib.get_user_config_dir()
 const USER_STYLES = `${USER_CONFIG}/gtk-3.0/gtk.css`
 
-function versionCompare(aVersion, bVersion) {
-  const aParts = aVersion.replace(/(\.0+)+$/, '').split('.')
-  const bParts = bVersion.replace(/(\.0+)+$/, '').split('.')
-  const length = Math.min(aParts.length, bParts.length)
-
-  for (let i = 0; i < length; i++) {
-    let diff = parseInt(aParts[i], 10) - parseInt(bParts[i], 10)
-    if (diff) return diff
-  }
-
-  return aParts.length - bParts.length
-}
-
-function versionCheck(version) {
-  const [cmp, ver] = version.split(' ')
-  const difference = versionCompare(Config.PACKAGE_VERSION, ver)
-
-  if (cmp == '>' && difference > 0)  return true
-  if (cmp == '<' && difference < 0)  return true
-  if (cmp == '=' && difference == 0) return true
-
-  return false
-}
+var minorVersion = parseInt(Config.PACKAGE_VERSION.split('.')[1])
 
 function fileExists(path) {
   return GLib.file_test(path, GLib.FileTest.EXISTS)

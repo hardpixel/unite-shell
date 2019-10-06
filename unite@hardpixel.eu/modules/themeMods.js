@@ -3,7 +3,7 @@ const Gtk          = imports.gi.Gtk
 const Main         = imports.ui.main
 const Unite        = imports.misc.extensionUtils.getCurrentExtension()
 const Base         = Unite.imports.module.BaseModule
-const versionCheck = Unite.imports.helpers.versionCheck
+const minorVersion = Unite.imports.helpers.minorVersion
 
 var ThemeMods = new GObject.Class({
   Name: 'UniteThemeMods',
@@ -11,7 +11,7 @@ var ThemeMods = new GObject.Class({
 
   _onInitialize() {
     this.gtkSettings = Gtk.Settings.get_default()
-    this._extraSpace = versionCheck('< 3.34.0')
+    this._extraSpace = minorVersion < 34
     this._mainStyle  = Main.uiGroup.get_style()
     this._panelStyle = Main.panel.get_style()
     this._appMenu    = Main.panel.statusArea.appMenu
