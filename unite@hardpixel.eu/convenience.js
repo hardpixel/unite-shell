@@ -7,29 +7,34 @@ const Unite   = imports.misc.extensionUtils.getCurrentExtension();
 var SettingsManager = new GObject.Class({
   Name: 'UniteSettings',
   Extends: Gio.Settings,
-  DEFAULT_BINDING: Gio.SettingsBindFlags.DEFAULT,
 
-  _types: {
-    'autofocus-windows':          'boolean',
-    'hide-activities-button':     'enum',
-    'show-window-title':          'enum',
-    'show-desktop-name':          'boolean',
-    'desktop-name-text':          'string',
-    'extend-left-box':            'boolean',
-    'notifications-position':     'enum',
-    'use-system-fonts':           'boolean',
-    'show-legacy-tray':           'boolean',
-    'greyscale-tray-icons':       'boolean',
-    'show-window-buttons':        'enum',
-    'window-buttons-theme':       'enum',
-    'hide-window-titlebars':      'enum',
-    'window-buttons-placement':   'select',
-    'hide-dropdown-arrows':       'boolean',
-    'hide-aggregate-menu-arrow':  'boolean',
-    'hide-app-menu-arrow':        'boolean',
-    'hide-app-menu-icon':         'boolean',
-    'reduce-panel-spacing':       'boolean',
-    'restrict-to-primary-screen': 'boolean'
+  get DEFAULT_BINDING() {
+    return Gio.SettingsBindFlags.DEFAULT;
+  },
+
+  get _types() {
+    return {
+      'autofocus-windows':          'boolean',
+      'hide-activities-button':     'enum',
+      'show-window-title':          'enum',
+      'show-desktop-name':          'boolean',
+      'desktop-name-text':          'string',
+      'extend-left-box':            'boolean',
+      'notifications-position':     'enum',
+      'use-system-fonts':           'boolean',
+      'show-legacy-tray':           'boolean',
+      'greyscale-tray-icons':       'boolean',
+      'show-window-buttons':        'enum',
+      'window-buttons-theme':       'enum',
+      'hide-window-titlebars':      'enum',
+      'window-buttons-placement':   'select',
+      'hide-dropdown-arrows':       'boolean',
+      'hide-aggregate-menu-arrow':  'boolean',
+      'hide-app-menu-arrow':        'boolean',
+      'hide-app-menu-icon':         'boolean',
+      'reduce-panel-spacing':       'boolean',
+      'restrict-to-primary-screen': 'boolean'
+    };
   },
 
   exists(key) {
