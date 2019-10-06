@@ -7,8 +7,10 @@ var ActivateWindow = new GObject.Class({
   Name: 'UniteActivateWindow',
   Extends: Base,
 
-  _enableKey: 'autofocus-windows',
-  _enableValue: true,
+  _onSetup() {
+    this._enableKey   = 'autofocus-windows';
+    this._enableValue = true;
+  },
 
   _onActivate() {
     this._signals.connect(global.display, 'window-demands-attention', 'focusWindow');

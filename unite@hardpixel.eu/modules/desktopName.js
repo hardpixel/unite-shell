@@ -9,8 +9,10 @@ var DesktopName = new GObject.Class({
   Name: 'UniteDesktopName',
   Extends: Base,
 
-  _enableKey: 'show-desktop-name',
-  _enableValue: true,
+  _onSetup() {
+    this._enableKey   = 'show-desktop-name';
+    this._enableValue = true;
+  },
 
   _onInitialize() {
     this.appSystem  = Shell.AppSystem.get_default();

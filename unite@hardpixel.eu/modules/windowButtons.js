@@ -15,8 +15,10 @@ var WindowButtons = new GObject.Class({
   Name: 'UniteWindowButtons',
   Extends: Base,
 
-  _enableKey: 'show-window-buttons',
-  _disableValue: 'never',
+  _onSetup() {
+    this._enableKey    = 'show-window-buttons';
+    this._disableValue = 'never';
+  },
 
   _onInitialize() {
     this.monitorManager = Meta.MonitorManager.get();

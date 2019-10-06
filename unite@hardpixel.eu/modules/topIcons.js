@@ -12,8 +12,10 @@ var TopIcons = new GObject.Class({
   Name: 'UniteTopIcons',
   Extends: Base,
 
-  _enableKey: 'show-legacy-tray',
-  _enableValue: true,
+  _onSetup() {
+    this._enableKey   = 'show-legacy-tray';
+    this._enableValue = true;
+  },
 
   _onActivate() {
     this._settings.connect('greyscale-tray-icons', 'desaturateIcons');

@@ -14,8 +14,10 @@ var WindowDecoration = new GObject.Class({
   Name: 'UniteWindowDecoration',
   Extends: Base,
 
-  _enableKey: 'hide-window-titlebars',
-  _disableValue: 'never',
+  _onSetup() {
+    this._enableKey    = 'hide-window-titlebars';
+    this._disableValue = 'never';
+  },
 
   _onInitialize() {
     this.monitorManager = Meta.MonitorManager.get();

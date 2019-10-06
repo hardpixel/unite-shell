@@ -9,8 +9,10 @@ var MessageTray = new GObject.Class({
   Name: 'UniteMessageTray',
   Extends: Base,
 
-  _enableKey: 'notifications-position',
-  _disableValue: 'center',
+  _onSetup() {
+    this._enableKey    = 'notifications-position';
+    this._disableValue = 'center';
+  },
 
   _onInitialize() {
     this._banner = Main.messageTray._bannerBin;

@@ -6,11 +6,17 @@ const Settings = Unite.imports.handlers.SettingsHandler;
 var BaseModule = new GObject.Class({
   Name: 'UniteBaseModule',
 
-  _enableKey: null,
-  _enableValue: null,
-  _disableValue: null,
+  _setup() {
+    this._enableKey    = null;
+    this._enableValue  = null;
+    this._disableValue = null;
+
+    this._runCallback('_onSetup');
+  },
 
   _init() {
+    this._setup();
+
     this._signals  = new Signals(this);
     this._settings = new Settings(this);
     this._setting  = this._settings.get(this._enableKey);

@@ -8,8 +8,10 @@ var ActivitiesButton = new GObject.Class({
   Name: 'UniteActivitiesButton',
   Extends: Base,
 
-  _enableKey: 'hide-activities-button',
-  _disableValue: 'never',
+  _onSetup() {
+    this._enableKey    = 'hide-activities-button';
+    this._disableValue = 'never';
+  },
 
   _onInitialize() {
     this._container = Main.panel.statusArea.activities.container;

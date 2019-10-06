@@ -11,8 +11,10 @@ var ApplicationMenu = new GObject.Class({
   Name: 'UniteApplicationMenu',
   Extends: Base,
 
-  _enableKey: 'show-window-title',
-  _disableValue: 'never',
+  _onSetup() {
+    this._enableKey    = 'show-window-title';
+    this._disableValue = 'never';
+  },
 
   _onInitialize() {
     this.appMenu        = Main.panel.statusArea.appMenu;

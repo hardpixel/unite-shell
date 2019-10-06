@@ -9,8 +9,10 @@ var ExtendLeftBox = new GObject.Class({
   Name: 'UniteExtendLeftBox',
   Extends: Base,
 
-  _enableKey: 'extend-left-box',
-  _enableValue: true,
+  _onSetup() {
+    this._enableKey   = 'extend-left-box';
+    this._enableValue = true;
+  },
 
   _onActivate() {
     this._oldAllocate = Main.panel.__proto__.vfunc_allocate;
