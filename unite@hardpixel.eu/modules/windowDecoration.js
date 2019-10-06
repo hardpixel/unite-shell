@@ -164,8 +164,7 @@ var WindowDecoration = new GObject.Class({
       this._showTitlebar(win);
   },
 
-  _updateUserStyles() {
-    let styles    = '';
+  _getCssImports() {
     let position  = this._settings.get('window-buttons-position');
     let filePath  = `${Unite.path}/styles/buttons-${position}`;
     let maximized = `@import url('${filePath}.css');\n`;
@@ -173,13 +172,16 @@ var WindowDecoration = new GObject.Class({
     let always    = `@import url('${filePath}-always.css');\n`;
 
     switch (this._setting) {
-      case 'both':      styles = maximized + tiled; break;
-      case 'maximized': styles = maximized; break;
-      case 'tiled':     styles = tiled; break;
-      case 'always':    styles = always; break;
+      case 'both':      return maximized + tiled;
+      case 'maximized': return maximized;
+      case 'tiled':     return tiled;
+      case 'always':    return always;
     }
+  },
 
-    loadUserStyles(styles);
+  _updateUserStyles() {
+    let styles = this._getCssImports();
+    loadUserStyles(styles || '');
   },
 
   _removeUserStyles() {
