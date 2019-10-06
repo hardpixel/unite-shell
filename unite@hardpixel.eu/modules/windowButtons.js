@@ -80,9 +80,9 @@ var WindowButtons = new GObject.Class({
 
     Main.panel.addToStatusArea('uniteWindowControls', this._controls, index, side);
 
-    const widget  = this._controls.actor.get_parent();
-    const appMenu = Main.panel.statusArea.appMenu.actor.get_parent();
-    const aggMenu = Main.panel.statusArea.aggregateMenu.actor.get_parent();
+    const widget  = this._controls.get_parent();
+    const appMenu = Main.panel.statusArea.appMenu.get_parent();
+    const aggMenu = Main.panel.statusArea.aggregateMenu.get_parent();
 
     if (side == 'left' && place != 'first')  {
       Main.panel._leftBox.set_child_below_sibling(widget, appMenu);
@@ -116,13 +116,13 @@ var WindowButtons = new GObject.Class({
     this._themeName = this._settings.get('window-buttons-theme');
     this._themeFile = loadStyles(`themes/${this._themeName}/stylesheet.css`);
 
-    this._controls.actor.add_style_class_name(`${this._themeName}-buttons`);
+    this._controls.add_style_class_name(`${this._themeName}-buttons`);
   },
 
   _unloadTheme() {
     if (!this._themeFile || !this._controls) return;
 
-    this._controls.actor.remove_style_class_name(`${this._themeName}-buttons`);
+    this._controls.remove_style_class_name(`${this._themeName}-buttons`);
 
     this._themeName = this._settings.get('window-buttons-theme');
     this._themeFile = unloadStyles(this._themeFile);

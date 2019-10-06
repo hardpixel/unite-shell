@@ -13,11 +13,12 @@ var ExtendLeftBox = new GObject.Class({
   _enableValue: true,
 
   _onActivate() {
-    if (Main.panel.vfunc_allocate) {
-      this._vfuncAllocate();
-    } else {
-      this._signalAllocate();
-    }
+    this._oldAllocate = Main.panel.__proto__.vfunc_allocate;
+
+    Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box, flags) => {
+      Main.panel.vfunc_allocate.call(Main.panel, box, flags);
+      this._extendBox(Main.panel, box, flags);
+    });
   },
 
   _onDeactivate() {
@@ -28,20 +29,7 @@ var ExtendLeftBox = new GObject.Class({
   },
 
   _onReload() {
-    Main.panel.actor.queue_relayout();
-  },
-
-  _vfuncAllocate() {
-    this._oldAllocate = Main.panel.__proto__.vfunc_allocate;
-
-    Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box, flags) => {
-      Main.panel.vfunc_allocate.call(Main.panel, box, flags);
-      this._extendBox(Main.panel, box, flags);
-    });
-  },
-
-  _signalAllocate() {
-    this._signals.connect(Main.panel.actor, 'allocate', 'extendBox');
+    Main.panel.queue_relayout();
   },
 
   _extendBox(actor, box, flags) {

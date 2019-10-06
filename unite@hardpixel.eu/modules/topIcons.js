@@ -39,10 +39,7 @@ var TopIcons = new GObject.Class({
       this._indicators.removeIcon(icon);
     });
 
-    if (global.screen)
-      this._tray.manage_screen(global.screen, Main.panel.actor);
-    else
-      this._tray.manage_screen(Main.panel.actor);
+    this._tray.manage_screen(Main.panel);
   },
 
   _destroyTray() {

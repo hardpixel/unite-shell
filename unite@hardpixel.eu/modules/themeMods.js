@@ -13,7 +13,7 @@ var ThemeMods = new GObject.Class({
     this.gtkSettings = Gtk.Settings.get_default();
     this._extraSpace = versionCheck('< 3.34.0');
     this._mainStyle  = Main.uiGroup.get_style();
-    this._panelStyle = Main.panel.actor.get_style();
+    this._panelStyle = Main.panel.get_style();
     this._appMenu    = Main.panel.statusArea.appMenu;
     this._aggMenu    = Main.panel.statusArea.aggregateMenu;
     this._leftBox    = Main.panel._leftBox;
@@ -87,7 +87,7 @@ var ThemeMods = new GObject.Class({
       this._addClass('small-spacing');
     }
 
-    Main.panel.actor.set_style('font-size: 11.25pt;');
+    Main.panel.set_style('font-size: 11.25pt;');
   },
 
   _unsetPanelStyle() {
@@ -95,7 +95,7 @@ var ThemeMods = new GObject.Class({
     this._removeClass('system-fonts');
 
     Main.uiGroup.set_style(this._mainStyle);
-    Main.panel.actor.set_style(this._panelStyle);
+    Main.panel.set_style(this._panelStyle);
   },
 
   _toggleAppMenuIcon() {
@@ -116,9 +116,8 @@ var ThemeMods = new GObject.Class({
     let arrow = widget._arrow;
 
     if (!arrow) {
-      const item  = widget.get_children ? widget : widget.actor;
-      const last  = item.get_n_children() - 1;
-      const actor = item.get_children()[last];
+      const last  = widget.get_n_children() - 1;
+      const actor = widget.get_children()[last];
 
       if (!actor) return;
 

@@ -5,7 +5,6 @@ const Meta           = imports.gi.Meta;
 const Util           = imports.misc.util;
 const Unite          = imports.misc.extensionUtils.getCurrentExtension();
 const Base           = Unite.imports.module.BaseModule;
-const versionCheck   = Unite.imports.helpers.versionCheck;
 const getWindowXID   = Unite.imports.helpers.getWindowXID;
 const isWindow       = Unite.imports.helpers.isWindow;
 const isMaximized    = Unite.imports.helpers.isMaximized;
@@ -20,7 +19,6 @@ var WindowDecoration = new GObject.Class({
 
   _onInitialize() {
     this.monitorManager = Meta.MonitorManager.get();
-    this._useMotifHints = versionCheck('> 3.30.2');
   },
 
   _onActivate() {
@@ -102,13 +100,9 @@ var WindowDecoration = new GObject.Class({
     let handleWin = false;
     if (!isWindow(win)) return;
 
-    if (this._useMotifHints) {
-      let state = this._getMotifHints(win);
-      handleWin = !win.is_client_decorated();
-      handleWin = handleWin && (state[2] != '0x2' && state[2] != '0x0');
-    } else {
-      handleWin = win.decorated;
-    }
+    let state = this._getMotifHints(win);
+    handleWin = !win.is_client_decorated();
+    handleWin = handleWin && (state[2] != '0x2' && state[2] != '0x0');
 
     return handleWin;
   },
@@ -117,20 +111,6 @@ var WindowDecoration = new GObject.Class({
     let winId = this._getWindowXID(win);
     if (!winId) return;
 
-    if (this._useMotifHints)
-      this._toggleDecorationsMotif(winId, hide);
-    else
-      this._toggleDecorationsGtk(winId, hide);
-  },
-
-  _toggleDecorationsGtk(winId, hide) {
-    let prop  = '_GTK_HIDE_TITLEBAR_WHEN_MAXIMIZED';
-    let value = hide ? '0x1' : '0x0';
-
-    Util.spawn(['xprop', '-id', winId, '-f', prop, '32c', '-set', prop, value]);
-  },
-
-  _toggleDecorationsMotif(winId, hide) {
     let prop  = '_MOTIF_WM_HINTS';
     let flag  = '0x2, 0x0, %s, 0x0, 0x0';
     let value = hide ? flag.format('0x2') : flag.format('0x1');
@@ -150,13 +130,9 @@ var WindowDecoration = new GObject.Class({
 
   _updateTitlebar() {
     let focusWindow = global.display.focus_window;
-    let toggleDecor = focusWindow;
+    if (!focusWindow) return;
 
-    if (!this._useMotifHints && this._setting == 'both')
-      toggleDecor = focusWindow && focusWindow.get_maximized() !== 0;
-
-    if (toggleDecor)
-      this._toggleTitlebar(focusWindow);
+    this._toggleTitlebar(focusWindow);
   },
 
   _showTitlebar(win) {

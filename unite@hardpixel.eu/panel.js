@@ -15,10 +15,10 @@ var DesktopLabel = new Lang.Class({
     this.parent(0.0, 'DesktopLabel');
 
     this._label = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
-    this.actor.add_actor(this._label);
+    this.add_actor(this._label);
 
-    this.actor.reactive = false;
-    this.actor.label_actor = this._label;
+    this.reactive = false;
+    this.label_actor = this._label;
 
     this.setText(params.text);
   },
@@ -44,13 +44,13 @@ var TrayIndicator = new Lang.Class({
     this.parent(0.0, 'TrayIndicator');
 
     this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' });
-    this.actor.add_child(this._indicators);
+    this.add_child(this._indicators);
 
     this._sync();
   },
 
   _sync() {
-    this.actor.visible = this._icons.length;
+    this.visible = this._icons.length;
   },
 
   addIcon(icon) {
@@ -93,9 +93,9 @@ var WindowControls = new Lang.Class({
     this.parent(0.0, 'WindowControls');
 
     this._controls = new St.BoxLayout({ style_class: 'window-controls-box' });
-    this.actor.add_child(this._controls);
+    this.add_child(this._controls);
 
-    this.actor.add_style_class_name('window-controls');
+    this.add_style_class_name('window-controls');
   },
 
   _addButton(action, callback) {

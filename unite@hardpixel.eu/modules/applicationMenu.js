@@ -1,13 +1,11 @@
-const GObject      = imports.gi.GObject;
-const Shell        = imports.gi.Shell;
-const Gtk          = imports.gi.Gtk;
-const Meta         = imports.gi.Meta;
-const Main         = imports.ui.main;
-const Unite        = imports.misc.extensionUtils.getCurrentExtension();
-const Base         = Unite.imports.module.BaseModule;
-const versionCheck = Unite.imports.helpers.versionCheck;
-const isWindow     = Unite.imports.helpers.isWindow;
-const isMaximized  = Unite.imports.helpers.isMaximized;
+const GObject     = imports.gi.GObject;
+const Shell       = imports.gi.Shell;
+const Meta        = imports.gi.Meta;
+const Main        = imports.ui.main;
+const Unite       = imports.misc.extensionUtils.getCurrentExtension();
+const Base        = Unite.imports.module.BaseModule;
+const isWindow    = Unite.imports.helpers.isWindow;
+const isMaximized = Unite.imports.helpers.isMaximized;
 
 var ApplicationMenu = new GObject.Class({
   Name: 'UniteApplicationMenu',
@@ -19,8 +17,6 @@ var ApplicationMenu = new GObject.Class({
   _onInitialize() {
     this.appMenu        = Main.panel.statusArea.appMenu;
     this.winTracker     = Shell.WindowTracker.get_default();
-    this.appSystem      = Shell.AppSystem.get_default();
-    this.gtkSettings    = Gtk.Settings.get_default();
     this.monitorManager = Meta.MonitorManager.get();
     this._isUpdating    = false;
   },
@@ -32,65 +28,11 @@ var ApplicationMenu = new GObject.Class({
     this._signals.connect(global.window_manager, 'size-change', 'updateTitleText');
     this._signals.connect(this.appMenu._label, 'notify::text', 'updateTitleText');
 
-    this._useShowsMenu();
     this._updateTitle();
   },
 
   _onReset() {
     this._updateTitle();
-  },
-
-  _onDeactivate() {
-    this._resetShowsMenu();
-  },
-
-  _showsMenu() {
-    this._resetShowsMenu();
-    this._enableShowsMenu();
-  },
-
-  _useShowsMenu() {
-    if (versionCheck('> 3.30.2')) return;
-
-    this._signals.connect(this.gtkSettings, 'notify::gtk-shell-shows-app-menu', 'showsMenu');
-    this._settings.connect('restrict-to-primary-screen', 'showsMenu');
-
-    this._enableShowsMenu();
-  },
-
-  _enableShowsMenu() {
-    if (this.gtkSettings.gtk_shell_shows_app_menu) return;
-
-    this._showsMenuSignals = [
-      this._signals.connect(Main.overview, 'hiding', 'toggleMenu'),
-      this._signals.connect(this.winTracker, 'notify::focus-app', 'toggleMenu'),
-      this._signals.connect(this.appSystem, 'app-state-changed', 'toggleMenu')
-    ];
-
-    this._toggleMenu();
-  },
-
-  _resetShowsMenu() {
-    if (!this._showsMenuSignals) return;
-
-    this._signals.disconnectMany(this._showsMenuSignals);
-    this.appMenu.setSensitive(true);
-  },
-
-  _toggleMenu() {
-    let target   = this.appMenu._targetApp != null;
-    let overview = Main.overview.visibleTarget;
-    let visible  = target && !overview;
-
-    if (visible && !this.appMenu.visible) {
-      this.appMenu.show();
-      this.appMenu.setSensitive(false);
-    }
-
-    if (!visible && this.appMenu.visible) {
-      this.appMenu.hide();
-      this.appMenu.setSensitive(true);
-    }
   },
 
   _handleWindowTitle(win) {
