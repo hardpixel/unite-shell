@@ -1,10 +1,10 @@
-const Lang      = imports.lang;
+const GObject   = imports.gi.GObject;
 const St        = imports.gi.St;
 const Clutter   = imports.gi.Clutter;
 const Main      = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 
-var DesktopLabel = new Lang.Class({
+var DesktopLabel = new GObject.Class({
   Name: 'UniteDesktopLabel',
   Extends: PanelMenu.Button,
 
@@ -33,7 +33,7 @@ var DesktopLabel = new Lang.Class({
   }
 });
 
-var TrayIndicator = new Lang.Class({
+var TrayIndicator = new GObject.Class({
   Name: 'UniteTrayIndicator',
   Extends: PanelMenu.Button,
 
@@ -85,7 +85,7 @@ var TrayIndicator = new Lang.Class({
   }
 });
 
-var WindowControls = new Lang.Class({
+var WindowControls = new GObject.Class({
   Name: 'UniteWindowControls',
   Extends: PanelMenu.Button,
 
