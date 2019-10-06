@@ -1,18 +1,14 @@
 const Gi      = imports._gi
-const GObject = imports.gi.GObject
 const Clutter = imports.gi.Clutter
 const Main    = imports.ui.main
 const Unite   = imports.misc.extensionUtils.getCurrentExtension()
 const Base    = Unite.imports.module.BaseModule
 
-var ExtendLeftBox = new GObject.Class({
-  Name: 'UniteExtendLeftBox',
-  Extends: Base,
-
+var ExtendLeftBox = class ExtendLeftBox extends Base {
   _onSetup() {
     this._enableKey   = 'extend-left-box'
     this._enableValue = true
-  },
+  }
 
   _onActivate() {
     this._oldAllocate = Main.panel.__proto__.vfunc_allocate
@@ -21,18 +17,18 @@ var ExtendLeftBox = new GObject.Class({
       Main.panel.vfunc_allocate.call(Main.panel, box, flags)
       this._extendBox(Main.panel, box, flags)
     })
-  },
+  }
 
   _onDeactivate() {
     if (this._oldAllocate) {
       Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', this._oldAllocate)
       this._oldAllocate = null
     }
-  },
+  }
 
   _onReload() {
     Main.panel.queue_relayout()
-  },
+  }
 
   _extendBox(actor, box, flags) {
     let leftBox   = Main.panel._leftBox
@@ -88,4 +84,4 @@ var ExtendLeftBox = new GObject.Class({
 
     rightBox.allocate(childBox, flags)
   }
-})
+}

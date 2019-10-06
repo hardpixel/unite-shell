@@ -1,5 +1,4 @@
 const ByteArray      = imports.byteArray
-const GObject        = imports.gi.GObject
 const GLib           = imports.gi.GLib
 const Meta           = imports.gi.Meta
 const Util           = imports.misc.util
@@ -10,18 +9,15 @@ const isWindow       = Unite.imports.helpers.isWindow
 const isMaximized    = Unite.imports.helpers.isMaximized
 const loadUserStyles = Unite.imports.helpers.loadUserStyles
 
-var WindowDecoration = new GObject.Class({
-  Name: 'UniteWindowDecoration',
-  Extends: Base,
-
+var WindowDecoration = class WindowDecoration extends Base {
   _onSetup() {
     this._enableKey    = 'hide-window-titlebars'
     this._disableValue = 'never'
-  },
+  }
 
   _onInitialize() {
     this.monitorManager = Meta.MonitorManager.get()
-  },
+  }
 
   _onActivate() {
     this._signals.connect(global.display, 'notify::focus-window', 'updateTitlebar')
@@ -34,24 +30,24 @@ var WindowDecoration = new GObject.Class({
 
     this._updateUserStyles()
     this._undecorateWindows()
-  },
+  }
 
   _onDeactivate() {
     this._removeUserStyles()
     this._decorateWindows()
-  },
+  }
 
   _onReset() {
     this._removeUserStyles()
     this._updateUserStyles()
 
     this._undecorateWindows()
-  },
+  }
 
   _getWindowXID(win) {
     win._windowXID = win._windowXID || getWindowXID(win)
     return win._windowXID
-  },
+  }
 
   _getHintValue(win, hint) {
     let winId = this._getWindowXID(win)
@@ -67,14 +63,14 @@ var WindowDecoration = new GObject.Class({
     })
 
     return string
-  },
+  }
 
   _setHintValue(win, hint, value) {
     let winId = this._getWindowXID(win)
     if (!winId) return
 
     Util.spawn(['xprop', '-id', winId, '-f', hint, '32c', '-set', hint, value])
-  },
+  }
 
   _getMotifHints(win) {
     if (!win._uniteOriginalState) {
@@ -91,12 +87,12 @@ var WindowDecoration = new GObject.Class({
     }
 
     return win._uniteOriginalState
-  },
+  }
 
   _getAllWindows() {
     let windows = global.get_window_actors().map(win => win.meta_window)
     return windows.filter(win => this._handleWindow(win))
-  },
+  }
 
   _handleWindow(win) {
     let handleWin = false
@@ -107,7 +103,7 @@ var WindowDecoration = new GObject.Class({
     handleWin = handleWin && (state[2] != '0x2' && state[2] != '0x0')
 
     return handleWin
-  },
+  }
 
   _toggleDecorations(win, hide) {
     let winId = this._getWindowXID(win)
@@ -118,7 +114,7 @@ var WindowDecoration = new GObject.Class({
     let value = hide ? flag.format('0x2') : flag.format('0x1')
 
     Util.spawn(['xprop', '-id', winId, '-f', prop, '32c', '-set', prop, value])
-  },
+  }
 
   _resetDecorations(win) {
     if (!this._handleWindow(win))
@@ -128,28 +124,28 @@ var WindowDecoration = new GObject.Class({
 
     delete win._decorationOFF
     delete win._windowXID
-  },
+  }
 
   _updateTitlebar() {
     let focusWindow = global.display.focus_window
     if (!focusWindow) return
 
     this._toggleTitlebar(focusWindow)
-  },
+  }
 
   _showTitlebar(win) {
     if (!win._decorationOFF) return
 
     win._decorationOFF = false
     this._toggleDecorations(win, false)
-  },
+  }
 
   _hideTitlebar(win) {
     if (win._decorationOFF) return
 
     win._decorationOFF = true
     this._toggleDecorations(win, true)
-  },
+  }
 
   _toggleTitlebar(win) {
     if (!this._handleWindow(win))
@@ -162,7 +158,7 @@ var WindowDecoration = new GObject.Class({
       this._hideTitlebar(win)
     else
       this._showTitlebar(win)
-  },
+  }
 
   _getCssImports() {
     let position  = this._settings.get('window-buttons-position')
@@ -177,24 +173,24 @@ var WindowDecoration = new GObject.Class({
       case 'tiled':     return tiled
       case 'always':    return always
     }
-  },
+  }
 
   _updateUserStyles() {
     let styles = this._getCssImports()
     loadUserStyles(styles || '')
-  },
+  }
 
   _removeUserStyles() {
     loadUserStyles('')
-  },
+  }
 
   _undecorateWindows() {
     let windows = this._getAllWindows()
     windows.forEach(win => { this._toggleTitlebar(win) })
-  },
+  }
 
   _decorateWindows() {
     let windows = this._getAllWindows()
     windows.forEach(win => { this._resetDecorations(win) })
   }
-})
+}

@@ -1,4 +1,3 @@
-const GObject        = imports.gi.GObject
 const St             = imports.gi.St
 const Shell          = imports.gi.Shell
 const Meta           = imports.gi.Meta
@@ -11,18 +10,15 @@ const isMaximized    = Unite.imports.helpers.isMaximized
 const loadStyles     = Unite.imports.helpers.loadStyles
 const unloadStyles   = Unite.imports.helpers.unloadStyles
 
-var WindowButtons = new GObject.Class({
-  Name: 'UniteWindowButtons',
-  Extends: Base,
-
+var WindowButtons = class WindowButtons extends Base {
   _onSetup() {
     this._enableKey    = 'show-window-buttons'
     this._disableValue = 'never'
-  },
+  }
 
   _onInitialize() {
     this.monitorManager = Meta.MonitorManager.get()
-  },
+  }
 
   _onActivate() {
     this._signals.connect(global.display, 'notify::focus-window', 'toggleButtons')
@@ -41,16 +37,16 @@ var WindowButtons = new GObject.Class({
     this._createButtons()
     this._toggleButtons()
     this._loadTheme()
-  },
+  }
 
   _onReset() {
     this._toggleButtons()
-  },
+  }
 
   _onDeactivate() {
     this._unloadTheme()
     this._destroyButtons()
-  },
+  }
 
   _createButtons() {
     let buttons = this._settings.get('window-buttons-layout')
@@ -93,24 +89,24 @@ var WindowButtons = new GObject.Class({
     if (side == 'right' && place != 'last')  {
       Main.panel._rightBox.set_child_below_sibling(widget, aggMenu)
     }
-  },
+  }
 
   _destroyButtons() {
     if (!this._controls) return
 
     this._controls.destroy()
     this._controls = null
-  },
+  }
 
   _updateButtons() {
     this._destroyButtons()
     this._createButtons()
-  },
+  }
 
   _updateTheme() {
     this._unloadTheme()
     this._loadTheme()
-  },
+  }
 
   _loadTheme() {
     if (this._themeFile || !this._controls) return
@@ -119,7 +115,7 @@ var WindowButtons = new GObject.Class({
     this._themeFile = loadStyles(`themes/${this._themeName}/stylesheet.css`)
 
     this._controls.add_style_class_name(`${this._themeName}-buttons`)
-  },
+  }
 
   _unloadTheme() {
     if (!this._themeFile || !this._controls) return
@@ -128,7 +124,7 @@ var WindowButtons = new GObject.Class({
 
     this._themeName = this._settings.get('window-buttons-theme')
     this._themeFile = unloadStyles(this._themeFile)
-  },
+  }
 
   _onButtonClick(actor, event) {
     let focusWindow = global.display.focus_window
@@ -139,11 +135,11 @@ var WindowButtons = new GObject.Class({
       case 'maximize': return this._maximizeWindow(focusWindow)
       case 'close':    return this._closeWindow(focusWindow)
     }
-  },
+  }
 
   _minimizeWindow(win) {
     if (!win.minimized) win.minimize()
-  },
+  }
 
   _maximizeWindow(win) {
     let bothMaximized = Meta.MaximizeFlags.BOTH
@@ -153,11 +149,11 @@ var WindowButtons = new GObject.Class({
       win.unmaximize(bothMaximized)
     else
       win.maximize(bothMaximized)
-  },
+  }
 
   _closeWindow(win) {
     win.delete(global.get_current_time())
-  },
+  }
 
   _toggleButtons() {
     if (!this._controls) return
@@ -182,4 +178,4 @@ var WindowButtons = new GObject.Class({
 
     this._controls.setVisible(visible)
   }
-})
+}

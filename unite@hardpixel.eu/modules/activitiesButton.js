@@ -1,23 +1,19 @@
-const GObject = imports.gi.GObject
-const Shell   = imports.gi.Shell
-const Main    = imports.ui.main
-const Unite   = imports.misc.extensionUtils.getCurrentExtension()
-const Base    = Unite.imports.module.BaseModule
+const Shell = imports.gi.Shell
+const Main  = imports.ui.main
+const Unite = imports.misc.extensionUtils.getCurrentExtension()
+const Base  = Unite.imports.module.BaseModule
 
-var ActivitiesButton = new GObject.Class({
-  Name: 'UniteActivitiesButton',
-  Extends: Base,
-
+var ActivitiesButton = class ActivitiesButton extends Base {
   _onSetup() {
     this._enableKey    = 'hide-activities-button'
     this._disableValue = 'never'
-  },
+  }
 
   _onInitialize() {
     this._container = Main.panel.statusArea.activities.container
     this.appSystem  = Shell.AppSystem.get_default()
     this.winTracker = Shell.WindowTracker.get_default()
-  },
+  }
 
   _onActivate() {
     this._signals.connect(this.appSystem, 'app-state-changed', 'toggleButton')
@@ -27,15 +23,15 @@ var ActivitiesButton = new GObject.Class({
     this._signals.connect(Main.overview, 'hiding', 'toggleButton')
 
     this._toggleButton()
-  },
+  }
 
   _onReset() {
     this._toggleButton()
-  },
+  }
 
   _onDeactivate() {
     this._container.show()
-  },
+  }
 
   _toggleButton() {
     let appMenu  = Main.panel.statusArea.appMenu._targetApp != null
@@ -47,4 +43,4 @@ var ActivitiesButton = new GObject.Class({
 
     this._container.visible = !hidden
   }
-})
+}

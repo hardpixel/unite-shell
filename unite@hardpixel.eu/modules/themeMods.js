@@ -1,14 +1,10 @@
-const GObject      = imports.gi.GObject
 const Gtk          = imports.gi.Gtk
 const Main         = imports.ui.main
 const Unite        = imports.misc.extensionUtils.getCurrentExtension()
 const Base         = Unite.imports.module.BaseModule
 const minorVersion = Unite.imports.helpers.minorVersion
 
-var ThemeMods = new GObject.Class({
-  Name: 'UniteThemeMods',
-  Extends: Base,
-
+var ThemeMods = class ThemeMods extends Base {
   _onInitialize() {
     this.gtkSettings = Gtk.Settings.get_default()
     this._extraSpace = minorVersion < 34
@@ -19,7 +15,7 @@ var ThemeMods = new GObject.Class({
     this._leftBox    = Main.panel._leftBox
     this._centerBox  = Main.panel._centerBox
     this._rightBox   = Main.panel._rightBox
-  },
+  }
 
   _onActivate() {
     this._signals.connect(this.gtkSettings, 'notify::gtk-font-name', 'setPanelStyle')
@@ -42,7 +38,7 @@ var ThemeMods = new GObject.Class({
     this._toggleAppMenuArrow()
 
     this._setPanelStyle()
-  },
+  }
 
   _onDeactivate() {
     this._unsetExtraSpace()
@@ -53,19 +49,19 @@ var ThemeMods = new GObject.Class({
     this._resetAppMenuArrow()
 
     this._unsetPanelStyle()
-  },
+  }
 
   _setExtraSpace() {
     if (this._extraSpace) {
       this._addClass('extra-spacing')
     }
-  },
+  }
 
   _unsetExtraSpace() {
     if (this._extraSpace) {
       this._removeClass('extra-spacing')
     }
-  },
+  }
 
   _setPanelStyle() {
     this._unsetPanelStyle()
@@ -88,7 +84,7 @@ var ThemeMods = new GObject.Class({
     }
 
     Main.panel.set_style('font-size: 11.25pt;')
-  },
+  }
 
   _unsetPanelStyle() {
     this._removeClass('small-spacing')
@@ -96,7 +92,7 @@ var ThemeMods = new GObject.Class({
 
     Main.uiGroup.set_style(this._mainStyle)
     Main.panel.set_style(this._panelStyle)
-  },
+  }
 
   _toggleAppMenuIcon() {
     const enabled = this._settings.get('hide-app-menu-icon')
@@ -106,11 +102,11 @@ var ThemeMods = new GObject.Class({
     } else {
       this._resetAppMenuIcon()
     }
-  },
+  }
 
   _resetAppMenuIcon() {
     this._appMenu._iconBox.show()
-  },
+  }
 
   _getWidgetArrow(widget) {
     let arrow = widget._arrow
@@ -131,7 +127,7 @@ var ThemeMods = new GObject.Class({
       widget._arrow = arrow
 
     return arrow
-  },
+  }
 
   _toggleWidgetArrow(widget, hide) {
     if (!widget) return
@@ -148,7 +144,7 @@ var ThemeMods = new GObject.Class({
       arrow.visible = true
       delete widget._arrowHandled
     }
-  },
+  }
 
   _removePanelArrows() {
     for (const [name, widget] of Object.entries(Main.panel.statusArea)) {
@@ -156,7 +152,7 @@ var ThemeMods = new GObject.Class({
         this._toggleWidgetArrow(widget, true)
       }
     }
-  },
+  }
 
   _resetPanelArrows() {
     for (const [name, widget] of Object.entries(Main.panel.statusArea)) {
@@ -164,7 +160,7 @@ var ThemeMods = new GObject.Class({
         this._toggleWidgetArrow(widget, false)
       }
     }
-  },
+  }
 
   _togglePanelArrows() {
     const enabled = this._settings.get('hide-dropdown-arrows')
@@ -174,7 +170,7 @@ var ThemeMods = new GObject.Class({
     } else {
       this._resetPanelArrows()
     }
-  },
+  }
 
   _toggleAggMenuArrow() {
     const enabled = this._settings.get('hide-aggregate-menu-arrow')
@@ -184,11 +180,11 @@ var ThemeMods = new GObject.Class({
     } else {
       this._resetAggMenuArrow()
     }
-  },
+  }
 
   _resetAggMenuArrow() {
     this._toggleWidgetArrow(this._aggMenu, false)
-  },
+  }
 
   _toggleAppMenuArrow() {
     const enabled = this._settings.get('hide-app-menu-arrow')
@@ -198,17 +194,17 @@ var ThemeMods = new GObject.Class({
     } else {
       this._resetAppMenuArrow()
     }
-  },
+  }
 
   _resetAppMenuArrow() {
     this._toggleWidgetArrow(this._appMenu, false)
-  },
+  }
 
   _addClass(name) {
     Main.panel._addStyleClassName(name)
-  },
+  }
 
   _removeClass(name) {
     Main.panel._removeStyleClassName(name)
   }
-})
+}
