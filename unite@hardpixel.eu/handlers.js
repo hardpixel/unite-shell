@@ -1,100 +1,71 @@
 const Unite       = imports.misc.extensionUtils.getCurrentExtension()
 const Convenience = Unite.imports.convenience
 
+const SETTINGS = Convenience.getSettings()
+const WM_PREFS = Convenience.getPreferences()
+
 var SignalsHandler = class SignalsHandler {
-  constructor(context) {
-    this._init(context)
+  constructor() {
+    this.signals = new Map()
   }
 
-  _init(context) {
-    this._signals = {}
-    this._context = context
+  registerHandler(object, name, callback) {
+    const key = `${object}[${name}]`
+
+    if (!this.hasSignal(key)) {
+      this.signals.set(key, {
+        object:   object,
+        signalId: object.connect(name, callback)
+      })
+    }
+
+    return key
   }
 
-  _getCallbackFunction(callback) {
-    if (typeof callback == 'string')
-      callback = this._context[callback] || this._context[`_${callback}`]
-
-    return callback
-  }
-
-  _connectHandler(object, name, callbackObj) {
-    let callback = this._getCallbackFunction(callbackObj)
-    let signalId = object.connect(name, callback.bind(this._context))
-
-    return { object: object, signalId: signalId }
-  }
-
-  _addHandler(object, name, callback) {
-    let signalKey = `${object}[${name}#${callback}]`
-
-    if (!this._signals[signalKey])
-      this._signals[signalKey] = this._connectHandler(object, name, callback)
-
-    return signalKey
+  hasSignal(key) {
+    return this.signals.has(key)
   }
 
   connect(object, name, callback) {
-    return this._addHandler(object, name, callback)
+    return this.registerHandler(object, name, callback)
   }
 
-  disconnect(signalKey) {
-    let signalData = this._signals[signalKey]
-    if (!signalData) return
+  disconnect(key) {
+    if (this.hasSignal(key)) {
+      const data = this.signals.get(key)
+      data.object.disconnect(data.signalId)
 
-    signalData.object.disconnect(signalData.signalId)
-    delete this._signals[signalKey]
+      this.signals.delete(key)
+    }
   }
 
-  disconnectMany(signalKeys) {
-    signalKeys.forEach(signalKey => { this.disconnect(signalKey) })
+  disconnectMany(keys) {
+    keys.forEach(this.disconnect.bind(this))
   }
 
   disconnectAll() {
-    this.disconnectMany(Object.keys(this._signals))
+    for (const key of this.signals.keys()) {
+      this.disconnect(key)
+    }
   }
 }
 
 var SettingsHandler = class SettingsHandler extends SignalsHandler {
-  _init(context) {
-    this._enabler  = null
-    this._signals  = {}
-    this._context  = context
-    this._settings = Convenience.getSettings()
-    this._wmPrefs  = Convenience.getPreferences()
-  }
-
-  _getSettingObject(settingKey) {
-    if (this._settings.exists(settingKey))
-      return this._settings
-
-    if (this._wmPrefs.exists(settingKey))
-      return this._wmPrefs
+  getSettingObject(key) {
+    if (SETTINGS.exists(key)) {
+      return SETTINGS
+    } else {
+      return WM_PREFS
+    }
   }
 
   connect(name, callback) {
-    let object = this._getSettingObject(name)
-    return this._addHandler(object, `changed::${name}`, callback)
+    const object = this.getSettingObject(name)
+    return this.registerHandler(object, `changed::${name}`, callback)
   }
 
-  enable(name, callback) {
-    if (this._enabler) return
-
-    let signalObj = this._settings
-    this._enabler = this._connectHandler(signalObj, `changed::${name}`, callback)
-  }
-
-  disable() {
-    if (!this._enabler) return
-
-    this._settings.disconnect(this._enabler.signalId)
-    this._enabler = null
-  }
-
-  get(settingKey) {
-    if (settingKey == null) return
-
-    let object = this._getSettingObject(settingKey)
-    if (object) return object.getSetting(settingKey)
+  get(key) {
+    const object = this.getSettingObject(key)
+    return object.getSetting(key)
   }
 }
