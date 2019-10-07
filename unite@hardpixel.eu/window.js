@@ -1,13 +1,18 @@
 const Bytes    = imports.byteArray
 const GLib     = imports.gi.GLib
 const GObject  = imports.gi.GObject
-const Type     = imports.gi.Meta.WindowType
+const Meta     = imports.gi.Meta
 const Util     = imports.misc.util
 const Unite    = imports.misc.extensionUtils.getCurrentExtension()
 const Signals  = Unite.imports.handlers.SignalsHandler
 const Settings = Unite.imports.handlers.SettingsHandler
 
-const VALID_TYPES = [Type.NORMAL, Type.DIALOG, Type.MODAL_DIALOG, Type.UTILITY]
+const VALID_TYPES = [
+  Meta.WindowType.NORMAL,
+  Meta.WindowType.DIALOG,
+  Meta.WindowType.MODAL_DIALOG,
+  Meta.WindowType.UTILITY
+]
 
 const UNITE_HINTS = '_UNITE_ORIGINAL_STATE'
 const MOTIF_HINTS = '_MOTIF_WM_HINTS'
@@ -199,6 +204,23 @@ var MetaWindow = GObject.registerClass({
 
     get hideTitlebars() {
       return this._parseEnumSetting('hide-window-titlebars')
+    }
+
+    minimize() {
+      this.win.minimize()
+    }
+
+    maximize() {
+      if (this.maximized) {
+        this.win.unmaximize(Meta.MaximizeFlags.BOTH)
+      } else {
+        this.win.maximize(Meta.MaximizeFlags.BOTH)
+      }
+    }
+
+    close() {
+      const time = global.get_current_time()
+      time && this.win.delete(time)
     }
 
     syncDecorations() {
