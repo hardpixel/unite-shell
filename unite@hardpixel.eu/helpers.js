@@ -1,10 +1,8 @@
-const Gio      = imports.gi.Gio
-const GLib     = imports.gi.GLib
-const St       = imports.gi.St
-const Meta     = imports.gi.Meta
-const Config   = imports.misc.config
-const Unite    = imports.misc.extensionUtils.getCurrentExtension()
-const Settings = Unite.imports.convenience.getSettings()
+const Gio    = imports.gi.Gio
+const GLib   = imports.gi.GLib
+const St     = imports.gi.St
+const Config = imports.misc.config
+const Unite  = imports.misc.extensionUtils.getCurrentExtension()
 
 const USER_CONFIG = GLib.get_user_config_dir()
 const USER_STYLES = `${USER_CONFIG}/gtk-3.0/gtk.css`
@@ -65,37 +63,4 @@ function unloadStyles(gioFile) {
 function scaleSize(initialSize) {
   let context = getThemeContext()
   return initialSize * context.scale_factor
-}
-
-function getWindowXID(win) {
-  let desc  = win.get_description() || ''
-  let match = desc.match(/0x[0-9a-f]+/) || [null]
-
-  return match[0]
-}
-
-function isWindow(win) {
-  if (!win) return
-
-  let meta  = Meta.WindowType
-  let types = [meta.NORMAL, meta.DIALOG, meta.MODAL_DIALOG, meta.UTILITY]
-
-  return types.includes(win.window_type)
-}
-
-function isMaximized(win, matchState) {
-  if (!win) return
-
-  let flags         = Meta.MaximizeFlags
-  let maximized     = win.get_maximized()
-  let primaryScreen = win.is_on_primary_monitor() || !(Settings.getSetting('restrict-to-primary-screen'))
-  let tileMaximized = maximized == flags.HORIZONTAL || maximized == flags.VERTICAL
-  let fullMaximized = maximized == flags.BOTH
-  let bothMaximized = fullMaximized || tileMaximized
-
-  switch (matchState) {
-    case 'both':      return primaryScreen && bothMaximized
-    case 'maximized': return primaryScreen && fullMaximized
-    case 'tiled':     return primaryScreen && tileMaximized
-  }
 }
