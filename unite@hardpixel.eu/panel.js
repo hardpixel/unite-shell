@@ -97,24 +97,25 @@ var WindowControls = GObject.registerClass(
       this.add_style_class_name('window-controls')
     }
 
-    _addButton(action, callback) {
+    _addButton(action) {
       const bin = new St.Bin({ style_class: 'icon' })
       const btn = new St.Button({ track_hover: true })
-
-      btn._windowAction = action
 
       btn.add_style_class_name(`window-button ${action}`)
       btn.add_actor(bin)
 
-      btn.connect('clicked', (actor, event) => {
-        callback.call(null, actor, event)
+      btn.connect('clicked', () => {
+        const target = global.uniteShell.focusWindow
+        const method = target[action]
+
+        method.call(target)
       })
 
       this._controls.add_child(btn)
     }
 
-    addButtons(buttons, callback) {
-      buttons.forEach(action => { this._addButton(action, callback) })
+    addButtons(buttons) {
+      buttons.forEach(this._addButton.bind(this))
     }
 
     setVisible(visible) {
