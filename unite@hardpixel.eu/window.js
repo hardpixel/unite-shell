@@ -170,6 +170,10 @@ var MetaWindow = GObject.registerClass({
       return this.win.is_on_primary_monitor()
     }
 
+    get minimized() {
+      return this.win.minimized
+    }
+
     get maximized() {
       return this.win.maximized_horizontally && this.win.maximized_vertically
     }
@@ -207,7 +211,11 @@ var MetaWindow = GObject.registerClass({
     }
 
     minimize() {
-      this.win.minimize()
+      if (this.minimized) {
+        this.win.unminimize()
+      } else {
+        this.win.minimize()
+      }
     }
 
     maximize() {
