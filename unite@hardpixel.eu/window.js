@@ -2,6 +2,7 @@ const Bytes    = imports.byteArray
 const GLib     = imports.gi.GLib
 const GObject  = imports.gi.GObject
 const Meta     = imports.gi.Meta
+const Main     = imports.ui.main
 const Util     = imports.misc.util
 const Unite    = imports.misc.extensionUtils.getCurrentExtension()
 const Signals  = Unite.imports.handlers.SignalsHandler
@@ -290,6 +291,10 @@ var WindowManager = GObject.registerClass({
       this.signals.connect(
         global.display, 'notify::focus-window', this._onFocusWindow.bind(this)
       )
+
+      this.signals.connect(
+        global.display, 'window-demands-attention', this._onAttention.bind(this)
+      )
     }
 
     hasWindow(win) {
@@ -348,6 +353,13 @@ var WindowManager = GObject.registerClass({
       }
 
       this.emit('focus-changed')
+    }
+
+    _onAttention(actor, win) {
+      const auto = this.settings.get('autofocus-windows')
+      const time = auto && global.get_current_time()
+
+      time && Main.activateWindow(win, time)
     }
 
     destroy() {
