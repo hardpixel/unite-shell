@@ -343,8 +343,11 @@ var WindowManager = GObject.registerClass({
 
       if (isValid(win) && this.hasWindow(win)) {
         this.focused = this.getWindow(win)
-        this.emit('focus-changed')
+      } else {
+        this.focused = null
       }
+
+      this.emit('focus-changed')
     }
 
     destroy() {
