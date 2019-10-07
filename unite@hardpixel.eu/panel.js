@@ -3,6 +3,9 @@ const St        = imports.gi.St
 const Clutter   = imports.gi.Clutter
 const Main      = imports.ui.main
 const PanelMenu = imports.ui.panelMenu
+const Unite     = imports.misc.extensionUtils.getCurrentExtension()
+const Signals   = Unite.imports.handlers.SignalsHandler
+const Settings  = Unite.imports.handlers.SettingsHandler
 
 var DesktopLabel = GObject.registerClass(
   class UniteDesktopLabel extends PanelMenu.Button {
@@ -116,6 +119,20 @@ var WindowControls = GObject.registerClass(
 
     setVisible(visible) {
       this.container.visible = visible
+    }
+  }
+)
+
+var PanelManager = GObject.registerClass(
+  class UnitePanelManager extends GObject.Object {
+    _init() {
+      this.signals  = new Signals()
+      this.settings = new Settings()
+    }
+
+    destroy() {
+      this.signals.disconnectAll()
+      this.settings.disconnectAll()
     }
   }
 )
