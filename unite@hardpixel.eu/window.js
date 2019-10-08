@@ -130,6 +130,8 @@ var MetaWindow = GObject.registerClass({
   }
 }, class UniteMetaWindow extends GObject.Object {
     _init(win) {
+      win._uniteShellManaged = true
+
       this.win = win
       this.xid = getXid(win)
 
@@ -262,6 +264,8 @@ var MetaWindow = GObject.registerClass({
 
       this.signals.disconnectAll()
       this.settings.disconnectAll()
+
+      this.win._uniteShellManaged = false
     }
   }
 )
@@ -293,6 +297,8 @@ var WindowManager = GObject.registerClass({
       this.signals.connect(
         global.display, 'window-demands-attention', this._onAttention.bind(this)
       )
+
+      this.syncWindows()
     }
 
     hasWindow(win) {
@@ -307,8 +313,6 @@ var WindowManager = GObject.registerClass({
       if (!this.hasWindow(win)) {
         const meta = new MetaWindow(win)
         this.windows.set(`${win}`, meta)
-
-        win._uniteShellManaged = true
       }
     }
 
@@ -317,7 +321,6 @@ var WindowManager = GObject.registerClass({
         const meta = this.getWindow(win)
         meta.destroy()
 
-        win._uniteShellManaged = false
         this.windows.delete(`${win}`)
       }
     }
@@ -326,6 +329,11 @@ var WindowManager = GObject.registerClass({
       for (const key of this.windows.keys()) {
         this.deleteWindow(key)
       }
+    }
+
+    syncWindows() {
+      const actors = global.get_window_actors()
+      actors.forEach(actor => this._onMapWindow(null, actor))
     }
 
     _onMapWindow(shellwm, { meta_window }) {
