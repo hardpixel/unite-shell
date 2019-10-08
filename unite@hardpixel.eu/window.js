@@ -33,19 +33,17 @@ function getXid(win) {
 }
 
 function getHint(xid, name, fallback) {
-  let result = GLib.spawn_command_line_sync(`xprop -id ${xid} ${name}`)
-  let string = Bytes.toString(result[1])
+  const result = GLib.spawn_command_line_sync(`xprop -id ${xid} ${name}`)
+  const string = Bytes.toString(result[1])
 
   if (!string.match(/=/)) {
     return fallback
   }
 
-  string = string.split('=')[1].trim().split(',').map(part => {
+  return string.split('=')[1].trim().split(',').map(part => {
     part = part.trim()
     return part.match(/\dx/) ? part : `0x${part}`
   })
-
-  return string
 }
 
 function setHint(xid, hint, value) {
