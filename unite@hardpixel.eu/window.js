@@ -306,17 +306,22 @@ var WindowManager = GObject.registerClass({
     }
 
     setWindow(win) {
-      const meta = new MetaWindow(win)
-      this.windows.set(`${win}`, meta)
+      if (!this.hasWindow(win)) {
+        const meta = new MetaWindow(win)
+        this.windows.set(`${win}`, meta)
 
-      return meta
+        win._uniteShellManaged = true
+      }
     }
 
     deleteWindow(win) {
-      const meta = this.getWindow(win)
-      meta.destroy()
+      if (this.hasWindow(win)) {
+        const meta = this.getWindow(win)
+        meta.destroy()
 
-      this.windows.delete(`${win}`)
+        win._uniteShellManaged = false
+        this.windows.delete(`${win}`)
+      }
     }
 
     clearWindows() {
@@ -326,20 +331,14 @@ var WindowManager = GObject.registerClass({
     }
 
     _onMapWindow(shellwm, { meta_window }) {
-      const win = meta_window
-
-      if (isValid(win) && !this.hasWindow(win)) {
-        win._uniteShellManaged = true
-        this.setWindow(win)
+      if (isValid(meta_window)) {
+        this.setWindow(meta_window)
       }
     }
 
     _onDestroyWindow(shellwm, { meta_window }) {
-      const win = meta_window
-
-      if (isValid(win) && this.hasWindow(win)) {
-        win._uniteShellManaged = false
-        this.deleteWindow(win)
+      if (isValid(meta_window)) {
+        this.deleteWindow(meta_window)
       }
     }
 
