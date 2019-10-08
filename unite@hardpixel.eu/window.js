@@ -143,10 +143,6 @@ var MetaWindow = GObject.registerClass({
       }
 
       this.signals.connect(
-        win, 'focus', this._onStateChanged.bind(this)
-      )
-
-      this.signals.connect(
         win, 'size-changed', this._onStateChanged.bind(this)
       )
 
@@ -157,6 +153,8 @@ var MetaWindow = GObject.registerClass({
       this.settings.connect(
         'hide-window-titlebars', this.syncDecorations.bind(this)
       )
+
+      this.syncDecorations()
     }
 
     get title() {
