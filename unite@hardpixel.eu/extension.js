@@ -14,7 +14,7 @@ var UniteShell = GObject.registerClass(
     }
 
     get focusWindow() {
-      return this.windowManager.focused
+      return this.windowManager.focusWindow
     }
 
     destroy() {

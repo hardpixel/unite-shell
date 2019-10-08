@@ -274,9 +274,7 @@ var WindowManager = GObject.registerClass({
   }
 }, class UniteWindowManager extends GObject.Object {
     _init() {
-      this.focused = null
-      this.windows = new Map()
-
+      this.windows  = new Map()
       this.signals  = new Signals()
       this.settings = new Settings()
 
@@ -299,12 +297,17 @@ var WindowManager = GObject.registerClass({
       this.syncWindows()
     }
 
+    get focusWindow() {
+      const win = display.get_focus_window()
+      return this.getWindow(win)
+    }
+
     hasWindow(win) {
-      return this.windows.has(`${win}`)
+      return win && this.windows.has(`${win}`)
     }
 
     getWindow(win) {
-      return this.windows.get(`${win}`)
+      return win && this.windows.get(`${win}`)
     }
 
     setWindow(win) {
@@ -347,14 +350,6 @@ var WindowManager = GObject.registerClass({
     }
 
     _onFocusWindow(display) {
-      const win = display.get_focus_window()
-
-      if (isValid(win) && this.hasWindow(win)) {
-        this.focused = this.getWindow(win)
-      } else {
-        this.focused = null
-      }
-
       this.emit('focus-changed')
     }
 
