@@ -3,12 +3,11 @@
   padding-left: 0;
 }
 
-.maximized .titlebar headerbar ~ headerbar {
+.maximized headerbar ~ headerbar,
+.maximized headerbar ~ .titlebar,
+.maximized .titlebar ~ .titlebar,
+.maximized .titlebar ~ headerbar {
   padding-left: 6px;
-}
-
-.maximized .titlebar .titlebar {
-  padding-left: 0;
 }
 
 .maximized headerbar > box.left,

@@ -1,23 +1,22 @@
-headerbar,
-.titlebar {
+window headerbar,
+window .titlebar {
   padding-left: 0;
 }
 
-.titlebar headerbar ~ headerbar {
+window headerbar ~ headerbar,
+window headerbar ~ .titlebar,
+window .titlebar ~ .titlebar,
+window .titlebar ~ headerbar {
   padding-left: 6px;
 }
 
-.titlebar .titlebar {
-  padding-left: 0;
-}
-
-headerbar > box.left,
-.titlebar > box.left {
+window headerbar > box.left,
+window .titlebar > box.left {
   margin: 0 0 0 -200px;
   opacity: 0;
 }
 
-.titlebar.default-decoration {
+window .titlebar.default-decoration {
   margin: -200px 0 0;
   opacity: 0;
 }
