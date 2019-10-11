@@ -8,13 +8,12 @@ var ThemeMods = class ThemeMods extends Base {
   _onInitialize() {
     this.gtkSettings = Gtk.Settings.get_default()
     this._extraSpace = minorVersion < 34
-    this._mainStyle  = Main.uiGroup.get_style()
-    this._panelStyle = Main.panel.get_style()
     this._appMenu    = Main.panel.statusArea.appMenu
     this._aggMenu    = Main.panel.statusArea.aggregateMenu
     this._leftBox    = Main.panel._leftBox
     this._centerBox  = Main.panel._centerBox
     this._rightBox   = Main.panel._rightBox
+    this._uiStyles   = {}
   }
 
   _onActivate() {
@@ -75,7 +74,7 @@ var ThemeMods = class ThemeMods extends Base {
       const gtkFont = this.gtkSettings.gtk_font_name
       const cssFont = gtkFont.replace(/\s\d+$/, '')
 
-      Main.uiGroup.set_style(`font-family: ${cssFont};`)
+      this._addStyle('uiGroup', `font-family: ${cssFont};`)
       this._addClass('system-fonts')
     }
 
@@ -83,15 +82,15 @@ var ThemeMods = class ThemeMods extends Base {
       this._addClass('small-spacing')
     }
 
-    Main.panel.set_style('font-size: 11.25pt;')
+    this._addStyle('panel', 'font-size: 11.25pt;')
   }
 
   _unsetPanelStyle() {
     this._removeClass('small-spacing')
     this._removeClass('system-fonts')
 
-    Main.uiGroup.set_style(this._mainStyle)
-    Main.panel.set_style(this._panelStyle)
+    this._removeStyle('uiGroup')
+    this._removeStyle('panel')
   }
 
   _toggleAppMenuIcon() {
@@ -206,5 +205,26 @@ var ThemeMods = class ThemeMods extends Base {
 
   _removeClass(name) {
     Main.panel._removeStyleClassName(name)
+  }
+
+  _addStyle(name, style) {
+    this._uiStyles[name] = style
+
+    let widget = Main[name]
+    let styles = widget.get_style() || ''
+
+    widget.set_style(style + styles)
+  }
+
+  _removeStyle(name) {
+    let style = this._uiStyles[name]
+    if (!style) return
+
+    let widget = Main[name]
+    let styles = widget.get_style() || ''
+
+    widget.set_style(styles.replace(style, ''))
+
+    delete this._uiStyles[name]
   }
 }
