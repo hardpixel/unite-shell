@@ -296,7 +296,7 @@ var WindowManager = GObject.registerClass({
     }
 
     get focusWindow() {
-      const win = display.get_focus_window()
+      const win = global.display.get_focus_window()
       return this.getWindow(win)
     }
 
