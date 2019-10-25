@@ -1,3 +1,4 @@
+const Bytes    = imports.byteArray
 const Gio      = imports.gi.Gio
 const GLib     = imports.gi.GLib
 const GObject  = imports.gi.GObject
@@ -6,6 +7,9 @@ const Main     = imports.ui.main
 const Unite    = imports.misc.extensionUtils.getCurrentExtension()
 const Signals  = Unite.imports.handlers.SignalsHandler
 const Settings = Unite.imports.handlers.SettingsHandler
+
+const USER_CONFIG = GLib.get_user_config_dir()
+const USER_STYLES = `${USER_CONFIG}/gtk-3.0/gtk.css`
 
 function fileExists(path) {
   return GLib.file_test(path, GLib.FileTest.EXISTS)
@@ -17,6 +21,19 @@ function getGioFile(path) {
   if (fileExists(absPath)) {
     return Gio.file_new_for_path(absPath)
   }
+}
+
+function getFileContents(path) {
+  if (fileExists(path)) {
+    const contents = GLib.file_get_contents(path)
+    return Bytes.toString(contents[1])
+  } else {
+    return ''
+  }
+}
+
+function setFileContents(path, contents) {
+  GLib.file_set_contents(path, contents)
 }
 
 var ShellStyle = class ShellStyle {
@@ -31,6 +48,46 @@ var ShellStyle = class ShellStyle {
 
   unload() {
     this.theme.unload_stylesheet(this.file)
+  }
+}
+
+var WidgetStyle = class WidgetStyle {
+  constructor(widget, style) {
+    this.widget = widget
+    this.style  = style
+  }
+
+  get existing() {
+    return this.widget.get_style() || ''
+  }
+
+  load() {
+    const style = this.existing + this.style
+    this.widget.set_style(style)
+  }
+
+  unload() {
+    const style = this.existing.replace(this.style, '')
+    this.widget.set_style(style)
+  }
+}
+
+var GtkStyle = class GtkStyle {
+  constructor(contents) {
+    this.contents = contents
+  }
+
+  get existing() {
+    const contents = getFileContents(USER_STYLES)
+    return contents.replace(/@import.*unite@hardpixel\.eu.*css['"]\);\n/g, '')
+  }
+
+  load() {
+    setFileContents(USER_STYLES, this.contents + this.existing)
+  }
+
+  unload() {
+    setFileContents(USER_STYLES, this.existing)
   }
 }
 
@@ -58,9 +115,9 @@ var ThemeManager = GObject.registerClass(
       return name && this.styles.get(name)
     }
 
-    setStyle(name, object, path) {
+    setStyle(name, object, ...args) {
       if (!this.hasStyle(name)) {
-        const style = new object(this.theme, path)
+        const style = new object(this.theme, ...args)
         style.load()
 
         this.styles.set(name, style)
@@ -85,6 +142,16 @@ var ThemeManager = GObject.registerClass(
     addShellStyle(name, path) {
       this.deleteStyle(name)
       this.setStyle(name, ShellStyle, path)
+    }
+
+    addWidgetStyle(name, widget, styles) {
+      this.deleteStyle(name)
+      this.setStyle(name, WidgetStyle, widget, styles)
+    }
+
+    addGtkStyle(name, contents) {
+      this.deleteStyle(name)
+      this.setStyle(name, GtkStyle, contents)
     }
 
     activate() {
