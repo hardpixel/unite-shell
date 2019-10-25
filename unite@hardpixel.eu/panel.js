@@ -131,6 +131,9 @@ var PanelManager = GObject.registerClass(
       this.settings = new Settings()
     }
 
+    activate() {
+    }
+
     destroy() {
       this.signals.disconnectAll()
       this.settings.disconnectAll()

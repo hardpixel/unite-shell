@@ -9,12 +9,17 @@ var UniteShell = GObject.registerClass(
     _init() {
       this.windowManager = new WindowManager()
       this.panelManager  = new PanelManager()
-
-      Main.panel._addStyleClassName('unite-shell')
     }
 
     get focusWindow() {
       return this.windowManager.focusWindow
+    }
+
+    activate() {
+      this.windowManager.activate()
+      this.panelManager.activate()
+
+      Main.panel._addStyleClassName('unite-shell')
     }
 
     destroy() {
@@ -28,6 +33,7 @@ var UniteShell = GObject.registerClass(
 
 function enable() {
   global.uniteShell = new UniteShell()
+  global.uniteShell.activate()
 }
 
 function disable() {

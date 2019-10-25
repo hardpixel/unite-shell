@@ -293,8 +293,6 @@ var WindowManager = GObject.registerClass({
       this.signals.connect(
         global.display, 'window-demands-attention', this._onAttention.bind(this)
       )
-
-      this.syncWindows()
     }
 
     get focusWindow() {
@@ -332,11 +330,6 @@ var WindowManager = GObject.registerClass({
       }
     }
 
-    syncWindows() {
-      const actors = global.get_window_actors()
-      actors.forEach(actor => this._onMapWindow(null, actor))
-    }
-
     _onMapWindow(shellwm, { meta_window }) {
       if (isValid(meta_window)) {
         this.setWindow(meta_window)
@@ -358,6 +351,11 @@ var WindowManager = GObject.registerClass({
       const time = auto && global.get_current_time()
 
       time && Main.activateWindow(win, time)
+    }
+
+    activate() {
+      const actors = global.get_window_actors()
+      actors.forEach(actor => this._onMapWindow(null, actor))
     }
 
     destroy() {
