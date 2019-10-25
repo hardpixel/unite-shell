@@ -1,8 +1,6 @@
-const Gio    = imports.gi.Gio
 const GLib   = imports.gi.GLib
 const St     = imports.gi.St
 const Config = imports.misc.config
-const Unite  = imports.misc.extensionUtils.getCurrentExtension()
 
 const USER_CONFIG = GLib.get_user_config_dir()
 const USER_STYLES = `${USER_CONFIG}/gtk-3.0/gtk.css`
@@ -29,35 +27,6 @@ function loadUserStyles(styles) {
 
 function getThemeContext() {
   return St.ThemeContext.get_for_stage(global.stage)
-}
-
-function getTheme() {
-  let context = getThemeContext()
-  return context.get_theme()
-}
-
-function getGioFile(filePath) {
-  let absPath = GLib.build_filenamev([Unite.path, filePath])
-
-  if (fileExists(absPath))
-    return Gio.file_new_for_path(absPath)
-}
-
-function loadStyles(filePath) {
-  let gioFile = getGioFile(filePath)
-  if (!gioFile) return
-
-  let theme = getTheme()
-  theme.load_stylesheet(gioFile)
-
-  return gioFile
-}
-
-function unloadStyles(gioFile) {
-  let theme = getTheme()
-  theme.unload_stylesheet(gioFile)
-
-  return null
 }
 
 function scaleSize(initialSize) {
