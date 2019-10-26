@@ -5,6 +5,7 @@ const Meta     = imports.gi.Meta
 const Main     = imports.ui.main
 const Util     = imports.misc.util
 const Unite    = imports.misc.extensionUtils.getCurrentExtension()
+const AppMenu  = Main.panel.statusArea.appMenu
 const Signals  = Unite.imports.handlers.SignalsHandler
 const Settings = Unite.imports.handlers.SettingsHandler
 
@@ -151,10 +152,26 @@ var MetaWindow = GObject.registerClass({
       )
 
       this.settings.connect(
+        'restrict-to-primary-screen', this.syncComponents.bind(this)
+      )
+
+      this.settings.connect(
         'hide-window-titlebars', this.syncDecorations.bind(this)
       )
 
-      this.syncDecorations()
+      this.settings.connect(
+        'show-window-buttons', this.syncControls.bind(this)
+      )
+
+      this.settings.connect(
+        'show-window-title', this.syncAppmenu.bind(this)
+      )
+
+      this.syncComponents()
+    }
+
+    get hasFocus() {
+      return this.win.has_focus()
     }
 
     get title() {
@@ -238,6 +255,32 @@ var MetaWindow = GObject.registerClass({
       }
     }
 
+    syncControls() {
+      if (this.hasFocus) {
+        const controls = Main.panel.statusArea.uniteWindowControls
+        controls && controls.setVisible(this.showButtons)
+      }
+    }
+
+    syncAppmenu() {
+      if (this.hasFocus) {
+        const label = AppMenu._label
+        const title = AppMenu._targetApp.get_name()
+
+        if (this.showTitle) {
+          label.set_text(this.title)
+        } else {
+          label.set_text(title)
+        }
+      }
+    }
+
+    syncComponents() {
+      this.syncDecorations()
+      this.syncControls()
+      this.syncAppmenu()
+    }
+
     _parseEnumSetting(name) {
       switch (this.settings.get(name)) {
         case 'always':    return true
@@ -249,11 +292,12 @@ var MetaWindow = GObject.registerClass({
     }
 
     _onStateChanged() {
-      this.syncDecorations()
+      this.syncComponents()
       this.emit('state-changed')
     }
 
     _onTitleChanged() {
+      this.syncAppmenu()
       this.emit('title-changed')
     }
 
@@ -343,6 +387,15 @@ var WindowManager = GObject.registerClass({
     }
 
     _onFocusWindow(display) {
+      const buttons = Main.panel.statusArea.uniteWindowControls
+      const focused = this.focusWindow
+
+      if (focused) {
+        focused.syncComponents()
+      } else {
+        buttons && buttons.setVisible(false)
+      }
+
       this.emit('focus-changed')
     }
 
