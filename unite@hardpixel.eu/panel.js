@@ -241,12 +241,42 @@ var PanelManager = GObject.registerClass(
     _init() {
       this.signals  = new Signals()
       this.settings = new Settings()
+
+      this.settings.connect(
+        'show-window-buttons', this._onShowButtonsChange.bind(this)
+      )
+    }
+
+    _createButtons() {
+      if (!this.buttons) {
+        this.buttons = new WindowButtons()
+      }
+    }
+
+    _destroyButtons() {
+      if (this.buttons) {
+        this.buttons.destroy()
+        this.buttons = null
+      }
+    }
+
+    _onShowButtonsChange() {
+      const setting = this.settings.get('show-window-buttons')
+
+      if (setting == 'never') {
+        this._destroyButtons()
+      } else {
+        this._createButtons()
+      }
     }
 
     activate() {
+      this._onShowButtonsChange()
     }
 
     destroy() {
+      this._destroyButtons()
+
       this.signals.disconnectAll()
       this.settings.disconnectAll()
     }
