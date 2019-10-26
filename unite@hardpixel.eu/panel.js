@@ -106,9 +106,9 @@ var WindowControls = GObject.registerClass(
 
       btn.connect('clicked', () => {
         const target = global.uniteShell.focusWindow
-        const method = target[action]
+        const method = target && target[action]
 
-        method.call(target)
+        method && method.call(target)
       })
 
       this._controls.add_child(btn)
