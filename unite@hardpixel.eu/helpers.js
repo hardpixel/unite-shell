@@ -11,20 +11,6 @@ function fileExists(path) {
   return GLib.file_test(path, GLib.FileTest.EXISTS)
 }
 
-function getUserStyles() {
-  if (!fileExists(USER_STYLES)) return ''
-
-  let file  = GLib.file_get_contents(USER_STYLES)
-  let style = String.fromCharCode.apply(null, file[1])
-
-  return style.replace(/@import.*unite@hardpixel\.eu.*css['"]\);\n/g, '')
-}
-
-function loadUserStyles(styles) {
-  let existing = getUserStyles()
-  GLib.file_set_contents(USER_STYLES, styles + existing)
-}
-
 function getThemeContext() {
   return St.ThemeContext.get_for_stage(global.stage)
 }
