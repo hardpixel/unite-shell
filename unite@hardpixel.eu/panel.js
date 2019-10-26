@@ -121,7 +121,7 @@ var WindowControls = GObject.registerClass(
     }
 
     setVisible(visible) {
-      this.visible = visible
+      this.container.visible = visible
     }
   }
 )
@@ -207,12 +207,13 @@ var WindowButtons = class WindowButtons {
   }
 
   _onPositionChange() {
-    this.controls.reparent(this.container)
+    const controls = this.controls.container
+    controls.reparent(this.container)
 
     if (this.index != null) {
-      this.container.set_child_at_index(this.controls, this.index)
+      this.container.set_child_at_index(controls, this.index)
     } else {
-      this.container.set_child_below_sibling(this.controls, this.sibling)
+      this.container.set_child_below_sibling(controls, this.sibling)
     }
 
     this._onLayoutChange()
