@@ -172,15 +172,17 @@ var WindowButtons = class WindowButtons {
   }
 
   get index() {
-    const indexes = { first: 0, last: -1 }
-    return this.indexes[this.placement] || this.relativeIndex
+    if (this.placement == 'first') return 0
+    if (this.placement == 'last') return -1
+
+    return null
   }
 
-  get relativeIndex() {
+  get sibling() {
     if (this.side == 'left') {
-      return Main.sessionMode.panel.left.indexOf('appMenu')
+      return Main.panel.statusArea.appMenu.get_parent()
     } else {
-      return Main.sessionMode.panel.right.indexOf('aggregateMenu')
+      return Main.panel.statusArea.aggregateMenu.get_parent()
     }
   }
 
@@ -212,7 +214,12 @@ var WindowButtons = class WindowButtons {
 
   _onPositionChange() {
     this.controls.reparent(this.container)
-    this.container.set_child_at_index(this.controls, this.index)
+
+    if (this.index != null) {
+      this.container.set_child_at_index(this.controls, this.index)
+    } else {
+      this.container.set_child_below_sibling(this.controls, this.sibling)
+    }
   }
 
   _onThemeChange() {
