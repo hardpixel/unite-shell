@@ -1,3 +1,4 @@
+const Gi        = imports._gi
 const GObject   = imports.gi.GObject
 const St        = imports.gi.St
 const Clutter   = imports.gi.Clutter
@@ -236,6 +237,81 @@ var WindowButtons = class WindowButtons {
   }
 }
 
+var ExtendLeftBox = class ExtendLeftBox {
+  constructor() {
+    this._default = Main.panel.__proto__.vfunc_allocate
+
+    Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box, flags) => {
+      Main.panel.vfunc_allocate.call(Main.panel, box, flags)
+      this._allocate(Main.panel, box, flags)
+    })
+
+    Main.panel.queue_relayout()
+  }
+
+  _allocate(actor, box, flags) {
+    let leftBox   = Main.panel._leftBox
+    let centerBox = Main.panel._centerBox
+    let rightBox  = Main.panel._rightBox
+
+    let allocWidth  = box.x2 - box.x1
+    let allocHeight = box.y2 - box.y1
+
+    let [leftMinWidth, leftNaturalWidth]     = leftBox.get_preferred_width(-1)
+    let [centerMinWidth, centerNaturalWidth] = centerBox.get_preferred_width(-1)
+    let [rightMinWidth, rightNaturalWidth]   = rightBox.get_preferred_width(-1)
+
+    let sideWidth = allocWidth - rightNaturalWidth - centerNaturalWidth
+    let childBox  = new Clutter.ActorBox()
+
+    childBox.y1 = 0
+    childBox.y2 = allocHeight
+
+    if (actor.get_text_direction() == Clutter.TextDirection.RTL) {
+      childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth), leftNaturalWidth)
+      childBox.x2 = allocWidth
+    } else {
+      childBox.x1 = 0
+      childBox.x2 = Math.min(Math.floor(sideWidth), leftNaturalWidth)
+    }
+
+    leftBox.allocate(childBox, flags)
+
+    childBox.y1 = 0
+    childBox.y2 = allocHeight
+
+    if (actor.get_text_direction() == Clutter.TextDirection.RTL) {
+      childBox.x1 = rightNaturalWidth
+      childBox.x2 = childBox.x1 + centerNaturalWidth
+    } else {
+      childBox.x1 = allocWidth - centerNaturalWidth - rightNaturalWidth
+      childBox.x2 = childBox.x1 + centerNaturalWidth
+    }
+
+    centerBox.allocate(childBox, flags)
+
+    childBox.y1 = 0
+    childBox.y2 = allocHeight
+
+    if (actor.get_text_direction() == Clutter.TextDirection.RTL) {
+      childBox.x1 = 0
+      childBox.x2 = rightNaturalWidth
+    } else {
+      childBox.x1 = allocWidth - rightNaturalWidth
+      childBox.x2 = allocWidth
+    }
+
+    rightBox.allocate(childBox, flags)
+  }
+
+  destroy() {
+    Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', this._default)
+    this._default = null
+
+    Main.panel.queue_relayout()
+  }
+}
+
 var PanelManager = GObject.registerClass(
   class UnitePanelManager extends GObject.Object {
     _init() {
@@ -245,6 +321,18 @@ var PanelManager = GObject.registerClass(
       this.settings.connect(
         'show-window-buttons', this._onShowButtonsChange.bind(this)
       )
+
+      this.settings.connect(
+        'extend-left-box', this._onExtendLeftBoxChange.bind(this)
+      )
+    }
+
+    get showButtons() {
+      return this.settings.get('show-window-buttons') != 'never'
+    }
+
+    get extendLeftBox() {
+      return this.settings.get('extend-left-box')
     }
 
     _createButtons() {
@@ -260,22 +348,43 @@ var PanelManager = GObject.registerClass(
       }
     }
 
-    _onShowButtonsChange() {
-      const setting = this.settings.get('show-window-buttons')
+    _createExtender() {
+      if (!this.extender) {
+        this.extender = new ExtendLeftBox()
+      }
+    }
 
-      if (setting == 'never') {
-        this._destroyButtons()
-      } else {
+    _destroyExtender() {
+      if (this.extender) {
+        this.extender.destroy()
+        this.extender = null
+      }
+    }
+
+    _onShowButtonsChange() {
+      if (this.showButtons) {
         this._createButtons()
+      } else {
+        this._destroyButtons()
+      }
+    }
+
+    _onExtendLeftBoxChange() {
+      if (this.extendLeftBox) {
+        this._createExtender()
+      } else {
+        this._destroyExtender()
       }
     }
 
     activate() {
       this._onShowButtonsChange()
+      this._onExtendLeftBoxChange()
     }
 
     destroy() {
       this._destroyButtons()
+      this._destroyExtender()
 
       this.signals.disconnectAll()
       this.settings.disconnectAll()
