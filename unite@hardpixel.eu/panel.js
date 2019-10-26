@@ -194,22 +194,18 @@ var WindowButtons = class WindowButtons {
     }
   }
 
-  get buttons() {
-    const layout = this.settings.get('window-buttons-layout')
-
-    if (this.side == 'right' && this.position == 'left') {
-      return layout.reverse()
-    } else {
-      return layout
-    }
-  }
-
   _onStateChange() {
     this.controls.setVisible(true)
   }
 
   _onLayoutChange() {
-    this.controls.addButtons(this.buttons)
+    const buttons = this.settings.get('window-buttons-layout')
+
+    if (this.side == 'right' && this.position == 'left') {
+      buttons.reverse()
+    }
+
+    this.controls.addButtons(buttons)
   }
 
   _onPositionChange() {
@@ -220,6 +216,8 @@ var WindowButtons = class WindowButtons {
     } else {
       this.container.set_child_below_sibling(this.controls, this.sibling)
     }
+
+    this._onLayoutChange()
   }
 
   _onThemeChange() {
