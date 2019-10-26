@@ -6,8 +6,7 @@ const Main     = imports.ui.main
 const Util     = imports.misc.util
 const Unite    = imports.misc.extensionUtils.getCurrentExtension()
 const AppMenu  = Main.panel.statusArea.appMenu
-const Signals  = Unite.imports.handlers.SignalsHandler
-const Settings = Unite.imports.handlers.SettingsHandler
+const Handlers = Unite.imports.handlers
 
 const VALID_TYPES = [
   Meta.WindowType.NORMAL,
@@ -134,8 +133,8 @@ var MetaWindow = GObject.registerClass({
       this.win = win
       this.xid = getXid(win)
 
-      this.signals  = new Signals()
-      this.settings = new Settings()
+      this.signals  = new Handlers.Signals()
+      this.settings = new Handlers.Settings()
 
       if (this.xid && !this.clientDecorated) {
         this.decorations = new ServerDecorations(this.xid)
@@ -319,8 +318,8 @@ var WindowManager = GObject.registerClass({
 }, class UniteWindowManager extends GObject.Object {
     _init() {
       this.windows  = new Map()
-      this.signals  = new Signals()
-      this.settings = new Settings()
+      this.signals  = new Handlers.Signals()
+      this.settings = new Handlers.Settings()
 
       this.signals.connect(
         global.window_manager, 'map', this._onMapWindow.bind(this)

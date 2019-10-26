@@ -4,14 +4,13 @@ const Clutter  = imports.gi.Clutter
 const Main     = imports.ui.main
 const Unite    = imports.misc.extensionUtils.getCurrentExtension()
 const Buttons  = Unite.imports.buttons
-const Signals  = Unite.imports.handlers.SignalsHandler
-const Settings = Unite.imports.handlers.SettingsHandler
+const Handlers = Unite.imports.handlers
 
 var WindowButtons = class WindowButtons {
   constructor() {
     this.theme    = 'default-dark'
-    this.signals  = new Signals()
-    this.settings = new Settings()
+    this.signals  = new Handlers.Signals()
+    this.settings = new Handlers.Settings()
     this.controls = new Buttons.WindowControls()
 
     this.settings.connect(
@@ -197,8 +196,8 @@ var ExtendLeftBox = class ExtendLeftBox {
 var PanelManager = GObject.registerClass(
   class UnitePanelManager extends GObject.Object {
     _init() {
-      this.signals  = new Signals()
-      this.settings = new Settings()
+      this.signals  = new Handlers.Signals()
+      this.settings = new Handlers.Settings()
 
       this.settings.connect(
         'show-window-buttons', this._onShowButtonsChange.bind(this)

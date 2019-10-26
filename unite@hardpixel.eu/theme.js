@@ -5,8 +5,7 @@ const GObject  = imports.gi.GObject
 const St       = imports.gi.St
 const Main     = imports.ui.main
 const Unite    = imports.misc.extensionUtils.getCurrentExtension()
-const Signals  = Unite.imports.handlers.SignalsHandler
-const Settings = Unite.imports.handlers.SettingsHandler
+const Handlers = Unite.imports.handlers
 
 const USER_CONFIG = GLib.get_user_config_dir()
 const USER_STYLES = `${USER_CONFIG}/gtk-3.0/gtk.css`
@@ -95,8 +94,8 @@ var ThemeManager = GObject.registerClass(
   class UniteThemeManager extends GObject.Object {
     _init() {
       this.styles   = new Map()
-      this.signals  = new Signals()
-      this.settings = new Settings()
+      this.signals  = new Handlers.Signals()
+      this.settings = new Handlers.Settings()
     }
 
     get context() {

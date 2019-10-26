@@ -4,7 +4,7 @@ const Convenience = Unite.imports.convenience
 const SETTINGS = Convenience.getSettings()
 const WM_PREFS = Convenience.getPreferences()
 
-var SignalsHandler = class SignalsHandler {
+var Signals = class Signals {
   constructor() {
     this.signals = new Map()
   }
@@ -50,7 +50,7 @@ var SignalsHandler = class SignalsHandler {
   }
 }
 
-var SettingsHandler = class SettingsHandler extends SignalsHandler {
+var Settings = class Settings extends Signals {
   getSettingObject(key) {
     if (SETTINGS.exists(key)) {
       return SETTINGS
