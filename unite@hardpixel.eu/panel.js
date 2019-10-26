@@ -120,7 +120,7 @@ var WindowControls = GObject.registerClass(
     }
 
     setVisible(visible) {
-      this.container.visible = visible
+      this.visible = visible
     }
   }
 )
@@ -152,9 +152,10 @@ var WindowButtons = class WindowButtons {
       'uniteWindowControls', this.controls, this.index, this.side
     )
 
+    this.controls.setVisible(false)
+
     this._onLayoutChange()
     this._onPositionChange()
-    this._onStateChange()
     this._onThemeChange()
   }
 
@@ -192,10 +193,6 @@ var WindowButtons = class WindowButtons {
     } else {
       return Main.panel._rightBox
     }
-  }
-
-  _onStateChange() {
-    this.controls.setVisible(true)
   }
 
   _onLayoutChange() {
