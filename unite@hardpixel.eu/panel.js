@@ -115,6 +115,7 @@ var WindowControls = GObject.registerClass(
     }
 
     addButtons(buttons) {
+      this._controls.destroy_all_children()
       buttons.forEach(this._addButton.bind(this))
     }
 
@@ -123,6 +124,115 @@ var WindowControls = GObject.registerClass(
     }
   }
 )
+
+var WindowButtons = class WindowButtons {
+  constructor() {
+    this.theme    = 'default-dark'
+    this.signals  = new Signals()
+    this.settings = new Settings()
+    this.controls = new WindowControls()
+
+    this.settings.connect(
+      'window-buttons-layout', this._onLayoutChange.bind(this)
+    )
+
+    this.settings.connect(
+      'window-buttons-position', this._onPositionChange.bind(this)
+    )
+
+    this.settings.connect(
+      'window-buttons-placement', this._onPositionChange.bind(this)
+    )
+
+    this.settings.connect(
+      'window-buttons-theme', this._onThemeChange.bind(this)
+    )
+
+    Main.panel.addToStatusArea(
+      'uniteWindowControls', this.controls, this.index, this.side
+    )
+
+    this._onLayoutChange()
+    this._onPositionChange()
+    this._onStateChange()
+    this._onThemeChange()
+  }
+
+  get position() {
+    return this.settings.get('window-buttons-position')
+  }
+
+  get placement() {
+    return this.settings.get('window-buttons-placement')
+  }
+
+  get side() {
+    const sides = { first: 'left', last: 'right', auto: this.position }
+    return sides[this.placement] || this.placement
+  }
+
+  get index() {
+    const indexes = { first: 0, last: -1 }
+    return this.indexes[this.placement] || this.relativeIndex
+  }
+
+  get relativeIndex() {
+    if (this.side == 'left') {
+      return Main.sessionMode.panel.left.indexOf('appMenu')
+    } else {
+      return Main.sessionMode.panel.right.indexOf('aggregateMenu')
+    }
+  }
+
+  get container() {
+    if (this.side == 'left') {
+      return Main.panel._leftBox
+    } else {
+      return Main.panel._rightBox
+    }
+  }
+
+  get buttons() {
+    const layout = this.settings.get('window-buttons-layout')
+
+    if (this.side == 'right' && this.position == 'left') {
+      return layout.reverse()
+    } else {
+      return layout
+    }
+  }
+
+  _onStateChange() {
+    this.controls.setVisible(true)
+  }
+
+  _onLayoutChange() {
+    this.controls.addButtons(this.buttons)
+  }
+
+  _onPositionChange() {
+    this.controls.reparent(this.container)
+    this.container.set_child_at_index(this.controls, this.index)
+  }
+
+  _onThemeChange() {
+    this.controls.remove_style_class_name(this.theme)
+
+    this.theme = this.settings.get('window-buttons-theme')
+    const path = `themes/${this.theme}/stylesheet.css`
+
+    global.uniteShell.themeManager.addShellStyle('windowButtons', path)
+    this.controls.add_style_class_name(this.theme)
+  }
+
+  destroy() {
+    this.controls.destroy()
+    global.uniteShell.themeManager.deleteStyle('windowButtons')
+
+    this.signals.disconnectAll()
+    this.settings.disconnectAll()
+  }
+}
 
 var PanelManager = GObject.registerClass(
   class UnitePanelManager extends GObject.Object {
