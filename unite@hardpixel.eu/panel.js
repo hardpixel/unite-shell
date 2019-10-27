@@ -10,8 +10,49 @@ const Activities = Main.panel.statusArea.activities
 const Buttons    = Unite.imports.buttons
 const Handlers   = Unite.imports.handlers
 
-var WindowButtons = class WindowButtons {
-  constructor() {
+var PanelExtension = class PanelExtension {
+  constructor(settings, key, callback) {
+    this.activated = false
+
+    const isActive = () => {
+      return callback.call(null, settings.get(key))
+    }
+
+    const onChange = () => {
+      const active = isActive()
+
+      if (active && !this.activated) {
+        this.activated = true
+        return this._init()
+      }
+
+      if (!active && this.activated) {
+        this.activated = false
+        return this._destroy()
+      }
+    }
+
+    this.activate = () => {
+      settings.connect(key, onChange.bind(this))
+      onChange()
+    }
+
+    this.destroy = () => {
+      if (this.activated) {
+        this._destroy()
+        this.activated = false
+      }
+    }
+  }
+}
+
+var WindowButtons = class WindowButtons extends PanelExtension {
+  constructor({ settings }) {
+    const active = val => val != 'never'
+    super(settings, 'show-window-buttons', active)
+  }
+
+  _init() {
     this.theme    = 'default-dark'
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
@@ -131,7 +172,7 @@ var WindowButtons = class WindowButtons {
     this.controls.add_style_class_name(this.theme)
   }
 
-  destroy() {
+  _destroy() {
     this.controls.destroy()
 
     this.signals.disconnectAll()
@@ -140,8 +181,13 @@ var WindowButtons = class WindowButtons {
   }
 }
 
-var ExtendLeftBox = class ExtendLeftBox {
-  constructor() {
+var ExtendLeftBox = class ExtendLeftBox extends PanelExtension {
+  constructor({ settings }) {
+    const active = val => val == true
+    super(settings, 'extend-left-box', active)
+  }
+
+  _init() {
     this._default = Main.panel.__proto__.vfunc_allocate
 
     Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box, flags) => {
@@ -207,7 +253,7 @@ var ExtendLeftBox = class ExtendLeftBox {
     rightBox.allocate(childBox, flags)
   }
 
-  destroy() {
+  _destroy() {
     Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', this._default)
     this._default = null
 
@@ -220,6 +266,9 @@ var PanelManager = GObject.registerClass(
     _init() {
       this.signals  = new Handlers.Signals()
       this.settings = new Handlers.Settings()
+
+      this.buttons  = new WindowButtons(this)
+      this.extender = new ExtendLeftBox(this)
 
       this.signals.connect(
         Main.overview, 'showing', this.syncButtonWidgets.bind(this)
@@ -236,26 +285,10 @@ var PanelManager = GObject.registerClass(
       this.signals.connect(
         WinTracker, 'notify::focus-app', this.syncButtonWidgets.bind(this)
       )
-
-      this.settings.connect(
-        'show-window-buttons', this._onShowButtonsChange.bind(this)
-      )
-
-      this.settings.connect(
-        'extend-left-box', this._onExtendLeftBoxChange.bind(this)
-      )
-    }
-
-    get showButtons() {
-      return this.settings.get('show-window-buttons')
     }
 
     get showDesktop() {
       return this.settings.get('show-desktop-name')
-    }
-
-    get extendLeftBox() {
-      return this.settings.get('extend-left-box')
     }
 
     get hideActivities() {
@@ -290,60 +323,18 @@ var PanelManager = GObject.registerClass(
       Activities.container.show()
     }
 
-    _createButtons() {
-      if (!this.buttons) {
-        this.buttons = new WindowButtons()
-      }
-    }
-
-    _destroyButtons() {
-      if (this.buttons) {
-        this.buttons.destroy()
-        this.buttons = null
-      }
-    }
-
-    _createExtender() {
-      if (!this.extender) {
-        this.extender = new ExtendLeftBox()
-      }
-    }
-
-    _destroyExtender() {
-      if (this.extender) {
-        this.extender.destroy()
-        this.extender = null
-      }
-    }
-
-    _onShowButtonsChange() {
-      if (this.showButtons != 'never') {
-        this._createButtons()
-      } else {
-        this._destroyButtons()
-      }
-    }
-
-    _onExtendLeftBoxChange() {
-      if (this.extendLeftBox) {
-        this._createExtender()
-      } else {
-        this._destroyExtender()
-      }
-    }
-
     activate() {
       this.syncButtonWidgets()
 
-      this._onShowButtonsChange()
-      this._onExtendLeftBoxChange()
+      this.buttons.activate()
+      this.extender.activate()
     }
 
     destroy() {
       this.resetButtonWidgets()
 
-      this._destroyButtons()
-      this._destroyExtender()
+      this.buttons.destroy()
+      this.extender.destroy()
 
       this.signals.disconnectAll()
       this.settings.disconnectAll()
