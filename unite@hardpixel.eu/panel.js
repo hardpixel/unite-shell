@@ -227,7 +227,7 @@ var PanelManager = GObject.registerClass(
     }
 
     get showButtons() {
-      return this.settings.get('show-window-buttons') != 'never'
+      return this.settings.get('show-window-buttons')
     }
 
     get extendLeftBox() {
@@ -261,7 +261,7 @@ var PanelManager = GObject.registerClass(
     }
 
     _onShowButtonsChange() {
-      if (this.showButtons) {
+      if (this.showButtons != 'never') {
         this._createButtons()
       } else {
         this._destroyButtons()
