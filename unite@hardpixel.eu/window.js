@@ -338,11 +338,38 @@ var WindowManager = GObject.registerClass({
       this.signals.connect(
         AppMenu._label, 'notify::text', this._onAppmenuChanged.bind(this)
       )
+
+      this.settings.connect(
+        'hide-window-titlebars', this._onStylesChange.bind(this)
+      )
+
+      this.settings.connect(
+        'window-buttons-position', this._onStylesChange.bind(this)
+      )
     }
 
     get focusWindow() {
       const win = global.display.get_focus_window()
       return this.getWindow(win)
+    }
+
+    get hideTitlebars() {
+      return this.settings.get('hide-window-titlebars')
+    }
+
+    get styleContents() {
+      const position  = this.settings.get('window-buttons-position')
+      const filePath  = `${Unite.path}/styles/buttons-${position}`
+      const maximized = `@import url('${filePath}.css');\n`
+      const tiled     = `@import url('${filePath}-tiled.css');\n`
+      const always    = `@import url('${filePath}-always.css');\n`
+
+      switch (this.hideTitlebars) {
+        case 'both':      return maximized + tiled
+        case 'maximized': return maximized
+        case 'tiled':     return tiled
+        case 'always':    return always
+      }
     }
 
     hasWindow(win) {
@@ -416,7 +443,19 @@ var WindowManager = GObject.registerClass({
       time && Main.activateWindow(win, time)
     }
 
+    _onStylesChange() {
+      const theme = global.uniteShell.themeManager
+
+      if (this.hideTitlebars != 'never') {
+        theme.addGtkStyle('windowDecorations', this.styleContents)
+      } else {
+        theme.deleteStyle('windowDecorations')
+      }
+    }
+
     activate() {
+      this._onStylesChange()
+
       GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
         const actors = global.get_window_actors()
         actors.forEach(actor => this._onMapWindow(null, actor))
@@ -425,6 +464,7 @@ var WindowManager = GObject.registerClass({
 
     destroy() {
       this.clearWindows()
+      global.uniteShell.themeManager.deleteStyle('windowDecorations')
 
       this.signals.disconnectAll()
       this.settings.disconnectAll()
