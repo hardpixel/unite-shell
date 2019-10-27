@@ -13,6 +13,14 @@ var WindowButtons = class WindowButtons {
     this.settings = new Handlers.Settings()
     this.controls = new Buttons.WindowControls()
 
+    this.signals.connect(
+      Main.overview, 'showing', this._onOverviewShowing.bind(this)
+    )
+
+    this.signals.connect(
+      Main.overview, 'hiding', this._onOverviewHiding.bind(this)
+    )
+
     this.settings.connect(
       'window-buttons-layout', this._onLayoutChange.bind(this)
     )
@@ -74,6 +82,15 @@ var WindowButtons = class WindowButtons {
     } else {
       return Main.panel._rightBox
     }
+  }
+
+  _onOverviewShowing() {
+    this.controls.setVisible(false)
+  }
+
+  _onOverviewHiding() {
+    const focused = global.uniteShell.focusWindow
+    this.controls.setVisible(focused && focused.showButtons)
   }
 
   _onLayoutChange() {
