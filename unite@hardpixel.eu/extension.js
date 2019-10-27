@@ -1,15 +1,14 @@
 const GObject       = imports.gi.GObject
+const Main          = imports.ui.main
 const Unite         = imports.misc.extensionUtils.getCurrentExtension()
 const PanelManager  = Unite.imports.panel.PanelManager
 const WindowManager = Unite.imports.window.WindowManager
-const ThemeManager  = Unite.imports.theme.ThemeManager
 
 var UniteShell = GObject.registerClass(
   class UniteShell extends GObject.Object {
     _init() {
       this.panelManager  = new PanelManager()
       this.windowManager = new WindowManager()
-      this.themeManager  = new ThemeManager()
     }
 
     get focusWindow() {
@@ -19,13 +18,15 @@ var UniteShell = GObject.registerClass(
     activate() {
       this.panelManager.activate()
       this.windowManager.activate()
-      this.themeManager.activate()
+
+      Main.panel._addStyleClassName('unite-shell')
     }
 
     destroy() {
       this.panelManager.destroy()
       this.windowManager.destroy()
-      this.themeManager.destroy()
+
+      Main.panel._removeStyleClassName('unite-shell')
     }
   }
 )

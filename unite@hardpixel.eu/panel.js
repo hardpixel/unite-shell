@@ -11,6 +11,7 @@ var WindowButtons = class WindowButtons {
     this.theme    = 'default-dark'
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
+    this.styles   = new Handlers.Styles()
     this.controls = new Buttons.WindowControls()
 
     this.signals.connect(
@@ -122,16 +123,16 @@ var WindowButtons = class WindowButtons {
     this.theme = this.settings.get('window-buttons-theme')
     const path = `themes/${this.theme}/stylesheet.css`
 
-    global.uniteShell.themeManager.addShellStyle('windowButtons', path)
+    this.styles.addShellStyle('windowButtons', path)
     this.controls.add_style_class_name(this.theme)
   }
 
   destroy() {
     this.controls.destroy()
-    global.uniteShell.themeManager.deleteStyle('windowButtons')
 
     this.signals.disconnectAll()
     this.settings.disconnectAll()
+    this.styles.removeAll()
   }
 }
 

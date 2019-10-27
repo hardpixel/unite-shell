@@ -318,6 +318,7 @@ var WindowManager = GObject.registerClass({
       this.windows  = new Map()
       this.signals  = new Handlers.Signals()
       this.settings = new Handlers.Settings()
+      this.styles   = new Handlers.Styles()
 
       this.signals.connect(
         global.window_manager, 'map', this._onMapWindow.bind(this)
@@ -444,12 +445,10 @@ var WindowManager = GObject.registerClass({
     }
 
     _onStylesChange() {
-      const theme = global.uniteShell.themeManager
-
       if (this.hideTitlebars != 'never') {
-        theme.addGtkStyle('windowDecorations', this.styleContents)
+        this.styles.addGtkStyle('windowDecorations', this.styleContents)
       } else {
-        theme.deleteStyle('windowDecorations')
+        this.styles.deleteStyle('windowDecorations')
       }
     }
 
@@ -464,10 +463,10 @@ var WindowManager = GObject.registerClass({
 
     destroy() {
       this.clearWindows()
-      global.uniteShell.themeManager.deleteStyle('windowDecorations')
 
       this.signals.disconnectAll()
       this.settings.disconnectAll()
+      this.styles.removeAll()
     }
   }
 )
