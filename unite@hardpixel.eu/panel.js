@@ -32,6 +32,12 @@ var PanelExtension = class PanelExtension {
       }
     }
 
+    this.defineSetting = (name, setting) => {
+      Object.defineProperty(this, name, {
+        get: () => settings.get(setting)
+      })
+    }
+
     this.activate = () => {
       settings.connect(key, onChange.bind(this))
       onChange()
@@ -261,14 +267,48 @@ var ExtendLeftBox = class ExtendLeftBox extends PanelExtension {
   }
 }
 
+var ActivitiesButton = class ActivitiesButton extends PanelExtension {
+  constructor({ settings }) {
+    const active = val => val != 'never'
+    super(settings, 'hide-activities-button', active)
+
+    this.defineSetting('hideButton', 'hide-activities-button')
+    this.defineSetting('showDesktop', 'show-desktop-name')
+  }
+
+  _init() {
+    const button   = Activities.container
+    const overview = Main.overview.visibleTarget
+
+    if (this.hideButton == 'always') {
+      return button.hide()
+    }
+
+    if (this.showDesktop) {
+      button.visible = overview
+    } else {
+      button.visible = overview || AppMenu._targetApp == null
+    }
+  }
+
+  sync() {
+    this.activated && this._init()
+  }
+
+  _destroy() {
+    Activities.container.show()
+  }
+}
+
 var PanelManager = GObject.registerClass(
   class UnitePanelManager extends GObject.Object {
     _init() {
       this.signals  = new Handlers.Signals()
       this.settings = new Handlers.Settings()
 
-      this.buttons  = new WindowButtons(this)
-      this.extender = new ExtendLeftBox(this)
+      this.buttons    = new WindowButtons(this)
+      this.extender   = new ExtendLeftBox(this)
+      this.activities = new ActivitiesButton(this)
 
       this.signals.connect(
         Main.overview, 'showing', this.syncButtonWidgets.bind(this)
@@ -285,56 +325,30 @@ var PanelManager = GObject.registerClass(
       this.signals.connect(
         WinTracker, 'notify::focus-app', this.syncButtonWidgets.bind(this)
       )
-    }
 
-    get showDesktop() {
-      return this.settings.get('show-desktop-name')
-    }
+      this.settings.connect(
+        'hide-activities-button', this.syncButtonWidgets.bind(this)
+      )
 
-    get hideActivities() {
-      return this.settings.get('hide-activities-button')
-    }
-
-    syncActivities() {
-      const button   = Activities.container
-      const overview = Main.overview.visibleTarget
-
-      switch (this.hideActivities) {
-        case 'never':
-          !button.visible && button.show()
-          break
-        case 'always':
-          button.visible && button.hide()
-          break
-        default:
-          if (this.showDesktop) {
-            button.visible = overview
-          } else {
-            button.visible = overview || AppMenu._targetApp == null
-          }
-      }
+      this.settings.connect(
+        'show-desktop-name', this.syncButtonWidgets.bind(this)
+      )
     }
 
     syncButtonWidgets() {
-      this.syncActivities()
-    }
-
-    resetButtonWidgets() {
-      Activities.container.show()
+      this.activities.sync()
     }
 
     activate() {
-      this.syncButtonWidgets()
-
       this.buttons.activate()
       this.extender.activate()
+      this.activities.activate()
     }
 
     destroy() {
-      this.resetButtonWidgets()
-
       this.buttons.destroy()
       this.extender.destroy()
+      this.activities.destroy()
 
       this.signals.disconnectAll()
       this.settings.disconnectAll()
