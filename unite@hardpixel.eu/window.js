@@ -174,7 +174,11 @@ var MetaWindow = GObject.registerClass({
     }
 
     get title() {
-      return this.win.get_title()
+      if (this.showTitle) {
+        return this.win.get_title()
+      } else {
+        return AppMenu._targetApp.get_name()
+      }
     }
 
     get clientDecorated() {
@@ -263,14 +267,8 @@ var MetaWindow = GObject.registerClass({
 
     syncAppmenu() {
       if (this.hasFocus) {
-        const label = AppMenu._label
-        const title = AppMenu._targetApp.get_name()
-
-        if (this.showTitle) {
-          label.set_text(this.title)
-        } else {
-          label.set_text(title)
-        }
+        const current = AppMenu._label.get_text()
+        current != this.title && AppMenu._label.set_text(this.title)
       }
     }
 
@@ -336,6 +334,10 @@ var WindowManager = GObject.registerClass({
       this.signals.connect(
         global.display, 'window-demands-attention', this._onAttention.bind(this)
       )
+
+      this.signals.connect(
+        AppMenu._label, 'notify::text', this._onAppmenuChanged.bind(this)
+      )
     }
 
     get focusWindow() {
@@ -396,6 +398,15 @@ var WindowManager = GObject.registerClass({
       }
 
       this.emit('focus-changed')
+    }
+
+    _onAppmenuChanged() {
+      const focused = this.focusWindow
+      const current = AppMenu._label.get_text()
+
+      if (focused && current != focused.title) {
+        AppMenu._label.set_text(focused.title)
+      }
     }
 
     _onAttention(actor, win) {
