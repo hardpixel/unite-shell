@@ -300,6 +300,56 @@ var ActivitiesButton = class ActivitiesButton extends PanelExtension {
   }
 }
 
+var DesktopName = class DesktopName extends PanelExtension {
+  constructor({ settings }) {
+    const active = val => val == true
+    super(settings, 'show-desktop-name', active)
+  }
+
+  _init() {
+    this.settings = new Handlers.Settings()
+
+    this.settings.connect(
+      'desktop-name-text', this._onTextChanged.bind(this)
+    )
+
+    this.label = new Buttons.DesktopLabel()
+    Main.panel.addToStatusArea('uniteDesktopLabel', this.label, 1, 'left')
+
+    this._onTextChanged()
+  }
+
+  get visibleWindows() {
+    const actors = global.get_window_actors()
+
+    return actors.some(({ metaWindow }) => {
+      const visible = metaWindow.showing_on_its_workspace()
+      return visible && !metaWindow.skip_taskbar
+    })
+  }
+
+  _syncVisible() {
+    const overview = Main.overview.visibleTarget
+    const visible  = !overview && AppMenu._targetApp == null
+
+    this.label.setVisible(visible && !this.visibleWindows)
+  }
+
+  _onTextChanged() {
+    const text = this.settings.get('desktop-name-text')
+    this.label.setText(text)
+  }
+
+  sync() {
+    this.activated && this._syncVisible()
+  }
+
+  _destroy() {
+    this.label.destroy()
+    this.settings.disconnectAll()
+  }
+}
+
 var PanelManager = GObject.registerClass(
   class UnitePanelManager extends GObject.Object {
     _init() {
@@ -309,6 +359,7 @@ var PanelManager = GObject.registerClass(
       this.buttons    = new WindowButtons(this)
       this.extender   = new ExtendLeftBox(this)
       this.activities = new ActivitiesButton(this)
+      this.desktop    = new DesktopName(this)
 
       this.signals.connect(
         Main.overview, 'showing', this.syncButtonWidgets.bind(this)
@@ -337,18 +388,21 @@ var PanelManager = GObject.registerClass(
 
     syncButtonWidgets() {
       this.activities.sync()
+      this.desktop.sync()
     }
 
     activate() {
       this.buttons.activate()
       this.extender.activate()
       this.activities.activate()
+      this.desktop.activate()
     }
 
     destroy() {
       this.buttons.destroy()
       this.extender.destroy()
       this.activities.destroy()
+      this.desktop.destroy()
 
       this.signals.disconnectAll()
       this.settings.disconnectAll()
