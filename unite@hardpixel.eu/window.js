@@ -358,21 +358,6 @@ var WindowManager = GObject.registerClass({
       return this.settings.get('hide-window-titlebars')
     }
 
-    get styleContents() {
-      const position  = this.settings.get('window-buttons-position')
-      const filePath  = `${Unite.path}/styles/buttons-${position}`
-      const maximized = `@import url('${filePath}.css');\n`
-      const tiled     = `@import url('${filePath}-tiled.css');\n`
-      const always    = `@import url('${filePath}-always.css');\n`
-
-      switch (this.hideTitlebars) {
-        case 'both':      return maximized + tiled
-        case 'maximized': return maximized
-        case 'tiled':     return tiled
-        case 'always':    return always
-      }
-    }
-
     hasWindow(win) {
       return win && this.windows.has(`${win}`)
     }
@@ -446,19 +431,23 @@ var WindowManager = GObject.registerClass({
 
     _onStylesChange() {
       if (this.hideTitlebars != 'never') {
-        this.styles.addGtkStyle('windowDecorations', this.styleContents)
+        const variant = this.settings.get('window-buttons-position')
+        const folder  = `${Unite.path}/styles/buttons-${variant}`
+        const content = `@import url('${folder}/${this.hideTitlebars}.css');\n`
+
+        this.styles.addGtkStyle('windowDecorations', content)
       } else {
         this.styles.deleteStyle('windowDecorations')
       }
     }
 
     activate() {
-      this._onStylesChange()
-
       GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
         const actors = global.get_window_actors()
         actors.forEach(actor => this._onMapWindow(null, actor))
       })
+
+      this._onStylesChange()
     }
 
     destroy() {

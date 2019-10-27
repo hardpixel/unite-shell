@@ -1,0 +1,31 @@
+.maximized headerbar,
+.maximized .titlebar {
+  padding-right: 0;
+}
+
+.maximized headerbar > box.right,
+.maximized .titlebar > box.right {
+  margin: 0 -200px 0 0;
+  opacity: 0;
+}
+
+.maximized .titlebar.default-decoration {
+  margin: -200px 0 0;
+  opacity: 0;
+}
+
+.tiled headerbar,
+.tiled .titlebar {
+  padding-right: 0;
+}
+
+.tiled headerbar > box.right,
+.tiled .titlebar > box.right {
+  margin: 0 -200px 0 0;
+  opacity: 0;
+}
+
+.tiled .titlebar.default-decoration {
+  margin: -200px 0 0;
+  opacity: 0;
+}
