@@ -1,11 +1,10 @@
-const Bytes    = imports.byteArray
-const Gio      = imports.gi.Gio
-const GLib     = imports.gi.GLib
-const GObject  = imports.gi.GObject
-const St       = imports.gi.St
-const Main     = imports.ui.main
-const Unite    = imports.misc.extensionUtils.getCurrentExtension()
-const Handlers = Unite.imports.handlers
+const Bytes   = imports.byteArray
+const Gio     = imports.gi.Gio
+const GLib    = imports.gi.GLib
+const GObject = imports.gi.GObject
+const St      = imports.gi.St
+const Main    = imports.ui.main
+const Unite   = imports.misc.extensionUtils.getCurrentExtension()
 
 const USER_CONFIG = GLib.get_user_config_dir()
 const USER_STYLES = `${USER_CONFIG}/gtk-3.0/gtk.css`
@@ -36,9 +35,16 @@ function setFileContents(path, contents) {
 }
 
 var ShellStyle = class ShellStyle {
-  constructor(theme, path) {
-    this.theme = theme
-    this.file  = getGioFile(path)
+  constructor(path) {
+    this.file = getGioFile(path)
+  }
+
+  get context() {
+    return St.ThemeContext.get_for_stage(global.stage)
+  }
+
+  get theme() {
+    return this.context.get_theme()
   }
 
   load() {
@@ -93,17 +99,7 @@ var GtkStyle = class GtkStyle {
 var ThemeManager = GObject.registerClass(
   class UniteThemeManager extends GObject.Object {
     _init() {
-      this.styles   = new Map()
-      this.signals  = new Handlers.Signals()
-      this.settings = new Handlers.Settings()
-    }
-
-    get context() {
-      return St.ThemeContext.get_for_stage(global.stage)
-    }
-
-    get theme() {
-      return this.context.get_theme()
+      this.styles = new Map()
     }
 
     hasStyle(name) {
@@ -116,7 +112,7 @@ var ThemeManager = GObject.registerClass(
 
     setStyle(name, object, ...args) {
       if (!this.hasStyle(name)) {
-        const style = new object(this.theme, ...args)
+        const style = new object(...args)
         style.load()
 
         this.styles.set(name, style)
@@ -159,10 +155,6 @@ var ThemeManager = GObject.registerClass(
 
     destroy() {
       this.clearStyles()
-
-      this.signals.disconnectAll()
-      this.settings.disconnectAll()
-
       Main.panel._removeStyleClassName('unite-shell')
     }
   }
