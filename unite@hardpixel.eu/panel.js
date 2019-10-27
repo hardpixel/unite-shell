@@ -1,10 +1,14 @@
-const Gi       = imports._gi
-const GObject  = imports.gi.GObject
-const Clutter  = imports.gi.Clutter
-const Main     = imports.ui.main
-const Unite    = imports.misc.extensionUtils.getCurrentExtension()
-const Buttons  = Unite.imports.buttons
-const Handlers = Unite.imports.handlers
+const Gi         = imports._gi
+const GObject    = imports.gi.GObject
+const Clutter    = imports.gi.Clutter
+const AppSystem  = imports.gi.Shell.AppSystem.get_default()
+const WinTracker = imports.gi.Shell.WindowTracker.get_default()
+const Main       = imports.ui.main
+const Unite      = imports.misc.extensionUtils.getCurrentExtension()
+const AppMenu    = Main.panel.statusArea.appMenu
+const Activities = Main.panel.statusArea.activities
+const Buttons    = Unite.imports.buttons
+const Handlers   = Unite.imports.handlers
 
 var WindowButtons = class WindowButtons {
   constructor() {
@@ -217,6 +221,22 @@ var PanelManager = GObject.registerClass(
       this.signals  = new Handlers.Signals()
       this.settings = new Handlers.Settings()
 
+      this.signals.connect(
+        Main.overview, 'showing', this.syncButtonWidgets.bind(this)
+      )
+
+      this.signals.connect(
+        Main.overview, 'hiding', this.syncButtonWidgets.bind(this)
+      )
+
+      this.signals.connect(
+        AppSystem, 'app-state-changed', this.syncButtonWidgets.bind(this)
+      )
+
+      this.signals.connect(
+        WinTracker, 'notify::focus-app', this.syncButtonWidgets.bind(this)
+      )
+
       this.settings.connect(
         'show-window-buttons', this._onShowButtonsChange.bind(this)
       )
@@ -230,8 +250,44 @@ var PanelManager = GObject.registerClass(
       return this.settings.get('show-window-buttons')
     }
 
+    get showDesktop() {
+      return this.settings.get('show-desktop-name')
+    }
+
     get extendLeftBox() {
       return this.settings.get('extend-left-box')
+    }
+
+    get hideActivities() {
+      return this.settings.get('hide-activities-button')
+    }
+
+    syncActivities() {
+      const button   = Activities.container
+      const overview = Main.overview.visibleTarget
+
+      switch (this.hideActivities) {
+        case 'never':
+          !button.visible && button.show()
+          break
+        case 'always':
+          button.visible && button.hide()
+          break
+        default:
+          if (this.showDesktop) {
+            button.visible = overview
+          } else {
+            button.visible = overview || AppMenu._targetApp == null
+          }
+      }
+    }
+
+    syncButtonWidgets() {
+      this.syncActivities()
+    }
+
+    resetButtonWidgets() {
+      Activities.container.show()
     }
 
     _createButtons() {
@@ -277,11 +333,15 @@ var PanelManager = GObject.registerClass(
     }
 
     activate() {
+      this.syncButtonWidgets()
+
       this._onShowButtonsChange()
       this._onExtendLeftBoxChange()
     }
 
     destroy() {
+      this.resetButtonWidgets()
+
       this._destroyButtons()
       this._destroyExtender()
 
