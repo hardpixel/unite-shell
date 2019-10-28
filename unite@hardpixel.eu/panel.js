@@ -1,6 +1,8 @@
 const Gi         = imports._gi
+const System     = imports.system
 const GObject    = imports.gi.GObject
 const Clutter    = imports.gi.Clutter
+const Shell      = imports.gi.Shell
 const AppSystem  = imports.gi.Shell.AppSystem.get_default()
 const WinTracker = imports.gi.Shell.WindowTracker.get_default()
 const Main       = imports.ui.main
@@ -393,6 +395,74 @@ var DesktopName = class DesktopName extends PanelExtension {
   }
 }
 
+var TrayIcons = class TrayIcons extends PanelExtension {
+  constructor({ settings }) {
+    const active = val => val == true
+    super(settings, 'show-legacy-tray', active)
+  }
+
+  _init() {
+    this.tray       = new Shell.TrayManager()
+    this.settings   = new Handlers.Settings()
+    this.indicators = new Buttons.TrayIndicator({ size: 20 })
+
+    this.tray.connect(
+      'tray-icon-added', this._onIconAdded.bind(this)
+    )
+
+    this.tray.connect(
+      'tray-icon-removed', this._onIconRemoved.bind(this)
+    )
+
+    this.settings.connect(
+      'greyscale-tray-icons', this._onGreyscaleChange.bind(this)
+    )
+
+    Main.panel.addToStatusArea(
+      'uniteTrayIndicator', this.indicators, 0, 'right'
+    )
+
+    this.tray.manage_screen(Main.panel)
+  }
+
+  _desaturateIcon(icon) {
+    const greyscale = this.settings.get('greyscale-tray-icons')
+    icon.clear_effects()
+
+    if (greyscale) {
+      const desEffect = new Clutter.DesaturateEffect({ factor : 1.0 })
+      const briEffect = new Clutter.BrightnessContrastEffect({})
+
+      briEffect.set_brightness(0.2)
+      briEffect.set_contrast(0.3)
+
+      icon.add_effect_with_name('desaturate', desEffect)
+      icon.add_effect_with_name('brightness-contrast', briEffect)
+    }
+  }
+
+  _onIconAdded(trayManager, icon) {
+    this.indicators.addIcon(icon)
+    this._desaturateIcon(icon)
+  }
+
+  _onIconRemoved(trayManager, icon) {
+    this.indicators.removeIcon(icon)
+  }
+
+  _onGreyscaleChange() {
+    this.indicators.forEach(this._desaturateIcon.bind(this))
+  }
+
+  _destroy() {
+    this.tray = null
+    System.gc()
+
+    this.indicators.destroy()
+    this.settings.disconnectAll()
+  }
+}
+
 var PanelManager = GObject.registerClass(
   class UnitePanelManager extends GObject.Object {
     _init() {
@@ -403,6 +473,7 @@ var PanelManager = GObject.registerClass(
       this.extender   = new ExtendLeftBox(this)
       this.activities = new ActivitiesButton(this)
       this.desktop    = new DesktopName(this)
+      this.tray       = new TrayIcons(this)
     }
 
     activate() {
@@ -410,6 +481,7 @@ var PanelManager = GObject.registerClass(
       this.extender.activate()
       this.activities.activate()
       this.desktop.activate()
+      this.tray.activate()
     }
 
     destroy() {
@@ -417,6 +489,7 @@ var PanelManager = GObject.registerClass(
       this.extender.destroy()
       this.activities.destroy()
       this.desktop.destroy()
+      this.tray.destroy()
 
       this.signals.disconnectAll()
       this.settings.disconnectAll()
