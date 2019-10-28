@@ -2,12 +2,14 @@ const GObject       = imports.gi.GObject
 const Main          = imports.ui.main
 const Unite         = imports.misc.extensionUtils.getCurrentExtension()
 const PanelManager  = Unite.imports.panel.PanelManager
+const LayoutManager = Unite.imports.layout.LayoutManager
 const WindowManager = Unite.imports.window.WindowManager
 
 var UniteShell = GObject.registerClass(
   class UniteShell extends GObject.Object {
     _init() {
       this.panelManager  = new PanelManager()
+      this.layoutManager = new LayoutManager()
       this.windowManager = new WindowManager()
     }
 
@@ -17,6 +19,7 @@ var UniteShell = GObject.registerClass(
 
     activate() {
       this.panelManager.activate()
+      this.layoutManager.activate()
       this.windowManager.activate()
 
       Main.panel._addStyleClassName('unite-shell')
@@ -24,6 +27,7 @@ var UniteShell = GObject.registerClass(
 
     destroy() {
       this.panelManager.destroy()
+      this.layoutManager.destroy()
       this.windowManager.destroy()
 
       Main.panel._removeStyleClassName('unite-shell')
