@@ -1,100 +1,218 @@
+const Bytes       = imports.byteArray
+const Gio         = imports.gi.Gio
+const GLib        = imports.gi.GLib
+const St          = imports.gi.St
 const Unite       = imports.misc.extensionUtils.getCurrentExtension()
 const Convenience = Unite.imports.convenience
 
-var SignalsHandler = class SignalsHandler {
-  constructor(context) {
-    this._init(context)
-  }
+const SETTINGS = Convenience.getSettings()
+const WM_PREFS = Convenience.getPreferences()
 
-  _init(context) {
-    this._signals = {}
-    this._context = context
-  }
+const USER_CONFIG = GLib.get_user_config_dir()
+const USER_STYLES = `${USER_CONFIG}/gtk-3.0/gtk.css`
 
-  _getCallbackFunction(callback) {
-    if (typeof callback == 'string')
-      callback = this._context[callback] || this._context[`_${callback}`]
+function fileExists(path) {
+  return GLib.file_test(path, GLib.FileTest.EXISTS)
+}
 
-    return callback
-  }
+function getGioFile(path) {
+  const absPath = GLib.build_filenamev([Unite.path, path])
 
-  _connectHandler(object, name, callbackObj) {
-    let callback = this._getCallbackFunction(callbackObj)
-    let signalId = object.connect(name, callback.bind(this._context))
-
-    return { object: object, signalId: signalId }
-  }
-
-  _addHandler(object, name, callback) {
-    let signalKey = `${object}[${name}#${callback}]`
-
-    if (!this._signals[signalKey])
-      this._signals[signalKey] = this._connectHandler(object, name, callback)
-
-    return signalKey
-  }
-
-  connect(object, name, callback) {
-    return this._addHandler(object, name, callback)
-  }
-
-  disconnect(signalKey) {
-    let signalData = this._signals[signalKey]
-    if (!signalData) return
-
-    signalData.object.disconnect(signalData.signalId)
-    delete this._signals[signalKey]
-  }
-
-  disconnectMany(signalKeys) {
-    signalKeys.forEach(signalKey => { this.disconnect(signalKey) })
-  }
-
-  disconnectAll() {
-    this.disconnectMany(Object.keys(this._signals))
+  if (fileExists(absPath)) {
+    return Gio.file_new_for_path(absPath)
   }
 }
 
-var SettingsHandler = class SettingsHandler extends SignalsHandler {
-  _init(context) {
-    this._enabler  = null
-    this._signals  = {}
-    this._context  = context
-    this._settings = Convenience.getSettings()
-    this._wmPrefs  = Convenience.getPreferences()
+function getFileContents(path) {
+  if (fileExists(path)) {
+    const contents = GLib.file_get_contents(path)
+    return Bytes.toString(contents[1])
+  } else {
+    return ''
+  }
+}
+
+function setFileContents(path, contents) {
+  GLib.file_set_contents(path, contents)
+}
+
+var Signals = class Signals {
+  constructor() {
+    this.signals = new Map()
   }
 
-  _getSettingObject(settingKey) {
-    if (this._settings.exists(settingKey))
-      return this._settings
+  registerHandler(object, name, callback) {
+    const key = `${object}[${name}]`
 
-    if (this._wmPrefs.exists(settingKey))
-      return this._wmPrefs
+    if (!this.hasSignal(key)) {
+      this.signals.set(key, {
+        object:   object,
+        signalId: object.connect(name, callback)
+      })
+    }
+
+    return key
+  }
+
+  hasSignal(key) {
+    return this.signals.has(key)
+  }
+
+  connect(object, name, callback) {
+    return this.registerHandler(object, name, callback)
+  }
+
+  disconnect(key) {
+    if (this.hasSignal(key)) {
+      const data = this.signals.get(key)
+      data.object.disconnect(data.signalId)
+
+      this.signals.delete(key)
+    }
+  }
+
+  disconnectMany(keys) {
+    keys.forEach(this.disconnect.bind(this))
+  }
+
+  disconnectAll() {
+    for (const key of this.signals.keys()) {
+      this.disconnect(key)
+    }
+  }
+}
+
+var Settings = class Settings extends Signals {
+  getSettingObject(key) {
+    if (SETTINGS.exists(key)) {
+      return SETTINGS
+    } else {
+      return WM_PREFS
+    }
   }
 
   connect(name, callback) {
-    let object = this._getSettingObject(name)
-    return this._addHandler(object, `changed::${name}`, callback)
+    const object = this.getSettingObject(name)
+    return this.registerHandler(object, `changed::${name}`, callback)
   }
 
-  enable(name, callback) {
-    if (this._enabler) return
+  get(key) {
+    const object = this.getSettingObject(key)
+    return object.getSetting(key)
+  }
+}
 
-    let signalObj = this._settings
-    this._enabler = this._connectHandler(signalObj, `changed::${name}`, callback)
+var ShellStyle = class ShellStyle {
+  constructor(path) {
+    this.file = getGioFile(path)
   }
 
-  disable() {
-    if (!this._enabler) return
-
-    this._settings.disconnect(this._enabler.signalId)
-    this._enabler = null
+  get context() {
+    return St.ThemeContext.get_for_stage(global.stage)
   }
 
-  get(settingKey) {
-    if (settingKey == null) return
+  get theme() {
+    return this.context.get_theme()
+  }
 
-    let object = this._getSettingObject(settingKey)
-    if (object) return object.getSetting(settingKey)
+  load() {
+    this.theme.load_stylesheet(this.file)
+  }
+
+  unload() {
+    this.theme.unload_stylesheet(this.file)
+  }
+}
+
+var WidgetStyle = class WidgetStyle {
+  constructor(widget, style) {
+    this.widget = widget
+    this.style  = style
+  }
+
+  get existing() {
+    return this.widget.get_style() || ''
+  }
+
+  load() {
+    const style = this.existing + this.style
+    this.widget.set_style(style)
+  }
+
+  unload() {
+    const style = this.existing.replace(this.style, '')
+    this.widget.set_style(style)
+  }
+}
+
+var GtkStyle = class GtkStyle {
+  constructor(contents) {
+    this.contents = contents
+  }
+
+  get existing() {
+    const contents = getFileContents(USER_STYLES)
+    return contents.replace(/@import.*unite@hardpixel\.eu.*css['"]\);\n/g, '')
+  }
+
+  load() {
+    setFileContents(USER_STYLES, this.contents + this.existing)
+  }
+
+  unload() {
+    setFileContents(USER_STYLES, this.existing)
+  }
+}
+
+var Styles = class Styles {
+  constructor() {
+    this.styles = new Map()
+  }
+
+  hasStyle(name) {
+    return name && this.styles.has(name)
+  }
+
+  getStyle(name) {
+    return name && this.styles.get(name)
+  }
+
+  setStyle(name, object, ...args) {
+    if (!this.hasStyle(name)) {
+      const style = new object(...args)
+      style.load()
+
+      this.styles.set(name, style)
+    }
+  }
+
+  deleteStyle(name) {
+    if (this.hasStyle(name)) {
+      const style = this.getStyle(name)
+      style.unload()
+
+      this.styles.delete(name)
+    }
+  }
+
+  addShellStyle(name, path) {
+    this.deleteStyle(name)
+    this.setStyle(name, ShellStyle, path)
+  }
+
+  addWidgetStyle(name, widget, styles) {
+    this.deleteStyle(name)
+    this.setStyle(name, WidgetStyle, widget, styles)
+  }
+
+  addGtkStyle(name, contents) {
+    this.deleteStyle(name)
+    this.setStyle(name, GtkStyle, contents)
+  }
+
+  removeAll() {
+    for (const key of this.styles.keys()) {
+      this.deleteStyle(key)
+    }
   }
 }

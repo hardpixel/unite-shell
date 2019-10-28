@@ -1,121 +1,495 @@
-const GObject   = imports.gi.GObject
-const St        = imports.gi.St
-const Clutter   = imports.gi.Clutter
-const Main      = imports.ui.main
-const PanelMenu = imports.ui.panelMenu
+const Gi         = imports._gi
+const System     = imports.system
+const GObject    = imports.gi.GObject
+const Clutter    = imports.gi.Clutter
+const Shell      = imports.gi.Shell
+const AppSystem  = imports.gi.Shell.AppSystem.get_default()
+const WinTracker = imports.gi.Shell.WindowTracker.get_default()
+const Main       = imports.ui.main
+const Unite      = imports.misc.extensionUtils.getCurrentExtension()
+const AppMenu    = Main.panel.statusArea.appMenu
+const Activities = Main.panel.statusArea.activities
+const Buttons    = Unite.imports.buttons
+const Handlers   = Unite.imports.handlers
 
-var DesktopLabel = GObject.registerClass(
-  class UniteDesktopLabel extends PanelMenu.Button {
-    _init(params = { text: 'Desktop' }) {
-      this.params  = params
-      this.appMenu = Main.panel.statusArea.appMenu
+var PanelExtension = class PanelExtension {
+  constructor(settings, key, callback) {
+    this.activated = false
 
-      super._init(0.0, null, true)
-
-      this._label = new St.Label({ y_align: Clutter.ActorAlign.CENTER })
-      this.add_actor(this._label)
-
-      this.reactive = false
-      this.label_actor = this._label
-
-      this.setText(params.text)
+    const isActive = () => {
+      return callback.call(null, settings.get(key))
     }
 
-    setText(text) {
-      this._label.set_text(text)
+    const onChange = () => {
+      const active = isActive()
+
+      if (active && !this.activated) {
+        this.activated = true
+        return this._init()
+      }
+
+      if (!active && this.activated) {
+        this.activated = false
+        return this._destroy()
+      }
     }
 
-    setVisible(visible) {
-      this.container.visible = visible
-      this.appMenu.container.visible = !visible
-    }
-  }
-)
-
-var TrayIndicator = GObject.registerClass(
-  class UniteTrayIndicator extends PanelMenu.Button {
-    _init(params = { size: 20 }) {
-      this._icons = []
-      this.params = params
-
-      super._init(0.0, null, true)
-
-      this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' })
-      this.add_child(this._indicators)
-
-      this._sync()
+    this.activate = () => {
+      settings.connect(key, onChange.bind(this))
+      onChange()
     }
 
-    _sync() {
-      this.visible = this._icons.length
-    }
-
-    addIcon(icon) {
-      this._icons.push(icon)
-
-      const mask = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE
-      const ibtn = new St.Button({ child: icon, button_mask: mask })
-
-      this._indicators.add_child(ibtn)
-
-      icon.connect('destroy', () => { ibtn.destroy() })
-      ibtn.connect('button-release-event', (actor, event) => { icon.click(event) })
-
-      icon.set_reactive(true)
-      icon.set_size(this.params.size, this.params.size)
-
-      this._sync()
-    }
-
-    removeIcon(icon) {
-      const actor = icon.get_parent() || icon
-      actor.destroy()
-
-      const index = this._icons.indexOf(icon)
-      this._icons.splice(index, 1)
-
-      this._sync()
-    }
-
-    forEach(callback) {
-      this._icons.forEach(icon => { callback.call(null, icon) })
+    this.destroy = () => {
+      if (this.activated) {
+        this._destroy()
+        this.activated = false
+      }
     }
   }
-)
+}
 
-var WindowControls = GObject.registerClass(
-  class UniteWindowControls extends PanelMenu.Button {
+var WindowButtons = class WindowButtons extends PanelExtension {
+  constructor({ settings }) {
+    const active = val => val != 'never'
+    super(settings, 'show-window-buttons', active)
+  }
+
+  _init() {
+    this.theme    = 'default-dark'
+    this.signals  = new Handlers.Signals()
+    this.settings = new Handlers.Settings()
+    this.styles   = new Handlers.Styles()
+    this.controls = new Buttons.WindowControls()
+
+    this.signals.connect(
+      Main.overview, 'showing', this._onOverviewShowing.bind(this)
+    )
+
+    this.signals.connect(
+      Main.overview, 'hiding', this._onOverviewHiding.bind(this)
+    )
+
+    this.settings.connect(
+      'window-buttons-layout', this._onLayoutChange.bind(this)
+    )
+
+    this.settings.connect(
+      'window-buttons-position', this._onPositionChange.bind(this)
+    )
+
+    this.settings.connect(
+      'window-buttons-placement', this._onPositionChange.bind(this)
+    )
+
+    this.settings.connect(
+      'window-buttons-theme', this._onThemeChange.bind(this)
+    )
+
+    Main.panel.addToStatusArea(
+      'uniteWindowControls', this.controls, this.index, this.side
+    )
+
+    this.controls.setVisible(false)
+
+    this._onLayoutChange()
+    this._onPositionChange()
+    this._onThemeChange()
+  }
+
+  get position() {
+    return this.settings.get('window-buttons-position')
+  }
+
+  get placement() {
+    return this.settings.get('window-buttons-placement')
+  }
+
+  get side() {
+    const sides = { first: 'left', last: 'right', auto: this.position }
+    return sides[this.placement] || this.placement
+  }
+
+  get index() {
+    if (this.placement == 'first') return 0
+    if (this.placement == 'last') return -1
+
+    return null
+  }
+
+  get sibling() {
+    if (this.side == 'left') {
+      return Main.panel.statusArea.appMenu.get_parent()
+    } else {
+      return Main.panel.statusArea.aggregateMenu.get_parent()
+    }
+  }
+
+  get container() {
+    if (this.side == 'left') {
+      return Main.panel._leftBox
+    } else {
+      return Main.panel._rightBox
+    }
+  }
+
+  _onOverviewShowing() {
+    this.controls.setVisible(false)
+  }
+
+  _onOverviewHiding() {
+    const focused = global.uniteShell.focusWindow
+    this.controls.setVisible(focused && focused.showButtons)
+  }
+
+  _onLayoutChange() {
+    const buttons = this.settings.get('window-buttons-layout')
+
+    if (this.side == 'right' && this.position == 'left') {
+      buttons.reverse()
+    }
+
+    this.controls.addButtons(buttons)
+  }
+
+  _onPositionChange() {
+    const controls = this.controls.container
+    controls.reparent(this.container)
+
+    if (this.index != null) {
+      this.container.set_child_at_index(controls, this.index)
+    } else {
+      this.container.set_child_below_sibling(controls, this.sibling)
+    }
+
+    this._onLayoutChange()
+  }
+
+  _onThemeChange() {
+    this.controls.remove_style_class_name(this.theme)
+
+    this.theme = this.settings.get('window-buttons-theme')
+    const path = `themes/${this.theme}/stylesheet.css`
+
+    this.styles.addShellStyle('windowButtons', path)
+    this.controls.add_style_class_name(this.theme)
+  }
+
+  _destroy() {
+    this.controls.destroy()
+
+    this.signals.disconnectAll()
+    this.settings.disconnectAll()
+    this.styles.removeAll()
+  }
+}
+
+var ExtendLeftBox = class ExtendLeftBox extends PanelExtension {
+  constructor({ settings }) {
+    const active = val => val == true
+    super(settings, 'extend-left-box', active)
+  }
+
+  _init() {
+    this._default = Main.panel.__proto__.vfunc_allocate
+
+    Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box, flags) => {
+      Main.panel.vfunc_allocate.call(Main.panel, box, flags)
+      this._allocate(Main.panel, box, flags)
+    })
+
+    Main.panel.queue_relayout()
+  }
+
+  _allocate(actor, box, flags) {
+    let leftBox   = Main.panel._leftBox
+    let centerBox = Main.panel._centerBox
+    let rightBox  = Main.panel._rightBox
+
+    let allocWidth  = box.x2 - box.x1
+    let allocHeight = box.y2 - box.y1
+
+    let [leftMinWidth, leftNaturalWidth]     = leftBox.get_preferred_width(-1)
+    let [centerMinWidth, centerNaturalWidth] = centerBox.get_preferred_width(-1)
+    let [rightMinWidth, rightNaturalWidth]   = rightBox.get_preferred_width(-1)
+
+    let sideWidth = allocWidth - rightNaturalWidth - centerNaturalWidth
+    let childBox  = new Clutter.ActorBox()
+
+    childBox.y1 = 0
+    childBox.y2 = allocHeight
+
+    if (actor.get_text_direction() == Clutter.TextDirection.RTL) {
+      childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth), leftNaturalWidth)
+      childBox.x2 = allocWidth
+    } else {
+      childBox.x1 = 0
+      childBox.x2 = Math.min(Math.floor(sideWidth), leftNaturalWidth)
+    }
+
+    leftBox.allocate(childBox, flags)
+
+    childBox.y1 = 0
+    childBox.y2 = allocHeight
+
+    if (actor.get_text_direction() == Clutter.TextDirection.RTL) {
+      childBox.x1 = rightNaturalWidth
+      childBox.x2 = childBox.x1 + centerNaturalWidth
+    } else {
+      childBox.x1 = allocWidth - centerNaturalWidth - rightNaturalWidth
+      childBox.x2 = childBox.x1 + centerNaturalWidth
+    }
+
+    centerBox.allocate(childBox, flags)
+
+    childBox.y1 = 0
+    childBox.y2 = allocHeight
+
+    if (actor.get_text_direction() == Clutter.TextDirection.RTL) {
+      childBox.x1 = 0
+      childBox.x2 = rightNaturalWidth
+    } else {
+      childBox.x1 = allocWidth - rightNaturalWidth
+      childBox.x2 = allocWidth
+    }
+
+    rightBox.allocate(childBox, flags)
+  }
+
+  _destroy() {
+    Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', this._default)
+    this._default = null
+
+    Main.panel.queue_relayout()
+  }
+}
+
+var ActivitiesButton = class ActivitiesButton extends PanelExtension {
+  constructor({ settings }) {
+    const active = val => val != 'never'
+    super(settings, 'hide-activities-button', active)
+  }
+
+  _init() {
+    this.signals  = new Handlers.Signals()
+    this.settings = new Handlers.Settings()
+
+    this.signals.connect(
+      Main.overview, 'showing', this._syncVisible.bind(this)
+    )
+
+    this.signals.connect(
+      Main.overview, 'hiding', this._syncVisible.bind(this)
+    )
+
+    this.signals.connect(
+      AppSystem, 'app-state-changed', this._syncVisible.bind(this)
+    )
+
+    this.signals.connect(
+      WinTracker, 'notify::focus-app', this._syncVisible.bind(this)
+    )
+
+    this.settings.connect(
+      'show-desktop-name', this._syncVisible.bind(this)
+    )
+
+    this._syncVisible()
+  }
+
+  get hideButton() {
+    return this.settings.get('hide-activities-button')
+  }
+
+  get showDesktop() {
+    return this.settings.get('show-desktop-name')
+  }
+
+  _syncVisible() {
+    const button   = Activities.container
+    const overview = Main.overview.visibleTarget
+
+    if (this.hideButton == 'always') {
+      return button.hide()
+    }
+
+    if (this.showDesktop) {
+      button.visible = overview
+    } else {
+      button.visible = overview || AppMenu._targetApp == null
+    }
+  }
+
+  _destroy() {
+    Activities.container.show()
+
+    this.signals.disconnectAll()
+    this.settings.disconnectAll()
+  }
+}
+
+var DesktopName = class DesktopName extends PanelExtension {
+  constructor({ settings }) {
+    const active = val => val == true
+    super(settings, 'show-desktop-name', active)
+  }
+
+  _init() {
+    this.signals  = new Handlers.Signals()
+    this.settings = new Handlers.Settings()
+    this.label    = new Buttons.DesktopLabel()
+
+    this.signals.connect(
+      Main.overview, 'showing', this._syncVisible.bind(this)
+    )
+
+    this.signals.connect(
+      Main.overview, 'hiding', this._syncVisible.bind(this)
+    )
+
+    this.signals.connect(
+      AppSystem, 'app-state-changed', this._syncVisible.bind(this)
+    )
+
+    this.signals.connect(
+      WinTracker, 'notify::focus-app', this._syncVisible.bind(this)
+    )
+
+    this.settings.connect(
+      'desktop-name-text', this._onTextChanged.bind(this)
+    )
+
+    Main.panel.addToStatusArea(
+      'uniteDesktopLabel', this.label, 1, 'left'
+    )
+
+    this._onTextChanged()
+    this._syncVisible()
+  }
+
+  get visibleWindows() {
+    const actors = global.get_window_actors()
+
+    return actors.some(({ metaWindow }) => {
+      const visible = metaWindow.showing_on_its_workspace()
+      return visible && !metaWindow.skip_taskbar
+    })
+  }
+
+  _syncVisible() {
+    const overview = Main.overview.visibleTarget
+    const visible  = !overview && AppMenu._targetApp == null
+
+    this.label.setVisible(visible && !this.visibleWindows)
+  }
+
+  _onTextChanged() {
+    const text = this.settings.get('desktop-name-text')
+    this.label.setText(text)
+  }
+
+  _destroy() {
+    this.label.destroy()
+
+    this.signals.disconnectAll()
+    this.settings.disconnectAll()
+  }
+}
+
+var TrayIcons = class TrayIcons extends PanelExtension {
+  constructor({ settings }) {
+    const active = val => val == true
+    super(settings, 'show-legacy-tray', active)
+  }
+
+  _init() {
+    this.tray       = new Shell.TrayManager()
+    this.settings   = new Handlers.Settings()
+    this.indicators = new Buttons.TrayIndicator()
+
+    this.tray.connect(
+      'tray-icon-added', this._onIconAdded.bind(this)
+    )
+
+    this.tray.connect(
+      'tray-icon-removed', this._onIconRemoved.bind(this)
+    )
+
+    this.settings.connect(
+      'greyscale-tray-icons', this._onGreyscaleChange.bind(this)
+    )
+
+    Main.panel.addToStatusArea(
+      'uniteTrayIndicator', this.indicators, 0, 'right'
+    )
+
+    this.tray.manage_screen(Main.panel)
+  }
+
+  _desaturateIcon(icon) {
+    const greyscale = this.settings.get('greyscale-tray-icons')
+    icon.clear_effects()
+
+    if (greyscale) {
+      const desEffect = new Clutter.DesaturateEffect({ factor : 1.0 })
+      const briEffect = new Clutter.BrightnessContrastEffect({})
+
+      briEffect.set_brightness(0.2)
+      briEffect.set_contrast(0.3)
+
+      icon.add_effect_with_name('desaturate', desEffect)
+      icon.add_effect_with_name('brightness-contrast', briEffect)
+    }
+  }
+
+  _onIconAdded(trayManager, icon) {
+    this.indicators.addIcon(icon)
+    this._desaturateIcon(icon)
+  }
+
+  _onIconRemoved(trayManager, icon) {
+    this.indicators.removeIcon(icon)
+  }
+
+  _onGreyscaleChange() {
+    this.indicators.forEach(this._desaturateIcon.bind(this))
+  }
+
+  _destroy() {
+    this.tray = null
+    System.gc()
+
+    this.indicators.destroy()
+    this.settings.disconnectAll()
+  }
+}
+
+var PanelManager = GObject.registerClass(
+  class UnitePanelManager extends GObject.Object {
     _init() {
-      super._init(0.0, null, true)
-
-      this._controls = new St.BoxLayout({ style_class: 'window-controls-box' })
-      this.add_child(this._controls)
-
-      this.add_style_class_name('window-controls')
+      this.settings   = new Handlers.Settings()
+      this.buttons    = new WindowButtons(this)
+      this.extender   = new ExtendLeftBox(this)
+      this.activities = new ActivitiesButton(this)
+      this.desktop    = new DesktopName(this)
+      this.tray       = new TrayIcons(this)
     }
 
-    _addButton(action, callback) {
-      const bin = new St.Bin({ style_class: 'icon' })
-      const btn = new St.Button({ track_hover: true })
-
-      btn._windowAction = action
-
-      btn.add_style_class_name(`window-button ${action}`)
-      btn.add_actor(bin)
-
-      btn.connect('clicked', (actor, event) => {
-        callback.call(null, actor, event)
-      })
-
-      this._controls.add_child(btn)
+    activate() {
+      this.buttons.activate()
+      this.extender.activate()
+      this.activities.activate()
+      this.desktop.activate()
+      this.tray.activate()
     }
 
-    addButtons(buttons, callback) {
-      buttons.forEach(action => { this._addButton(action, callback) })
-    }
+    destroy() {
+      this.buttons.destroy()
+      this.extender.destroy()
+      this.activities.destroy()
+      this.desktop.destroy()
+      this.tray.destroy()
 
-    setVisible(visible) {
-      this.container.visible = visible
+      this.settings.disconnectAll()
     }
   }
 )
