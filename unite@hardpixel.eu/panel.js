@@ -466,9 +466,7 @@ var TrayIcons = class TrayIcons extends PanelExtension {
 var PanelManager = GObject.registerClass(
   class UnitePanelManager extends GObject.Object {
     _init() {
-      this.signals  = new Handlers.Signals()
-      this.settings = new Handlers.Settings()
-
+      this.settings   = new Handlers.Settings()
       this.buttons    = new WindowButtons(this)
       this.extender   = new ExtendLeftBox(this)
       this.activities = new ActivitiesButton(this)
@@ -491,7 +489,6 @@ var PanelManager = GObject.registerClass(
       this.desktop.destroy()
       this.tray.destroy()
 
-      this.signals.disconnectAll()
       this.settings.disconnectAll()
     }
   }
