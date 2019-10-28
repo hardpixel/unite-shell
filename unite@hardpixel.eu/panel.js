@@ -404,7 +404,7 @@ var TrayIcons = class TrayIcons extends PanelExtension {
   _init() {
     this.tray       = new Shell.TrayManager()
     this.settings   = new Handlers.Settings()
-    this.indicators = new Buttons.TrayIndicator({ size: 20 })
+    this.indicators = new Buttons.TrayIndicator()
 
     this.tray.connect(
       'tray-icon-added', this._onIconAdded.bind(this)

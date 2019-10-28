@@ -2,14 +2,12 @@ const GObject   = imports.gi.GObject
 const St        = imports.gi.St
 const Clutter   = imports.gi.Clutter
 const Main      = imports.ui.main
+const AppMenu   = Main.panel.statusArea.appMenu
 const PanelMenu = imports.ui.panelMenu
 
 var DesktopLabel = GObject.registerClass(
   class UniteDesktopLabel extends PanelMenu.Button {
-    _init(params = { text: 'Desktop' }) {
-      this.params  = params
-      this.appMenu = Main.panel.statusArea.appMenu
-
+    _init(text) {
       super._init(0.0, null, true)
 
       this._label = new St.Label({ y_align: Clutter.ActorAlign.CENTER })
@@ -18,7 +16,7 @@ var DesktopLabel = GObject.registerClass(
       this.reactive = false
       this.label_actor = this._label
 
-      this.setText(params.text)
+      this.setText(text || 'Desktop')
     }
 
     setText(text) {
@@ -27,16 +25,16 @@ var DesktopLabel = GObject.registerClass(
 
     setVisible(visible) {
       this.container.visible = visible
-      this.appMenu.container.visible = !visible
+      AppMenu.container.visible = !visible
     }
   }
 )
 
 var TrayIndicator = GObject.registerClass(
   class UniteTrayIndicator extends PanelMenu.Button {
-    _init(params = { size: 20 }) {
+    _init(size) {
+      this._size  = size || 20
       this._icons = []
-      this.params = params
 
       super._init(0.0, null, true)
 
@@ -44,6 +42,11 @@ var TrayIndicator = GObject.registerClass(
       this.add_child(this._indicators)
 
       this._sync()
+    }
+
+    get size() {
+      const context = St.ThemeContext.get_for_stage(global.stage)
+      return this._size * context.scale_factor
     }
 
     _sync() {
@@ -62,7 +65,7 @@ var TrayIndicator = GObject.registerClass(
       ibtn.connect('button-release-event', (actor, event) => { icon.click(event) })
 
       icon.set_reactive(true)
-      icon.set_size(this.params.size, this.params.size)
+      icon.set_size(this.size, this.size)
 
       this._sync()
     }
