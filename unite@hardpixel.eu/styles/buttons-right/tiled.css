@@ -1,5 +1,10 @@
-.tiled headerbar,
-.tiled .titlebar {
+.tiled > headerbar,
+.tiled > .titlebar,
+.tiled > headerbar > headerbar,
+.tiled > .titlebar > .titlebar,
+.tiled > .titlebar > stack > headerbar,
+.tiled headerbar:last-child,
+.tiled .titlebar:last-child {
   padding-right: 0;
 }
 

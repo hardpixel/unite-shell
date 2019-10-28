@@ -3,12 +3,11 @@
   padding-left: 0;
 }
 
-.tiled .titlebar headerbar ~ headerbar {
+.tiled headerbar ~ headerbar,
+.tiled headerbar ~ .titlebar,
+.tiled .titlebar ~ .titlebar,
+.tiled .titlebar ~ headerbar {
   padding-left: 6px;
-}
-
-.tiled .titlebar .titlebar {
-  padding-left: 0;
 }
 
 .tiled headerbar > box.left,

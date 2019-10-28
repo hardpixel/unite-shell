@@ -1,5 +1,10 @@
-.maximized headerbar,
-.maximized .titlebar {
+.maximized > headerbar,
+.maximized > .titlebar,
+.maximized > headerbar > headerbar,
+.maximized > .titlebar > .titlebar,
+.maximized > .titlebar > stack > headerbar,
+.maximized headerbar:last-child,
+.maximized .titlebar:last-child {
   padding-right: 0;
 }
 
