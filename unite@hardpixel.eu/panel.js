@@ -32,12 +32,6 @@ var PanelExtension = class PanelExtension {
       }
     }
 
-    this.defineSetting = (name, setting) => {
-      Object.defineProperty(this, name, {
-        get: () => settings.get(setting)
-      })
-    }
-
     this.activate = () => {
       settings.connect(key, onChange.bind(this))
       onChange()
@@ -271,12 +265,44 @@ var ActivitiesButton = class ActivitiesButton extends PanelExtension {
   constructor({ settings }) {
     const active = val => val != 'never'
     super(settings, 'hide-activities-button', active)
-
-    this.defineSetting('hideButton', 'hide-activities-button')
-    this.defineSetting('showDesktop', 'show-desktop-name')
   }
 
   _init() {
+    this.signals  = new Handlers.Signals()
+    this.settings = new Handlers.Settings()
+
+    this.signals.connect(
+      Main.overview, 'showing', this._syncVisible.bind(this)
+    )
+
+    this.signals.connect(
+      Main.overview, 'hiding', this._syncVisible.bind(this)
+    )
+
+    this.signals.connect(
+      AppSystem, 'app-state-changed', this._syncVisible.bind(this)
+    )
+
+    this.signals.connect(
+      WinTracker, 'notify::focus-app', this._syncVisible.bind(this)
+    )
+
+    this.settings.connect(
+      'show-desktop-name', this._syncVisible.bind(this)
+    )
+
+    this._syncVisible()
+  }
+
+  get hideButton() {
+    return this.settings.get('hide-activities-button')
+  }
+
+  get showDesktop() {
+    return this.settings.get('show-desktop-name')
+  }
+
+  _syncVisible() {
     const button   = Activities.container
     const overview = Main.overview.visibleTarget
 
@@ -291,12 +317,11 @@ var ActivitiesButton = class ActivitiesButton extends PanelExtension {
     }
   }
 
-  sync() {
-    this.activated && this._init()
-  }
-
   _destroy() {
     Activities.container.show()
+
+    this.signals.disconnectAll()
+    this.settings.disconnectAll()
   }
 }
 
@@ -307,16 +332,36 @@ var DesktopName = class DesktopName extends PanelExtension {
   }
 
   _init() {
+    this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
+    this.label    = new Buttons.DesktopLabel()
+
+    this.signals.connect(
+      Main.overview, 'showing', this._syncVisible.bind(this)
+    )
+
+    this.signals.connect(
+      Main.overview, 'hiding', this._syncVisible.bind(this)
+    )
+
+    this.signals.connect(
+      AppSystem, 'app-state-changed', this._syncVisible.bind(this)
+    )
+
+    this.signals.connect(
+      WinTracker, 'notify::focus-app', this._syncVisible.bind(this)
+    )
 
     this.settings.connect(
       'desktop-name-text', this._onTextChanged.bind(this)
     )
 
-    this.label = new Buttons.DesktopLabel()
-    Main.panel.addToStatusArea('uniteDesktopLabel', this.label, 1, 'left')
+    Main.panel.addToStatusArea(
+      'uniteDesktopLabel', this.label, 1, 'left'
+    )
 
     this._onTextChanged()
+    this._syncVisible()
   }
 
   get visibleWindows() {
@@ -340,12 +385,10 @@ var DesktopName = class DesktopName extends PanelExtension {
     this.label.setText(text)
   }
 
-  sync() {
-    this.activated && this._syncVisible()
-  }
-
   _destroy() {
     this.label.destroy()
+
+    this.signals.disconnectAll()
     this.settings.disconnectAll()
   }
 }
@@ -360,35 +403,6 @@ var PanelManager = GObject.registerClass(
       this.extender   = new ExtendLeftBox(this)
       this.activities = new ActivitiesButton(this)
       this.desktop    = new DesktopName(this)
-
-      this.signals.connect(
-        Main.overview, 'showing', this.syncButtonWidgets.bind(this)
-      )
-
-      this.signals.connect(
-        Main.overview, 'hiding', this.syncButtonWidgets.bind(this)
-      )
-
-      this.signals.connect(
-        AppSystem, 'app-state-changed', this.syncButtonWidgets.bind(this)
-      )
-
-      this.signals.connect(
-        WinTracker, 'notify::focus-app', this.syncButtonWidgets.bind(this)
-      )
-
-      this.settings.connect(
-        'hide-activities-button', this.syncButtonWidgets.bind(this)
-      )
-
-      this.settings.connect(
-        'show-desktop-name', this.syncButtonWidgets.bind(this)
-      )
-    }
-
-    syncButtonWidgets() {
-      this.activities.sync()
-      this.desktop.sync()
     }
 
     activate() {
