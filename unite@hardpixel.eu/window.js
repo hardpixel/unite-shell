@@ -423,9 +423,9 @@ var WindowManager = GObject.registerClass({
 
     _onAttention(actor, win) {
       const auto = this.settings.get('autofocus-windows')
-      const time = auto && global.get_current_time()
+      const time = global.get_current_time()
 
-      time && Main.activateWindow(win, time)
+      auto && Main.activateWindow(win, time)
     }
 
     _onStylesChange() {
