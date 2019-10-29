@@ -5,8 +5,8 @@ const PanelManager  = Unite.imports.panel.PanelManager
 const LayoutManager = Unite.imports.layout.LayoutManager
 const WindowManager = Unite.imports.window.WindowManager
 
-var UniteShell = GObject.registerClass(
-  class UniteShell extends GObject.Object {
+var UniteExtension = GObject.registerClass(
+  class UniteExtension extends GObject.Object {
     _init() {
       this.panelManager  = new PanelManager()
       this.layoutManager = new LayoutManager()
@@ -36,11 +36,11 @@ var UniteShell = GObject.registerClass(
 )
 
 function enable() {
-  global.uniteShell = new UniteShell()
-  global.uniteShell.activate()
+  global.unite = new UniteExtension()
+  global.unite.activate()
 }
 
 function disable() {
-  global.uniteShell.destroy()
-  global.uniteShell = null
+  global.unite.destroy()
+  global.unite = null
 }

@@ -137,7 +137,7 @@ var WindowButtons = class WindowButtons extends PanelExtension {
   }
 
   _onOverviewHiding() {
-    const focused = global.uniteShell.focusWindow
+    const focused = global.unite.focusWindow
     this.controls.setVisible(focused && focused.showButtons)
   }
 
