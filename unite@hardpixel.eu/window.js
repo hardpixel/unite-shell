@@ -84,10 +84,9 @@ var ClientDecorations = class ClientDecorations {
   }
 }
 
-var ServerDecorations = class ServerDecorations extends ClientDecorations {
+var ServerDecorations = class ServerDecorations {
   constructor(xid) {
-    super(xid)
-
+    this.xid     = xid
     this.initial = getHints(xid)
     this.current = this.initial
   }
