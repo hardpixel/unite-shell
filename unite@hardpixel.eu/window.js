@@ -400,13 +400,8 @@ var WindowManager = GObject.registerClass({
     }
 
     _onFocusWindow(display) {
-      const buttons = Main.panel.statusArea.uniteWindowControls
-      const focused = this.focusWindow
-
-      if (focused) {
-        focused.syncComponents()
-      } else {
-        buttons && buttons.setVisible(false)
+      if (this.focusWindow) {
+        this.focusWindow.syncComponents()
       }
 
       this.emit('focus-changed')

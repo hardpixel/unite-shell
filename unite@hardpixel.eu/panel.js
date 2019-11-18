@@ -69,6 +69,10 @@ var WindowButtons = class WindowButtons extends PanelExtension {
       Main.overview, 'hiding', this._onOverviewHiding.bind(this)
     )
 
+    this.signals.connect(
+      WinTracker, 'notify::focus-app', this._onFocusAppChange.bind(this)
+    )
+
     this.settings.connect(
       'window-buttons-layout', this._onLayoutChange.bind(this)
     )
@@ -139,6 +143,14 @@ var WindowButtons = class WindowButtons extends PanelExtension {
   _onOverviewHiding() {
     const focused = global.unite.focusWindow
     this.controls.setVisible(focused && focused.showButtons)
+  }
+
+  _onFocusAppChange() {
+    const focused = AppMenu._targetApp
+
+    if (focused == null || focused.state != Shell.AppState.RUNNING) {
+      this.controls.setVisible(false)
+    }
   }
 
   _onLayoutChange() {
