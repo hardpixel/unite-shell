@@ -25,11 +25,13 @@ Settings window available in gnome-tweaks.
 Since version `2` applications on wayland with client side decorations are supported using CSS.
 
 ## Install
-Make sure you have installed `xorg-xprop`, download the latest [release](https://github.com/hardpixel/unite-shell/releases) and extract it into `~/.local/share/gnome-shell/extensions`. To get the complete Ubuntu Unity layout you can combine it with [Dash to Dock](https://github.com/micheleg/dash-to-dock) extension.
+Make sure you have installed `xorg-xprop`:
 
 * Debian/Ubuntu: `apt install x11-utils`
 * Fedora/RHEL: `dnf install xorg-x11-utils`
 * Arch: `pacman -S xorg-xprop`
+
+Then, download the latest [release](https://github.com/hardpixel/unite-shell/releases) and extract it into `~/.local/share/gnome-shell/extensions`. To get the complete Ubuntu Unity layout, you can combine it with [Dash to Dock](https://github.com/micheleg/dash-to-dock) extension.
 
 ### Gnome Shell Extensions
 The easiest way to install this extension is via the official [Gnome Shell Extensions](https://extensions.gnome.org) resource page [here](https://extensions.gnome.org/extension/1287/unite).
