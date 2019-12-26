@@ -36,6 +36,15 @@ function setFileContents(path, contents) {
   GLib.file_set_contents(path, contents)
 }
 
+function resetGtkStyles() {
+  let style = getFileContents(USER_STYLES)
+
+  style = style.replace(/\/\* UNITE ([\s\S]*?) UNITE \*\/\n/g, '')
+  style = style.replace(/@import.*unite@hardpixel\.eu.*css['"]\);\n/g, '')
+
+  setFileContents(USER_STYLES, style)
+}
+
 var Signals = class Signals {
   constructor() {
     this.signals = new Map()
@@ -146,21 +155,22 @@ var WidgetStyle = class WidgetStyle {
 }
 
 var GtkStyle = class GtkStyle {
-  constructor(contents) {
-    this.contents = `${contents}\n`
+  constructor(name, contents) {
+    this.contents = `/* UNITE ${name} */\n${contents}\n/* ${name} UNITE */\n`
   }
 
   get existing() {
-    const contents = getFileContents(USER_STYLES)
-    return contents.replace(/@import.*unite@hardpixel\.eu.*css['"]\);\n/g, '')
+    return getFileContents(USER_STYLES)
   }
 
   load() {
-    setFileContents(USER_STYLES, this.contents + this.existing)
+    const style = this.contents + this.existing
+    setFileContents(USER_STYLES, style)
   }
 
   unload() {
-    setFileContents(USER_STYLES, this.existing)
+    const style = this.existing.replace(this.contents, '')
+    setFileContents(USER_STYLES, style)
   }
 }
 
@@ -207,7 +217,7 @@ var Styles = class Styles {
 
   addGtkStyle(name, contents) {
     this.deleteStyle(name)
-    this.setStyle(name, GtkStyle, contents)
+    this.setStyle(name, GtkStyle, name, contents)
   }
 
   removeAll() {
@@ -216,3 +226,5 @@ var Styles = class Styles {
     }
   }
 }
+
+resetGtkStyles()
