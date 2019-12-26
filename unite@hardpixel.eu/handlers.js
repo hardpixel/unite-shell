@@ -147,7 +147,7 @@ var WidgetStyle = class WidgetStyle {
 
 var GtkStyle = class GtkStyle {
   constructor(contents) {
-    this.contents = contents
+    this.contents = `${contents}\n`
   }
 
   get existing() {

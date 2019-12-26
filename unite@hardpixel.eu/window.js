@@ -427,7 +427,7 @@ var WindowManager = GObject.registerClass({
       if (this.hideTitlebars != 'never') {
         const variant = this.settings.get('window-buttons-position')
         const folder  = `${Unite.path}/styles/buttons-${variant}`
-        const content = `@import url('${folder}/${this.hideTitlebars}.css');\n`
+        const content = `@import url('${folder}/${this.hideTitlebars}.css');`
 
         this.styles.addGtkStyle('windowDecorations', content)
       } else {
