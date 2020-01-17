@@ -120,12 +120,8 @@ var ServerDecorations = class ServerDecorations {
   }
 }
 
-var MetaWindow = GObject.registerClass({
-  Signals: {
-    'title-changed': {},
-    'state-changed': {}
-  }
-}, class UniteMetaWindow extends GObject.Object {
+var MetaWindow = GObject.registerClass(
+  class UniteMetaWindow extends GObject.Object {
     _init(win) {
       win._uniteShellManaged = true
 
@@ -289,12 +285,10 @@ var MetaWindow = GObject.registerClass({
 
     _onStateChanged() {
       this.syncComponents()
-      this.emit('state-changed')
     }
 
     _onTitleChanged() {
       this.syncAppmenu()
-      this.emit('title-changed')
     }
 
     destroy() {
@@ -308,11 +302,8 @@ var MetaWindow = GObject.registerClass({
   }
 )
 
-var WindowManager = GObject.registerClass({
-  Signals: {
-    'focus-changed': {}
-  }
-}, class UniteWindowManager extends GObject.Object {
+var WindowManager = GObject.registerClass(
+  class UniteWindowManager extends GObject.Object {
     _init() {
       this.windows  = new Map()
       this.signals  = new Handlers.Signals()
@@ -403,8 +394,6 @@ var WindowManager = GObject.registerClass({
       if (this.focusWindow) {
         this.focusWindow.syncComponents()
       }
-
-      this.emit('focus-changed')
     }
 
     _onAppmenuChanged() {
