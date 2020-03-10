@@ -25,6 +25,10 @@ function isValid(win) {
   return win && VALID_TYPES.includes(win.window_type)
 }
 
+function getId(win) {
+  return win && win.get_id ? win.get_id() : win
+}
+
 function getXid(win) {
   const desc  = win.get_description()
   const match = desc && desc.match(/0x[0-9a-f]+/)
@@ -349,17 +353,17 @@ var WindowManager = GObject.registerClass(
     }
 
     hasWindow(win) {
-      return win && this.windows.has(win.get_id())
+      return win && this.windows.has(getId(win))
     }
 
     getWindow(win) {
-      return win && this.windows.get(win.get_id())
+      return win && this.windows.get(getId(win))
     }
 
     setWindow(win) {
       if (!this.hasWindow(win)) {
         const meta = new MetaWindow(win)
-        this.windows.set(win.get_id(), meta)
+        this.windows.set(getId(win), meta)
       }
     }
 
@@ -368,7 +372,7 @@ var WindowManager = GObject.registerClass(
         const meta = this.getWindow(win)
         meta.destroy()
 
-        this.windows.delete(win.get_id())
+        this.windows.delete(getId(win))
       }
     }
 
