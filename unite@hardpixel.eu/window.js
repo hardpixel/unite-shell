@@ -349,17 +349,17 @@ var WindowManager = GObject.registerClass(
     }
 
     hasWindow(win) {
-      return win && this.windows.has(`${win}`)
+      return win && this.windows.has(win.get_id())
     }
 
     getWindow(win) {
-      return win && this.windows.get(`${win}`)
+      return win && this.windows.get(win.get_id())
     }
 
     setWindow(win) {
       if (!this.hasWindow(win)) {
         const meta = new MetaWindow(win)
-        this.windows.set(`${win}`, meta)
+        this.windows.set(win.get_id(), meta)
       }
     }
 
@@ -368,7 +368,7 @@ var WindowManager = GObject.registerClass(
         const meta = this.getWindow(win)
         meta.destroy()
 
-        this.windows.delete(`${win}`)
+        this.windows.delete(win.get_id())
       }
     }
 
