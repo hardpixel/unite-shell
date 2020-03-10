@@ -93,11 +93,9 @@ var WindowButtons = class WindowButtons extends PanelExtension {
       'uniteWindowControls', this.controls, this.index, this.side
     )
 
-    this.controls.setVisible(false)
-
-    this._onLayoutChange()
     this._onPositionChange()
     this._onThemeChange()
+    this._onOverviewHiding()
   }
 
   get position() {
