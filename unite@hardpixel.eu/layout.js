@@ -73,10 +73,6 @@ var LayoutManager = GObject.registerClass(
         Main.panel._rightBox, 'actor_added', this._onHideDropdownArrows.bind(this)
       )
 
-      this.signals.connect(
-        GtkSettings, 'notify::gtk-font-name', this._onChangeStyles.bind(this)
-      )
-
       this.settings.connect(
         'notifications-position', this._onNotificationsChange.bind(this)
       )
@@ -104,6 +100,12 @@ var LayoutManager = GObject.registerClass(
       this.settings.connect(
         'reduce-panel-spacing', this._onChangeStyles.bind(this)
       )
+
+      if (VERSION < 36) {
+        this.signals.connect(
+          GtkSettings, 'notify::gtk-font-name', this._onChangeStyles.bind(this)
+        )
+      }
     }
 
     _onNotificationsChange() {
@@ -172,7 +174,7 @@ var LayoutManager = GObject.registerClass(
 
       this._resetStyles()
 
-      if (fonts) {
+      if (VERSION < 36 && fonts) {
         const font = GtkSettings.gtk_font_name.replace(/\s\d+$/, '')
         this.styles.addWidgetStyle('uiGroup', Main.uiGroup, `font-family: ${font};`)
 
