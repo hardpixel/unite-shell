@@ -259,8 +259,10 @@ var MetaWindow = GObject.registerClass(
 
     syncControls() {
       if (this.hasFocus) {
+        const overview = Main.overview._visible
         const controls = Main.panel.statusArea.uniteWindowControls
-        controls && controls.setVisible(this.showButtons)
+
+        controls && controls.setVisible(this.showButtons && !overview)
       }
     }
 
