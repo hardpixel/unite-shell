@@ -19,7 +19,8 @@
     <value value="16" nick="arrongin" />
     <value value="17" nick="telinkrin" />
     <value value="18" nick="breeze" />
-  </enum>
+    <value value="19" nick="prof-gnome" />  
+</enum>
 
   <enum id="org.gnome.shell.extensions.unite.hideTitlebars">
     <value value="0" nick="never" />
