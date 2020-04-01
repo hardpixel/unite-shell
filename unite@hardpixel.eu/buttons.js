@@ -32,8 +32,7 @@ var DesktopLabel = GObject.registerClass(
 
 var TrayIndicator = GObject.registerClass(
   class UniteTrayIndicator extends PanelMenu.Button {
-    _init(size) {
-      this._size  = size || 20
+    _init() {
       this._icons = []
 
       super._init(0.0, null, true)
@@ -42,11 +41,6 @@ var TrayIndicator = GObject.registerClass(
       this.add_child(this._indicators)
 
       this._sync()
-    }
-
-    get size() {
-      const context = St.ThemeContext.get_for_stage(global.stage)
-      return this._size * context.scale_factor
     }
 
     _sync() {
@@ -65,7 +59,6 @@ var TrayIndicator = GObject.registerClass(
       ibtn.connect('button-release-event', (actor, event) => { icon.click(event) })
 
       icon.set_reactive(true)
-      icon.set_size(this.size, this.size)
 
       this._sync()
     }
