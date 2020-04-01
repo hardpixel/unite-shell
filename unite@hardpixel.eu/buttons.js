@@ -59,6 +59,7 @@ var TrayIndicator = GObject.registerClass(
       ibtn.connect('button-release-event', (actor, event) => { icon.click(event) })
 
       icon.set_reactive(true)
+      icon.set_y_align(Clutter.ActorAlign.CENTER)
 
       this._sync()
     }
