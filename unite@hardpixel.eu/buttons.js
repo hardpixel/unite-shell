@@ -33,6 +33,7 @@ var DesktopLabel = GObject.registerClass(
 var TrayIndicator = GObject.registerClass(
   class UniteTrayIndicator extends PanelMenu.Button {
     _init() {
+      this._size  = 20
       this._icons = []
 
       super._init(0.0, null, true)
@@ -43,6 +44,11 @@ var TrayIndicator = GObject.registerClass(
       this._sync()
     }
 
+    get size() {
+      const context = St.ThemeContext.get_for_stage(global.stage)
+      return this._size * context.scale_factor
+    }
+
     _sync() {
       this.visible = this._icons.length > 0
     }
@@ -51,7 +57,8 @@ var TrayIndicator = GObject.registerClass(
       this._icons.push(icon)
 
       const mask = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE
-      const ibtn = new St.Button({ child: icon, button_mask: mask })
+      const ibin = new St.Bin({ child: icon, y_align: Clutter.ActorAlign.CENTER })
+      const ibtn = new St.Button({ child: ibin, button_mask: mask })
 
       this._indicators.add_child(ibtn)
 
@@ -59,13 +66,15 @@ var TrayIndicator = GObject.registerClass(
       ibtn.connect('button-release-event', (actor, event) => { icon.click(event) })
 
       icon.set_reactive(true)
-      icon.set_y_align(Clutter.ActorAlign.CENTER)
+      ibin.set_size(this.size, this.size)
+
+      icon._button = ibtn
 
       this._sync()
     }
 
     removeIcon(icon) {
-      const actor = icon.get_parent() || icon
+      const actor = icon._button || icon
       actor.destroy()
 
       const index = this._icons.indexOf(icon)
