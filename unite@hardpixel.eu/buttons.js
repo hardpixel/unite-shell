@@ -50,7 +50,7 @@ var TrayIndicator = GObject.registerClass(
     }
 
     _sync() {
-      this.visible = this._icons.length
+      this.visible = this._icons.length > 0
     }
 
     addIcon(icon) {
