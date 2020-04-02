@@ -19,8 +19,8 @@
     <value value="16" nick="arrongin" />
     <value value="17" nick="telinkrin" />
     <value value="18" nick="breeze" />
-    <value value="19" nick="prof-gnome" />  
-</enum>
+    <value value="19" nick="prof-gnome" />
+  </enum>
 
   <enum id="org.gnome.shell.extensions.unite.hideTitlebars">
     <value value="0" nick="never" />
@@ -158,6 +158,5 @@
       <default>"auto"</default>
       <summary>Hide top bar activities button.</summary>
     </key>
-
   </schema>
 </schemalist>
