@@ -119,7 +119,7 @@ var ServerDecorations = class ServerDecorations {
 
   reset() {
     if (this.handle) {
-      setHint(this.xid, MOTIF_HINTS, this.initial)
+      setHint(this.xid, MOTIF_HINTS, _SHOW_FLAGS)
     }
   }
 }
