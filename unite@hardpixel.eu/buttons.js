@@ -99,7 +99,8 @@ var WindowControls = GObject.registerClass(
     }
 
     _addButton(action) {
-      const bin = new St.Bin({ style_class: 'icon' })
+      const pos = Clutter.ActorAlign.CENTER
+      const bin = new St.Bin({ style_class: 'icon', x_align: pos, y_align: pos })
       const btn = new St.Button({ track_hover: true })
 
       btn.add_style_class_name(`window-button ${action}`)
