@@ -189,7 +189,7 @@ var LayoutManager = GObject.registerClass(
         Main.panel._addStyleClassName('extra-spacing')
       }
 
-      if (fonts || space) {
+      if (VERSION < 36 && (fonts || space)) {
         this.styles.addWidgetStyle('panel', Main.panel, 'font-size: 11.25pt;')
       }
     }
