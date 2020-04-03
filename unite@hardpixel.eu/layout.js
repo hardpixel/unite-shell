@@ -177,7 +177,9 @@ var LayoutManager = GObject.registerClass(
 
       if (VERSION < 36 && fonts) {
         const font = GtkSettings.gtk_font_name.replace(/\s\d+$/, '')
+
         this.styles.addWidgetStyle('uiGroup', Main.uiGroup, `font-family: ${font};`)
+        this.styles.addWidgetStyle('panel', Main.panel, 'font-size: 11.25pt;')
       }
 
       if (space) {
@@ -186,10 +188,6 @@ var LayoutManager = GObject.registerClass(
 
       if (VERSION < 34) {
         Main.panel._addStyleClassName('extra-spacing')
-      }
-
-      if (VERSION < 36 && (fonts || space)) {
-        this.styles.addWidgetStyle('panel', Main.panel, 'font-size: 11.25pt;')
       }
 
       this._syncStyles()
