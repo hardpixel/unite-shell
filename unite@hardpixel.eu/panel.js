@@ -336,7 +336,9 @@ var ActivitiesButton = class ActivitiesButton extends PanelExtension {
   }
 
   _destroy() {
-    Activities.container.show()
+    if (!Main.overview.isDummy) {
+      Activities.container.show()
+    }
 
     this.signals.disconnectAll()
     this.settings.disconnectAll()
