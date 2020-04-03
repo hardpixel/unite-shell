@@ -177,8 +177,6 @@ var LayoutManager = GObject.registerClass(
       if (VERSION < 36 && fonts) {
         const font = GtkSettings.gtk_font_name.replace(/\s\d+$/, '')
         this.styles.addWidgetStyle('uiGroup', Main.uiGroup, `font-family: ${font};`)
-
-        Main.panel._addStyleClassName('system-fonts')
       }
 
       if (space) {
@@ -222,7 +220,6 @@ var LayoutManager = GObject.registerClass(
     }
 
     _resetStyles() {
-      Main.panel._removeStyleClassName('system-fonts')
       Main.panel._removeStyleClassName('small-spacing')
       Main.panel._removeStyleClassName('extra-spacing')
 
