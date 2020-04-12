@@ -57,7 +57,7 @@ var TrayIndicator = GObject.registerClass(
       this._icons.push(icon)
 
       const mask = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE
-      const ibtn = new St.Button({ child: icon, button_mask: mask })
+      const ibtn = new St.Button({ child: icon, button_mask: mask, width: this.size })
 
       this._indicators.add_child(ibtn)
 
@@ -66,6 +66,7 @@ var TrayIndicator = GObject.registerClass(
 
       icon.set_reactive(true)
       icon.set_height(this.size)
+      icon.set_x_align(Clutter.ActorAlign.CENTER)
       icon.set_y_align(Clutter.ActorAlign.CENTER)
 
       this._sync()
