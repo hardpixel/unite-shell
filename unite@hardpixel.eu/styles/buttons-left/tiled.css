@@ -1,12 +1,12 @@
-.tiled headerbar,
-.tiled .titlebar {
+.tiled headerbar:not(.selection-mode),
+.tiled .titlebar:not(.selection-mode) {
   padding-left: 0;
 }
 
-.tiled headerbar ~ headerbar,
-.tiled headerbar ~ .titlebar,
-.tiled .titlebar ~ .titlebar,
-.tiled .titlebar ~ headerbar {
+.tiled headerbar ~ headerbar:not(.selection-mode),
+.tiled headerbar ~ .titlebar:not(.selection-mode),
+.tiled .titlebar ~ .titlebar:not(.selection-mode),
+.tiled .titlebar ~ headerbar:not(.selection-mode) {
   padding-left: 6px;
 }
 

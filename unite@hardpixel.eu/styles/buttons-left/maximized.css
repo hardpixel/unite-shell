@@ -1,12 +1,12 @@
-.maximized headerbar,
-.maximized .titlebar {
+.maximized headerbar:not(.selection-mode),
+.maximized .titlebar:not(.selection-mode) {
   padding-left: 0;
 }
 
-.maximized headerbar ~ headerbar,
-.maximized headerbar ~ .titlebar,
-.maximized .titlebar ~ .titlebar,
-.maximized .titlebar ~ headerbar {
+.maximized headerbar ~ headerbar:not(.selection-mode),
+.maximized headerbar ~ .titlebar:not(.selection-mode),
+.maximized .titlebar ~ .titlebar:not(.selection-mode),
+.maximized .titlebar ~ headerbar:not(.selection-mode) {
   padding-left: 6px;
 }
 

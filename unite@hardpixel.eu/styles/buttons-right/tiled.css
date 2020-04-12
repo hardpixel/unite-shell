@@ -1,10 +1,10 @@
-.tiled > headerbar,
-.tiled > .titlebar,
-.tiled > headerbar > headerbar,
-.tiled > .titlebar > .titlebar,
-.tiled > .titlebar > stack > headerbar,
-.tiled headerbar:last-child,
-.tiled .titlebar:last-child {
+.tiled > headerbar:not(.selection-mode),
+.tiled > .titlebar:not(.selection-mode),
+.tiled > headerbar > headerbar:not(.selection-mode),
+.tiled > .titlebar > .titlebar:not(.selection-mode),
+.tiled > .titlebar > stack > headerbar:not(.selection-mode),
+.tiled headerbar:last-child:not(.selection-mode),
+.tiled .titlebar:last-child:not(.selection-mode) {
   padding-right: 0;
 }
 
