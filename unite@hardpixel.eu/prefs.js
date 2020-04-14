@@ -1,7 +1,10 @@
 const GObject     = imports.gi.GObject
 const Gtk         = imports.gi.Gtk
+const Config      = imports.misc.config
 const Unite       = imports.misc.extensionUtils.getCurrentExtension()
 const Convenience = Unite.imports.convenience
+
+const VERSION = parseInt(Config.PACKAGE_VERSION.split('.')[1])
 
 var PrefsWidget = GObject.registerClass(
   class UnitePrefsWidget extends Gtk.Box {
@@ -14,6 +17,11 @@ var PrefsWidget = GObject.registerClass(
 
       this._container = this._getWidget('prefs_widget')
       this.add(this._container)
+
+      if (VERSION >= 36) {
+        const fonts = this._getWidget('use_system_fonts_section')
+        fonts.set_sensitive(false)
+      }
 
       this._bindStrings()
       this._bindSelects()
