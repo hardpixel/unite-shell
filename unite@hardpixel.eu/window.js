@@ -179,7 +179,8 @@ var MetaWindow = GObject.registerClass(
       if (this.showTitle) {
         return this.win.get_title()
       } else {
-        return AppMenu.get_accessible_name()
+        const app = AppMenu._target_app
+        return app && app.get_name()
       }
     }
 
@@ -272,7 +273,7 @@ var MetaWindow = GObject.registerClass(
     syncAppmenu() {
       const label = AppMenu._label
 
-      if (label && this.hasFocus) {
+      if (label && this.hasFocus && this.title) {
         const current = label.get_text()
         current != this.title && label.set_text(this.title)
       }
@@ -410,11 +411,8 @@ var WindowManager = GObject.registerClass(
     }
 
     _onAppmenuChanged() {
-      const focused = this.focusWindow
-      const current = AppMenu._label.get_text()
-
-      if (focused && current != focused.title) {
-        AppMenu._label.set_text(focused.title)
+      if (this.focusWindow) {
+        this.focusWindow.syncAppmenu()
       }
     }
 
