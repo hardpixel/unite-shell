@@ -1,13 +1,14 @@
-const Bytes    = imports.byteArray
-const GLib     = imports.gi.GLib
-const GObject  = imports.gi.GObject
-const Meta     = imports.gi.Meta
-const Main     = imports.ui.main
-const Config   = imports.misc.config
-const Util     = imports.misc.util
-const Unite    = imports.misc.extensionUtils.getCurrentExtension()
-const AppMenu  = Main.panel.statusArea.appMenu
-const Handlers = Unite.imports.handlers
+const Bytes      = imports.byteArray
+const GLib       = imports.gi.GLib
+const GObject    = imports.gi.GObject
+const Meta       = imports.gi.Meta
+const WinTracker = imports.gi.Shell.WindowTracker.get_default()
+const Main       = imports.ui.main
+const Config     = imports.misc.config
+const Util       = imports.misc.util
+const Unite      = imports.misc.extensionUtils.getCurrentExtension()
+const AppMenu    = Main.panel.statusArea.appMenu
+const Handlers   = Unite.imports.handlers
 
 const VERSION = parseInt(Config.PACKAGE_VERSION.split('.')[1])
 
@@ -133,6 +134,7 @@ var MetaWindow = GObject.registerClass(
       win._uniteShellManaged = true
 
       this.win = win
+      this.app = WinTracker.get_window_app(win)
       this.xid = getXid(win)
 
       this.signals  = new Handlers.Signals()
