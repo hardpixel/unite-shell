@@ -7,6 +7,7 @@ const AppSystem  = imports.gi.Shell.AppSystem.get_default()
 const WinTracker = imports.gi.Shell.WindowTracker.get_default()
 const Main       = imports.ui.main
 const Unite      = imports.misc.extensionUtils.getCurrentExtension()
+const AppMenu    = Main.panel.statusArea.appMenu
 const Activities = Main.panel.statusArea.activities
 const Buttons    = Unite.imports.buttons
 const Handlers   = Unite.imports.handlers
@@ -322,6 +323,7 @@ var ActivitiesButton = class ActivitiesButton extends PanelExtension {
   _syncVisible() {
     const button   = Activities.container
     const overview = Main.overview.visibleTarget
+    const focusApp = WinTracker.focus_app || AppMenu._targetApp
 
     if (this.hideButton == 'always') {
       return button.hide()
@@ -330,7 +332,7 @@ var ActivitiesButton = class ActivitiesButton extends PanelExtension {
     if (this.showDesktop) {
       button.visible = overview
     } else {
-      button.visible = overview || WinTracker.focus_app == null
+      button.visible = overview || focusApp == null
     }
   }
 
@@ -385,7 +387,9 @@ var DesktopName = class DesktopName extends PanelExtension {
 
   _syncVisible() {
     const overview = Main.overview.visibleTarget
-    this.label.setVisible(!overview && WinTracker.focus_app == null)
+    const focusApp = WinTracker.focus_app || AppMenu._targetApp
+
+    this.label.setVisible(!overview && focusApp == null)
   }
 
   _onTextChanged() {
