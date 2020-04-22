@@ -383,20 +383,9 @@ var DesktopName = class DesktopName extends PanelExtension {
     this._syncVisible()
   }
 
-  get visibleWindows() {
-    const space = global.workspace_manager.get_active_workspace()
-    const items = space.list_windows()
-
-    return items.some((win) => {
-      return !win.skip_taskbar && win.showing_on_its_workspace()
-    })
-  }
-
   _syncVisible() {
     const overview = Main.overview.visibleTarget
-    const visible  = !overview && WinTracker.focus_app == null
-
-    this.label.setVisible(visible && !this.visibleWindows)
+    this.label.setVisible(!overview && WinTracker.focus_app == null)
   }
 
   _onTextChanged() {
