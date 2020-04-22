@@ -62,15 +62,15 @@ var WindowButtons = class WindowButtons extends PanelExtension {
     this.controls = new Buttons.WindowControls()
 
     this.signals.connect(
-      Main.overview, 'showing', this._onOverviewShowing.bind(this)
+      Main.overview, 'showing', this._syncVisible.bind(this)
     )
 
     this.signals.connect(
-      Main.overview, 'hiding', this._onOverviewHiding.bind(this)
+      Main.overview, 'hiding', this._syncVisible.bind(this)
     )
 
     this.signals.connect(
-      WinTracker, 'notify::focus-app', this._onFocusAppChange.bind(this)
+      WinTracker, 'notify::focus-app', this._syncVisible.bind(this)
     )
 
     this.settings.connect(
@@ -95,7 +95,7 @@ var WindowButtons = class WindowButtons extends PanelExtension {
 
     this._onPositionChange()
     this._onThemeChange()
-    this._onOverviewHiding()
+    this._syncVisible()
   }
 
   get position() {
@@ -134,23 +134,6 @@ var WindowButtons = class WindowButtons extends PanelExtension {
     }
   }
 
-  _onOverviewShowing() {
-    this.controls.setVisible(false)
-  }
-
-  _onOverviewHiding() {
-    const focused = global.unite.focusWindow
-    this.controls.setVisible(focused && focused.showButtons)
-  }
-
-  _onFocusAppChange() {
-    const focused = WinTracker.focus_app
-
-    if (focused == null || focused.state != Shell.AppState.RUNNING) {
-      this.controls.setVisible(false)
-    }
-  }
-
   _onLayoutChange() {
     const buttons = this.settings.get('window-buttons-layout')
 
@@ -159,6 +142,7 @@ var WindowButtons = class WindowButtons extends PanelExtension {
     }
 
     this.controls.addButtons(buttons)
+    this._syncVisible()
   }
 
   _onPositionChange() {
@@ -188,6 +172,18 @@ var WindowButtons = class WindowButtons extends PanelExtension {
 
     this.styles.addShellStyle('windowButtons', path)
     this.controls.add_style_class_name(this.theme)
+  }
+
+  _syncVisible() {
+    const overview = Main.overview.visibleTarget
+    const focusApp = WinTracker.focus_app || AppMenu._targetApp
+
+    if (!overview && focusApp && focusApp.state == Shell.AppState.RUNNING) {
+      const win = global.unite.focusWindow
+      this.controls.setVisible(win && win.showButtons)
+    } else {
+      this.controls.setVisible(false)
+    }
   }
 
   _destroy() {
