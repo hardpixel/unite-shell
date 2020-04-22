@@ -384,11 +384,11 @@ var DesktopName = class DesktopName extends PanelExtension {
   }
 
   get visibleWindows() {
-    const actors = global.get_window_actors()
+    const space = global.workspace_manager.get_active_workspace()
+    const items = space.list_windows()
 
-    return actors.some(({ metaWindow }) => {
-      const visible = metaWindow.showing_on_its_workspace()
-      return visible && !metaWindow.skip_taskbar
+    return items.some((win) => {
+      return !win.skip_taskbar && win.showing_on_its_workspace()
     })
   }
 
