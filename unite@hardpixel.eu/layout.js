@@ -234,8 +234,10 @@ var LayoutManager = GObject.registerClass(
 
       if (VERSION >= 34 && space) {
         Object.values(Main.panel.statusArea).forEach((item) => {
-          item.add_style_pseudo_class('hover')
-          item.remove_style_pseudo_class('hover')
+          if (item !== null) {
+            item.add_style_pseudo_class('hover')
+            item.remove_style_pseudo_class('hover')
+          }
         })
       }
     }
