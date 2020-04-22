@@ -181,8 +181,7 @@ var MetaWindow = GObject.registerClass(
       if (this.showTitle) {
         return this.win.get_title()
       } else {
-        const app = AppMenu._target_app
-        return app && app.get_name()
+        return this.app.get_name()
       }
     }
 
