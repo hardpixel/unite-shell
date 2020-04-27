@@ -20,6 +20,7 @@
     <value value="17" nick="telinkrin" />
     <value value="18" nick="breeze" />
     <value value="19" nick="prof-gnome" />
+    <value value="20" nick="flat-remix" />
   </enum>
 
   <enum id="org.gnome.shell.extensions.unite.hideTitlebars">
