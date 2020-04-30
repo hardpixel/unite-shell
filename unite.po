@@ -1,0 +1,239 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR galen1423 <gnu.linux@zaclys.net>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Unite\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-30 17:55+0200\n"
+"PO-Revision-Date: 2020-04-30 18:36+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"Last-Translator: galen1423 <gnu.linux@zaclys.net>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: fr_FR\n"
+
+#: settings.ui:33
+msgid "Extend top bar left box"
+msgstr "Étendre les indicateurs vers la gauche"
+
+#: settings.ui:72
+msgid "Auto focus new windows"
+msgstr "Focus automatique pour les nouvelles fenêtres"
+
+#: settings.ui:111
+msgid "Show system tray in top bar"
+msgstr "Afficher la barre d'état système dans la barre supérieure"
+
+#: settings.ui:150
+msgid "Show desktop name in top bar"
+msgstr "Afficher le nom du bureau dans la barre supérieure"
+
+#: settings.ui:189
+msgid "Restrict functionalities to the primary screen"
+msgstr "Restreindre les fonctionnalités à l'écran principal"
+
+#: settings.ui:228
+msgid "Hide activities button"
+msgstr "Masquer le bouton Activités"
+
+#: settings.ui:243 settings.ui:287 settings.ui:333 settings.ui:379
+msgid "Never"
+msgstr "Jamais"
+
+#: settings.ui:244 settings.ui:807
+msgid "Auto"
+msgstr "Auto"
+
+#: settings.ui:245 settings.ui:291 settings.ui:337 settings.ui:383
+msgid "Always"
+msgstr "Toujours"
+
+#: settings.ui:272
+msgid "Hide window titlebars"
+msgstr "Masquer les barres de titre de la fenêtre"
+
+#: settings.ui:288 settings.ui:334 settings.ui:380
+msgid "Tiled"
+msgstr "En tuile"
+
+#: settings.ui:289 settings.ui:335 settings.ui:381
+msgid "Maximized"
+msgstr "Maximisé"
+
+#: settings.ui:290 settings.ui:336 settings.ui:382
+msgid "Both"
+msgstr "Les deux"
+
+#: settings.ui:318
+msgid "Show window title in app menu"
+msgstr "Afficher le titre de la fenêtre dans le menu de l'application"
+
+#: settings.ui:364
+msgid "Show window buttons in top bar"
+msgstr "Afficher les boutons de la fenêtre dans la barre supérieure"
+
+#: settings.ui:410
+msgid "Notification messages position"
+msgstr "Position des notifications des messages"
+
+#: settings.ui:425
+msgid "Center"
+msgstr "Centre"
+
+#: settings.ui:426 settings.ui:808
+msgid "Left"
+msgstr "Gauche"
+
+#: settings.ui:427 settings.ui:809
+msgid "Right"
+msgstr "Droite"
+
+#: settings.ui:453
+msgid "General"
+msgstr "Général"
+
+#: settings.ui:481
+msgid "Apply system fonts to shell theme"
+msgstr "Appliquer des polices système au thème du shell"
+
+#: settings.ui:520
+msgid "Convert tray icons to greyscale"
+msgstr "Convertir les icônes de la barre d'état en niveaux de gris"
+
+#: settings.ui:558
+msgid "Hide top bar dropdown arrows"
+msgstr "Masquer les flèches déroulantes de la barre supérieure"
+
+#: settings.ui:597
+msgid "Hide aggregate menu dropdown arrow"
+msgstr "Masquer la flèche du menu d'indicateurs système"
+
+#: settings.ui:635
+msgid "Hide app menu dropdown arrow"
+msgstr "Masquer la flèche déroulante du menu des applications"
+
+#: settings.ui:674
+msgid "Hide app menu application icon"
+msgstr "Masquer l'icône de l'application du menu des applications"
+
+#: settings.ui:713
+msgid "Reduce top bar items spacing"
+msgstr "Réduire l'espacement entre les éléments de la barre supérieure"
+
+#: settings.ui:752
+msgid "Top bar desktop name text"
+msgstr "Intitulé du nom du bureau de la barre supérieure"
+
+#: settings.ui:765
+msgid "GNOME Desktop"
+msgstr "Bureau GNOME"
+
+#: settings.ui:792
+msgid "Top bar window buttons position"
+msgstr "Position des boutons de la fenêtre de la barre supérieure"
+
+#: settings.ui:810
+msgid "First"
+msgstr "Premier"
+
+#: settings.ui:811
+msgid "Last"
+msgstr "Dernier"
+
+#: settings.ui:839
+msgid "Top bar window buttons theme"
+msgstr "Thème des boutons de la fenêtre de la barre supérieure"
+
+#: settings.ui:854
+msgid "Default Dark"
+msgstr "Sombre par défaut"
+
+#: settings.ui:855
+msgid "Default Light"
+msgstr "Clair par défaut"
+
+#: settings.ui:856
+msgid "Ambiance"
+msgstr "Ambiance"
+
+#: settings.ui:857
+msgid "Radiance"
+msgstr "Radiance"
+
+#: settings.ui:858
+msgid "Arc Dark"
+msgstr "Arc Dark"
+
+#: settings.ui:859
+msgid "Arc Light"
+msgstr "Arc Light"
+
+#: settings.ui:860
+msgid "United Dark"
+msgstr "United Dark"
+
+#: settings.ui:861
+msgid "United Light"
+msgstr "United Light"
+
+#: settings.ui:862
+msgid "Materia Dark"
+msgstr "Materia Dark"
+
+#: settings.ui:863
+msgid "Materia Light"
+msgstr "Materia Light"
+
+#: settings.ui:864
+msgid "OSX Arc"
+msgstr "OSX Arc"
+
+#: settings.ui:865
+msgid "Vertex"
+msgstr "Vertex"
+
+#: settings.ui:866
+msgid "Pop Dark"
+msgstr "Pop Dark"
+
+#: settings.ui:867
+msgid "Pop Light"
+msgstr "Pop Light"
+
+#: settings.ui:868
+msgid "Vimix"
+msgstr "Vimix"
+
+#: settings.ui:869
+msgid "Yaru"
+msgstr "Yaru"
+
+#: settings.ui:870
+msgid "Arrongin"
+msgstr "Arrongin"
+
+#: settings.ui:871
+msgid "Telinkrin"
+msgstr "Telinkrin"
+
+#: settings.ui:872
+msgid "Breeze"
+msgstr "Breeze"
+
+#: settings.ui:873
+msgid "Prof-Gnome"
+msgstr "Prof-Gnome"
+
+#: settings.ui:874
+msgid "Flat Remix"
+msgstr "Flat Remix"
+
+#: settings.ui:901
+msgid "Appearance"
+msgstr "Apparence"
