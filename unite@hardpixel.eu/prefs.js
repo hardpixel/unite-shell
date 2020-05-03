@@ -27,6 +27,8 @@ var PrefsWidget = GObject.registerClass(
       this._bindSelects()
       this._bindBooleans()
       this._bindEnumerations()
+
+      this._bindGroupButtons()
     }
 
     _getWidget(name) {
@@ -66,6 +68,32 @@ var PrefsWidget = GObject.registerClass(
     _bindEnumerations() {
       let settings = this._settings.getTypeSettings('enum')
       settings.forEach(setting => { this._bindEnum(setting) })
+    }
+
+    _bindGroupButtons() {
+      Object.entries(this._settings._groups).forEach(([group, title]) => {
+        const button = this._getWidget(`${group}-button`)
+        button.connect('clicked', () => { this._openDialog(group, title) })
+      })
+    }
+
+    _openDialog(group, title) {
+      const widget = this._getWidget(`${group}-prefs`)
+      const dialog = new Gtk.Dialog({
+        title: title,
+        transient_for: this._container.get_toplevel(),
+        use_header_bar: true,
+        modal: true
+      })
+
+      dialog.get_content_area().add(widget)
+
+      dialog.connect('response', (dialog) => {
+        dialog.get_content_area().remove(widget)
+        dialog.destroy()
+      })
+
+      dialog.show_all()
     }
   }
 )

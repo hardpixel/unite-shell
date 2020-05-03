@@ -10,6 +10,14 @@ var SettingsManager = GObject.registerClass(
       return Gio.SettingsBindFlags.DEFAULT
     }
 
+    get _groups() {
+      return {
+        'show-legacy-tray': 'System Tray',
+        'show-desktop-name': 'Desktop Button',
+        'show-window-buttons': 'Window Buttons'
+      }
+    }
+
     get _types() {
       return {
         'autofocus-windows':          'boolean',
