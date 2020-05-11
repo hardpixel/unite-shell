@@ -51,14 +51,13 @@ var Signals = class Signals {
   }
 
   registerHandler(object, name, callback) {
-    const key = `${object}[${name}]`
+    const uid = GLib.uuid_string_random()
+    const key = `[signal ${name} uuid@${uid}]`
 
-    if (!this.hasSignal(key)) {
-      this.signals.set(key, {
-        object:   object,
-        signalId: object.connect(name, callback)
-      })
-    }
+    this.signals.set(key, {
+      object:   object,
+      signalId: object.connect(name, callback)
+    })
 
     return key
   }
