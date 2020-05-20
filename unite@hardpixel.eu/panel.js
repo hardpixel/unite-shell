@@ -133,7 +133,7 @@ var WindowButtons = class WindowButtons extends PanelExtension {
   _onLayoutChange() {
     const buttons = this.settings.get('window-buttons-layout')
 
-    if (this.side == 'right' && this.position == 'left') {
+    if (this.side != this.position) {
       buttons.reverse()
     }
 
