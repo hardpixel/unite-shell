@@ -74,11 +74,7 @@ var WindowButtons = class WindowButtons extends PanelExtension {
     )
 
     this.settings.connect(
-      'window-buttons-layout', this._onLayoutChange.bind(this)
-    )
-
-    this.settings.connect(
-      'window-buttons-position', this._onPositionChange.bind(this)
+      'button-layout', this._onPositionChange.bind(this)
     )
 
     this.settings.connect(
