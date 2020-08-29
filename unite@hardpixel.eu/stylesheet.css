@@ -11,6 +11,10 @@
   spacing: 12px;
 }
 
+#panel.small-spacing .panel-button .panel-status-indicators-box .panel-status-indicators-box {
+  spacing: 4px;
+}
+
 #panel.small-spacing.extra-spacing .panel-button .panel-status-indicators-box {
   spacing: 10px;
 }
