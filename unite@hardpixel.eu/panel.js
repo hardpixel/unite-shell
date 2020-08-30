@@ -6,11 +6,14 @@ const Shell      = imports.gi.Shell
 const AppSystem  = imports.gi.Shell.AppSystem.get_default()
 const WinTracker = imports.gi.Shell.WindowTracker.get_default()
 const Main       = imports.ui.main
+const Config     = imports.misc.config
 const Unite      = imports.misc.extensionUtils.getCurrentExtension()
 const AppMenu    = Main.panel.statusArea.appMenu
 const Activities = Main.panel.statusArea.activities
 const Buttons    = Unite.imports.buttons
 const Handlers   = Unite.imports.handlers
+
+const VERSION = parseInt(Config.PACKAGE_VERSION.split('.')[1])
 
 var PanelExtension = class PanelExtension {
   constructor(settings, key, callback) {
@@ -200,12 +203,27 @@ var ExtendLeftBox = class ExtendLeftBox extends PanelExtension {
   _init() {
     this._default = Main.panel.__proto__.vfunc_allocate
 
-    Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box, flags) => {
-      Main.panel.vfunc_allocate.call(Main.panel, box, flags)
-      this._allocate(Main.panel, box, flags)
-    })
+    if (VERSION < 37) {
+      Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box, flags) => {
+        Main.panel.vfunc_allocate.call(Main.panel, box, flags)
+        this._allocate(Main.panel, box, flags)
+      })
+    } else {
+      Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box) => {
+        Main.panel.vfunc_allocate.call(Main.panel, box)
+        this._allocate(Main.panel, box)
+      })
+    }
 
     Main.panel.queue_relayout()
+  }
+
+  _boxAllocate(box, childBox, flags) {
+    if (VERSION < 37) {
+      box.allocate(childBox, flags)
+    } else {
+      box.allocate(childBox)
+    }
   }
 
   _allocate(actor, box, flags) {
@@ -234,7 +252,7 @@ var ExtendLeftBox = class ExtendLeftBox extends PanelExtension {
       childBox.x2 = Math.min(Math.floor(sideWidth), leftNaturalWidth)
     }
 
-    leftBox.allocate(childBox, flags)
+    this._boxAllocate(leftBox, childBox, flags)
 
     childBox.y1 = 0
     childBox.y2 = allocHeight
@@ -247,7 +265,7 @@ var ExtendLeftBox = class ExtendLeftBox extends PanelExtension {
       childBox.x2 = childBox.x1 + centerNaturalWidth
     }
 
-    centerBox.allocate(childBox, flags)
+    this._boxAllocate(centerBox, childBox, flags)
 
     childBox.y1 = 0
     childBox.y2 = allocHeight
@@ -260,7 +278,7 @@ var ExtendLeftBox = class ExtendLeftBox extends PanelExtension {
       childBox.x2 = allocWidth
     }
 
-    rightBox.allocate(childBox, flags)
+    this._boxAllocate(rightBox, childBox, flags)
   }
 
   _destroy() {
