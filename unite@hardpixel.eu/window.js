@@ -332,6 +332,10 @@ var WindowManager = GObject.registerClass(
       )
 
       this.signals.connect(
+        global.display, 'window-entered-monitor', this._onWindowEntered.bind(this)
+      )
+
+      this.signals.connect(
         global.display, 'notify::focus-window', this._onFocusWindow.bind(this)
       )
 
@@ -402,6 +406,12 @@ var WindowManager = GObject.registerClass(
     _onDestroyWindow(shellwm, { meta_window }) {
       if (isValid(meta_window)) {
         this.deleteWindow(meta_window)
+      }
+    }
+
+    _onWindowEntered(display, index, meta_window) {
+      if (isValid(meta_window)) {
+        this.setWindow(meta_window)
       }
     }
 
