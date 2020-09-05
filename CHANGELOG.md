@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/hardpixel/unite-shell/tree/HEAD)
+## [v42](https://github.com/hardpixel/unite-shell/tree/v42) (2020-09-04)
 
-[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v41...HEAD)
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v41...v42)
 
 **Fixed bugs:**
 
