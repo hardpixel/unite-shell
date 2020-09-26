@@ -146,13 +146,15 @@ var WindowButtons = class WindowButtons extends PanelExtension {
 
   _onPositionChange() {
     const controls = this.controls.container
-
     if (controls.reparent) {
       controls.reparent(this.container)
     } else {
-      controls.unparent()
-      controls.set_parent(this.container)
-    }
+      const currentParent = controls.get_parent()
+      if (currentParent) {
+        currentParent.remove_child(controls)
+        this.container.add_child(controls)
+      }
+   }
 
     if (this.index != null) {
       this.container.set_child_at_index(controls, this.index)
