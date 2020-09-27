@@ -1,5 +1,24 @@
 # Changelog
 
+## [v43](https://github.com/hardpixel/unite-shell/tree/v43) (2020-09-26)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v42...v43)
+
+**Fixed bugs:**
+
+- Not working on GNOME 3.38 - Fedora 33 [\#199](https://github.com/hardpixel/unite-shell/issues/199)
+
+**Closed issues:**
+
+- Firefox 82's close/minimize/maximize buttons are not hidden [\#201](https://github.com/hardpixel/unite-shell/issues/201)
+- Telegram title bar don't hide in fullscreen mode [\#200](https://github.com/hardpixel/unite-shell/issues/200)
+- Option to truncate the title to a fixed length [\#197](https://github.com/hardpixel/unite-shell/issues/197)
+- Newest version stopped working [\#196](https://github.com/hardpixel/unite-shell/issues/196)
+
+**Merged pull requests:**
+
+- Fixed moving window buttons in GNOME 3.38 [\#204](https://github.com/hardpixel/unite-shell/pull/204) ([soal](https://github.com/soal))
+
 ## [v42](https://github.com/hardpixel/unite-shell/tree/v42) (2020-09-04)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v41...v42)
