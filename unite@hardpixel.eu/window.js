@@ -134,7 +134,6 @@ var MetaWindow = GObject.registerClass(
       win._uniteShellManaged = true
 
       this.win = win
-      this.app = WinTracker.get_window_app(win)
       this.xid = getXid(win)
 
       this.signals  = new Handlers.Signals()
@@ -171,6 +170,10 @@ var MetaWindow = GObject.registerClass(
       )
 
       this.syncComponents()
+    }
+
+    get app() {
+      return WinTracker.get_window_app(this.win)
     }
 
     get hasFocus() {
