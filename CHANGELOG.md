@@ -1,5 +1,22 @@
 # Changelog
 
+## [Unreleased](https://github.com/hardpixel/unite-shell/tree/HEAD)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v44...HEAD)
+
+**Closed issues:**
+
+- \[Feature request\] Add a toggle to disable top bar desktop name text [\#214](https://github.com/hardpixel/unite-shell/issues/214)
+- Hide Window Titlebars Not Working With Flatpak Apps [\#210](https://github.com/hardpixel/unite-shell/issues/210)
+
+## [v44](https://github.com/hardpixel/unite-shell/tree/v44) (2020-10-07)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v43...v44)
+
+**Fixed bugs:**
+
+- Incorrect applications names [\#206](https://github.com/hardpixel/unite-shell/issues/206)
+
 ## [v43](https://github.com/hardpixel/unite-shell/tree/v43) (2020-09-26)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v42...v43)
