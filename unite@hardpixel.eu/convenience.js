@@ -32,7 +32,8 @@ var SettingsManager = GObject.registerClass(
         'hide-app-menu-icon':         'boolean',
         'reduce-panel-spacing':       'boolean',
         'restrict-to-primary-screen': 'boolean',
-        'app-menu-max-width':         'int'
+        'app-menu-max-width':         'int',
+        'app-menu-ellipsize-mode':    'enum'
       }
     }
 

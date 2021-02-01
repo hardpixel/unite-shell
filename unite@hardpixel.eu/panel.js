@@ -3,6 +3,7 @@ const System     = imports.system
 const GObject    = imports.gi.GObject
 const GLib       = imports.gi.GLib
 const St         = imports.gi.St
+const Pango      = imports.gi.Pango
 const Clutter    = imports.gi.Clutter
 const Shell      = imports.gi.Shell
 const AppSystem  = imports.gi.Shell.AppSystem.get_default()
@@ -575,6 +576,10 @@ var AppMenuCustomizer = class AppMenuCustomizer extends PanelExtension {
       'app-menu-max-width', this._onMaxWidthChange.bind(this)
     )
 
+    this.settings.connect(
+      'app-menu-ellipsize-mode', this._onEllipsizeModeChange.bind(this)
+    )
+
     // tooltip label
     this.tooltip = new St.Label({
       visible: false,
@@ -590,6 +595,10 @@ var AppMenuCustomizer = class AppMenuCustomizer extends PanelExtension {
 
   get appMenuMaxWidth() {
     return this.settings.get('app-menu-max-width')
+  }
+
+  get ellipsizeMode() {
+    return this.settings.get('app-menu-ellipsize-mode')
   }
 
   _onAppMenuHover(appMenu) {
@@ -624,11 +633,33 @@ var AppMenuCustomizer = class AppMenuCustomizer extends PanelExtension {
 
     const maxWidth = this.appMenuMaxWidth
     label.set_style('max-width' + (maxWidth ? `: ${maxWidth}px` : ''))
+
+    this._onEllipsizeModeChange()
+  }
+
+  _onEllipsizeModeChange() {
+    const label = AppMenu._label
+    if (!label)
+      return
+
+    switch (this.ellipsizeMode) {
+      case "start":
+        label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.START)
+        break;
+
+      case "middle":
+        label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+        break;
+
+      case "end":
+        label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.END)
+    }
   }
 
   _destroy() {
     const label = AppMenu._label
     if (label) {
+      label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.END)
       label.set_style('max-width')
     }
 
