@@ -120,6 +120,11 @@
       <summary>Hide app menu application icon.</summary>
     </key>
 
+    <key name="app-menu-max-width" type="i">
+      <default>0</default>
+      <summary>Limit the width of the app menu. 0 means no limit.</summary>
+    </key>
+
     <key name="reduce-panel-spacing" type="b">
       <default>true</default>
       <summary>Reduce top bar items spacing.</summary>

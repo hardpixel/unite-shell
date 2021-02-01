@@ -1,34 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
+<!-- Generated with glade 3.38.2 -->
 <interface domain="unite">
   <requires lib="gtk+" version="3.10"/>
+  <object class="GtkAdjustment" id="maxwidth_appmenu_adjustment">
+    <property name="upper">1000</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
+  </object>
   <object class="GtkNotebook" id="prefs_widget">
     <property name="visible">True</property>
-    <property name="can_focus">True</property>
+    <property name="can-focus">True</property>
     <property name="hexpand">True</property>
-    <property name="show_border">False</property>
+    <property name="show-border">False</property>
     <property name="scrollable">True</property>
     <child>
       <object class="GtkBox" id="general_prefs">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="valign">start</property>
-        <property name="margin_left">20</property>
-        <property name="margin_right">20</property>
-        <property name="margin_top">20</property>
-        <property name="margin_bottom">20</property>
+        <property name="margin-left">20</property>
+        <property name="margin-right">20</property>
+        <property name="margin-top">20</property>
+        <property name="margin-bottom">20</property>
         <property name="orientation">vertical</property>
         <property name="spacing">15</property>
         <property name="homogeneous">True</property>
         <child>
           <object class="GtkBox" id="extend_left_box_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Extend top bar left box</property>
               </object>
@@ -41,14 +46,14 @@
             <child>
               <object class="GtkSwitch" id="extend_left_box">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can-focus">True</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -56,18 +61,18 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox" id="autofocus_windows_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Auto focus new windows</property>
               </object>
@@ -80,14 +85,14 @@
             <child>
               <object class="GtkSwitch" id="autofocus_windows">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can-focus">True</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -95,18 +100,18 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox" id="show_legacy_tray_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Show system tray in top bar</property>
               </object>
@@ -119,14 +124,14 @@
             <child>
               <object class="GtkSwitch" id="show_legacy_tray">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can-focus">True</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -134,18 +139,18 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">3</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox" id="show_desktop_name_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Show desktop name in top bar</property>
               </object>
@@ -158,14 +163,14 @@
             <child>
               <object class="GtkSwitch" id="show_desktop_name">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can-focus">True</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -173,18 +178,18 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">5</property>
+            <property name="position">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox" id="restrict_to_primary_screen_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Restrict functionalities to the primary screen</property>
               </object>
@@ -197,14 +202,14 @@
             <child>
               <object class="GtkSwitch" id="restrict_to_primary_screen">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can-focus">True</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -212,18 +217,18 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">6</property>
+            <property name="position">4</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox" id="hide_activities_button_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Hide activities button</property>
               </object>
@@ -235,10 +240,10 @@
             </child>
             <child>
               <object class="GtkComboBoxText" id="hide_activities_button">
-                <property name="width_request">170</property>
+                <property name="width-request">170</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="active_id">1</property>
+                <property name="can-focus">False</property>
+                <property name="active-id">1</property>
                 <items>
                   <item id="0" translatable="yes">Never</item>
                   <item id="1" translatable="yes">Auto</item>
@@ -248,7 +253,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -256,18 +261,18 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">8</property>
+            <property name="position">5</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox" id="hide_window_titlebars_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Hide window titlebars</property>
               </object>
@@ -279,10 +284,10 @@
             </child>
             <child>
               <object class="GtkComboBoxText" id="hide_window_titlebars">
-                <property name="width_request">170</property>
+                <property name="width-request">170</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="active_id">2</property>
+                <property name="can-focus">False</property>
+                <property name="active-id">2</property>
                 <items>
                   <item id="0" translatable="yes">Never</item>
                   <item id="1" translatable="yes">Tiled</item>
@@ -294,7 +299,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -302,18 +307,18 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">9</property>
+            <property name="position">6</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox" id="show_window_title_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Show window title in app menu</property>
               </object>
@@ -325,10 +330,10 @@
             </child>
             <child>
               <object class="GtkComboBoxText" id="show_window_title">
-                <property name="width_request">170</property>
+                <property name="width-request">170</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="active_id">2</property>
+                <property name="can-focus">False</property>
+                <property name="active-id">2</property>
                 <items>
                   <item id="0" translatable="yes">Never</item>
                   <item id="1" translatable="yes">Tiled</item>
@@ -340,7 +345,45 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">7</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="maxwidth_appmenu_section">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">Max width for the app menu</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="app_menu_max_width">
+                <property name="width-request">170</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="adjustment">maxwidth_appmenu_adjustment</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -354,12 +397,12 @@
         <child>
           <object class="GtkBox" id="show_window_buttons_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Show window buttons in top bar</property>
               </object>
@@ -371,10 +414,10 @@
             </child>
             <child>
               <object class="GtkComboBoxText" id="show_window_buttons">
-                <property name="width_request">170</property>
+                <property name="width-request">170</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="active_id">2</property>
+                <property name="can-focus">False</property>
+                <property name="active-id">2</property>
                 <items>
                   <item id="0" translatable="yes">Never</item>
                   <item id="1" translatable="yes">Tiled</item>
@@ -386,7 +429,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -400,12 +443,12 @@
         <child>
           <object class="GtkBox" id="notifications_position_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Notification messages position</property>
               </object>
@@ -417,10 +460,10 @@
             </child>
             <child>
               <object class="GtkComboBoxText" id="notifications_position">
-                <property name="width_request">170</property>
+                <property name="width-request">170</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="active_id">2</property>
+                <property name="can-focus">False</property>
+                <property name="active-id">2</property>
                 <items>
                   <item id="0" translatable="yes">Center</item>
                   <item id="1" translatable="yes">Left</item>
@@ -430,7 +473,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -443,40 +486,40 @@
         </child>
       </object>
       <packing>
-        <property name="tab_expand">True</property>
+        <property name="tab-expand">True</property>
       </packing>
     </child>
     <child type="tab">
       <object class="GtkLabel" id="general_label">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="label" translatable="yes">General</property>
       </object>
       <packing>
-        <property name="tab_fill">False</property>
+        <property name="tab-fill">False</property>
       </packing>
     </child>
     <child>
       <object class="GtkBox" id="appearance_prefs">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="valign">start</property>
-        <property name="margin_left">20</property>
-        <property name="margin_right">20</property>
-        <property name="margin_top">20</property>
-        <property name="margin_bottom">20</property>
+        <property name="margin-left">20</property>
+        <property name="margin-right">20</property>
+        <property name="margin-top">20</property>
+        <property name="margin-bottom">20</property>
         <property name="orientation">vertical</property>
         <property name="spacing">15</property>
         <property name="homogeneous">True</property>
         <child>
           <object class="GtkBox" id="use_system_fonts_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Apply system fonts to shell theme</property>
               </object>
@@ -489,14 +532,14 @@
             <child>
               <object class="GtkSwitch" id="use_system_fonts">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can-focus">True</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -510,12 +553,12 @@
         <child>
           <object class="GtkBox" id="greyscale_tray_icons_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Convert tray icons to greyscale</property>
               </object>
@@ -528,13 +571,13 @@
             <child>
               <object class="GtkSwitch" id="greyscale_tray_icons">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can-focus">True</property>
                 <property name="valign">center</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -548,12 +591,12 @@
         <child>
           <object class="GtkBox" id="hide_dropdown_arrows_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Hide top bar dropdown arrows</property>
               </object>
@@ -566,14 +609,14 @@
             <child>
               <object class="GtkSwitch" id="hide_dropdown_arrows">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can-focus">True</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -587,12 +630,12 @@
         <child>
           <object class="GtkBox" id="hide_aggregate_menu_arrow_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Hide aggregate menu dropdown arrow</property>
               </object>
@@ -605,13 +648,13 @@
             <child>
               <object class="GtkSwitch" id="hide_aggregate_menu_arrow">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can-focus">True</property>
                 <property name="valign">center</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -625,12 +668,12 @@
         <child>
           <object class="GtkBox" id="hide_app_menu_arrow_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Hide app menu dropdown arrow</property>
               </object>
@@ -643,14 +686,14 @@
             <child>
               <object class="GtkSwitch" id="hide_app_menu_arrow">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can-focus">True</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -664,12 +707,12 @@
         <child>
           <object class="GtkBox" id="hide_app_menu_icon_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Hide app menu application icon</property>
               </object>
@@ -682,14 +725,14 @@
             <child>
               <object class="GtkSwitch" id="hide_app_menu_icon">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can-focus">True</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -703,12 +746,12 @@
         <child>
           <object class="GtkBox" id="reduce_panel_spacing_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Reduce top bar items spacing</property>
               </object>
@@ -721,14 +764,14 @@
             <child>
               <object class="GtkSwitch" id="reduce_panel_spacing">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can-focus">True</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -742,12 +785,12 @@
         <child>
           <object class="GtkBox" id="desktop_name_text_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Top bar desktop name text</property>
               </object>
@@ -759,15 +802,15 @@
             </child>
             <child>
               <object class="GtkEntry" id="desktop_name_text">
-                <property name="width_request">170</property>
+                <property name="width-request">170</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can-focus">True</property>
                 <property name="text" translatable="yes">GNOME Desktop</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -781,13 +824,13 @@
         <child>
           <object class="GtkBox" id="window_buttons_placement_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="no_show_all">True</property>
+            <property name="can-focus">False</property>
+            <property name="no-show-all">True</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Top bar window buttons position</property>
               </object>
@@ -799,10 +842,10 @@
             </child>
             <child>
               <object class="GtkComboBoxText" id="window_buttons_placement">
-                <property name="width_request">170</property>
+                <property name="width-request">170</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="active_id">auto</property>
+                <property name="can-focus">False</property>
+                <property name="active-id">auto</property>
                 <items>
                   <item id="auto" translatable="yes">Auto</item>
                   <item id="left" translatable="yes">Left</item>
@@ -814,7 +857,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -828,13 +871,13 @@
         <child>
           <object class="GtkBox" id="window_buttons_theme_section">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="no_show_all">True</property>
+            <property name="can-focus">False</property>
+            <property name="no-show-all">True</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Top bar window buttons theme</property>
               </object>
@@ -846,10 +889,10 @@
             </child>
             <child>
               <object class="GtkComboBoxText" id="window_buttons_theme">
-                <property name="width_request">170</property>
+                <property name="width-request">170</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="active_id">0</property>
+                <property name="can-focus">False</property>
+                <property name="active-id">0</property>
                 <items>
                   <item id="0" translatable="yes">Default Dark</item>
                   <item id="1" translatable="yes">Default Light</item>
@@ -877,7 +920,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -891,18 +934,18 @@
       </object>
       <packing>
         <property name="position">1</property>
-        <property name="tab_expand">True</property>
+        <property name="tab-expand">True</property>
       </packing>
     </child>
     <child type="tab">
       <object class="GtkLabel" id="appearance_label">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="label" translatable="yes">Appearance</property>
       </object>
       <packing>
         <property name="position">1</property>
-        <property name="tab_fill">False</property>
+        <property name="tab-fill">False</property>
       </packing>
     </child>
   </object>

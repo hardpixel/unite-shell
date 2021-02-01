@@ -31,7 +31,8 @@ var SettingsManager = GObject.registerClass(
         'hide-app-menu-arrow':        'boolean',
         'hide-app-menu-icon':         'boolean',
         'reduce-panel-spacing':       'boolean',
-        'restrict-to-primary-screen': 'boolean'
+        'restrict-to-primary-screen': 'boolean',
+        'app-menu-max-width':         'int'
       }
     }
 
@@ -50,8 +51,13 @@ var SettingsManager = GObject.registerClass(
     getSetting(key) {
       if (!this.exists(key)) return
 
-      let boolean = this.getSettingType(key) == 'boolean'
-      return boolean ? this.get_boolean(key) : this.get_string(key)
+      const settingsType = this.getSettingType(key)
+      if (settingsType === 'int')
+        return this.get_int(key)
+      else if (settingsType === 'boolean')
+        return this.get_boolean(key)
+      else
+        return this.get_string(key)
     }
   }
 )
