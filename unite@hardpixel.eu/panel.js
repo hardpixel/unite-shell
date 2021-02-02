@@ -1,6 +1,9 @@
 const Gi         = imports._gi
 const System     = imports.system
 const GObject    = imports.gi.GObject
+const GLib       = imports.gi.GLib
+const St         = imports.gi.St
+const Pango      = imports.gi.Pango
 const Clutter    = imports.gi.Clutter
 const Shell      = imports.gi.Shell
 const AppSystem  = imports.gi.Shell.AppSystem.get_default()
@@ -551,6 +554,122 @@ var PanelDoubleClick = GObject.registerClass(
   }
 )
 
+var AppMenuCustomizer = class AppMenuCustomizer extends PanelExtension {
+  constructor({ settings }) {
+    const active = val => val > 0
+    super(settings, 'app-menu-max-width', active)
+  }
+
+  _init() {
+    this.signals  = new Handlers.Signals()
+    this.settings = new Handlers.Settings()
+
+    this.signals.connect(
+      AppMenu, 'notify::hover', this._onAppMenuHover.bind(this)
+    )
+
+    this.signals.connect(
+      AppMenu, 'button-press-event', this._onAppMenuClicked.bind(this)
+    )
+
+    this.settings.connect(
+      'app-menu-max-width', this._onMaxWidthChange.bind(this)
+    )
+
+    this.settings.connect(
+      'app-menu-ellipsize-mode', this._onEllipsizeModeChange.bind(this)
+    )
+
+    // tooltip label
+    this.tooltip = new St.Label({
+      visible: false,
+      style: 'background-color: #212121; \
+          border-radius: 6px; \
+          border: 1px solid dimgray; \
+          padding: 8px'
+    });
+    Main.uiGroup.add_child(this.tooltip)
+
+    this._onMaxWidthChange()
+  }
+
+  get appMenuMaxWidth() {
+    return this.settings.get('app-menu-max-width')
+  }
+
+  get ellipsizeMode() {
+    return this.settings.get('app-menu-ellipsize-mode')
+  }
+
+  _onAppMenuHover(appMenu) {
+    if (!appMenu._label)
+      return
+
+    this.isHovered = appMenu.get_hover()
+    if (!this.isHovered)
+      return this.tooltip.hide()
+
+    GLib.timeout_add(GLib.PRIORITY_DEFAULT, 400, () => {
+      if (this.isHovered && !this.tooltip.visible) {
+        const [mouseX, mouseY] = global.get_pointer()
+        this.tooltip.set_position(mouseX + 20, mouseY)
+        this.tooltip.set_text(appMenu._label.get_text())
+        this.tooltip.show()
+      }
+
+      return GLib.SOURCE_REMOVE
+    });
+  }
+
+  _onAppMenuClicked() {
+    this.isHovered = false
+    this.tooltip.hide()
+  }
+
+  _onMaxWidthChange() {
+    const label = AppMenu._label
+    if (!label)
+      return
+
+    const maxWidth = this.appMenuMaxWidth
+    label.set_style('max-width' + (maxWidth ? `: ${maxWidth}px` : ''))
+
+    this._onEllipsizeModeChange()
+  }
+
+  _onEllipsizeModeChange() {
+    const label = AppMenu._label
+    if (!label)
+      return
+
+    switch (this.ellipsizeMode) {
+      case "start":
+        label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.START)
+        break;
+
+      case "middle":
+        label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+        break;
+
+      case "end":
+        label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.END)
+    }
+  }
+
+  _destroy() {
+    const label = AppMenu._label
+    if (label) {
+      label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.END)
+      label.set_style('max-width')
+    }
+
+    this.tooltip.destroy()
+
+    this.signals.disconnectAll()
+    this.settings.disconnectAll()
+  }
+}
+
 var PanelManager = GObject.registerClass(
   class UnitePanelManager extends GObject.Object {
     _init() {
@@ -561,6 +680,7 @@ var PanelManager = GObject.registerClass(
       this.desktop    = new DesktopName(this)
       this.tray       = new TrayIcons(this)
       this.dblClick   = new PanelDoubleClick()
+      this.appMCustom = new AppMenuCustomizer(this)
     }
 
     activate() {
@@ -570,6 +690,7 @@ var PanelManager = GObject.registerClass(
       this.desktop.activate()
       this.tray.activate()
       this.dblClick.activate()
+      this.appMCustom.activate()
     }
 
     destroy() {
@@ -579,6 +700,7 @@ var PanelManager = GObject.registerClass(
       this.desktop.destroy()
       this.tray.destroy()
       this.dblClick.destroy()
+      this.appMCustom.destroy()
 
       this.settings.disconnectAll()
     }

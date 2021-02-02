@@ -27,6 +27,7 @@ var PrefsWidget = GObject.registerClass(
       this._bindSelects()
       this._bindBooleans()
       this._bindEnumerations()
+      this._bindInts()
     }
 
     _getWidget(name) {
@@ -66,6 +67,11 @@ var PrefsWidget = GObject.registerClass(
     _bindEnumerations() {
       let settings = this._settings.getTypeSettings('enum')
       settings.forEach(setting => { this._bindEnum(setting) })
+    }
+
+    _bindInts() {
+      let settings = this._settings.getTypeSettings('int')
+      settings.forEach(setting => { this._bindInput(setting, 'value') })
     }
   }
 )
