@@ -535,7 +535,7 @@ var PanelDoubleClick = GObject.registerClass(
         // assert maximizeFlags in case of some (tiling) extensions,
         // which override Main.panel._getDraggableWindowForPosition()
         // but don't use Meta.Window.maxmize()
-        const maximizeFlags = maximizedWindow?.get_maximized()
+        const maximizeFlags = maximizedWindow && maximizedWindow.get_maximized()
         if (!maximizedWindow || !maximizeFlags)
           return Clutter.EVENT_PROPAGATE
 
