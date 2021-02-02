@@ -500,7 +500,7 @@ var PanelDoubleClick = GObject.registerClass(
     activate() {
       this.doubleClickID = Main.panel.connect("button-press-event", (src, event) => {
         if (event.get_button() !== 1 || event.get_click_count() !== 2)
-          return Clutter.EVENT_PROPAGATE;
+          return Clutter.EVENT_PROPAGATE
 
         const leftRect = {
           x: Main.panel._leftBox.x,
@@ -521,35 +521,35 @@ var PanelDoubleClick = GObject.registerClass(
           height: Main.panel._rightBox.height
         }
 
-        const mouseX = event.get_coords()[0];
-        const mouseY = event.get_coords()[1];
+        const mouseX = event.get_coords()[0]
+        const mouseY = event.get_coords()[1]
 
         // don't unmaximize windows when quickly opening & closing menus
         if (this.rectHasPoint(leftRect, mouseX, mouseY)
             || this.rectHasPoint(centerRect, mouseX, mouseY)
             || this.rectHasPoint(rightRect, mouseX, mouseY))
-          return Clutter.EVENT_PROPAGATE;
+          return Clutter.EVENT_PROPAGATE
 
-        const maximizedWindow = Main.panel._getDraggableWindowForPosition(mouseX);
+        const maximizedWindow = Main.panel._getDraggableWindowForPosition(mouseX)
 
         // assert maximizeFlags in case of some (tiling) extensions,
         // which override Main.panel._getDraggableWindowForPosition()
         // but don't use Meta.Window.maxmize()
-        const maximizeFlags = maximizedWindow?.get_maximized();
+        const maximizeFlags = maximizedWindow?.get_maximized()
         if (!maximizedWindow || !maximizeFlags)
-          return Clutter.EVENT_PROPAGATE;
+          return Clutter.EVENT_PROPAGATE
 
-        maximizedWindow.unmaximize(maximizeFlags);
-        return Clutter.EVENT_STOP;
-      });
+        maximizedWindow.unmaximize(maximizeFlags)
+        return Clutter.EVENT_STOP
+      })
     }
 
     rectHasPoint(rect, pX, pY) {
-      return pX >= rect.x && pX <= rect.x + rect.width && pY >= rect.y && pY <= rect.y + rect.height;
+      return pX >= rect.x && pX <= rect.x + rect.width && pY >= rect.y && pY <= rect.y + rect.height
     }
 
     destroy() {
-      Main.panel.disconnect(this.doubleClickID);
+      Main.panel.disconnect(this.doubleClickID)
     }
   }
 )
@@ -587,7 +587,7 @@ var AppMenuCustomizer = class AppMenuCustomizer extends PanelExtension {
           border-radius: 6px; \
           border: 1px solid dimgray; \
           padding: 8px'
-    });
+    })
     Main.uiGroup.add_child(this.tooltip)
 
     this._onMaxWidthChange()
@@ -618,7 +618,7 @@ var AppMenuCustomizer = class AppMenuCustomizer extends PanelExtension {
       }
 
       return GLib.SOURCE_REMOVE
-    });
+    })
   }
 
   _onAppMenuClicked() {
@@ -645,11 +645,11 @@ var AppMenuCustomizer = class AppMenuCustomizer extends PanelExtension {
     switch (this.ellipsizeMode) {
       case "start":
         label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.START)
-        break;
+        break
 
       case "middle":
         label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.MIDDLE)
-        break;
+        break
 
       case "end":
         label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.END)
