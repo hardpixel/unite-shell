@@ -52,13 +52,11 @@ var SettingsManager = GObject.registerClass(
     getSetting(key) {
       if (!this.exists(key)) return
 
-      const settingsType = this.getSettingType(key)
-      if (settingsType === 'int')
-        return this.get_int(key)
-      else if (settingsType === 'boolean')
-        return this.get_boolean(key)
-      else
-        return this.get_string(key)
+      switch (this.getSettingType(key)) {
+        case 'int':     return this.get_int(key)
+        case 'boolean': return this.get_boolean(key)
+        default:        return this.get_string(key)
+      }
     }
   }
 )
