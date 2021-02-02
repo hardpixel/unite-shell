@@ -490,69 +490,64 @@ var TrayIcons = class TrayIcons extends PanelExtension {
   }
 }
 
-var PanelDoubleClick = GObject.registerClass(
-  class PanelDoubleClick extends GObject.Object {
-    _init() {
-    }
+var PanelDoubleClick = class PanelDoubleClick {
+  // double-clicking the top panel unmaximizes a window,
+  // (similiar to unmaximizing a window via DND from the top panel)
+  activate() {
+    this.doubleClickID = Main.panel.connect('button-press-event', (src, event) => {
+      if (event.get_button() !== 1 || event.get_click_count() !== 2)
+        return Clutter.EVENT_PROPAGATE
 
-    // double-clicking the top panel unmaximizes a window,
-    // (similiar to unmaximizing a window via DND from the top panel)
-    activate() {
-      this.doubleClickID = Main.panel.connect('button-press-event', (src, event) => {
-        if (event.get_button() !== 1 || event.get_click_count() !== 2)
-          return Clutter.EVENT_PROPAGATE
+      const leftRect = {
+        x: Main.panel._leftBox.x,
+        y: Main.panel._leftBox.y,
+        width: Main.panel._leftBox.width,
+        height: Main.panel._leftBox.height
+      }
+      const centerRect = {
+        x: Main.panel._centerBox.x,
+        y: Main.panel._centerBox.y,
+        width: Main.panel._centerBox.width,
+        height: Main.panel._centerBox.height
+      }
+      const rightRect = {
+        x: Main.panel._rightBox.x,
+        y: Main.panel._rightBox.y,
+        width: Main.panel._rightBox.width,
+        height: Main.panel._rightBox.height
+      }
 
-        const leftRect = {
-          x: Main.panel._leftBox.x,
-          y: Main.panel._leftBox.y,
-          width: Main.panel._leftBox.width,
-          height: Main.panel._leftBox.height
-        }
-        const centerRect = {
-          x: Main.panel._centerBox.x,
-          y: Main.panel._centerBox.y,
-          width: Main.panel._centerBox.width,
-          height: Main.panel._centerBox.height
-        }
-        const rightRect = {
-          x: Main.panel._rightBox.x,
-          y: Main.panel._rightBox.y,
-          width: Main.panel._rightBox.width,
-          height: Main.panel._rightBox.height
-        }
+      const mouseX = event.get_coords()[0]
+      const mouseY = event.get_coords()[1]
 
-        const mouseX = event.get_coords()[0]
-        const mouseY = event.get_coords()[1]
+      // don't unmaximize windows when quickly opening & closing menus
+      if (this.rectHasPoint(leftRect, mouseX, mouseY)
+          || this.rectHasPoint(centerRect, mouseX, mouseY)
+          || this.rectHasPoint(rightRect, mouseX, mouseY))
+        return Clutter.EVENT_PROPAGATE
 
-        // don't unmaximize windows when quickly opening & closing menus
-        if (this.rectHasPoint(leftRect, mouseX, mouseY)
-            || this.rectHasPoint(centerRect, mouseX, mouseY)
-            || this.rectHasPoint(rightRect, mouseX, mouseY))
-          return Clutter.EVENT_PROPAGATE
+      const maximizedWindow = Main.panel._getDraggableWindowForPosition(mouseX)
 
-        const maximizedWindow = Main.panel._getDraggableWindowForPosition(mouseX)
+      // assert maximizeFlags in case of some (tiling) extensions,
+      // which override Main.panel._getDraggableWindowForPosition()
+      // but don't use Meta.Window.maxmize()
+      const maximizeFlags = maximizedWindow && maximizedWindow.get_maximized()
+      if (!maximizedWindow || !maximizeFlags)
+        return Clutter.EVENT_PROPAGATE
 
-        // assert maximizeFlags in case of some (tiling) extensions,
-        // which override Main.panel._getDraggableWindowForPosition()
-        // but don't use Meta.Window.maxmize()
-        const maximizeFlags = maximizedWindow && maximizedWindow.get_maximized()
-        if (!maximizedWindow || !maximizeFlags)
-          return Clutter.EVENT_PROPAGATE
-
-        maximizedWindow.unmaximize(maximizeFlags)
-        return Clutter.EVENT_STOP
-      })
-    }
-
-    rectHasPoint(rect, pX, pY) {
-      return pX >= rect.x && pX <= rect.x + rect.width && pY >= rect.y && pY <= rect.y + rect.height
-    }
-
-    destroy() {
-      Main.panel.disconnect(this.doubleClickID)
-    }
+      maximizedWindow.unmaximize(maximizeFlags)
+      return Clutter.EVENT_STOP
+    })
   }
-)
+
+  rectHasPoint(rect, pX, pY) {
+    return pX >= rect.x && pX <= rect.x + rect.width && pY >= rect.y && pY <= rect.y + rect.height
+  }
+
+  destroy() {
+    Main.panel.disconnect(this.doubleClickID)
+  }
+}
 
 var AppMenuCustomizer = class AppMenuCustomizer extends PanelExtension {
   constructor({ settings }) {
