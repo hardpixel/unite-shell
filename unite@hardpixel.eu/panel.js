@@ -498,7 +498,7 @@ var PanelDoubleClick = GObject.registerClass(
     // double-clicking the top panel unmaximizes a window,
     // (similiar to unmaximizing a window via DND from the top panel)
     activate() {
-      this.doubleClickID = Main.panel.connect("button-press-event", (src, event) => {
+      this.doubleClickID = Main.panel.connect('button-press-event', (src, event) => {
         if (event.get_button() !== 1 || event.get_click_count() !== 2)
           return Clutter.EVENT_PROPAGATE
 
@@ -643,15 +643,15 @@ var AppMenuCustomizer = class AppMenuCustomizer extends PanelExtension {
       return
 
     switch (this.ellipsizeMode) {
-      case "start":
+      case 'start':
         label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.START)
         break
 
-      case "middle":
+      case 'middle':
         label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.MIDDLE)
         break
 
-      case "end":
+      case 'end':
         label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.END)
     }
   }

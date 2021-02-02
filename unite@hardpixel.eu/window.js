@@ -279,7 +279,8 @@ var MetaWindow = GObject.registerClass(
 
       if (label && this.hasFocus && this.title) {
         const current = label.get_text()
-        const newText = this.title.replace(/\r?\n|\r/g, " ")
+        const newText = this.title.replace(/\r?\n|\r/g, ' ')
+
         current != newText && label.set_text(newText)
       }
     }
