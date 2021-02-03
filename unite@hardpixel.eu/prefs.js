@@ -20,6 +20,9 @@ var PrefsWidget = GObject.registerClass(
 
       if (VERSION >= 36) {
         const fonts = this._getWidget('use_system_fonts_section')
+
+        fonts.set_no_show_all(true)
+        fonts.set_visible(false)
         fonts.set_sensitive(false)
       }
 
