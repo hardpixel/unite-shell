@@ -490,41 +490,85 @@ var TrayIcons = class TrayIcons extends PanelExtension {
   }
 }
 
-var PanelDoubleClick = class PanelDoubleClick {
-  // double-clicking the top panel unmaximizes a window,
-  // (similiar to unmaximizing a window via DND from the top panel)
-  activate() {
-    this.doubleClickID = Main.panel.connect('button-press-event', (src, event) => {
-      if (event.get_button() !== 1 || event.get_click_count() !== 2)
-        return Clutter.EVENT_PROPAGATE
+var TitlebarActions = class TitlebarActions extends PanelExtension {
+  constructor({ settings }) {
+    const active = val => val != 'never'
+    super(settings, 'enable-titlebar-actions', active)
+  }
 
-      const [mouseX, mouseY] = event.get_coords()
-      const panelRects = Main.panel.get_children()
+  _init() {
+    this.signals  = new Handlers.Signals()
+    this.settings = new Handlers.Settings()
 
-      // don't unmaximize windows when quickly opening & closing menus
-      if (panelRects.some(rect => this.rectHasPoint(rect, mouseX, mouseY)))
-        return Clutter.EVENT_PROPAGATE
+    this.signals.connect(
+      Main.panel, 'button-press-event', this._onButtonPressEvent.bind(this)
+    )
+  }
 
-      const maximizedWindow = Main.panel._getDraggableWindowForPosition(mouseX)
+  _onButtonPressEvent(actor, event) {
+    const focusWindow = global.unite.focusWindow
 
-      // assert maximizeFlags in case of some (tiling) extensions,
-      // which override Main.panel._getDraggableWindowForPosition()
-      // but don't use Meta.Window.maxmize()
-      const maximizeFlags = maximizedWindow && maximizedWindow.get_maximized()
-      if (!maximizedWindow || !maximizeFlags)
-        return Clutter.EVENT_PROPAGATE
+    if (!focusWindow || !focusWindow.enableActions) {
+      return Clutter.EVENT_PROPAGATE
+    }
 
-      maximizedWindow.unmaximize(maximizeFlags)
-      return Clutter.EVENT_STOP
+    const [mouseX, mouseY] = event.get_coords()
+
+    const ccount = event.get_click_count()
+    const button = event.get_button()
+
+    const clickOnChildren = Main.panel.get_children().some(({ x, y, width, height }) => {
+      return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height
     })
+
+    if (clickOnChildren) {
+      return Clutter.EVENT_PROPAGATE
+    }
+
+    let action = null
+
+    if (button == 1 && ccount == 2) {
+      action = this.settings.get('action-double-click-titlebar')
+    }
+
+    if (button == 2) {
+      action = this.settings.get('action-middle-click-titlebar')
+    }
+
+    if (button == 3) {
+      action = this.settings.get('action-right-click-titlebar')
+    }
+
+    if (action && action != 'none') {
+      return this._handleClickAction(action, focusWindow)
+    }
+
+    return Clutter.EVENT_PROPAGATE
   }
 
-  rectHasPoint(rect, pX, pY) {
-    return pX >= rect.x && pX <= rect.x + rect.width && pY >= rect.y && pY <= rect.y + rect.height
+  _handleClickAction(action, win) {
+    const mapping = {
+      'toggle-maximize':              'maximize',
+      'toggle-maximize-horizontally': 'maximizeX',
+      'toggle-maximize-vertically':   'maximizeY',
+      'toggle-shade':                 'shade',
+      'minimize':                     'minimize',
+      'lower':                        'lower'
+    }
+
+    const method = mapping[action]
+
+    if (method) {
+      win[method].call(win)
+      return Clutter.EVENT_STOP
+    }
+
+    return Clutter.EVENT_PROPAGATE
   }
 
-  destroy() {
-    Main.panel.disconnect(this.doubleClickID)
+  _destroy() {
+    this.signals.disconnectAll()
+    this.settings.disconnectAll()
   }
 }
 
@@ -653,7 +697,7 @@ var PanelManager = GObject.registerClass(
       this.activities = new ActivitiesButton(this)
       this.desktop    = new DesktopName(this)
       this.tray       = new TrayIcons(this)
-      this.dblClick   = new PanelDoubleClick()
+      this.titlebar   = new TitlebarActions(this)
       this.appMCustom = new AppMenuCustomizer(this)
     }
 
@@ -663,7 +707,7 @@ var PanelManager = GObject.registerClass(
       this.activities.activate()
       this.desktop.activate()
       this.tray.activate()
-      this.dblClick.activate()
+      this.titlebar.activate()
       this.appMCustom.activate()
     }
 
@@ -673,7 +717,7 @@ var PanelManager = GObject.registerClass(
       this.activities.destroy()
       this.desktop.destroy()
       this.tray.destroy()
-      this.dblClick.destroy()
+      this.titlebar.destroy()
       this.appMCustom.destroy()
 
       this.settings.disconnectAll()
