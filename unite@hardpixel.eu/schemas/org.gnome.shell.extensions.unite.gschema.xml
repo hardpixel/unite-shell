@@ -47,6 +47,14 @@
     <value value="4" nick="always" />
   </enum>
 
+  <enum id="org.gnome.shell.extensions.unite.titlebarActions">
+    <value value="0" nick="never" />
+    <value value="1" nick="tiled" />
+    <value value="2" nick="maximized" />
+    <value value="3" nick="both" />
+    <value value="4" nick="always" />
+  </enum>
+
   <enum id="org.gnome.shell.extensions.unite.notificationsPosition">
     <value value="0" nick="center" />
     <value value="1" nick="left" />
@@ -164,6 +172,11 @@
     <key name="hide-window-titlebars" enum="org.gnome.shell.extensions.unite.hideTitlebars">
       <default>"maximized"</default>
       <summary>Select windows state to hide titlebars.</summary>
+    </key>
+
+    <key name="enable-titlebar-actions" enum="org.gnome.shell.extensions.unite.titlebarActions">
+      <default>"maximized"</default>
+      <summary>Enable window titlebar actions on top bar click.</summary>
     </key>
 
     <key name="notifications-position" enum="org.gnome.shell.extensions.unite.notificationsPosition">

@@ -236,6 +236,10 @@ var MetaWindow = GObject.registerClass(
       return this._parseEnumSetting('hide-window-titlebars')
     }
 
+    get enableActions() {
+      return this._parseEnumSetting('enable-titlebar-actions')
+    }
+
     minimize() {
       if (this.minimized) {
         this.win.unminimize()
