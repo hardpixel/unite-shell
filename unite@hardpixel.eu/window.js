@@ -252,6 +252,34 @@ var MetaWindow = GObject.registerClass(
       }
     }
 
+    maximizeX() {
+      if (this.win.maximized_horizontally) {
+        this.win.unmaximize(Meta.MaximizeFlags.HORIZONTAL)
+      } else {
+        this.win.maximize(Meta.MaximizeFlags.HORIZONTAL)
+      }
+    }
+
+    maximizeY() {
+      if (this.win.maximized_vertically) {
+        this.win.unmaximize(Meta.MaximizeFlags.VERTICAL)
+      } else {
+        this.win.maximize(Meta.MaximizeFlags.VERTICAL)
+      }
+    }
+
+    shade() {
+      if (this.win.is_shaded) {
+        this.win.shade(true)
+      } else {
+        this.win.unshade(true)
+      }
+    }
+
+    lower() {
+      this.win.lower()
+    }
+
     close() {
       const time = global.get_current_time()
       time && this.win.delete(time)
