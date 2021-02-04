@@ -595,6 +595,7 @@ var AppMenuCustomizer = class AppMenuCustomizer extends PanelExtension {
   _init() {
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
+    this.tooltip  = new St.Label({ visible: false, style_class: 'unite-tooltip' })
 
     this.signals.connect(
       AppMenu, 'notify::hover', this._onAppMenuHover.bind(this)
@@ -612,20 +613,12 @@ var AppMenuCustomizer = class AppMenuCustomizer extends PanelExtension {
       'app-menu-ellipsize-mode', this._onEllipsizeModeChange.bind(this)
     )
 
-    // tooltip label
-    this.tooltip = new St.Label({
-      visible: false,
-      style: 'background-color: #212121; \
-          border-radius: 6px; \
-          border: 1px solid dimgray; \
-          padding: 8px'
-    })
     Main.uiGroup.add_child(this.tooltip)
 
     this._onMaxWidthChange()
   }
 
-  get appMenuMaxWidth() {
+  get maxWidth() {
     return this.settings.get('app-menu-max-width')
   }
 
@@ -633,17 +626,36 @@ var AppMenuCustomizer = class AppMenuCustomizer extends PanelExtension {
     return this.settings.get('app-menu-ellipsize-mode')
   }
 
+  setLabelMaxWidth(width) {
+    const label = AppMenu._label
+
+    if (label) {
+      label.set_style('max-width' + (width ? `: ${width}px` : ''))
+    }
+  }
+
+  setTextEllipsizeMode(mode) {
+    const label = AppMenu._label
+
+    if (label) {
+      const key = mode.toUpperCase()
+      label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode[key])
+    }
+  }
+
   _onAppMenuHover(appMenu) {
-    if (!appMenu._label)
-      return
+    if (!appMenu._label) return
 
     this.isHovered = appMenu.get_hover()
-    if (!this.isHovered)
+
+    if (!this.isHovered) {
       return this.tooltip.hide()
+    }
 
     GLib.timeout_add(GLib.PRIORITY_DEFAULT, 400, () => {
       if (this.isHovered && !this.tooltip.visible) {
         const [mouseX, mouseY] = global.get_pointer()
+
         this.tooltip.set_position(mouseX + 20, mouseY)
         this.tooltip.set_text(appMenu._label.get_text())
         this.tooltip.show()
@@ -659,43 +671,19 @@ var AppMenuCustomizer = class AppMenuCustomizer extends PanelExtension {
   }
 
   _onMaxWidthChange() {
-    const label = AppMenu._label
-    if (!label)
-      return
-
-    const maxWidth = this.appMenuMaxWidth
-    label.set_style('max-width' + (maxWidth ? `: ${maxWidth}px` : ''))
-
-    this._onEllipsizeModeChange()
+    this.setLabelMaxWidth(this.maxWidth)
+    this.setTextEllipsizeMode(this.ellipsizeMode)
   }
 
   _onEllipsizeModeChange() {
-    const label = AppMenu._label
-    if (!label)
-      return
-
-    switch (this.ellipsizeMode) {
-      case 'start':
-        label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.START)
-        break
-
-      case 'middle':
-        label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.MIDDLE)
-        break
-
-      case 'end':
-        label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.END)
-    }
+    this.setTextEllipsizeMode(this.ellipsizeMode)
   }
 
   _destroy() {
-    const label = AppMenu._label
-    if (label) {
-      label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode.END)
-      label.set_style('max-width')
-    }
-
     this.tooltip.destroy()
+
+    this.setLabelMaxWidth(null)
+    this.setTextEllipsizeMode('end')
 
     this.signals.disconnectAll()
     this.settings.disconnectAll()
@@ -712,7 +700,7 @@ var PanelManager = GObject.registerClass(
       this.desktop    = new DesktopName(this)
       this.tray       = new TrayIcons(this)
       this.titlebar   = new TitlebarActions(this)
-      this.appMCustom = new AppMenuCustomizer(this)
+      this.appmenu    = new AppMenuCustomizer(this)
     }
 
     activate() {
@@ -722,7 +710,7 @@ var PanelManager = GObject.registerClass(
       this.desktop.activate()
       this.tray.activate()
       this.titlebar.activate()
-      this.appMCustom.activate()
+      this.appmenu.activate()
     }
 
     destroy() {
@@ -732,7 +720,7 @@ var PanelManager = GObject.registerClass(
       this.desktop.destroy()
       this.tray.destroy()
       this.titlebar.destroy()
-      this.appMCustom.destroy()
+      this.appmenu.destroy()
 
       this.settings.disconnectAll()
     }
