@@ -4,10 +4,26 @@
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v44...HEAD)
 
+**Implemented enhancements:**
+
+- Right click on title of maximized window should show context menu [\#60](https://github.com/hardpixel/unite-shell/issues/60)
+
 **Closed issues:**
 
+- Fails to install [\#216](https://github.com/hardpixel/unite-shell/issues/216)
+- \[Bug\] Removing title bar in maximized mode creates sharp corners in the window later. [\#215](https://github.com/hardpixel/unite-shell/issues/215)
 - \[Feature request\] Add a toggle to disable top bar desktop name text [\#214](https://github.com/hardpixel/unite-shell/issues/214)
+- Window title newlines should be striped out [\#212](https://github.com/hardpixel/unite-shell/issues/212)
 - Hide Window Titlebars Not Working With Flatpak Apps [\#210](https://github.com/hardpixel/unite-shell/issues/210)
+- Double click on maximized title bar should restore window size [\#89](https://github.com/hardpixel/unite-shell/issues/89)
+- \[Feature Request\] Option to set window title length limit when title is on the panel [\#80](https://github.com/hardpixel/unite-shell/issues/80)
+
+**Merged pull requests:**
+
+- Titlebar actions on top panel click [\#224](https://github.com/hardpixel/unite-shell/pull/224) ([jonian](https://github.com/jonian))
+- Replace newlines with spaces for the appMenu app name/title. [\#223](https://github.com/hardpixel/unite-shell/pull/223) ([Leleat](https://github.com/Leleat))
+- Optionally set the max width for the appMenu and show the full title on hover \(no matter the length\). Choose appMenu's EllipsizeMode. [\#222](https://github.com/hardpixel/unite-shell/pull/222) ([Leleat](https://github.com/Leleat))
+- Double-click the panel to unmaximize the top-most, maximized window. [\#221](https://github.com/hardpixel/unite-shell/pull/221) ([Leleat](https://github.com/Leleat))
 
 ## [v44](https://github.com/hardpixel/unite-shell/tree/v44) (2020-10-07)
 
