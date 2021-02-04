@@ -628,19 +628,14 @@ var AppMenuCustomizer = class AppMenuCustomizer extends PanelExtension {
 
   setLabelMaxWidth(width) {
     const label = AppMenu._label
-
-    if (label) {
-      label.set_style('max-width' + (width ? `: ${width}px` : ''))
-    }
+    label && label.set_style('max-width' + (width ? `: ${width}px` : ''))
   }
 
   setTextEllipsizeMode(mode) {
+    const modeK = mode.toUpperCase()
     const label = AppMenu._label
 
-    if (label) {
-      const key = mode.toUpperCase()
-      label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode[key])
-    }
+    label && label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode[modeK])
   }
 
   _onAppMenuHover(appMenu) {
