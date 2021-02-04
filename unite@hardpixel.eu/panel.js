@@ -5,6 +5,7 @@ const GLib       = imports.gi.GLib
 const St         = imports.gi.St
 const Pango      = imports.gi.Pango
 const Clutter    = imports.gi.Clutter
+const Meta       = imports.gi.Meta
 const Shell      = imports.gi.Shell
 const AppSystem  = imports.gi.Shell.AppSystem.get_default()
 const WinTracker = imports.gi.Shell.WindowTracker.get_default()
@@ -539,6 +540,11 @@ var TitlebarActions = class TitlebarActions extends PanelExtension {
       action = this.settings.get('action-right-click-titlebar')
     }
 
+    if (action == 'menu') {
+      this._openWindowMenu(focusWindow.win, mouseX)
+      return Clutter.EVENT_STOP
+    }
+
     if (action && action != 'none') {
       return this._handleClickAction(action, focusWindow)
     }
@@ -564,6 +570,14 @@ var TitlebarActions = class TitlebarActions extends PanelExtension {
     }
 
     return Clutter.EVENT_PROPAGATE
+  }
+
+  _openWindowMenu(win, x) {
+    const size = Main.panel.height + 4
+    const rect = { x, y: 0, width: size, height: size }
+    const type = Meta.WindowMenuType.WM
+
+    Main.wm._windowMenuManager.showWindowMenuForWindow(win, type, rect)
   }
 
   _destroy() {
