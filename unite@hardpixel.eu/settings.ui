@@ -823,7 +823,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="maxwidth_appmenu_section">
+          <object class="GtkBox" id="app_menu_max_width_section">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <child>
