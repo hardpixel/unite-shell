@@ -492,7 +492,7 @@ var TrayIcons = class TrayIcons extends PanelExtension {
 
 var TitlebarActions = class TitlebarActions extends PanelExtension {
   constructor({ settings }) {
-    const active = val => val != 'never'
+    const active = val => val == true
     super(settings, 'enable-titlebar-actions', active)
   }
 
@@ -508,7 +508,7 @@ var TitlebarActions = class TitlebarActions extends PanelExtension {
   _onButtonPressEvent(actor, event) {
     const focusWindow = global.unite.focusWindow
 
-    if (!focusWindow || !focusWindow.enableActions) {
+    if (!focusWindow || !focusWindow.hideTitlebars) {
       return Clutter.EVENT_PROPAGATE
     }
 
