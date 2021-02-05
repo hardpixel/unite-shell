@@ -1,20 +1,32 @@
 # Changelog
 
-## [Unreleased](https://github.com/hardpixel/unite-shell/tree/HEAD)
+## [v45](https://github.com/hardpixel/unite-shell/tree/v45) (2021-02-05)
 
-[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v44...HEAD)
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v44...v45)
 
 **Implemented enhancements:**
 
 - Right click on title of maximized window should show context menu [\#60](https://github.com/hardpixel/unite-shell/issues/60)
 
+**Fixed bugs:**
+
+- Crashes after screen wakeup on Ubuntu 19.10 [\#174](https://github.com/hardpixel/unite-shell/issues/174)
+
 **Closed issues:**
 
+- \[Feature Request\] If you use the always-on window buttons, don't remove them, if there are no windows \(to prevent shifting panel items\). [\#220](https://github.com/hardpixel/unite-shell/issues/220)
+- Window title and global / locally-integrated menu behavior plans? [\#219](https://github.com/hardpixel/unite-shell/issues/219)
+- Window title doesn't work for Spotify [\#217](https://github.com/hardpixel/unite-shell/issues/217)
 - Fails to install [\#216](https://github.com/hardpixel/unite-shell/issues/216)
 - \[Bug\] Removing title bar in maximized mode creates sharp corners in the window later. [\#215](https://github.com/hardpixel/unite-shell/issues/215)
 - \[Feature request\] Add a toggle to disable top bar desktop name text [\#214](https://github.com/hardpixel/unite-shell/issues/214)
 - Window title newlines should be striped out [\#212](https://github.com/hardpixel/unite-shell/issues/212)
+- Object St.Label \(xxx\), has been already deallocated — impossible to access it [\#211](https://github.com/hardpixel/unite-shell/issues/211)
 - Hide Window Titlebars Not Working With Flatpak Apps [\#210](https://github.com/hardpixel/unite-shell/issues/210)
+- On Ubuntu 20.04 clock appears to get pushed to the right to the point of being partially visible or not visible [\#192](https://github.com/hardpixel/unite-shell/issues/192)
+- Status Menu underline shifted down when using Unite + Window List [\#179](https://github.com/hardpixel/unite-shell/issues/179)
+- \[Feature request\] Add tooltip on window title in top bar, when titile is long [\#178](https://github.com/hardpixel/unite-shell/issues/178)
+- Top bar icons misaligned in the top bar [\#147](https://github.com/hardpixel/unite-shell/issues/147)
 - Double click on maximized title bar should restore window size [\#89](https://github.com/hardpixel/unite-shell/issues/89)
 - \[Feature Request\] Option to set window title length limit when title is on the panel [\#80](https://github.com/hardpixel/unite-shell/issues/80)
 
@@ -22,7 +34,6 @@
 
 - Titlebar actions on top panel click [\#224](https://github.com/hardpixel/unite-shell/pull/224) ([jonian](https://github.com/jonian))
 - Replace newlines with spaces for the appMenu app name/title. [\#223](https://github.com/hardpixel/unite-shell/pull/223) ([Leleat](https://github.com/Leleat))
-- Optionally set the max width for the appMenu and show the full title on hover \(no matter the length\). Choose appMenu's EllipsizeMode. [\#222](https://github.com/hardpixel/unite-shell/pull/222) ([Leleat](https://github.com/Leleat))
 - Double-click the panel to unmaximize the top-most, maximized window. [\#221](https://github.com/hardpixel/unite-shell/pull/221) ([Leleat](https://github.com/Leleat))
 
 ## [v44](https://github.com/hardpixel/unite-shell/tree/v44) (2020-10-07)
@@ -50,6 +61,7 @@
 
 **Merged pull requests:**
 
+- Optionally set the max width for the appMenu and show the full title on hover \(no matter the length\). Choose appMenu's EllipsizeMode. [\#222](https://github.com/hardpixel/unite-shell/pull/222) ([Leleat](https://github.com/Leleat))
 - Fixed moving window buttons in GNOME 3.38 [\#204](https://github.com/hardpixel/unite-shell/pull/204) ([soal](https://github.com/soal))
 
 ## [v42](https://github.com/hardpixel/unite-shell/tree/v42) (2020-09-04)
@@ -75,7 +87,6 @@
 **Merged pull requests:**
 
 - panel: remove flags from allocate call [\#194](https://github.com/hardpixel/unite-shell/pull/194) ([BjoernDaase](https://github.com/BjoernDaase))
-- Translation files [\#175](https://github.com/hardpixel/unite-shell/pull/175) ([galen1423](https://github.com/galen1423))
 
 ## [v41](https://github.com/hardpixel/unite-shell/tree/v41) (2020-04-27)
 
@@ -170,6 +181,7 @@
 
 **Merged pull requests:**
 
+- Translation files [\#175](https://github.com/hardpixel/unite-shell/pull/175) ([galen1423](https://github.com/galen1423))
 - Clarify how to install xprop [\#151](https://github.com/hardpixel/unite-shell/pull/151) ([dandv](https://github.com/dandv))
 - Remove modules [\#137](https://github.com/hardpixel/unite-shell/pull/137) ([jonian](https://github.com/jonian))
 
