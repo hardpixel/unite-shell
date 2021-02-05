@@ -595,7 +595,7 @@ var AppMenuCustomizer = class AppMenuCustomizer extends PanelExtension {
   _init() {
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
-    this.tooltip  = new St.Label({ visible: false, style_class: 'unite-tooltip' })
+    this.tooltip  = new St.Label({ visible: false, style_class: 'dash-label' })
 
     this.signals.connect(
       AppMenu, 'notify::hover', this._onAppMenuHover.bind(this)
