@@ -21,6 +21,7 @@
     <value value="18" nick="breeze" />
     <value value="19" nick="prof-gnome" />
     <value value="20" nick="flat-remix" />
+    <value value="21" nick="adwaita-dark" />
   </enum>
 
   <enum id="org.gnome.shell.extensions.unite.hideTitlebars">
