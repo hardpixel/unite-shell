@@ -3,6 +3,7 @@ const Gtk         = imports.gi.Gtk
 const Unite       = imports.misc.extensionUtils.getCurrentExtension()
 const Convenience = Unite.imports.convenience
 const VERSION     = Unite.imports.constants.VERSION
+const TEMPLATE    = VERSION < 40 ? 'settings-gtk3.ui' : 'settings-gtk4.ui'
 
 var PrefsWidget = GObject.registerClass(
   class UnitePrefsWidget extends Gtk.Box {
@@ -11,10 +12,15 @@ var PrefsWidget = GObject.registerClass(
       super._init(params)
 
       this._buildable = new Gtk.Builder()
-      this._buildable.add_from_file(`${Unite.path}/settings.ui`)
+      this._buildable.add_from_file(`${Unite.path}/${TEMPLATE}`)
 
       this._container = this._getWidget('prefs_widget')
-      this.add(this._container)
+
+      if (VERSION < 40) {
+        this.add(this._container)
+      } else {
+        this.append(this._container)
+      }
 
       this._bindStrings()
       this._bindSelects()
@@ -24,7 +30,9 @@ var PrefsWidget = GObject.registerClass(
     }
 
     startup() {
-      this.show_all()
+      if (VERSION < 40) {
+        this.show_all()
+      }
 
       if (VERSION >= 36) {
         this._hideSetting('use-system-fonts')
