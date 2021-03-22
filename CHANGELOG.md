@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/hardpixel/unite-shell/tree/HEAD)
+## [v46](https://github.com/hardpixel/unite-shell/tree/v46) (2021-03-22)
 
-[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v45...HEAD)
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v45...v46)
 
 **Closed issues:**
 
@@ -197,7 +197,6 @@
 
 - Clarify how to install xprop [\#151](https://github.com/hardpixel/unite-shell/pull/151) ([dandv](https://github.com/dandv))
 - Remove modules [\#137](https://github.com/hardpixel/unite-shell/pull/137) ([jonian](https://github.com/jonian))
-- Basic settings support [\#29](https://github.com/hardpixel/unite-shell/pull/29) ([jonian](https://github.com/jonian))
 
 ## [v34](https://github.com/hardpixel/unite-shell/tree/v34) (2019-10-11)
 
@@ -486,6 +485,10 @@
 **Fixed bugs:**
 
 - Bug: having the window button in the wrong place [\#25](https://github.com/hardpixel/unite-shell/issues/25)
+
+**Merged pull requests:**
+
+- Basic settings support [\#29](https://github.com/hardpixel/unite-shell/pull/29) ([jonian](https://github.com/jonian))
 
 ## [v8](https://github.com/hardpixel/unite-shell/tree/v8) (2017-10-28)
 
