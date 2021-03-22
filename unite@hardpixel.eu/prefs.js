@@ -16,14 +16,6 @@ var PrefsWidget = GObject.registerClass(
       this._container = this._getWidget('prefs_widget')
       this.add(this._container)
 
-      if (VERSION >= 36) {
-        const fonts = this._getWidget('use_system_fonts_section')
-
-        fonts.set_no_show_all(true)
-        fonts.set_visible(false)
-        fonts.set_sensitive(false)
-      }
-
       this._bindStrings()
       this._bindSelects()
       this._bindBooleans()
@@ -31,9 +23,22 @@ var PrefsWidget = GObject.registerClass(
       this._bindIntegers()
     }
 
+    startup() {
+      this.show_all()
+
+      if (VERSION >= 36) {
+        this._hideSetting('use-system-fonts')
+      }
+    }
+
     _getWidget(name) {
       let widgetName = name.replace(/-/g, '_')
       return this._buildable.get_object(widgetName)
+    }
+
+    _hideSetting(name) {
+      const widget = this._getWidget(`${name}_section`)
+      widget.hide()
     }
 
     _bindInput(setting, prop) {
@@ -83,7 +88,7 @@ function init() {
 
 function buildPrefsWidget() {
   let widget = new PrefsWidget()
-  widget.show_all()
+  widget.startup()
 
   return widget
 }
