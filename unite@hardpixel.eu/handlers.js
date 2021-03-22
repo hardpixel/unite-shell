@@ -34,7 +34,9 @@ function getFileContents(path) {
 }
 
 function setFileContents(path, contents) {
-  GLib.file_set_contents(path, contents)
+  if (fileExists(path)) {
+    GLib.file_set_contents(path, contents)
+  }
 }
 
 function resetGtkStyles(filepath) {
