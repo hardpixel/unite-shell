@@ -37,6 +37,12 @@ var PrefsWidget = GObject.registerClass(
       if (VERSION >= 36) {
         this._hideSetting('use-system-fonts')
       }
+
+      if (VERSION >= 40) {
+        this._disableSetting('hide-dropdown-arrows')
+        this._disableSetting('hide-aggregate-menu-arrow')
+        this._disableSetting('hide-app-menu-arrow')
+      }
     }
 
     _getWidget(name) {
@@ -47,6 +53,11 @@ var PrefsWidget = GObject.registerClass(
     _hideSetting(name) {
       const widget = this._getWidget(`${name}_section`)
       widget.set_visible(false)
+    }
+
+    _disableSetting(name) {
+      const widget = this._getWidget(`${name}_section`)
+      widget.set_sensitive(false)
     }
 
     _bindInput(setting, prop) {

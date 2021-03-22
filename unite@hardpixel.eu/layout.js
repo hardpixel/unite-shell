@@ -79,17 +79,19 @@ var LayoutManager = GObject.registerClass(
         'hide-app-menu-icon', this._onHideAppMenuIcon.bind(this)
       )
 
-      this.settings.connect(
-        'hide-app-menu-arrow', this._onHideAppMenuArrow.bind(this)
-      )
+      if (VERSION < 40) {
+        this.settings.connect(
+          'hide-app-menu-arrow', this._onHideAppMenuArrow.bind(this)
+        )
 
-      this.settings.connect(
-        'hide-aggregate-menu-arrow', this._onHideAggMenuArrow.bind(this)
-      )
+        this.settings.connect(
+          'hide-aggregate-menu-arrow', this._onHideAggMenuArrow.bind(this)
+        )
 
-      this.settings.connect(
-        'hide-dropdown-arrows', this._onHideDropdownArrows.bind(this)
-      )
+        this.settings.connect(
+          'hide-dropdown-arrows', this._onHideDropdownArrows.bind(this)
+        )
+      }
 
       this.settings.connect(
         'reduce-panel-spacing', this._onChangeStyles.bind(this)
@@ -243,18 +245,26 @@ var LayoutManager = GObject.registerClass(
     activate() {
       this._onNotificationsChange()
       this._onHideAppMenuIcon()
-      this._onHideAppMenuArrow()
-      this._onHideAggMenuArrow()
-      this._onHideDropdownArrows()
+
+      if (VERSION < 40) {
+        this._onHideAppMenuArrow()
+        this._onHideAggMenuArrow()
+        this._onHideDropdownArrows()
+      }
+
       this._onChangeStyles()
     }
 
     destroy() {
       this._resetNotifications()
       this._resetAppMenuIcon()
-      this._resetAppMenuArrow()
-      this._resetAggMenuArrow()
-      this._resetDropdownArrows()
+
+      if (VERSION < 40) {
+        this._resetAppMenuArrow()
+        this._resetAggMenuArrow()
+        this._resetDropdownArrows()
+      }
+
       this._resetStyles()
       this._syncStyles()
 
