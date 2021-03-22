@@ -46,7 +46,7 @@ var PrefsWidget = GObject.registerClass(
 
     _hideSetting(name) {
       const widget = this._getWidget(`${name}_section`)
-      widget.hide()
+      widget.set_visible(false)
     }
 
     _bindInput(setting, prop) {
