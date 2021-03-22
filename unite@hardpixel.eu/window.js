@@ -4,13 +4,11 @@ const GObject    = imports.gi.GObject
 const Meta       = imports.gi.Meta
 const WinTracker = imports.gi.Shell.WindowTracker.get_default()
 const Main       = imports.ui.main
-const Config     = imports.misc.config
 const Util       = imports.misc.util
 const Unite      = imports.misc.extensionUtils.getCurrentExtension()
 const AppMenu    = Main.panel.statusArea.appMenu
 const Handlers   = Unite.imports.handlers
-
-const VERSION = parseInt(Config.PACKAGE_VERSION.split('.')[1])
+const VERSION    = Unite.imports.constants.VERSION
 
 const VALID_TYPES = [
   Meta.WindowType.NORMAL,
