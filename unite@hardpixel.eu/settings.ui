@@ -47,11 +47,12 @@
               <object class="GtkSwitch" id="extend_left_box">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="halign">end</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -86,11 +87,12 @@
               <object class="GtkSwitch" id="autofocus_windows">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="halign">end</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -125,11 +127,12 @@
               <object class="GtkSwitch" id="show_legacy_tray">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="halign">end</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -164,11 +167,12 @@
               <object class="GtkSwitch" id="show_desktop_name">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="halign">end</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -203,11 +207,12 @@
               <object class="GtkSwitch" id="enable_titlebar_actions">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="halign">end</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -242,11 +247,12 @@
               <object class="GtkSwitch" id="restrict_to_primary_screen">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="halign">end</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -282,6 +288,7 @@
                 <property name="width-request">170</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="halign">end</property>
                 <property name="active-id">1</property>
                 <items>
                   <item id="0" translatable="yes">Never</item>
@@ -290,7 +297,7 @@
                 </items>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -326,6 +333,7 @@
                 <property name="width-request">170</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="halign">end</property>
                 <property name="active-id">2</property>
                 <items>
                   <item id="0" translatable="yes">Never</item>
@@ -336,7 +344,7 @@
                 </items>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -372,6 +380,7 @@
                 <property name="width-request">170</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="halign">end</property>
                 <property name="active-id">2</property>
                 <items>
                   <item id="0" translatable="yes">Never</item>
@@ -382,7 +391,7 @@
                 </items>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -418,6 +427,7 @@
                 <property name="width-request">170</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="halign">end</property>
                 <property name="active-id">2</property>
                 <items>
                   <item id="0" translatable="yes">Never</item>
@@ -428,7 +438,7 @@
                 </items>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -464,6 +474,7 @@
                 <property name="width-request">170</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="halign">end</property>
                 <property name="active-id">2</property>
                 <items>
                   <item id="0" translatable="yes">Center</item>
@@ -472,7 +483,7 @@
                 </items>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -486,19 +497,14 @@
           </packing>
         </child>
       </object>
-      <packing>
-        <property name="tab-expand">True</property>
-      </packing>
     </child>
     <child type="tab">
       <object class="GtkLabel" id="general_label">
+        <property name="hexpand">True</property>
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="label" translatable="yes">General</property>
       </object>
-      <packing>
-        <property name="tab-fill">False</property>
-      </packing>
     </child>
     <child>
       <object class="GtkBox" id="appearance_prefs">
@@ -534,11 +540,12 @@
               <object class="GtkSwitch" id="use_system_fonts">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="halign">end</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -573,10 +580,11 @@
               <object class="GtkSwitch" id="greyscale_tray_icons">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="halign">end</property>
                 <property name="valign">center</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -611,11 +619,12 @@
               <object class="GtkSwitch" id="hide_dropdown_arrows">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="halign">end</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -650,10 +659,11 @@
               <object class="GtkSwitch" id="hide_aggregate_menu_arrow">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="halign">end</property>
                 <property name="valign">center</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -688,11 +698,12 @@
               <object class="GtkSwitch" id="hide_app_menu_arrow">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="halign">end</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -727,11 +738,12 @@
               <object class="GtkSwitch" id="hide_app_menu_icon">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="halign">end</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -766,11 +778,12 @@
               <object class="GtkSwitch" id="reduce_panel_spacing">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="halign">end</property>
                 <property name="valign">center</property>
                 <property name="active">True</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -806,10 +819,11 @@
                 <property name="width-request">170</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="halign">end</property>
                 <property name="text" translatable="yes">GNOME Desktop</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -844,11 +858,12 @@
                 <property name="width-request">170</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="halign">end</property>
                 <property name="text" translatable="yes">0</property>
                 <property name="adjustment">maxwidth_appmenu_adjustment</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -883,6 +898,7 @@
                 <property name="width-request">170</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="halign">end</property>
                 <property name="active-id">2</property>
                 <items>
                   <item id="0" translatable="yes">Start</item>
@@ -891,7 +907,7 @@
                 </items>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -908,7 +924,6 @@
           <object class="GtkBox" id="window_buttons_placement_section">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="no-show-all">True</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
@@ -928,6 +943,7 @@
                 <property name="width-request">170</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="halign">end</property>
                 <property name="active-id">auto</property>
                 <items>
                   <item id="auto" translatable="yes">Auto</item>
@@ -938,7 +954,7 @@
                 </items>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -955,7 +971,6 @@
           <object class="GtkBox" id="window_buttons_theme_section">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="no-show-all">True</property>
             <property name="spacing">50</property>
             <child>
               <object class="GtkLabel">
@@ -975,6 +990,7 @@
                 <property name="width-request">170</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="halign">end</property>
                 <property name="active-id">0</property>
                 <items>
                   <item id="0" translatable="yes">Default Dark</item>
@@ -1002,7 +1018,7 @@
                 </items>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="pack-type">end</property>
                 <property name="position">1</property>
@@ -1016,21 +1032,14 @@
           </packing>
         </child>
       </object>
-      <packing>
-        <property name="position">1</property>
-        <property name="tab-expand">True</property>
-      </packing>
     </child>
     <child type="tab">
       <object class="GtkLabel" id="appearance_label">
+        <property name="hexpand">True</property>
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="label" translatable="yes">Appearance</property>
       </object>
-      <packing>
-        <property name="position">1</property>
-        <property name="tab-fill">False</property>
-      </packing>
     </child>
   </object>
 </interface>
