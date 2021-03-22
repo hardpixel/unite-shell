@@ -1,0 +1,20 @@
+.maximized > headerbar:not(.selection-mode),
+.maximized > .titlebar:not(.selection-mode),
+.maximized > headerbar > headerbar:not(.selection-mode),
+.maximized > .titlebar > .titlebar:not(.selection-mode),
+.maximized > .titlebar > stack > headerbar:not(.selection-mode),
+.maximized headerbar:last-child:not(.selection-mode),
+.maximized .titlebar:last-child:not(.selection-mode) {
+  padding-right: 0;
+}
+
+.maximized headerbar windowcontrols.end,
+.maximized .titlebar windowcontrols.end {
+  margin: 0 -200px 0 0;
+  opacity: 0;
+}
+
+.maximized .titlebar.default-decoration {
+  margin: -200px 0 0;
+  opacity: 0;
+}

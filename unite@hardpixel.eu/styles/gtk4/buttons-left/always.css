@@ -1,0 +1,22 @@
+window headerbar:not(.selection-mode),
+window .titlebar:not(.selection-mode) {
+  padding-left: 0;
+}
+
+window headerbar ~ headerbar:not(.selection-mode),
+window headerbar ~ .titlebar:not(.selection-mode),
+window .titlebar ~ .titlebar:not(.selection-mode),
+window .titlebar ~ headerbar:not(.selection-mode) {
+  padding-left: 6px;
+}
+
+window headerbar windowcontrols.start,
+window .titlebar windowcontrols.start {
+  margin: 0 0 0 -200px;
+  opacity: 0;
+}
+
+window .titlebar.default-decoration {
+  margin: -200px 0 0;
+  opacity: 0;
+}

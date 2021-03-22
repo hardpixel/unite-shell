@@ -1,0 +1,20 @@
+.tiled > headerbar:not(.selection-mode),
+.tiled > .titlebar:not(.selection-mode),
+.tiled > headerbar > headerbar:not(.selection-mode),
+.tiled > .titlebar > .titlebar:not(.selection-mode),
+.tiled > .titlebar > stack > headerbar:not(.selection-mode),
+.tiled headerbar:last-child:not(.selection-mode),
+.tiled .titlebar:last-child:not(.selection-mode) {
+  padding-right: 0;
+}
+
+.tiled headerbar windowcontrols.end,
+.tiled .titlebar windowcontrols.end {
+  margin: 0 -200px 0 0;
+  opacity: 0;
+}
+
+.tiled .titlebar.default-decoration {
+  margin: -200px 0 0;
+  opacity: 0;
+}

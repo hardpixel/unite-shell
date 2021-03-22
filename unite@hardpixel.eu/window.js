@@ -468,12 +468,14 @@ var WindowManager = GObject.registerClass(
     _onStylesChange() {
       if (this.hideTitlebars != 'never') {
         const variant = this.settings.get('window-buttons-position')
-        const folder  = `${Unite.path}/styles/buttons-${variant}`
-        const content = `@import url('${folder}/${this.hideTitlebars}.css');`
+        const folder  = path => `${Unite.path}/styles/${path}/buttons-${variant}`
+        const content = path => `@import url('${folder(path)}/${this.hideTitlebars}.css');`
 
-        this.styles.addGtkStyle('windowDecorations', content)
+        this.styles.addGtk3Style('windowDecorationsGTK3', content('gtk3'))
+        this.styles.addGtk4Style('windowDecorationsGTK4', content('gtk4'))
       } else {
-        this.styles.deleteStyle('windowDecorations')
+        this.styles.deleteStyle('windowDecorationsGTK3')
+        this.styles.deleteStyle('windowDecorationsGTK4')
       }
     }
 
