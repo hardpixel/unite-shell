@@ -92,14 +92,14 @@ var LayoutManager = GObject.registerClass(
       )
 
       this.settings.connect(
-        'use-system-fonts', this._onChangeStyles.bind(this)
-      )
-
-      this.settings.connect(
         'reduce-panel-spacing', this._onChangeStyles.bind(this)
       )
 
       if (VERSION < 36) {
+        this.settings.connect(
+          'use-system-fonts', this._onChangeStyles.bind(this)
+        )
+
         this.signals.connect(
           GtkSettings, 'notify::gtk-font-name', this._onChangeStyles.bind(this)
         )
