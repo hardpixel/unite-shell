@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased](https://github.com/hardpixel/unite-shell/tree/HEAD)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v45...HEAD)
+
+**Closed issues:**
+
+- , [\#228](https://github.com/hardpixel/unite-shell/issues/228)
+
+**Merged pull requests:**
+
+- Add support for gnome-shell 40 [\#230](https://github.com/hardpixel/unite-shell/pull/230) ([jonian](https://github.com/jonian))
+- \[Enhancement\] Add icons for Adwaita Dark theme [\#229](https://github.com/hardpixel/unite-shell/pull/229) ([aiosadchy](https://github.com/aiosadchy))
+
 ## [v45](https://github.com/hardpixel/unite-shell/tree/v45) (2021-02-05)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v44...v45)
@@ -34,6 +47,7 @@
 
 - Titlebar actions on top panel click [\#224](https://github.com/hardpixel/unite-shell/pull/224) ([jonian](https://github.com/jonian))
 - Replace newlines with spaces for the appMenu app name/title. [\#223](https://github.com/hardpixel/unite-shell/pull/223) ([Leleat](https://github.com/Leleat))
+- Optionally set the max width for the appMenu and show the full title on hover \(no matter the length\). Choose appMenu's EllipsizeMode. [\#222](https://github.com/hardpixel/unite-shell/pull/222) ([Leleat](https://github.com/Leleat))
 - Double-click the panel to unmaximize the top-most, maximized window. [\#221](https://github.com/hardpixel/unite-shell/pull/221) ([Leleat](https://github.com/Leleat))
 
 ## [v44](https://github.com/hardpixel/unite-shell/tree/v44) (2020-10-07)
@@ -61,7 +75,6 @@
 
 **Merged pull requests:**
 
-- Optionally set the max width for the appMenu and show the full title on hover \(no matter the length\). Choose appMenu's EllipsizeMode. [\#222](https://github.com/hardpixel/unite-shell/pull/222) ([Leleat](https://github.com/Leleat))
 - Fixed moving window buttons in GNOME 3.38 [\#204](https://github.com/hardpixel/unite-shell/pull/204) ([soal](https://github.com/soal))
 
 ## [v42](https://github.com/hardpixel/unite-shell/tree/v42) (2020-09-04)
@@ -86,7 +99,8 @@
 
 **Merged pull requests:**
 
-- panel: remove flags from allocate call [\#194](https://github.com/hardpixel/unite-shell/pull/194) ([BjoernDaase](https://github.com/BjoernDaase))
+- panel: remove flags from allocate call [\#194](https://github.com/hardpixel/unite-shell/pull/194) ([bdaase](https://github.com/bdaase))
+- Translation files [\#175](https://github.com/hardpixel/unite-shell/pull/175) ([galen1423](https://github.com/galen1423))
 
 ## [v41](https://github.com/hardpixel/unite-shell/tree/v41) (2020-04-27)
 
@@ -181,9 +195,9 @@
 
 **Merged pull requests:**
 
-- Translation files [\#175](https://github.com/hardpixel/unite-shell/pull/175) ([galen1423](https://github.com/galen1423))
 - Clarify how to install xprop [\#151](https://github.com/hardpixel/unite-shell/pull/151) ([dandv](https://github.com/dandv))
 - Remove modules [\#137](https://github.com/hardpixel/unite-shell/pull/137) ([jonian](https://github.com/jonian))
+- Basic settings support [\#29](https://github.com/hardpixel/unite-shell/pull/29) ([jonian](https://github.com/jonian))
 
 ## [v34](https://github.com/hardpixel/unite-shell/tree/v34) (2019-10-11)
 
@@ -472,10 +486,6 @@
 **Fixed bugs:**
 
 - Bug: having the window button in the wrong place [\#25](https://github.com/hardpixel/unite-shell/issues/25)
-
-**Merged pull requests:**
-
-- Basic settings support [\#29](https://github.com/hardpixel/unite-shell/pull/29) ([jonian](https://github.com/jonian))
 
 ## [v8](https://github.com/hardpixel/unite-shell/tree/v8) (2017-10-28)
 
