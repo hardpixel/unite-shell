@@ -23,6 +23,14 @@ const MOTIF_HINTS = '_MOTIF_WM_HINTS'
 const _SHOW_FLAGS = ['0x2', '0x0', '0x1', '0x0', '0x0']
 const _HIDE_FLAGS = ['0x2', '0x0', '0x2', '0x0', '0x0']
 
+function safeSpawn(command) {
+  try {
+    return GLib.spawn_command_line_sync(command)
+  } catch (e) {
+    return [false, Bytes.fromString('')]
+  }
+}
+
 function isValid(win) {
   return win && VALID_TYPES.includes(win.window_type)
 }
@@ -39,7 +47,7 @@ function getXid(win) {
 }
 
 function getHint(xid, name, fallback) {
-  const result = GLib.spawn_command_line_sync(`xprop -id ${xid} ${name}`)
+  const result = safeSpawn(`xprop -id ${xid} ${name}`)
   const string = Bytes.toString(result[1])
 
   if (!string.match(/=/)) {
