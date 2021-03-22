@@ -3,13 +3,11 @@ const St          = imports.gi.St
 const Clutter     = imports.gi.Clutter
 const GtkSettings = imports.gi.Gtk.Settings.get_default()
 const Main        = imports.ui.main
-const Config      = imports.misc.config
 const Unite       = imports.misc.extensionUtils.getCurrentExtension()
 const AppMenu     = Main.panel.statusArea.appMenu
 const AggMenu     = Main.panel.statusArea.aggregateMenu
 const Handlers    = Unite.imports.handlers
-
-const VERSION = parseInt(Config.PACKAGE_VERSION.split('.')[1])
+const VERSION     = Unite.imports.constants.VERSION
 
 function actorHasClass(actor, name) {
   return actor.has_style_class_name && actor.has_style_class_name(name)

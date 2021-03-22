@@ -10,14 +10,12 @@ const Shell      = imports.gi.Shell
 const AppSystem  = imports.gi.Shell.AppSystem.get_default()
 const WinTracker = imports.gi.Shell.WindowTracker.get_default()
 const Main       = imports.ui.main
-const Config     = imports.misc.config
 const Unite      = imports.misc.extensionUtils.getCurrentExtension()
 const AppMenu    = Main.panel.statusArea.appMenu
 const Activities = Main.panel.statusArea.activities
 const Buttons    = Unite.imports.buttons
 const Handlers   = Unite.imports.handlers
-
-const VERSION = parseInt(Config.PACKAGE_VERSION.split('.')[1])
+const VERSION    = Unite.imports.constants.VERSION
 
 var PanelExtension = class PanelExtension {
   constructor(settings, key, callback) {

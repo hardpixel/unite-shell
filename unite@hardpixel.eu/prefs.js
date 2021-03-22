@@ -1,10 +1,8 @@
 const GObject     = imports.gi.GObject
 const Gtk         = imports.gi.Gtk
-const Config      = imports.misc.config
 const Unite       = imports.misc.extensionUtils.getCurrentExtension()
 const Convenience = Unite.imports.convenience
-
-const VERSION = parseInt(Config.PACKAGE_VERSION.split('.')[1])
+const VERSION     = Unite.imports.constants.VERSION
 
 var PrefsWidget = GObject.registerClass(
   class UnitePrefsWidget extends Gtk.Box {
