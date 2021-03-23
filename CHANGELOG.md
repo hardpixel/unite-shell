@@ -348,7 +348,6 @@
 
 **Merged pull requests:**
 
-- Refactor modules [\#66](https://github.com/hardpixel/unite-shell/pull/66) ([jonian](https://github.com/jonian))
 - Drop support for GNOME-Shell earlier tnah 3.28 [\#64](https://github.com/hardpixel/unite-shell/pull/64) ([jonian](https://github.com/jonian))
 
 ## [v22](https://github.com/hardpixel/unite-shell/tree/v22) (2018-10-30)
@@ -508,6 +507,7 @@
 
 **Merged pull requests:**
 
+- Refactor modules [\#66](https://github.com/hardpixel/unite-shell/pull/66) ([jonian](https://github.com/jonian))
 - Fixes \#16 [\#17](https://github.com/hardpixel/unite-shell/pull/17) ([Peetz0r](https://github.com/Peetz0r))
 
 ## [v6](https://github.com/hardpixel/unite-shell/tree/v6) (2017-10-08)
