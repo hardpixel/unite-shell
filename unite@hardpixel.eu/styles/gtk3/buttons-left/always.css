@@ -3,10 +3,10 @@ window .titlebar:not(.selection-mode) {
   padding-left: 0;
 }
 
-window headerbar ~ headerbar:not(.selection-mode),
-window headerbar ~ .titlebar:not(.selection-mode),
-window .titlebar ~ .titlebar:not(.selection-mode),
-window .titlebar ~ headerbar:not(.selection-mode) {
+window headerbar ~ headerbar:not(.selection-mode):not(.windowhandle),
+window headerbar ~ .titlebar:not(.selection-mode):not(.windowhandle),
+window .titlebar ~ .titlebar:not(.selection-mode):not(.windowhandle),
+window .titlebar ~ headerbar:not(.selection-mode):not(.windowhandle) {
   padding-left: 6px;
 }
 

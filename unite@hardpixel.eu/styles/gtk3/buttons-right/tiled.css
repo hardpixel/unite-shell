@@ -4,7 +4,8 @@
 .tiled > .titlebar > .titlebar:not(.selection-mode),
 .tiled > .titlebar > stack > headerbar:not(.selection-mode),
 .tiled headerbar:last-child:not(.selection-mode),
-.tiled .titlebar:last-child:not(.selection-mode) {
+.tiled .titlebar:last-child:not(.selection-mode),
+.tiled .windowhandle:not(.selection-mode) {
   padding-right: 0;
 }
 

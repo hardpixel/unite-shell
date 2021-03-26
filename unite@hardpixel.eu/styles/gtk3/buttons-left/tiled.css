@@ -3,10 +3,10 @@
   padding-left: 0;
 }
 
-.tiled headerbar ~ headerbar:not(.selection-mode),
-.tiled headerbar ~ .titlebar:not(.selection-mode),
-.tiled .titlebar ~ .titlebar:not(.selection-mode),
-.tiled .titlebar ~ headerbar:not(.selection-mode) {
+.tiled headerbar ~ headerbar:not(.selection-mode):not(.windowhandle),
+.tiled headerbar ~ .titlebar:not(.selection-mode):not(.windowhandle),
+.tiled .titlebar ~ .titlebar:not(.selection-mode):not(.windowhandle),
+.tiled .titlebar ~ headerbar:not(.selection-mode):not(.windowhandle) {
   padding-left: 6px;
 }
 
