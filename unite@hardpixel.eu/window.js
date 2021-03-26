@@ -387,7 +387,7 @@ var WindowManager = GObject.registerClass(
       )
 
       this.settings.connect(
-        'window-buttons-position', this._onStylesChange.bind(this)
+        'button-layout', this._onStylesChange.bind(this)
       )
 
       if (VERSION < 36) {
