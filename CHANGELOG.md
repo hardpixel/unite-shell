@@ -1,5 +1,13 @@
 # Changelog
 
+## [v48](https://github.com/hardpixel/unite-shell/tree/v48) (2021-03-26)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v47...v48)
+
+**Merged pull requests:**
+
+- Add Canta theme icons [\#231](https://github.com/hardpixel/unite-shell/pull/231) ([TheLastZombie](https://github.com/TheLastZombie))
+
 ## [v47](https://github.com/hardpixel/unite-shell/tree/v47) (2021-03-23)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v46...v47)
@@ -14,6 +22,7 @@
 
 **Merged pull requests:**
 
+- Add support for gnome-shell 40 [\#230](https://github.com/hardpixel/unite-shell/pull/230) ([jonian](https://github.com/jonian))
 - \[Enhancement\] Add icons for Adwaita Dark theme [\#229](https://github.com/hardpixel/unite-shell/pull/229) ([aiosadchy](https://github.com/aiosadchy))
 
 ## [v45](https://github.com/hardpixel/unite-shell/tree/v45) (2021-02-05)
@@ -65,6 +74,10 @@
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v42...v43)
 
+**Fixed bugs:**
+
+- Not working on GNOME 3.38 - Fedora 33 [\#199](https://github.com/hardpixel/unite-shell/issues/199)
+
 **Closed issues:**
 
 - Firefox 82's close/minimize/maximize buttons are not hidden [\#201](https://github.com/hardpixel/unite-shell/issues/201)
@@ -74,7 +87,6 @@
 
 **Merged pull requests:**
 
-- Add support for gnome-shell 40 [\#230](https://github.com/hardpixel/unite-shell/pull/230) ([jonian](https://github.com/jonian))
 - Fixed moving window buttons in GNOME 3.38 [\#204](https://github.com/hardpixel/unite-shell/pull/204) ([soal](https://github.com/soal))
 
 ## [v42](https://github.com/hardpixel/unite-shell/tree/v42) (2020-09-04)
@@ -83,7 +95,6 @@
 
 **Fixed bugs:**
 
-- Not working on GNOME 3.38 - Fedora 33 [\#199](https://github.com/hardpixel/unite-shell/issues/199)
 - Don't separate battery icon and manually enabled battery percentage [\#195](https://github.com/hardpixel/unite-shell/issues/195)
 - Extension can't hide window title bar and move wondow buttons to top bar [\#188](https://github.com/hardpixel/unite-shell/issues/188)
 - Inverting buttons order [\#184](https://github.com/hardpixel/unite-shell/issues/184)
