@@ -1,17 +1,8 @@
-.maximized headerbar:not(.selection-mode),
-.maximized .titlebar:not(.selection-mode) {
-  padding-left: 0;
+.maximized headerbar windowhandle {
+  margin-left: -6px;
 }
 
-.maximized headerbar ~ headerbar:not(.selection-mode),
-.maximized headerbar ~ .titlebar:not(.selection-mode),
-.maximized .titlebar ~ .titlebar:not(.selection-mode),
-.maximized .titlebar ~ headerbar:not(.selection-mode) {
-  padding-left: 6px;
-}
-
-.maximized headerbar windowcontrols.start,
-.maximized .titlebar windowcontrols.start {
+.maximized headerbar windowcontrols.start {
   margin: 0 0 0 -200px;
   opacity: 0;
 }
