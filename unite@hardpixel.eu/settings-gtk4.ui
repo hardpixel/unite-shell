@@ -14,7 +14,6 @@
       <object class="GtkNotebookPage">
         <property name="child">
           <object class="GtkBox" id="general_prefs">
-            <property name="can-focus">0</property>
             <property name="valign">start</property>
             <property name="margin-start">20</property>
             <property name="margin-end">20</property>
@@ -25,7 +24,6 @@
             <property name="homogeneous">1</property>
             <child>
               <object class="GtkBox" id="extend_left_box_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -46,7 +44,6 @@
             </child>
             <child>
               <object class="GtkBox" id="autofocus_windows_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -67,7 +64,6 @@
             </child>
             <child>
               <object class="GtkBox" id="show_legacy_tray_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -88,7 +84,6 @@
             </child>
             <child>
               <object class="GtkBox" id="show_desktop_name_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -109,7 +104,6 @@
             </child>
             <child>
               <object class="GtkBox" id="enable_titlebar_actions_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -130,7 +124,6 @@
             </child>
             <child>
               <object class="GtkBox" id="restrict_to_primary_screen_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -151,7 +144,6 @@
             </child>
             <child>
               <object class="GtkBox" id="hide_activities_button_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -164,7 +156,6 @@
                   <object class="GtkComboBoxText" id="hide_activities_button">
                     <property name="hexpand">1</property>
                     <property name="width-request">170</property>
-                    <property name="can-focus">0</property>
                     <property name="halign">end</property>
                     <property name="active-id">1</property>
                     <items>
@@ -178,7 +169,6 @@
             </child>
             <child>
               <object class="GtkBox" id="hide_window_titlebars_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -191,7 +181,6 @@
                   <object class="GtkComboBoxText" id="hide_window_titlebars">
                     <property name="hexpand">1</property>
                     <property name="width-request">170</property>
-                    <property name="can-focus">0</property>
                     <property name="halign">end</property>
                     <property name="active-id">2</property>
                     <items>
@@ -207,7 +196,6 @@
             </child>
             <child>
               <object class="GtkBox" id="show_window_title_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -220,7 +208,6 @@
                   <object class="GtkComboBoxText" id="show_window_title">
                     <property name="hexpand">1</property>
                     <property name="width-request">170</property>
-                    <property name="can-focus">0</property>
                     <property name="halign">end</property>
                     <property name="active-id">2</property>
                     <items>
@@ -236,7 +223,6 @@
             </child>
             <child>
               <object class="GtkBox" id="show_window_buttons_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -249,7 +235,6 @@
                   <object class="GtkComboBoxText" id="show_window_buttons">
                     <property name="hexpand">1</property>
                     <property name="width-request">170</property>
-                    <property name="can-focus">0</property>
                     <property name="halign">end</property>
                     <property name="active-id">2</property>
                     <items>
@@ -265,7 +250,6 @@
             </child>
             <child>
               <object class="GtkBox" id="notifications_position_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -278,7 +262,6 @@
                   <object class="GtkComboBoxText" id="notifications_position">
                     <property name="hexpand">1</property>
                     <property name="width-request">170</property>
-                    <property name="can-focus">0</property>
                     <property name="halign">end</property>
                     <property name="active-id">2</property>
                     <items>
@@ -305,7 +288,6 @@
       <object class="GtkNotebookPage">
         <property name="child">
           <object class="GtkBox" id="appearance_prefs">
-            <property name="can-focus">0</property>
             <property name="valign">start</property>
             <property name="margin-start">20</property>
             <property name="margin-end">20</property>
@@ -316,7 +298,6 @@
             <property name="homogeneous">1</property>
             <child>
               <object class="GtkBox" id="use_system_fonts_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -337,7 +318,6 @@
             </child>
             <child>
               <object class="GtkBox" id="greyscale_tray_icons_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -357,7 +337,6 @@
             </child>
             <child>
               <object class="GtkBox" id="hide_dropdown_arrows_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -378,7 +357,6 @@
             </child>
             <child>
               <object class="GtkBox" id="hide_aggregate_menu_arrow_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -398,7 +376,6 @@
             </child>
             <child>
               <object class="GtkBox" id="hide_app_menu_arrow_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -419,7 +396,6 @@
             </child>
             <child>
               <object class="GtkBox" id="hide_app_menu_icon_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -440,7 +416,6 @@
             </child>
             <child>
               <object class="GtkBox" id="reduce_panel_spacing_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -461,7 +436,6 @@
             </child>
             <child>
               <object class="GtkBox" id="desktop_name_text_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -482,7 +456,6 @@
             </child>
             <child>
               <object class="GtkBox" id="app_menu_max_width_section">
-                <property name="can-focus">0</property>
                 <child>
                   <object class="GtkLabel">
                     <property name="can-focus">0</property>
@@ -503,7 +476,6 @@
             </child>
             <child>
               <object class="GtkBox" id="app_menu_ellipsize_mode_section">
-                <property name="can-focus">0</property>
                 <child>
                   <object class="GtkLabel">
                     <property name="can-focus">0</property>
@@ -515,7 +487,6 @@
                   <object class="GtkComboBoxText" id="app_menu_ellipsize_mode">
                     <property name="hexpand">1</property>
                     <property name="width-request">170</property>
-                    <property name="can-focus">0</property>
                     <property name="halign">end</property>
                     <property name="active-id">2</property>
                     <items>
@@ -529,7 +500,6 @@
             </child>
             <child>
               <object class="GtkBox" id="window_buttons_placement_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -542,7 +512,6 @@
                   <object class="GtkComboBoxText" id="window_buttons_placement">
                     <property name="hexpand">1</property>
                     <property name="width-request">170</property>
-                    <property name="can-focus">0</property>
                     <property name="halign">end</property>
                     <property name="active-id">auto</property>
                     <items>
@@ -558,7 +527,6 @@
             </child>
             <child>
               <object class="GtkBox" id="window_buttons_theme_section">
-                <property name="can-focus">0</property>
                 <property name="spacing">50</property>
                 <child>
                   <object class="GtkLabel">
@@ -571,7 +539,6 @@
                   <object class="GtkComboBoxText" id="window_buttons_theme">
                     <property name="hexpand">1</property>
                     <property name="width-request">170</property>
-                    <property name="can-focus">0</property>
                     <property name="halign">end</property>
                     <property name="active-id">0</property>
                     <items>
