@@ -122,7 +122,7 @@ var Settings = class Settings extends Signals {
   }
 }
 
-var ShellStyle = class ShellStyle {
+class ShellStyle {
   constructor(path) {
     this.file = getGioFile(path)
   }
@@ -144,7 +144,7 @@ var ShellStyle = class ShellStyle {
   }
 }
 
-var WidgetStyle = class WidgetStyle {
+class WidgetStyle {
   constructor(widget, style) {
     this.widget = widget
     this.style  = style
@@ -165,7 +165,7 @@ var WidgetStyle = class WidgetStyle {
   }
 }
 
-var GtkStyle = class GtkStyle {
+class GtkStyle {
   constructor(version, name, data) {
     const content = this.parse(data, version)
 
@@ -197,7 +197,7 @@ var GtkStyle = class GtkStyle {
   }
 }
 
-var GtkStyles = class GtkStyles {
+class GtkStyles {
   constructor(name, data, versions) {
     const items = [].concat(versions).filter(ver => GTK_VERSIONS.includes(ver))
     this.styles = items.map(ver => new GtkStyle(ver, name, data))
