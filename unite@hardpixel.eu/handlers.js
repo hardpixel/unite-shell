@@ -8,9 +8,12 @@ const Convenience = Unite.imports.convenience
 const SETTINGS = Convenience.getSettings()
 const WM_PREFS = Convenience.getPreferences()
 
-const USER_CONFIG = GLib.get_user_config_dir()
-const USER_STYLES_GTK3 = `${USER_CONFIG}/gtk-3.0/gtk.css`
-const USER_STYLES_GTK4 = `${USER_CONFIG}/gtk-4.0/gtk.css`
+const GTK_VERSIONS = [3, 4]
+const USER_CONFIGS = GLib.get_user_config_dir()
+
+function userStylesPath(version) {
+  return `${USER_CONFIGS}/gtk-${version}.0/gtk.css`
+}
 
 function fileExists(path) {
   return GLib.file_test(path, GLib.FileTest.EXISTS)
@@ -42,13 +45,16 @@ function setFileContents(path, contents) {
   GLib.file_set_contents(path, contents)
 }
 
-function resetGtkStyles(filepath) {
-  let style = getFileContents(filepath)
+function resetGtkStyles() {
+  GTK_VERSIONS.forEach(version => {
+    const filepath = userStylesPath(version)
+    let style = getFileContents(filepath)
 
-  style = style.replace(/\/\* UNITE ([\s\S]*?) UNITE \*\/\n/g, '')
-  style = style.replace(/@import.*unite@hardpixel\.eu.*css['"]\);\n/g, '')
+    style = style.replace(/\/\* UNITE ([\s\S]*?) UNITE \*\/\n/g, '')
+    style = style.replace(/@import.*unite@hardpixel\.eu.*css['"]\);\n/g, '')
 
-  setFileContents(filepath, style)
+    setFileContents(filepath, style)
+  })
 }
 
 var Signals = class Signals {
@@ -160,13 +166,24 @@ var WidgetStyle = class WidgetStyle {
 }
 
 var GtkStyle = class GtkStyle {
-  constructor(filepath, name, contents) {
-    this.filepath = filepath
-    this.contents = `/* UNITE ${name} */\n${contents}\n/* ${name} UNITE */\n`
+  constructor(version, name, data) {
+    const content = this.parse(data, version)
+
+    this.filepath = userStylesPath(version)
+    this.contents = `/* UNITE ${name} */\n${content}\n/* ${name} UNITE */\n`
   }
 
   get existing() {
     return getFileContents(this.filepath)
+  }
+
+  parse(data, ver) {
+    if (data.startsWith('@/')) {
+      const path = data.replace(/^@/, `${Unite.path}/styles/gtk${ver}`)
+      return `@import url('${path}');`
+    } else {
+      return data
+    }
   }
 
   load() {
@@ -177,6 +194,21 @@ var GtkStyle = class GtkStyle {
   unload() {
     const style = this.existing.replace(this.contents, '')
     setFileContents(this.filepath, style)
+  }
+}
+
+var GtkStyles = class GtkStyles {
+  constructor(name, data, versions) {
+    const items = [].concat(versions).filter(ver => GTK_VERSIONS.includes(ver))
+    this.styles = items.map(ver => new GtkStyle(ver, name, data))
+  }
+
+  load() {
+    this.styles.forEach(style => style.load())
+  }
+
+  unload() {
+    this.styles.forEach(style => style.unload())
   }
 }
 
@@ -221,14 +253,9 @@ var Styles = class Styles {
     this.setStyle(name, WidgetStyle, widget, styles)
   }
 
-  addGtk3Style(name, contents) {
+  addGtkStyle(name, contents, versions = GTK_VERSIONS) {
     this.deleteStyle(name)
-    this.setStyle(name, GtkStyle, USER_STYLES_GTK3, name, contents)
-  }
-
-  addGtk4Style(name, contents) {
-    this.deleteStyle(name)
-    this.setStyle(name, GtkStyle, USER_STYLES_GTK4, name, contents)
+    this.setStyle(name, GtkStyles, name, contents, versions)
   }
 
   removeAll() {
@@ -238,5 +265,4 @@ var Styles = class Styles {
   }
 }
 
-resetGtkStyles(USER_STYLES_GTK3)
-resetGtkStyles(USER_STYLES_GTK4)
+resetGtkStyles()
