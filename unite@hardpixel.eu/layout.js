@@ -108,6 +108,10 @@ var LayoutManager = GObject.registerClass(
       }
     }
 
+    get styleClass() {
+      return `shell-${VERSION}`
+    }
+
     _onNotificationsChange() {
       const setting = this.settings.get('notifications-position')
 
@@ -181,13 +185,15 @@ var LayoutManager = GObject.registerClass(
         this.styles.addWidgetStyle('panel', Main.panel, 'font-size: 11.25pt;')
       }
 
-      if (space) {
-        Main.panel._addStyleClassName('small-spacing')
+      if (VERSION < 40 && space) {
+        this.styles.addShellStyle('spacing38', '@/styles/shell/spacing38.css')
       }
 
-      if (VERSION < 34) {
-        Main.panel._addStyleClassName('extra-spacing')
+      if (VERSION < 34 && space) {
+        this.styles.addShellStyle('spacing32', '@/styles/shell/spacing32.css')
       }
+
+      Main.panel._addStyleClassName(this.styleClass)
 
       this._syncStyles()
     }
@@ -220,11 +226,8 @@ var LayoutManager = GObject.registerClass(
     }
 
     _resetStyles() {
-      Main.panel._removeStyleClassName('small-spacing')
-      Main.panel._removeStyleClassName('extra-spacing')
-
-      this.styles.deleteStyle('uiGroup')
-      this.styles.deleteStyle('panel')
+      Main.panel._removeStyleClassName(this.styleClass)
+      this.styles.removeAll()
     }
 
     // Fix for panel spacing not applied until mouse-over
