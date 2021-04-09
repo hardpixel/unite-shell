@@ -1,5 +1,17 @@
 # Changelog
 
+## [v49](https://github.com/hardpixel/unite-shell/tree/v49) (2021-04-09)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v48...v49)
+
+**Closed issues:**
+
+- Error after upgrade [\#232](https://github.com/hardpixel/unite-shell/issues/232)
+
+**Merged pull requests:**
+
+- GTK4-Settings: Fix focus behavior [\#234](https://github.com/hardpixel/unite-shell/pull/234) ([fushinari](https://github.com/fushinari))
+
 ## [v48](https://github.com/hardpixel/unite-shell/tree/v48) (2021-03-26)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v47...v48)
