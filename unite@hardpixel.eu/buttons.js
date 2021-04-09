@@ -17,6 +17,7 @@ var DesktopLabel = GObject.registerClass(
       this.label_actor = this._label
 
       this.setText(text || 'Desktop')
+      this.add_style_class_name('desktop-name-label')
     }
 
     setText(text) {
@@ -41,6 +42,7 @@ var TrayIndicator = GObject.registerClass(
       this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' })
       this.add_child(this._indicators)
 
+      this.add_style_class_name('system-tray-icons')
       this._sync()
     }
 
