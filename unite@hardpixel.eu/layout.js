@@ -185,6 +185,10 @@ var LayoutManager = GObject.registerClass(
         this.styles.addWidgetStyle('panel', Main.panel, 'font-size: 11.25pt;')
       }
 
+      if (VERSION >= 40 && space) {
+        this.styles.addShellStyle('spacing40', '@/styles/shell/spacing40.css')
+      }
+
       if (VERSION < 40 && space) {
         this.styles.addShellStyle('spacing38', '@/styles/shell/spacing38.css')
       }

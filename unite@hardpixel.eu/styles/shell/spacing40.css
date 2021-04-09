@@ -1,0 +1,30 @@
+#panel .panel-button {
+  -natural-hpadding: 6px;
+  -minimum-hpadding: 4px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+#panel .panel-button > .system-status-icon {
+  padding: 0;
+}
+
+#panel .panel-button .panel-status-indicators-box {
+  spacing: 4px;
+}
+
+#panel #panelActivities,
+#panel .system-tray-icons,
+#panel .desktop-name-label {
+  -natural-hpadding: 10px;
+  -minimum-hpadding: 8px;
+}
+
+#panel .system-tray-icons .panel-status-indicators-box {
+  spacing: 10px;
+}
+
+#panel .clock-display-box .clock {
+  padding-left: 8px;
+  padding-right: 8px;
+}
