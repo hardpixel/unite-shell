@@ -230,9 +230,7 @@ var LayoutManager = GObject.registerClass(
     // Fix for panel spacing not applied until mouse-over
     // Issue: https://gitlab.gnome.org/GNOME/gnome-shell/-/issues/1708
     _syncStyles() {
-      const space = this.settings.get('reduce-panel-spacing')
-
-      if (VERSION >= 34 && space) {
+      if (VERSION >= 34 && VERSION < 40) {
         Object.values(Main.panel.statusArea).forEach((item) => {
           if (item !== null) {
             item.add_style_pseudo_class('hover')
