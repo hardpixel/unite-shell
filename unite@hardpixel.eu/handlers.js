@@ -2,6 +2,7 @@ const Bytes       = imports.byteArray
 const Gio         = imports.gi.Gio
 const GLib        = imports.gi.GLib
 const St          = imports.gi.St
+const Main        = imports.ui.main
 const Unite       = imports.misc.extensionUtils.getCurrentExtension()
 const Convenience = Unite.imports.convenience
 
@@ -250,9 +251,13 @@ var Styles = class Styles {
     }
   }
 
-  addShellStyle(name, path) {
-    this.deleteStyle(name)
-    this.setStyle(name, ShellStyle, path)
+  addShellStyle(name, data) {
+    if (data.startsWith('@/')) {
+      this.deleteStyle(name)
+      this.setStyle(name, ShellStyle, path)
+    } else {
+      this.addWidgetStyle(name, Main.uiGroup, data)
+    }
   }
 
   addWidgetStyle(name, widget, styles) {
