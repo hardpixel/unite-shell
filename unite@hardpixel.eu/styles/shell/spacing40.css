@@ -24,7 +24,17 @@
   spacing: 10px;
 }
 
+#panel .panel-button.clock-display {
+  -natural-hpadding: 0px;
+  -minimum-hpadding: 0px;
+  padding: 0px;
+}
+
 #panel .clock-display-box .clock {
   padding-left: 8px;
   padding-right: 8px;
+}
+
+#panel .clock-display-box Gjs_ui_dateMenu_MessagesIndicator {
+  margin-right: 3px;
 }
