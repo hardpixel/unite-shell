@@ -11,8 +11,15 @@ const WM_PREFS = Convenience.getPreferences()
 const GTK_VERSIONS = [3, 4]
 const USER_CONFIGS = GLib.get_user_config_dir()
 
+function filePath(parts) {
+  const parse = part => part ? part.replace(/^@/, '') : ''
+  const paths = [Unite.path].concat(parts).map(parse)
+
+  return GLib.build_filenamev(paths)
+}
+
 function userStylesPath(version) {
-  return `${USER_CONFIGS}/gtk-${version}.0/gtk.css`
+  return GLib.build_filenamev([USER_CONFIGS, `gtk-${version}.0`, 'gtk.css'])
 }
 
 function fileExists(path) {
@@ -20,7 +27,7 @@ function fileExists(path) {
 }
 
 function getGioFile(path) {
-  const absPath = GLib.build_filenamev([Unite.path, path])
+  const absPath = filePath(path)
 
   if (fileExists(absPath)) {
     return Gio.file_new_for_path(absPath)
@@ -179,7 +186,7 @@ class GtkStyle {
 
   parse(data, ver) {
     if (data.startsWith('@/')) {
-      const path = data.replace(/^@/, `${Unite.path}/styles/gtk${ver}`)
+      const path = filePath(['styles', `gtk${ver}`, data])
       return `@import url('${path}');`
     } else {
       return data

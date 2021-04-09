@@ -173,7 +173,7 @@ var WindowButtons = class WindowButtons extends PanelExtension {
     this.controls.remove_style_class_name(this.theme)
 
     this.theme = this.settings.get('window-buttons-theme')
-    const path = `themes/${this.theme}/stylesheet.css`
+    const path = `@/themes/${this.theme}/stylesheet.css`
 
     this.styles.addShellStyle('windowButtons', path)
     this.controls.add_style_class_name(this.theme)
