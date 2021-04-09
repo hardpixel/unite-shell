@@ -254,7 +254,7 @@ var Styles = class Styles {
   addShellStyle(name, data) {
     if (data.startsWith('@/')) {
       this.deleteStyle(name)
-      this.setStyle(name, ShellStyle, path)
+      this.setStyle(name, ShellStyle, data)
     } else {
       this.addWidgetStyle(name, Main.uiGroup, data)
     }
