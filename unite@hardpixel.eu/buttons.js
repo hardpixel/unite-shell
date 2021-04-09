@@ -99,6 +99,7 @@ var WindowControls = GObject.registerClass(
       this.add_child(this._controls)
 
       this.add_style_class_name('window-controls')
+      this.remove_style_class_name('panel-button')
     }
 
     _addButton(action) {
