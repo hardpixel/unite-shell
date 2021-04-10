@@ -6,7 +6,8 @@
 }
 
 #panel .panel-button > .system-status-icon {
-  padding: 0;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 #panel .panel-button .panel-status-indicators-box {
@@ -27,7 +28,8 @@
 #panel .panel-button.clock-display {
   -natural-hpadding: 0px;
   -minimum-hpadding: 0px;
-  padding: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 #panel .clock-display-box .clock {

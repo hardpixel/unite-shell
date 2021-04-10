@@ -4,7 +4,8 @@
 }
 
 #panel .panel-button .system-status-icon {
-  padding: 0;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 #panel .panel-button .panel-status-indicators-box {
