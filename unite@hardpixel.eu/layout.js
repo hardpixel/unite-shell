@@ -199,6 +199,7 @@ var LayoutManager = GObject.registerClass(
 
       Main.panel._addStyleClassName(this.styleClass)
 
+      this._syncLayout()
       this._syncStyles()
     }
 
@@ -232,6 +233,30 @@ var LayoutManager = GObject.registerClass(
     _resetStyles() {
       Main.panel._removeStyleClassName(this.styleClass)
       this.styles.removeAll()
+    }
+
+    // Fix dateMenu paddings when reduce spacing enabled
+    // when returning from lock screen
+    _syncLayout() {
+      if (VERSION >= 40) {
+        const spacing  = this.settings.get('reduce-panel-spacing')
+        const dateMenu = Main.panel.statusArea.dateMenu
+        const paddings = this._dateMenuPadding
+
+        if (!paddings && spacing) {
+          this._dateMenuPadding = [dateMenu._minHPadding, dateMenu._natHPadding]
+
+          dateMenu._minHPadding = 0
+          dateMenu._natHPadding = 0
+        }
+
+        if (paddings) {
+          dateMenu._minHPadding = paddings[0]
+          dateMenu._natHPadding = paddings[1]
+        }
+
+        dateMenu.queue_relayout()
+      }
     }
 
     // Fix for panel spacing not applied until mouse-over
@@ -271,6 +296,7 @@ var LayoutManager = GObject.registerClass(
       }
 
       this._resetStyles()
+      this._syncLayout()
       this._syncStyles()
 
       this.signals.disconnectAll()
