@@ -1,5 +1,17 @@
 # Changelog
 
+## [v50](https://github.com/hardpixel/unite-shell/tree/v50) (2021-04-16)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v49...v50)
+
+**Fixed bugs:**
+
+- Right click on top bar menu doesn't stay open [\#236](https://github.com/hardpixel/unite-shell/issues/236)
+
+**Closed issues:**
+
+- Remove "Top bar desktop name text" completely [\#235](https://github.com/hardpixel/unite-shell/issues/235)
+
 ## [v49](https://github.com/hardpixel/unite-shell/tree/v49) (2021-04-09)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v48...v49)
