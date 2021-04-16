@@ -572,7 +572,7 @@ var TitlebarActions = class TitlebarActions extends PanelExtension {
 
   _openWindowMenu(win, x) {
     const size = Main.panel.height + 4
-    const rect = { x, y: 0, width: size, height: size }
+    const rect = { x: x - size, y: 0, width: size * 2, height: size }
     const type = Meta.WindowMenuType.WM
 
     Main.wm._windowMenuManager.showWindowMenuForWindow(win, type, rect)
