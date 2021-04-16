@@ -253,6 +253,8 @@ var LayoutManager = GObject.registerClass(
         if (paddings) {
           dateMenu._minHPadding = paddings[0]
           dateMenu._natHPadding = paddings[1]
+
+          this._dateMenuPadding = null
         }
 
         dateMenu.queue_relayout()
