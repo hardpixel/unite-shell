@@ -505,24 +505,18 @@ var TitlebarActions = class TitlebarActions extends PanelExtension {
   }
 
   _onButtonPressEvent(actor, event) {
+    if (Main.modalCount > 0 || actor != event.get_source()) {
+      return Clutter.EVENT_PROPAGATE
+    }
+
     const focusWindow = global.unite.focusWindow
 
     if (!focusWindow || !focusWindow.hideTitlebars) {
       return Clutter.EVENT_PROPAGATE
     }
 
-    const [mouseX, mouseY] = event.get_coords()
-
     const ccount = event.get_click_count()
     const button = event.get_button()
-
-    const clickOnChildren = Main.panel.get_children().some(({ x, y, width, height }) => {
-      return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height
-    })
-
-    if (clickOnChildren) {
-      return Clutter.EVENT_PROPAGATE
-    }
 
     let action = null
 
@@ -539,8 +533,7 @@ var TitlebarActions = class TitlebarActions extends PanelExtension {
     }
 
     if (action == 'menu') {
-      this._openWindowMenu(focusWindow.win, mouseX)
-      return Clutter.EVENT_STOP
+      return this._openWindowMenu(focusWindow.win, event.get_coords()[0])
     }
 
     if (action && action != 'none') {
@@ -560,14 +553,14 @@ var TitlebarActions = class TitlebarActions extends PanelExtension {
       'lower':                        'lower'
     }
 
-    const method = mapping[action]
+    const method = win[mapping[action]]
 
-    if (method) {
-      win[method].call(win)
-      return Clutter.EVENT_STOP
+    if (typeof method !== 'function') {
+      return Clutter.EVENT_PROPAGATE
     }
 
-    return Clutter.EVENT_PROPAGATE
+    method.call(win)
+    return Clutter.EVENT_STOP
   }
 
   _openWindowMenu(win, x) {
@@ -576,6 +569,7 @@ var TitlebarActions = class TitlebarActions extends PanelExtension {
     const type = Meta.WindowMenuType.WM
 
     Main.wm._windowMenuManager.showWindowMenuForWindow(win, type, rect)
+    return Clutter.EVENT_STOP
   }
 
   _destroy() {
