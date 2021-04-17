@@ -152,6 +152,42 @@ class ShellStyle {
   }
 }
 
+var Feature = class Feature {
+  constructor(settings, key, callback) {
+    this.activated = false
+
+    const isActive = () => {
+      return callback.call(null, settings.get(key))
+    }
+
+    const onChange = () => {
+      const active = isActive()
+
+      if (active && !this.activated) {
+        this.activated = true
+        return this._init()
+      }
+
+      if (!active && this.activated) {
+        this.activated = false
+        return this._destroy()
+      }
+    }
+
+    this.activate = () => {
+      settings.connect(key, onChange.bind(this))
+      onChange()
+    }
+
+    this.destroy = () => {
+      if (this.activated) {
+        this._destroy()
+        this.activated = false
+      }
+    }
+  }
+}
+
 class WidgetStyle {
   constructor(widget, style) {
     this.widget = widget

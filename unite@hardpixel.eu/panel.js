@@ -17,43 +17,7 @@ const Buttons    = Unite.imports.buttons
 const Handlers   = Unite.imports.handlers
 const VERSION    = Unite.imports.constants.VERSION
 
-var PanelExtension = class PanelExtension {
-  constructor(settings, key, callback) {
-    this.activated = false
-
-    const isActive = () => {
-      return callback.call(null, settings.get(key))
-    }
-
-    const onChange = () => {
-      const active = isActive()
-
-      if (active && !this.activated) {
-        this.activated = true
-        return this._init()
-      }
-
-      if (!active && this.activated) {
-        this.activated = false
-        return this._destroy()
-      }
-    }
-
-    this.activate = () => {
-      settings.connect(key, onChange.bind(this))
-      onChange()
-    }
-
-    this.destroy = () => {
-      if (this.activated) {
-        this._destroy()
-        this.activated = false
-      }
-    }
-  }
-}
-
-var WindowButtons = class WindowButtons extends PanelExtension {
+var WindowButtons = class WindowButtons extends Handlers.Feature {
   constructor({ settings }) {
     const active = val => val != 'never'
     super(settings, 'show-window-buttons', active)
@@ -200,7 +164,7 @@ var WindowButtons = class WindowButtons extends PanelExtension {
   }
 }
 
-var ExtendLeftBox = class ExtendLeftBox extends PanelExtension {
+var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
   constructor({ settings }) {
     const active = val => val == true
     super(settings, 'extend-left-box', active)
@@ -295,7 +259,7 @@ var ExtendLeftBox = class ExtendLeftBox extends PanelExtension {
   }
 }
 
-var ActivitiesButton = class ActivitiesButton extends PanelExtension {
+var ActivitiesButton = class ActivitiesButton extends Handlers.Feature {
   constructor({ settings }) {
     const active = val => val != 'never'
     super(settings, 'hide-activities-button', active)
@@ -362,7 +326,7 @@ var ActivitiesButton = class ActivitiesButton extends PanelExtension {
   }
 }
 
-var DesktopName = class DesktopName extends PanelExtension {
+var DesktopName = class DesktopName extends Handlers.Feature {
   constructor({ settings }) {
     const active = val => val == true
     super(settings, 'show-desktop-name', active)
@@ -421,7 +385,7 @@ var DesktopName = class DesktopName extends PanelExtension {
   }
 }
 
-var TrayIcons = class TrayIcons extends PanelExtension {
+var TrayIcons = class TrayIcons extends Handlers.Feature {
   constructor({ settings }) {
     const active = val => val == true
     super(settings, 'show-legacy-tray', active)
@@ -489,7 +453,7 @@ var TrayIcons = class TrayIcons extends PanelExtension {
   }
 }
 
-var TitlebarActions = class TitlebarActions extends PanelExtension {
+var TitlebarActions = class TitlebarActions extends Handlers.Feature {
   constructor({ settings }) {
     const active = val => val == true
     super(settings, 'enable-titlebar-actions', active)
@@ -578,7 +542,7 @@ var TitlebarActions = class TitlebarActions extends PanelExtension {
   }
 }
 
-var AppMenuCustomizer = class AppMenuCustomizer extends PanelExtension {
+var AppMenuCustomizer = class AppMenuCustomizer extends Handlers.Feature {
   constructor({ settings }) {
     const active = val => val > 0
     super(settings, 'app-menu-max-width', active)
