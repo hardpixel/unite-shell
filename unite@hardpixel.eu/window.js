@@ -488,6 +488,8 @@ var WindowManager = GObject.registerClass(
       GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
         const actors = global.get_window_actors()
         actors.forEach(actor => this._onMapWindow(null, actor))
+
+        return GLib.SOURCE_REMOVE
       })
 
       this._onStylesChange()
