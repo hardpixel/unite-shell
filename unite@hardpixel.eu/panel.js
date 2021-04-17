@@ -172,7 +172,12 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
 
   _init() {
     this._default = Main.panel.__proto__.vfunc_allocate
+    this._injectAllocate()
 
+    Main.panel.queue_relayout()
+  }
+
+  _injectAllocate() {
     if (VERSION < 37) {
       Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box, flags) => {
         Main.panel.vfunc_allocate.call(Main.panel, box, flags)
@@ -184,8 +189,6 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
         this._allocate(Main.panel, box)
       })
     }
-
-    Main.panel.queue_relayout()
   }
 
   _boxAllocate(box, childBox, flags) {
