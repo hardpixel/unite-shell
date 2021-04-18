@@ -53,12 +53,11 @@ function toggleWidgetArrow(widget, hide) {
 }
 
 var Messages = class Messages extends Handlers.Feature {
-  constructor({ settings }) {
-    const active = val => val != 'center'
-    super(settings, 'notifications-position', active)
+  constructor() {
+    super('notifications-position', setting => setting != 'center')
   }
 
-  _init() {
+  activate() {
     this.settings = new Handlers.Settings()
 
     this.settings.connect(
@@ -84,7 +83,7 @@ var Messages = class Messages extends Handlers.Feature {
     banner.set_width(390 * context.scale_factor)
   }
 
-  _destroy() {
+  destroy() {
     const banner   = Main.messageTray._bannerBin
     const position = Clutter.ActorAlign.CENTER
 
@@ -96,57 +95,53 @@ var Messages = class Messages extends Handlers.Feature {
 }
 
 var AppMenuIcon = class AppMenuIcon extends Handlers.Feature {
-  constructor({ settings }) {
-    const active = val => val == true
-    super(settings, 'hide-app-menu-icon', active)
+  constructor() {
+    super('hide-app-menu-icon', setting => setting == true)
   }
 
-  _init() {
+  activate() {
     AppMenu._iconBox.hide()
   }
 
-  _destroy() {
+  destroy() {
     AppMenu._iconBox.show()
   }
 }
 
 var AppMenuArrow = class AppMenuArrow extends Handlers.Feature {
-  constructor({ settings }) {
-    const active = val => VERSION < 40 && val == true
-    super(settings, 'hide-app-menu-arrow', active)
+  constructor() {
+    super('hide-app-menu-arrow', setting => VERSION < 40 && setting == true)
   }
 
-  _init() {
+  activate() {
     toggleWidgetArrow(AppMenu, true)
   }
 
-  _destroy() {
+  destroy() {
     toggleWidgetArrow(AppMenu, false)
   }
 }
 
 var AggMenuArrow = class AggMenuArrow extends Handlers.Feature {
-  constructor({ settings }) {
-    const active = val => VERSION < 40 && val == true
-    super(settings, 'hide-aggregate-menu-arrow', active)
+  constructor() {
+    super('hide-aggregate-menu-arrow', setting => VERSION < 40 && setting == true)
   }
 
-  _init() {
+  activate() {
     toggleWidgetArrow(AggMenu, true)
   }
 
-  _destroy() {
+  destroy() {
     toggleWidgetArrow(AggMenu, false)
   }
 }
 
 var DropdownArrows = class DropdownArrows extends Handlers.Feature {
-  constructor({ settings }) {
-    const active = val => VERSION < 40 && val == true
-    super(settings, 'hide-dropdown-arrows', active)
+  constructor() {
+    super('hide-dropdown-arrows', setting => VERSION < 40 && setting == true)
   }
 
-  _init() {
+  activate() {
     this.signals = new Handlers.Signals()
 
     for (const panelBox of Main.panel.get_children()) {
@@ -170,19 +165,18 @@ var DropdownArrows = class DropdownArrows extends Handlers.Feature {
     this._toggleArrows(true)
   }
 
-  _destroy() {
+  destroy() {
     this._toggleArrows(false)
     this.signals.disconnectAll()
   }
 }
 
 var SystemFonts = class SystemFonts extends Handlers.Feature {
-  constructor({ settings }) {
-    const active = val => VERSION < 36 && val == true
-    super(settings, 'use-system-fonts', active)
+  constructor() {
+    super('use-system-fonts', setting => VERSION < 36 && setting == true)
   }
 
-  _init() {
+  activate() {
     this.signals = new Handlers.Signals()
     this.styles  = new Handlers.Styles()
 
@@ -211,19 +205,18 @@ var SystemFonts = class SystemFonts extends Handlers.Feature {
     Main.panel._addStyleClassName('system-fonts')
   }
 
-  _destroy() {
+  destroy() {
     this.signals.disconnectAll()
     this._resetStyles()
   }
 }
 
 var PanelSpacing = class PanelSpacing extends Handlers.Feature {
-  constructor({ settings }) {
-    const active = val => val == true
-    super(settings, 'reduce-panel-spacing', active)
+  constructor() {
+    super('reduce-panel-spacing', setting => setting == true)
   }
 
-  _init() {
+  activate() {
     this.styles = new Handlers.Styles()
     this._injectStyles()
 
@@ -279,7 +272,7 @@ var PanelSpacing = class PanelSpacing extends Handlers.Feature {
     }
   }
 
-  _destroy() {
+  destroy() {
     Main.panel._removeStyleClassName('reduce-spacing')
     this.styles.removeAll()
 
@@ -290,36 +283,23 @@ var PanelSpacing = class PanelSpacing extends Handlers.Feature {
 var LayoutManager = GObject.registerClass(
   class UniteLayoutManager extends GObject.Object {
     _init() {
-      this.settings = new Handlers.Settings()
-      this.messages = new Messages(this)
-      this.appIcon  = new AppMenuIcon(this)
-      this.appArrow = new AppMenuArrow(this)
-      this.aggArrow = new AggMenuArrow(this)
-      this.arrows   = new DropdownArrows(this)
-      this.sysFonts = new SystemFonts(this)
-      this.spacing  = new PanelSpacing(this)
+      this.features = new Handlers.Features()
+
+      this.features.add(Messages)
+      this.features.add(AppMenuIcon)
+      this.features.add(AppMenuArrow)
+      this.features.add(AggMenuArrow)
+      this.features.add(DropdownArrows)
+      this.features.add(SystemFonts)
+      this.features.add(PanelSpacing)
     }
 
     activate() {
-      this.messages.activate()
-      this.appIcon.activate()
-      this.appArrow.activate()
-      this.aggArrow.activate()
-      this.arrows.activate()
-      this.sysFonts.activate()
-      this.spacing.activate()
+      this.features.activate()
     }
 
     destroy() {
-      this.messages.destroy()
-      this.appIcon.destroy()
-      this.appArrow.destroy()
-      this.aggArrow.destroy()
-      this.arrows.destroy()
-      this.sysFonts.destroy()
-      this.spacing.destroy()
-
-      this.settings.disconnectAll()
+      this.features.destroy()
     }
   }
 )

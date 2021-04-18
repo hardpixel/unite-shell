@@ -18,12 +18,11 @@ const Handlers   = Unite.imports.handlers
 const VERSION    = Unite.imports.constants.VERSION
 
 var WindowButtons = class WindowButtons extends Handlers.Feature {
-  constructor({ settings }) {
-    const active = val => val != 'never'
-    super(settings, 'show-window-buttons', active)
+  constructor() {
+    super('show-window-buttons', setting => setting != 'never')
   }
 
-  _init() {
+  activate() {
     this.theme    = 'default-dark'
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
@@ -155,7 +154,7 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
     }
   }
 
-  _destroy() {
+  destroy() {
     this.controls.destroy()
 
     this.signals.disconnectAll()
@@ -165,12 +164,11 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
 }
 
 var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
-  constructor({ settings }) {
-    const active = val => val == true
-    super(settings, 'extend-left-box', active)
+  constructor() {
+    super('extend-left-box', setting => setting == true)
   }
 
-  _init() {
+  activate() {
     this._default = Main.panel.__proto__.vfunc_allocate
     this._injectAllocate()
 
@@ -254,7 +252,7 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
     this._boxAllocate(rightBox, childBox, flags)
   }
 
-  _destroy() {
+  destroy() {
     Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', this._default)
     this._default = null
 
@@ -263,12 +261,11 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
 }
 
 var ActivitiesButton = class ActivitiesButton extends Handlers.Feature {
-  constructor({ settings }) {
-    const active = val => val != 'never'
-    super(settings, 'hide-activities-button', active)
+  constructor() {
+    super('hide-activities-button', setting => setting != 'never')
   }
 
-  _init() {
+  activate() {
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
 
@@ -319,7 +316,7 @@ var ActivitiesButton = class ActivitiesButton extends Handlers.Feature {
     }
   }
 
-  _destroy() {
+  destroy() {
     if (!Main.overview.isDummy) {
       Activities.container.show()
     }
@@ -330,12 +327,11 @@ var ActivitiesButton = class ActivitiesButton extends Handlers.Feature {
 }
 
 var DesktopName = class DesktopName extends Handlers.Feature {
-  constructor({ settings }) {
-    const active = val => val == true
-    super(settings, 'show-desktop-name', active)
+  constructor() {
+    super('show-desktop-name', setting => setting == true)
   }
 
-  _init() {
+  activate() {
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
     this.label    = new Buttons.DesktopLabel()
@@ -380,7 +376,7 @@ var DesktopName = class DesktopName extends Handlers.Feature {
     this.label.setText(text)
   }
 
-  _destroy() {
+  destroy() {
     this.label.destroy()
 
     this.signals.disconnectAll()
@@ -389,12 +385,11 @@ var DesktopName = class DesktopName extends Handlers.Feature {
 }
 
 var TrayIcons = class TrayIcons extends Handlers.Feature {
-  constructor({ settings }) {
-    const active = val => val == true
-    super(settings, 'show-legacy-tray', active)
+  constructor() {
+    super('show-legacy-tray', setting => setting == true)
   }
 
-  _init() {
+  activate() {
     this.tray       = new Shell.TrayManager()
     this.settings   = new Handlers.Settings()
     this.indicators = new Buttons.TrayIndicator()
@@ -447,7 +442,7 @@ var TrayIcons = class TrayIcons extends Handlers.Feature {
     this.indicators.forEach(this._desaturateIcon.bind(this))
   }
 
-  _destroy() {
+  destroy() {
     this.tray = null
     System.gc()
 
@@ -457,12 +452,11 @@ var TrayIcons = class TrayIcons extends Handlers.Feature {
 }
 
 var TitlebarActions = class TitlebarActions extends Handlers.Feature {
-  constructor({ settings }) {
-    const active = val => val == true
-    super(settings, 'enable-titlebar-actions', active)
+  constructor() {
+    super('enable-titlebar-actions', setting => setting == true)
   }
 
-  _init() {
+  activate() {
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
 
@@ -539,19 +533,18 @@ var TitlebarActions = class TitlebarActions extends Handlers.Feature {
     return Clutter.EVENT_STOP
   }
 
-  _destroy() {
+  destroy() {
     this.signals.disconnectAll()
     this.settings.disconnectAll()
   }
 }
 
 var AppMenuCustomizer = class AppMenuCustomizer extends Handlers.Feature {
-  constructor({ settings }) {
-    const active = val => val > 0
-    super(settings, 'app-menu-max-width', active)
+  constructor() {
+    super('app-menu-max-width', setting => setting > 0)
   }
 
-  _init() {
+  activate() {
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
     this.tooltip  = new St.Label({ visible: false, style_class: 'dash-label' })
@@ -633,7 +626,7 @@ var AppMenuCustomizer = class AppMenuCustomizer extends Handlers.Feature {
     this.setTextEllipsizeMode(this.ellipsizeMode)
   }
 
-  _destroy() {
+  destroy() {
     this.tooltip.destroy()
 
     this.setLabelMaxWidth(null)
@@ -647,36 +640,23 @@ var AppMenuCustomizer = class AppMenuCustomizer extends Handlers.Feature {
 var PanelManager = GObject.registerClass(
   class UnitePanelManager extends GObject.Object {
     _init() {
-      this.settings   = new Handlers.Settings()
-      this.buttons    = new WindowButtons(this)
-      this.extender   = new ExtendLeftBox(this)
-      this.activities = new ActivitiesButton(this)
-      this.desktop    = new DesktopName(this)
-      this.tray       = new TrayIcons(this)
-      this.titlebar   = new TitlebarActions(this)
-      this.appmenu    = new AppMenuCustomizer(this)
+      this.features = new Handlers.Features()
+
+      this.features.add(WindowButtons)
+      this.features.add(ExtendLeftBox)
+      this.features.add(ActivitiesButton)
+      this.features.add(DesktopName)
+      this.features.add(TrayIcons)
+      this.features.add(TitlebarActions)
+      this.features.add(AppMenuCustomizer)
     }
 
     activate() {
-      this.buttons.activate()
-      this.extender.activate()
-      this.activities.activate()
-      this.desktop.activate()
-      this.tray.activate()
-      this.titlebar.activate()
-      this.appmenu.activate()
+      this.features.activate()
     }
 
     destroy() {
-      this.buttons.destroy()
-      this.extender.destroy()
-      this.activities.destroy()
-      this.desktop.destroy()
-      this.tray.destroy()
-      this.titlebar.destroy()
-      this.appmenu.destroy()
-
-      this.settings.disconnectAll()
+      this.features.destroy()
     }
   }
 )

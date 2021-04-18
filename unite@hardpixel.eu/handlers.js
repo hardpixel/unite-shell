@@ -131,38 +131,65 @@ var Settings = class Settings extends Signals {
 }
 
 var Feature = class Feature {
-  constructor(settings, key, callback) {
-    this.activated = false
+  constructor(setting, callback) {
+    this._settingsKey = setting
+    this._checkActive = callback
+  }
+}
+
+var Features = class Features {
+  constructor() {
+    this.features = []
+    this.settings = new Settings()
+  }
+
+  add(klass) {
+    const feature = new klass()
+    this.features.push(feature)
+
+    const setting = feature._settingsKey
+    const checkCb = feature._checkActive
+
+    feature.activated = false
 
     const isActive = () => {
-      return callback.call(null, settings.get(key))
+      return checkCb.call(null, this.settings.get(setting))
     }
 
     const onChange = () => {
       const active = isActive()
 
-      if (active && !this.activated) {
-        this.activated = true
-        return this._init()
+      if (active && !feature.activated) {
+        feature.activated = true
+        return feature.activate()
       }
 
-      if (!active && this.activated) {
-        this.activated = false
-        return this._destroy()
+      if (!active && feature.activated) {
+        feature.activated = false
+        return feature.destroy()
       }
     }
 
-    this.activate = () => {
-      settings.connect(key, onChange.bind(this))
+    feature._doActivate = () => {
+      this.settings.connect(setting, onChange.bind(feature))
       onChange()
     }
 
-    this.destroy = () => {
-      if (this.activated) {
-        this._destroy()
-        this.activated = false
+    feature._doDestroy = () => {
+      if (feature.activated) {
+        feature.destroy()
+        feature.activated = false
       }
     }
+  }
+
+  activate() {
+    this.features.forEach(feature => feature._doActivate())
+  }
+
+  destroy() {
+    this.features.forEach(feature => feature._doDestroy())
+    this.settings.disconnectAll()
   }
 }
 
