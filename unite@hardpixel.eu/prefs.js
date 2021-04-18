@@ -74,34 +74,34 @@ var PrefsWidget = GObject.registerClass(
       let widget = this._getWidget(setting)
       widget.set_active(this._settings.get_enum(setting))
 
-      widget.connect('changed', (combobox) => {
+      widget.connect('changed', combobox => {
         this._settings.set_enum(setting, combobox.get_active())
       })
     }
 
     _bindStrings() {
       let settings = this._settings.getTypeSettings('string')
-      settings.forEach(setting => { this._bindInput(setting, 'text') })
+      settings.forEach(setting => this._bindInput(setting, 'text'))
     }
 
     _bindSelects() {
       let settings = this._settings.getTypeSettings('select')
-      settings.forEach(setting => { this._bindInput(setting, 'active-id') })
+      settings.forEach(setting => this._bindInput(setting, 'active-id'))
     }
 
     _bindBooleans() {
       let settings = this._settings.getTypeSettings('boolean')
-      settings.forEach(setting => { this._bindInput(setting, 'active') })
+      settings.forEach(setting => this._bindInput(setting, 'active'))
     }
 
     _bindEnumerations() {
       let settings = this._settings.getTypeSettings('enum')
-      settings.forEach(setting => { this._bindEnum(setting) })
+      settings.forEach(setting => this._bindEnum(setting))
     }
 
     _bindIntegers() {
       let settings = this._settings.getTypeSettings('int')
-      settings.forEach(setting => { this._bindInput(setting, 'value') })
+      settings.forEach(setting => this._bindInput(setting, 'value'))
     }
   }
 )
