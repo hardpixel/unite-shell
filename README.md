@@ -31,7 +31,7 @@ Make sure you have installed `xorg-xprop`:
 * Fedora/RHEL: `dnf install xorg-x11-utils`
 * Arch: `pacman -S xorg-xprop`
 
-Then, download the latest [release](https://github.com/hardpixel/unite-shell/releases) and extract it into `~/.local/share/gnome-shell/extensions`. To get the complete Ubuntu Unity layout, you can combine it with [Dash to Dock](https://github.com/micheleg/dash-to-dock) extension.
+Then, download the latest [release](https://github.com/hardpixel/unite-shell/releases) and extract it into `~/.local/share/gnome-shell/extensions`. To get the complete Ubuntu Unity layout, you can combine it with [Dash to Dock](https://github.com/micheleg/dash-to-dock) or [Dash to Plank](https://github.com/hardpixel/dash-to-plank) extension and [Gnome HUD](https://github.com/hardpixel/gnome-hud) menu.
 
 ### Gnome Shell Extensions
 The easiest way to install this extension is via the official [Gnome Shell Extensions](https://extensions.gnome.org) resource page [here](https://extensions.gnome.org/extension/1287/unite).
