@@ -225,22 +225,16 @@ var PanelSpacing = class PanelSpacing extends Handlers.Feature {
 
   _init() {
     this.styles = new Handlers.Styles()
-    this._applyStyles()
-  }
-
-  _applyStyles() {
     this._resetStyles()
-    this._injectStyles()
 
+    this._injectStyles()
     Main.panel._addStyleClassName('reduce-spacing')
     this._syncLayout()
   }
 
   _resetStyles() {
-    this.styles.removeAll()
-
     Main.panel._removeStyleClassName('reduce-spacing')
-    this._syncLayout()
+    this.styles.removeAll()
   }
 
   _injectStyles() {
@@ -269,9 +263,7 @@ var PanelSpacing = class PanelSpacing extends Handlers.Feature {
 
         dateMenu._minHPadding = 0
         dateMenu._natHPadding = 0
-      }
-
-      if (paddings) {
+      } else {
         dateMenu._minHPadding = paddings[0]
         dateMenu._natHPadding = paddings[1]
 
@@ -295,6 +287,7 @@ var PanelSpacing = class PanelSpacing extends Handlers.Feature {
 
   _destroy() {
     this._resetStyles()
+    this._syncLayout()
   }
 }
 
