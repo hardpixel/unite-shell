@@ -28,11 +28,6 @@ var PrefsWidget = GObject.registerClass(
       if (VERSION >= 36) {
         this._hideSetting('use-system-fonts')
       }
-
-      if (VERSION >= 40) {
-        this._disableSetting('hide-aggregate-menu-arrow')
-        this._disableSetting('hide-app-menu-arrow')
-      }
     }
 
     _loadTemplate() {
