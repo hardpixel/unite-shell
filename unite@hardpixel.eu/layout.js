@@ -226,7 +226,7 @@ var PanelSpacing = class PanelSpacing extends Handlers.Feature {
 
   _injectStyles() {
     if (VERSION >= 40) {
-      this.styles.addShellStyle('spacing40', '@/styles/shell/spacing40.css')
+      this.styles.addShellStyle('spacing', '@/styles/shell/spacing.css')
     }
 
     if (VERSION < 40) {
