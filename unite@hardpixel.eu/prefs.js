@@ -3,7 +3,6 @@ const Gtk         = imports.gi.Gtk
 const Unite       = imports.misc.extensionUtils.getCurrentExtension()
 const Convenience = Unite.imports.convenience
 const VERSION     = Unite.imports.constants.VERSION
-const TEMPLATE    = VERSION < 40 ? 'settings-gtk3.ui' : 'settings.ui'
 
 var PrefsWidget = GObject.registerClass(
   class UnitePrefsWidget extends Gtk.Box {
@@ -12,15 +11,7 @@ var PrefsWidget = GObject.registerClass(
       super._init(params)
 
       this._buildable = new Gtk.Builder()
-      this._buildable.add_from_file(`${Unite.path}/${TEMPLATE}`)
-
-      this._container = this._getWidget('prefs_widget')
-
-      if (VERSION < 40) {
-        this.add(this._container)
-      } else {
-        this.append(this._container)
-      }
+      this._loadTemplate()
 
       this._bindStrings()
       this._bindSelects()
@@ -42,6 +33,20 @@ var PrefsWidget = GObject.registerClass(
         this._disableSetting('hide-dropdown-arrows')
         this._disableSetting('hide-aggregate-menu-arrow')
         this._disableSetting('hide-app-menu-arrow')
+      }
+    }
+
+    _loadTemplate() {
+      if (VERSION >= 40) {
+        this._buildable.add_from_file(`${Unite.path}/settings.ui`)
+
+        this._container = this._getWidget('prefs_widget')
+        this.append(this._container)
+      } else {
+        this._buildable.add_from_file(`${Unite.path}/settings-gtk3.ui`)
+
+        this._container = this._getWidget('prefs_widget')
+        this.add(this._container)
       }
     }
 
