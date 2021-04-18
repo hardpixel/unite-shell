@@ -37,6 +37,6 @@
   padding-right: 8px;
 }
 
-#panel .clock-display-box Gjs_ui_dateMenu_MessagesIndicator {
+#panel .clock-display-box StIcon:last-child {
   margin-right: 3px;
 }
