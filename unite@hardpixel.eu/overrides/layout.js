@@ -78,6 +78,21 @@ var SystemFonts = class SystemFonts extends Handlers.Feature {
   }
 }
 
+var DropdownArrows = class DropdownArrows extends Override.Injection {
+  get active() {
+    return VERSION < 40
+  }
+
+  _init() {
+    this._replace('_handleWidget')
+  }
+
+  _handleWidget(name) {
+    const ignored = ['aggregateMenu', 'appMenu']
+    return !name.startsWith('unite') && !ignored.includes(name)
+  }
+}
+
 var PanelSpacing = class PanelSpacing extends Override.Injection {
   get active() {
     return VERSION < 40

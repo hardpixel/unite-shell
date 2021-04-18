@@ -26,16 +26,14 @@ var WidgetArrow = class WidgetArrow {
     }
 
     const actor = widget.last_child
-    if (!actor) return
-
-    const klass = actor.has_style_class_name
+    const klass = actor && actor.has_style_class_name
     const cname = name => klass && actor.has_style_class_name(name)
 
     if (cname('popup-menu-arrow')) {
-      this.widget._arrow = actor
-    } else {
-      this._findActor(actor)
+      return this.widget._arrow = actor
     }
+
+    actor && this._findActor(actor)
   }
 
   hide() {
@@ -112,6 +110,8 @@ var AppMenuIcon = class AppMenuIcon extends Handlers.Feature {
 var DropdownArrows = class DropdownArrows extends Handlers.Feature {
   constructor() {
     super('hide-dropdown-arrows', setting => setting == true)
+
+    Override.inject(this, 'layout', 'DropdownArrows')
   }
 
   activate() {
@@ -126,10 +126,13 @@ var DropdownArrows = class DropdownArrows extends Handlers.Feature {
 
   get arrows() {
     const items = Main.panel.statusArea
-    const valid = name => !['aggregateMenu', 'appMenu'].includes(name)
-    const names = Object.keys(items).filter(valid)
+    const names = Object.keys(items).filter(this._handleWidget.bind(this))
 
     return names.map(name => new WidgetArrow(items[name]))
+  }
+
+  _handleWidget(name) {
+    return !name.startsWith('unite')
   }
 
   _onActorAdded() {
