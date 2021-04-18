@@ -4,7 +4,7 @@ const Unite       = imports.misc.extensionUtils.getCurrentExtension()
 const AppMenu     = Main.panel.statusArea.appMenu
 const AggMenu     = Main.panel.statusArea.aggregateMenu
 const Handlers    = Unite.imports.handlers
-const Layout      = Unite.imports.layout
+const WidgetArrow = Unite.imports.layout.WidgetArrow
 const Override    = Unite.imports.overrides.helper
 const VERSION     = Unite.imports.overrides.helper.VERSION
 
@@ -14,11 +14,12 @@ var AppMenuArrow = class AppMenuArrow extends Handlers.Feature {
   }
 
   activate() {
-    Layout.toggleWidgetArrow(AppMenu, true)
+    this.arrow = new WidgetArrow(AppMenu)
+    this.arrow.hide()
   }
 
   destroy() {
-    Layout.toggleWidgetArrow(AppMenu, false)
+    this.arrow.show()
   }
 }
 
@@ -28,11 +29,12 @@ var AggMenuArrow = class AggMenuArrow extends Handlers.Feature {
   }
 
   activate() {
-    Layout.toggleWidgetArrow(AggMenu, true)
+    this.arrow = new WidgetArrow(AggMenu)
+    this.arrow.hide()
   }
 
   destroy() {
-    Layout.toggleWidgetArrow(AggMenu, false)
+    this.arrow.show()
   }
 }
 

@@ -7,45 +7,48 @@ const AppMenu  = Main.panel.statusArea.appMenu
 const Handlers = Unite.imports.handlers
 const Override = Unite.imports.overrides.helper
 
-function actorHasClass(actor, name) {
-  return actor.has_style_class_name && actor.has_style_class_name(name)
-}
+var WidgetArrow = class WidgetArrow {
+  constructor(widget) {
+    this.widget = widget || {}
 
-function getWidgetArrow(widget) {
-  let arrow = widget._arrow
-
-  if (!arrow) {
-    const last  = widget.get_n_children() - 1
-    const actor = widget.get_children()[last]
-
-    if (actor) {
-      if (actorHasClass(actor, 'popup-menu-arrow')) {
-        arrow = actor
-      } else {
-        arrow = getWidgetArrow(actor)
-      }
+    if (!this.widget.hasOwnProperty('_arrow')) {
+      this._findActor(this.widget)
     }
   }
 
-  if (arrow && !widget.hasOwnProperty('_arrow')) {
-    widget._arrow = arrow
+  get arrow() {
+    return this.widget._arrow || {}
   }
 
-  return arrow
-}
-
-function toggleWidgetArrow(widget, hide) {
-  const arrow = widget && getWidgetArrow(widget)
-
-  if (arrow) {
-    if (hide && !widget._arrowHandled) {
-      arrow.visible = false
-      widget._arrowHandled = true
+  _findActor(widget) {
+    if (widget.hasOwnProperty('_arrow')) {
+      return this.widget._arrow = widget._arrow
     }
 
-    if (!hide && widget._arrowHandled) {
-      arrow.visible = true
-      delete widget._arrowHandled
+    const actor = widget.last_child
+    if (!actor) return
+
+    const klass = actor.has_style_class_name
+    const cname = name => klass && actor.has_style_class_name(name)
+
+    if (cname('popup-menu-arrow')) {
+      this.widget._arrow = actor
+    } else {
+      this._findActor(actor)
+    }
+  }
+
+  hide() {
+    if (!this.widget._arrowRemoved) {
+      this.arrow.visible = false
+      this.widget._arrowRemoved = true
+    }
+  }
+
+  show() {
+    if (this.widget._arrowRemoved) {
+      this.arrow.visible = true
+      delete this.widget._arrowRemoved
     }
   }
 }
@@ -114,29 +117,27 @@ var DropdownArrows = class DropdownArrows extends Handlers.Feature {
   activate() {
     this.signals = new Handlers.Signals()
 
-    for (const panelBox of Main.panel.get_children()) {
-      this.signals.connect(
-        panelBox, 'actor_added', this._onActorAdded.bind(this)
-      )
+    for (const box of Main.panel.get_children()) {
+      this.signals.connect(box, 'actor_added', this._onActorAdded.bind(this))
     }
 
     this._onActorAdded()
   }
 
-  _toggleArrows(hide) {
-    for (const [name, widget] of Object.entries(Main.panel.statusArea)) {
-      if (name != 'aggregateMenu' && name != 'appMenu') {
-        toggleWidgetArrow(widget, hide)
-      }
-    }
+  get arrows() {
+    const items = Main.panel.statusArea
+    const valid = name => !['aggregateMenu', 'appMenu'].includes(name)
+    const names = Object.keys(items).filter(valid)
+
+    return names.map(name => new WidgetArrow(items[name]))
   }
 
   _onActorAdded() {
-    this._toggleArrows(true)
+    this.arrows.forEach(arrow => arrow.hide())
   }
 
   destroy() {
-    this._toggleArrows(false)
+    this.arrows.forEach(arrow => arrow.show())
     this.signals.disconnectAll()
   }
 }
