@@ -299,6 +299,7 @@
             <child>
               <object class="GtkBox" id="use_system_fonts_section">
                 <property name="spacing">50</property>
+                <property name="visible">0</property>
                 <child>
                   <object class="GtkLabel">
                     <property name="can-focus">0</property>
