@@ -30,7 +30,6 @@ var PrefsWidget = GObject.registerClass(
       }
 
       if (VERSION >= 40) {
-        this._disableSetting('hide-dropdown-arrows')
         this._disableSetting('hide-aggregate-menu-arrow')
         this._disableSetting('hide-app-menu-arrow')
       }

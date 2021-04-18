@@ -138,7 +138,7 @@ var AggMenuArrow = class AggMenuArrow extends Handlers.Feature {
 
 var DropdownArrows = class DropdownArrows extends Handlers.Feature {
   constructor() {
-    super('hide-dropdown-arrows', setting => VERSION < 40 && setting == true)
+    super('hide-dropdown-arrows', setting => setting == true)
   }
 
   activate() {
