@@ -8,7 +8,7 @@ const Util       = imports.misc.util
 const Unite      = imports.misc.extensionUtils.getCurrentExtension()
 const AppMenu    = Main.panel.statusArea.appMenu
 const Handlers   = Unite.imports.handlers
-const VERSION    = Unite.imports.constants.VERSION
+const Override   = Unite.imports.overrides.helper
 
 const VALID_TYPES = [
   Meta.WindowType.NORMAL,
@@ -390,11 +390,7 @@ var WindowManager = GObject.registerClass(
         'button-layout', this._onStylesChange.bind(this)
       )
 
-      if (VERSION < 36) {
-        this.signals.connect(
-          AppMenu._label, 'notify::text', this._onAppmenuChanged.bind(this)
-        )
-      }
+      Override.inject(this, 'window', 'WindowManager')
     }
 
     get focusWindow() {
@@ -457,12 +453,6 @@ var WindowManager = GObject.registerClass(
     _onFocusWindow(display) {
       if (this.focusWindow) {
         this.focusWindow.syncComponents()
-      }
-    }
-
-    _onAppmenuChanged() {
-      if (this.focusWindow) {
-        this.focusWindow.syncAppmenu()
       }
     }
 

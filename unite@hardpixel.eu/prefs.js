@@ -2,17 +2,19 @@ const GObject     = imports.gi.GObject
 const Gtk         = imports.gi.Gtk
 const Unite       = imports.misc.extensionUtils.getCurrentExtension()
 const Convenience = Unite.imports.convenience
-const VERSION     = Unite.imports.constants.VERSION
+const Override    = Unite.imports.overrides.helper
 
 var PrefsWidget = GObject.registerClass(
   class UnitePrefsWidget extends Gtk.Box {
     _init(params) {
-      this._settings = Convenience.getSettings()
       super._init(params)
 
+      this._settings  = Convenience.getSettings()
       this._buildable = new Gtk.Builder()
-      this._loadTemplate()
 
+      Override.inject(this, 'prefs', 'PrefsWidget')
+
+      this._loadTemplate()
       this._bindStrings()
       this._bindSelects()
       this._bindBooleans()
@@ -20,43 +22,16 @@ var PrefsWidget = GObject.registerClass(
       this._bindIntegers()
     }
 
-    startup() {
-      if (VERSION < 40) {
-        this.show_all()
-      }
-
-      if (VERSION >= 36) {
-        this._hideSetting('use-system-fonts')
-      }
-    }
-
     _loadTemplate() {
-      if (VERSION >= 40) {
-        this._buildable.add_from_file(`${Unite.path}/settings.ui`)
+      this._buildable.add_from_file(`${Unite.path}/settings.ui`)
 
-        this._container = this._getWidget('prefs_widget')
-        this.append(this._container)
-      } else {
-        this._buildable.add_from_file(`${Unite.path}/settings-gtk3.ui`)
-
-        this._container = this._getWidget('prefs_widget')
-        this.add(this._container)
-      }
+      this._container = this._getWidget('prefs_widget')
+      this.append(this._container)
     }
 
     _getWidget(name) {
       let widgetName = name.replace(/-/g, '_')
       return this._buildable.get_object(widgetName)
-    }
-
-    _hideSetting(name) {
-      const widget = this._getWidget(`${name}_section`)
-      widget.set_visible(false)
-    }
-
-    _disableSetting(name) {
-      const widget = this._getWidget(`${name}_section`)
-      widget.set_sensitive(false)
     }
 
     _bindInput(setting, prop) {
@@ -105,8 +80,5 @@ function init() {
 }
 
 function buildPrefsWidget() {
-  let widget = new PrefsWidget()
-  widget.startup()
-
-  return widget
+  return new PrefsWidget()
 }

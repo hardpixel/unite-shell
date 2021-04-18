@@ -15,7 +15,7 @@ const AppMenu    = Main.panel.statusArea.appMenu
 const Activities = Main.panel.statusArea.activities
 const Buttons    = Unite.imports.buttons
 const Handlers   = Unite.imports.handlers
-const VERSION    = Unite.imports.constants.VERSION
+const Override   = Unite.imports.overrides.helper
 
 var WindowButtons = class WindowButtons extends Handlers.Feature {
   constructor() {
@@ -166,6 +166,8 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
 var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
   constructor() {
     super('extend-left-box', setting => setting == true)
+
+    Override.inject(this, 'panel', 'ExtendLeftBox')
   }
 
   activate() {
@@ -176,25 +178,14 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
   }
 
   _injectAllocate() {
-    if (VERSION < 37) {
-      Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box, flags) => {
-        Main.panel.vfunc_allocate.call(Main.panel, box, flags)
-        this._allocate(Main.panel, box, flags)
-      })
-    } else {
-      Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box) => {
-        Main.panel.vfunc_allocate.call(Main.panel, box)
-        this._allocate(Main.panel, box)
-      })
-    }
+    Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box) => {
+      Main.panel.vfunc_allocate.call(Main.panel, box)
+      this._allocate(Main.panel, box)
+    })
   }
 
   _boxAllocate(box, childBox, flags) {
-    if (VERSION < 37) {
-      box.allocate(childBox, flags)
-    } else {
-      box.allocate(childBox)
-    }
+    box.allocate(childBox)
   }
 
   _allocate(actor, box, flags) {
