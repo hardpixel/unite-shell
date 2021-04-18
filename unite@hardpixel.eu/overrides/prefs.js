@@ -1,6 +1,6 @@
 const Unite    = imports.misc.extensionUtils.getCurrentExtension()
 const Override = Unite.imports.overrides.helper
-const VERSION  = Unite.imports.constants.VERSION
+const VERSION  = Unite.imports.overrides.helper.VERSION
 
 var PrefsWidget = class PrefsWidget extends Override.Injection {
   get active() {

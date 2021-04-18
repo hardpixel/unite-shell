@@ -6,7 +6,7 @@ const AggMenu     = Main.panel.statusArea.aggregateMenu
 const Handlers    = Unite.imports.handlers
 const Layout      = Unite.imports.layout
 const Override    = Unite.imports.overrides.helper
-const VERSION     = Unite.imports.constants.VERSION
+const VERSION     = Unite.imports.overrides.helper.VERSION
 
 var AppMenuArrow = class AppMenuArrow extends Handlers.Feature {
   constructor() {

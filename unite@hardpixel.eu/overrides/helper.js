@@ -1,4 +1,7 @@
-const Unite = imports.misc.extensionUtils.getCurrentExtension()
+const Config = imports.misc.config
+const Unite  = imports.misc.extensionUtils.getCurrentExtension()
+
+var VERSION = parseInt(Config.PACKAGE_VERSION.replace(/^3\./, '').split('.')[0])
 
 var Injection = class Injection {
   __override__(ctx) {

@@ -2,7 +2,7 @@ const Gi       = imports._gi
 const Main     = imports.ui.main
 const Unite    = imports.misc.extensionUtils.getCurrentExtension()
 const Override = Unite.imports.overrides.helper
-const VERSION  = Unite.imports.constants.VERSION
+const VERSION  = Unite.imports.overrides.helper.VERSION
 
 var ExtendLeftBox = class ExtendLeftBox extends Override.Injection {
   get active() {
