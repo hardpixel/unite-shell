@@ -3,7 +3,7 @@ const Gtk         = imports.gi.Gtk
 const Unite       = imports.misc.extensionUtils.getCurrentExtension()
 const Convenience = Unite.imports.convenience
 const VERSION     = Unite.imports.constants.VERSION
-const TEMPLATE    = VERSION < 40 ? 'settings-gtk3.ui' : 'settings-gtk4.ui'
+const TEMPLATE    = VERSION < 40 ? 'settings-gtk3.ui' : 'settings.ui'
 
 var PrefsWidget = GObject.registerClass(
   class UnitePrefsWidget extends Gtk.Box {
