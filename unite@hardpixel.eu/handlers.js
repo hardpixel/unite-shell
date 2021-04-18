@@ -130,28 +130,6 @@ var Settings = class Settings extends Signals {
   }
 }
 
-class ShellStyle {
-  constructor(path) {
-    this.file = getGioFile(path)
-  }
-
-  get context() {
-    return St.ThemeContext.get_for_stage(global.stage)
-  }
-
-  get theme() {
-    return this.context.get_theme()
-  }
-
-  load() {
-    this.theme.load_stylesheet(this.file)
-  }
-
-  unload() {
-    this.theme.unload_stylesheet(this.file)
-  }
-}
-
 var Feature = class Feature {
   constructor(settings, key, callback) {
     this.activated = false
@@ -185,6 +163,28 @@ var Feature = class Feature {
         this.activated = false
       }
     }
+  }
+}
+
+class ShellStyle {
+  constructor(path) {
+    this.file = getGioFile(path)
+  }
+
+  get context() {
+    return St.ThemeContext.get_for_stage(global.stage)
+  }
+
+  get theme() {
+    return this.context.get_theme()
+  }
+
+  load() {
+    this.theme.load_stylesheet(this.file)
+  }
+
+  unload() {
+    this.theme.unload_stylesheet(this.file)
   }
 }
 
