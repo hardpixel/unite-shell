@@ -111,6 +111,7 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
 
   _onPositionChange() {
     const controls = this.controls.container
+    controls.add_style_class_name('window-controls-container')
 
     if (controls.reparent) {
       controls.reparent(this.container)

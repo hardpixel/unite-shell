@@ -11,11 +11,11 @@
   width: 22px;
 }
 
-#panelLeft .window-controls-box:first-child .window-button:first-child {
+#panelLeft .window-controls-container:first-child .window-button:first-child {
   padding-left: 3px;
 }
 
-#panelRight .window-controls-box:last-child .window-button:last-child {
+#panelRight .window-controls-container:last-child .window-button:last-child {
   padding-right: 3px;
 }
 
