@@ -110,19 +110,15 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
   }
 
   _onPositionChange() {
-    const controls = this.controls.container
+    const controls  = this.controls.container
+    const container = controls.get_parent()
+
     controls.add_style_class_name('window-controls-container')
 
-    if (controls.reparent) {
-      controls.reparent(this.container)
-    } else {
-      const currentParent = controls.get_parent()
-
-      if (currentParent) {
-        currentParent.remove_child(controls)
-        this.container.add_child(controls)
-      }
-   }
+    if (container) {
+      container.remove_child(controls)
+      this.container.add_child(controls)
+    }
 
     if (this.index != null) {
       this.container.set_child_at_index(controls, this.index)
