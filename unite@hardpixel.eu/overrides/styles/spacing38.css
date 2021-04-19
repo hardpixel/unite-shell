@@ -15,3 +15,12 @@
 #panel .panel-button .panel-status-indicators-box .panel-status-indicators-box {
   spacing: 4px;
 }
+
+#panelRight .window-controls-container {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+#panelRight .window-controls-container:last-child {
+  margin-right: 0px;
+}

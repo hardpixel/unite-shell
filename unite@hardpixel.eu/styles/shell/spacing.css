@@ -1,3 +1,9 @@
+#panelLeft,
+#panelCenter,
+#panelRight {
+  spacing: 0px;
+}
+
 #panel .panel-button {
   -natural-hpadding: 6px;
   -minimum-hpadding: 4px;
@@ -39,4 +45,17 @@
 
 #panel .clock-display-box StIcon:last-child {
   margin-right: 3px;
+}
+
+#panel .window-controls-container {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+#panelLeft .window-controls-container:first-child {
+  margin-left: 0px;
+}
+
+#panelRight .window-controls-container:last-child {
+  margin-right: 0px;
 }
