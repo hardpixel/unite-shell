@@ -23,6 +23,7 @@
     <value value="20" nick="flat-remix" />
     <value value="21" nick="adwaita-dark" />
     <value value="22" nick="canta" />
+    <value value="23" nick="nordic" />
   </enum>
 
   <enum id="org.gnome.shell.extensions.unite.hideTitlebars">
