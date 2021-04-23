@@ -64,7 +64,7 @@ var TrayIndicator = GObject.registerClass(
       this._indicators.add_child(ibtn)
 
       icon.connect('destroy', () => { ibtn.destroy() })
-      ibtn.connect('button-release-event', (actor, event) => { icon.click(event) })
+      ibtn.connect('button-release-event', (actor, event) => icon.click(event))
 
       icon.set_reactive(true)
       icon.set_height(this.size)
@@ -85,7 +85,7 @@ var TrayIndicator = GObject.registerClass(
     }
 
     forEach(callback) {
-      this._icons.forEach(icon => { callback.call(null, icon) })
+      this._icons.forEach(icon => callback.call(null, icon))
     }
   }
 )
