@@ -117,7 +117,7 @@ var PanelSpacing = class PanelSpacing extends Override.Injection {
     // Fix for panel spacing not applied until mouse-over
     // Issue: https://gitlab.gnome.org/GNOME/gnome-shell/-/issues/1708
     if (VERSION >= 34) {
-      Object.values(Main.panel.statusArea).forEach((item) => {
+      Object.values(Main.panel.statusArea).forEach(item => {
         if (item !== null) {
           item.add_style_pseudo_class('hover')
           item.remove_style_pseudo_class('hover')
