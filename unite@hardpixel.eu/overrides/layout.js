@@ -7,6 +7,7 @@ const Handlers    = Unite.imports.handlers
 const WidgetArrow = Unite.imports.layout.WidgetArrow
 const Override    = Unite.imports.overrides.helper
 const VERSION     = Unite.imports.overrides.helper.VERSION
+const CLASSIC     = global.session_mode == 'classic'
 
 var AppMenuArrow = class AppMenuArrow extends Handlers.Feature {
   constructor() {
@@ -108,7 +109,7 @@ var PanelSpacing = class PanelSpacing extends Override.Injection {
       this.styles.addShellStyle('spacing38', '@/overrides/styles/spacing38.css')
     }
 
-    if (VERSION < 34) {
+    if (VERSION < 34 || CLASSIC) {
       this.styles.addShellStyle('spacing32', '@/overrides/styles/spacing32.css')
     }
   }
@@ -124,6 +125,45 @@ var PanelSpacing = class PanelSpacing extends Override.Injection {
         }
       })
     }
+  }
+}
+
+var PanelSpacingClassic = class PanelSpacingClassic extends Override.Injection {
+  get active() {
+    return CLASSIC == true
+  }
+
+  _init() {
+    this._prepend('activate', this._onActivate)
+    this._prepend('destroy', this._onDestroy)
+    this._prepend('_injectStyles')
+  }
+
+  _injectStyles() {
+    this.styles.addShellStyle('spacingClassic', '@/overrides/styles/spacing.css')
+  }
+
+  _onActivate() {
+    AppMenu.add_style_class_name('app-menu-button')
+    AppMenu._iconBox.hide()
+  }
+
+  _onDestroy() {
+    AppMenu.remove_style_class_name('app-menu-button')
+  }
+}
+
+var AppMenuIconClassic = class AppMenuIconClassic extends Override.Injection {
+  get active() {
+    return CLASSIC == true
+  }
+
+  _init() {
+    this._prepend('activate', this._resizeAppIcon)
+  }
+
+  _resizeAppIcon() {
+    AppMenu._iconBox.set_size(16, 16)
   }
 }
 

@@ -1,0 +1,20 @@
+#panelLeft .panel-button {
+  -natural-hpadding: 10px;
+  -minimum-hpadding: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#panel .app-menu-button {
+  -natural-hpadding: 4px;
+  -minimum-hpadding: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#panel #panelLeft #appMenu {
+  -natural-hpadding: 0px;
+  -minimum-hpadding: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+}

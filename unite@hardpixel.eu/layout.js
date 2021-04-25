@@ -96,6 +96,8 @@ var Messages = class Messages extends Handlers.Feature {
 var AppMenuIcon = class AppMenuIcon extends Handlers.Feature {
   constructor() {
     super('hide-app-menu-icon', setting => setting == true)
+
+    Override.inject(this, 'layout', 'AppMenuIconClassic')
   }
 
   activate() {
@@ -150,6 +152,7 @@ var PanelSpacing = class PanelSpacing extends Handlers.Feature {
     super('reduce-panel-spacing', setting => setting == true)
 
     Override.inject(this, 'layout', 'PanelSpacing')
+    Override.inject(this, 'layout', 'PanelSpacingClassic')
   }
 
   activate() {
