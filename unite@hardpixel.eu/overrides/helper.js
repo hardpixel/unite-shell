@@ -43,6 +43,7 @@ function inject(ctx, path, name) {
     const instance = new klass()
     instance.__override__(ctx)
   } else {
-    throw new Error(`Unite Error: Override ${path}.${name} does not exist!`)
+    const extension = Unite.metadata['name']
+    throw new Error(`${extension} Error: Override ${path}.${name} does not exist!`)
   }
 }

@@ -1,3 +1,4 @@
+const GLib        = imports.gi.GLib
 const GObject     = imports.gi.GObject
 const Gtk         = imports.gi.Gtk
 const Unite       = imports.misc.extensionUtils.getCurrentExtension()
@@ -23,7 +24,8 @@ var PrefsWidget = GObject.registerClass(
     }
 
     _loadTemplate() {
-      this._buildable.add_from_file(`${Unite.path}/settings.ui`)
+      const template = GLib.build_filenamev([Unite.path, 'settings.ui'])
+      this._buildable.add_from_file(template)
 
       this._container = this._getWidget('prefs_widget')
       this.append(this._container)

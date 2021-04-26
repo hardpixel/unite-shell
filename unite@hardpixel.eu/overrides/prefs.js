@@ -1,3 +1,4 @@
+const GLib     = imports.gi.GLib
 const Unite    = imports.misc.extensionUtils.getCurrentExtension()
 const Override = Unite.imports.overrides.helper
 const VERSION  = Unite.imports.overrides.helper.VERSION
@@ -12,7 +13,8 @@ var PrefsWidget = class PrefsWidget extends Override.Injection {
   }
 
   _loadTemplate() {
-    this._buildable.add_from_file(`${Unite.path}/overrides/settings.ui`)
+    const template = GLib.build_filenamev([Unite.path, 'overrides', 'settings.ui'])
+    this._buildable.add_from_file(template)
 
     this._container = this._getWidget('prefs_widget')
     this.add(this._container)
