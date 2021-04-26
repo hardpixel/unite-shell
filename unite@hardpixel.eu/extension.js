@@ -1,9 +1,9 @@
 const GObject       = imports.gi.GObject
 const Main          = imports.ui.main
-const Unite         = imports.misc.extensionUtils.getCurrentExtension()
-const PanelManager  = Unite.imports.panel.PanelManager
-const LayoutManager = Unite.imports.layout.LayoutManager
-const WindowManager = Unite.imports.window.WindowManager
+const Me            = imports.misc.extensionUtils.getCurrentExtension()
+const PanelManager  = Me.imports.panel.PanelManager
+const LayoutManager = Me.imports.layout.LayoutManager
+const WindowManager = Me.imports.window.WindowManager
 
 var UniteExtension = GObject.registerClass(
   class UniteExtension extends GObject.Object {

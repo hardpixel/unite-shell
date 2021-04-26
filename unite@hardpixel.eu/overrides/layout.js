@@ -1,12 +1,12 @@
 const GtkSettings = imports.gi.Gtk.Settings.get_default()
 const Main        = imports.ui.main
-const Unite       = imports.misc.extensionUtils.getCurrentExtension()
+const Me          = imports.misc.extensionUtils.getCurrentExtension()
 const AppMenu     = Main.panel.statusArea.appMenu
 const AggMenu     = Main.panel.statusArea.aggregateMenu
-const Handlers    = Unite.imports.handlers
-const WidgetArrow = Unite.imports.layout.WidgetArrow
-const Override    = Unite.imports.overrides.helper
-const VERSION     = Unite.imports.overrides.helper.VERSION
+const Handlers    = Me.imports.handlers
+const WidgetArrow = Me.imports.layout.WidgetArrow
+const Override    = Me.imports.overrides.helper
+const VERSION     = Me.imports.overrides.helper.VERSION
 const CLASSIC     = global.session_mode == 'classic'
 
 var AppMenuArrow = class AppMenuArrow extends Handlers.Feature {

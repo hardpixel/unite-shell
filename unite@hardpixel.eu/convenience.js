@@ -2,7 +2,7 @@ const Gettext = imports.gettext
 const GObject = imports.gi.GObject
 const Gio     = imports.gi.Gio
 const Config  = imports.misc.config
-const Unite   = imports.misc.extensionUtils.getCurrentExtension()
+const Me      = imports.misc.extensionUtils.getCurrentExtension()
 
 var SettingsManager = GObject.registerClass(
   class UniteSettings extends Gio.Settings {
@@ -89,8 +89,8 @@ var PreferencesManager = GObject.registerClass(
 )
 
 function initTranslations(domain) {
-  let textDomain = domain || Unite.metadata['gettext-domain']
-  let localeDir  = Unite.dir.get_child('locale')
+  let textDomain = domain || Me.metadata['gettext-domain']
+  let localeDir  = Me.dir.get_child('locale')
 
   if (localeDir.query_exists(null)) {
     localeDir = localeDir.get_path()
@@ -102,10 +102,10 @@ function initTranslations(domain) {
 }
 
 function getSettings(schema) {
-  schema = schema || Unite.metadata['settings-schema']
+  schema = schema || Me.metadata['settings-schema']
 
   let gioSSS       = Gio.SettingsSchemaSource
-  let schemaDir    = Unite.dir.get_child('schemas')
+  let schemaDir    = Me.dir.get_child('schemas')
   let schemaSource = gioSSS.get_default()
 
   if (schemaDir.query_exists(null)) {
@@ -116,7 +116,7 @@ function getSettings(schema) {
   let schemaObj = schemaSource.lookup(schema, true)
 
   if (!schemaObj) {
-    let metaId  = Unite.metadata['uuid']
+    let metaId  = Me.metadata['uuid']
     let message = `Schema ${schema} could not be found for extension ${metaId}.`
 
     throw new Error(`${message} Please check your installation.`)

@@ -1,9 +1,9 @@
 const GLib        = imports.gi.GLib
 const GObject     = imports.gi.GObject
 const Gtk         = imports.gi.Gtk
-const Unite       = imports.misc.extensionUtils.getCurrentExtension()
-const Convenience = Unite.imports.convenience
-const Override    = Unite.imports.overrides.helper
+const Me          = imports.misc.extensionUtils.getCurrentExtension()
+const Convenience = Me.imports.convenience
+const Override    = Me.imports.overrides.helper
 
 var PrefsWidget = GObject.registerClass(
   class UnitePrefsWidget extends Gtk.Box {
@@ -24,7 +24,7 @@ var PrefsWidget = GObject.registerClass(
     }
 
     _loadTemplate() {
-      const template = GLib.build_filenamev([Unite.path, 'settings.ui'])
+      const template = GLib.build_filenamev([Me.path, 'settings.ui'])
       this._buildable.add_from_file(template)
 
       this._container = this._getWidget('prefs_widget')

@@ -1,5 +1,5 @@
 const Config = imports.misc.config
-const Unite  = imports.misc.extensionUtils.getCurrentExtension()
+const Me     = imports.misc.extensionUtils.getCurrentExtension()
 
 var VERSION = parseInt(Config.PACKAGE_VERSION.replace(/^3\./, '').split('.')[0])
 
@@ -37,13 +37,13 @@ var Injection = class Injection {
 }
 
 function inject(ctx, path, name) {
-  const klass = Unite.imports.overrides[path][name]
+  const klass = Me.imports.overrides[path][name]
 
   if (klass)  {
     const instance = new klass()
     instance.__override__(ctx)
   } else {
-    const extension = Unite.metadata['name']
+    const extension = Me.metadata['name']
     throw new Error(`${extension} Error: Override ${path}.${name} does not exist!`)
   }
 }

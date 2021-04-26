@@ -10,12 +10,12 @@ const Shell      = imports.gi.Shell
 const AppSystem  = imports.gi.Shell.AppSystem.get_default()
 const WinTracker = imports.gi.Shell.WindowTracker.get_default()
 const Main       = imports.ui.main
-const Unite      = imports.misc.extensionUtils.getCurrentExtension()
+const Me         = imports.misc.extensionUtils.getCurrentExtension()
 const AppMenu    = Main.panel.statusArea.appMenu
 const Activities = Main.panel.statusArea.activities
-const Buttons    = Unite.imports.buttons
-const Handlers   = Unite.imports.handlers
-const Override   = Unite.imports.overrides.helper
+const Buttons    = Me.imports.buttons
+const Handlers   = Me.imports.handlers
+const Override   = Me.imports.overrides.helper
 
 var WindowButtons = class WindowButtons extends Handlers.Feature {
   constructor() {

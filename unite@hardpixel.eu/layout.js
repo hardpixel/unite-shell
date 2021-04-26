@@ -2,10 +2,10 @@ const GObject  = imports.gi.GObject
 const St       = imports.gi.St
 const Clutter  = imports.gi.Clutter
 const Main     = imports.ui.main
-const Unite    = imports.misc.extensionUtils.getCurrentExtension()
+const Me       = imports.misc.extensionUtils.getCurrentExtension()
 const AppMenu  = Main.panel.statusArea.appMenu
-const Handlers = Unite.imports.handlers
-const Override = Unite.imports.overrides.helper
+const Handlers = Me.imports.handlers
+const Override = Me.imports.overrides.helper
 
 var WidgetArrow = class WidgetArrow {
   constructor(widget) {

@@ -1,8 +1,8 @@
 const Main     = imports.ui.main
-const Unite    = imports.misc.extensionUtils.getCurrentExtension()
+const Me       = imports.misc.extensionUtils.getCurrentExtension()
 const AppMenu  = Main.panel.statusArea.appMenu
-const Override = Unite.imports.overrides.helper
-const VERSION  = Unite.imports.overrides.helper.VERSION
+const Override = Me.imports.overrides.helper
+const VERSION  = Me.imports.overrides.helper.VERSION
 
 var WindowManager = class WindowManager extends Override.Injection {
   get active() {

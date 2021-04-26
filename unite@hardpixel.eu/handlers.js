@@ -3,8 +3,8 @@ const Gio         = imports.gi.Gio
 const GLib        = imports.gi.GLib
 const St          = imports.gi.St
 const Main        = imports.ui.main
-const Unite       = imports.misc.extensionUtils.getCurrentExtension()
-const Convenience = Unite.imports.convenience
+const Me          = imports.misc.extensionUtils.getCurrentExtension()
+const Convenience = Me.imports.convenience
 
 const SETTINGS = Convenience.getSettings()
 const WM_PREFS = Convenience.getPreferences()
@@ -14,7 +14,7 @@ const USER_CONFIGS = GLib.get_user_config_dir()
 
 function filePath(parts) {
   const parse = part => part ? part.replace(/^@/, '') : ''
-  const paths = [Unite.path].concat(parts).map(parse)
+  const paths = [Me.path].concat(parts).map(parse)
 
   return GLib.build_filenamev(paths)
 }

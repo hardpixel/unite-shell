@@ -5,10 +5,10 @@ const Meta       = imports.gi.Meta
 const WinTracker = imports.gi.Shell.WindowTracker.get_default()
 const Main       = imports.ui.main
 const Util       = imports.misc.util
-const Unite      = imports.misc.extensionUtils.getCurrentExtension()
+const Me         = imports.misc.extensionUtils.getCurrentExtension()
 const AppMenu    = Main.panel.statusArea.appMenu
-const Handlers   = Unite.imports.handlers
-const Override   = Unite.imports.overrides.helper
+const Handlers   = Me.imports.handlers
+const Override   = Me.imports.overrides.helper
 
 const VALID_TYPES = [
   Meta.WindowType.NORMAL,
