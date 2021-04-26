@@ -116,7 +116,7 @@ function getSettings(schema) {
   let schemaObj = schemaSource.lookup(schema, true)
 
   if (!schemaObj) {
-    let metaId  = Me.metadata['uuid']
+    let metaId  = Me.metadata.uuid
     let message = `Schema ${schema} could not be found for extension ${metaId}.`
 
     throw new Error(`${message} Please check your installation.`)

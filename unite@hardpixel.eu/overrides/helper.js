@@ -43,7 +43,7 @@ function inject(ctx, path, name) {
     const instance = new klass()
     instance.__override__(ctx)
   } else {
-    const extension = Me.metadata['name']
+    const extension = Me.metadata.name
     throw new Error(`${extension} Error: Override ${path}.${name} does not exist!`)
   }
 }
