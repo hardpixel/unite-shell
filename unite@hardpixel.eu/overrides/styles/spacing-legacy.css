@@ -24,3 +24,13 @@
 #panelRight .window-controls-container:last-child {
   margin-right: 0px;
 }
+
+#panel.extra-spacing .panel-button .panel-status-indicators-box {
+  spacing: 10px;
+}
+
+#panel.classic-spacing #appMenu,
+#panel.extra-spacing #appMenu, {
+  margin-left: 8px;
+  margin-right: 8px;
+}

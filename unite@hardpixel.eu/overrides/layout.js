@@ -100,18 +100,15 @@ var PanelSpacing = class PanelSpacing extends Override.Injection {
   }
 
   _init() {
+    this._prepend('activate', this._onActivate)
+    this._prepend('destroy', this._onDestroy)
+
     this._replace('_injectStyles')
     this._replace('_syncLayout')
   }
 
   _injectStyles() {
-    if (VERSION < 40) {
-      this.styles.addShellStyle('spacing38', '@/overrides/styles/spacing38.css')
-    }
-
-    if (VERSION < 34 || CLASSIC) {
-      this.styles.addShellStyle('spacing32', '@/overrides/styles/spacing32.css')
-    }
+    this.styles.addShellStyle('spacingLegacy', '@/overrides/styles/spacing-legacy.css')
   }
 
   _syncLayout() {
@@ -125,6 +122,21 @@ var PanelSpacing = class PanelSpacing extends Override.Injection {
         }
       })
     }
+  }
+
+  _onActivate() {
+    if (CLASSIC == true) {
+      Main.panel._addStyleClassName('classic-spacing')
+    }
+
+    if (VERSION < 34) {
+      Main.panel._addStyleClassName('extra-spacing')
+    }
+  }
+
+  _onDestroy() {
+    Main.panel._removeStyleClassName('classic-spacing')
+    Main.panel._removeStyleClassName('extra-spacing')
   }
 }
 
