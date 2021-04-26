@@ -140,7 +140,7 @@ var PanelSpacingClassic = class PanelSpacingClassic extends Override.Injection {
   }
 
   _injectStyles() {
-    this.styles.addShellStyle('spacingClassic', '@/overrides/styles/spacing.css')
+    this.styles.addShellStyle('spacingClassic', '@/overrides/styles/spacing-classic.css')
   }
 
   _onActivate() {
