@@ -6,7 +6,7 @@ const VERSION  = Unite.imports.overrides.helper.VERSION
 
 var ExtendLeftBox = class ExtendLeftBox extends Override.Injection {
   get active() {
-    return VERSION < 37
+    return VERSION < 38
   }
 
   _init() {

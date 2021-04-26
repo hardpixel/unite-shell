@@ -11,7 +11,7 @@ const CLASSIC     = global.session_mode == 'classic'
 
 var AppMenuArrow = class AppMenuArrow extends Handlers.Feature {
   constructor() {
-    super('hide-app-menu-arrow', setting => VERSION < 40 && setting == true)
+    super('hide-app-menu-arrow', setting => setting == true)
   }
 
   activate() {
@@ -26,7 +26,7 @@ var AppMenuArrow = class AppMenuArrow extends Handlers.Feature {
 
 var AggMenuArrow = class AggMenuArrow extends Handlers.Feature {
   constructor() {
-    super('hide-aggregate-menu-arrow', setting => VERSION < 40 && setting == true)
+    super('hide-aggregate-menu-arrow', setting => setting == true)
   }
 
   activate() {
