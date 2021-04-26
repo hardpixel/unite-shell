@@ -92,10 +92,11 @@ function initTranslations(domain) {
   let textDomain = domain || Unite.metadata['gettext-domain']
   let localeDir  = Unite.dir.get_child('locale')
 
-  if (localeDir.query_exists(null))
+  if (localeDir.query_exists(null)) {
     localeDir = localeDir.get_path()
-  else
+  } else {
     localeDir = Config.LOCALEDIR
+  }
 
   Gettext.bindtextdomain(textDomain, localeDir)
 }
