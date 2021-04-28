@@ -1,5 +1,14 @@
 # Changelog
 
+## [v53](https://github.com/hardpixel/unite-shell/tree/v53) (2021-04-28)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v52...v53)
+
+**Closed issues:**
+
+- Spacing of the icons squeezed after lock screen [\#240](https://github.com/hardpixel/unite-shell/issues/240)
+- Duplicated window buttons on Firefox and Chrome [\#239](https://github.com/hardpixel/unite-shell/issues/239)
+
 ## [v52](https://github.com/hardpixel/unite-shell/tree/v52) (2021-04-19)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v51...v52)
