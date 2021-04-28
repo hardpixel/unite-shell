@@ -1,5 +1,13 @@
 # Changelog
 
+## [v52](https://github.com/hardpixel/unite-shell/tree/v52) (2021-04-19)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v51...v52)
+
+## [v51](https://github.com/hardpixel/unite-shell/tree/v51) (2021-04-18)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v50...v51)
+
 ## [v50](https://github.com/hardpixel/unite-shell/tree/v50) (2021-04-16)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v49...v50)
