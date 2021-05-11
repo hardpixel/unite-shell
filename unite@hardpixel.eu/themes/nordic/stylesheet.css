@@ -1,0 +1,40 @@
+.window-button .icon {
+  width: 24px;
+  height: 24px;
+}
+
+.close .icon {
+  background-image: url("close.svg");
+}
+
+.close:hover .icon {
+  background-image: url("close-prelight.svg");
+}
+
+.close:active .icon {
+  background-image: url("close-prelight.svg");
+}
+
+.minimize .icon {
+  background-image: url("min.svg");
+}
+
+.minimize:hover .icon {
+  background-image: url("min-prelight.svg");
+}
+
+.minimize:active .icon {
+  background-image: url("min-prelight.svg");
+}
+
+.maximize .icon {
+  background-image: url("maximize.svg");
+}
+
+.maximize:hover .icon {
+  background-image: url("maximize-prelight.svg");
+}
+
+.maximize:active .icon {
+  background-image: url("maximize-prelight.svg");
+}
