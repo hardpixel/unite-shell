@@ -26,10 +26,9 @@ var WidgetArrow = class WidgetArrow {
     }
 
     const actor = widget.last_child
-    const klass = actor && actor.has_style_class_name
-    const cname = name => klass && actor.has_style_class_name(name)
+    const valid = actor && actor.has_style_class_name
 
-    if (cname('popup-menu-arrow')) {
+    if (valid && actor.has_style_class_name('popup-menu-arrow')) {
       return this.widget._arrow = actor
     }
 
