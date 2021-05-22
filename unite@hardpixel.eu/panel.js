@@ -181,11 +181,7 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
     })
   }
 
-  _boxAllocate(box, childBox, flags) {
-    box.allocate(childBox)
-  }
-
-  _allocate(actor, box, flags) {
+  _allocate(actor, box) {
     let leftBox   = Main.panel._leftBox
     let centerBox = Main.panel._centerBox
     let rightBox  = Main.panel._rightBox
@@ -211,7 +207,7 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
       childBox.x2 = Math.min(Math.floor(sideWidth), leftNaturalWidth)
     }
 
-    this._boxAllocate(leftBox, childBox, flags)
+    leftBox.allocate(childBox)
 
     childBox.y1 = 0
     childBox.y2 = allocHeight
@@ -224,7 +220,7 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
       childBox.x2 = childBox.x1 + centerNaturalWidth
     }
 
-    this._boxAllocate(centerBox, childBox, flags)
+    centerBox.allocate(childBox)
 
     childBox.y1 = 0
     childBox.y2 = allocHeight
@@ -237,7 +233,7 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
       childBox.x2 = allocWidth
     }
 
-    this._boxAllocate(rightBox, childBox, flags)
+    rightBox.allocate(childBox)
   }
 
   destroy() {
