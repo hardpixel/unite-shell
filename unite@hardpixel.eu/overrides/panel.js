@@ -4,6 +4,7 @@ const Main     = imports.ui.main
 const Me       = imports.misc.extensionUtils.getCurrentExtension()
 const Override = Me.imports.overrides.helper
 const VERSION  = Me.imports.overrides.helper.VERSION
+const CLASSIC  = global.session_mode == 'classic'
 
 var ExtendLeftBox = class ExtendLeftBox extends Override.Injection {
   get active() {
@@ -75,5 +76,16 @@ var ExtendLeftBox = class ExtendLeftBox extends Override.Injection {
     }
 
     rightBox.allocate(childBox, flags)
+  }
+}
+
+var ActivitiesButtonClassic = class ActivitiesButtonClassic extends Override.Injection {
+  get active() {
+    return CLASSIC == true
+  }
+
+  _init() {
+    this._replace('activate', () => {})
+    this._replace('destroy', () => {})
   }
 }

@@ -246,7 +246,9 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
 
 var ActivitiesButton = class ActivitiesButton extends Handlers.Feature {
   constructor() {
-    super('hide-activities-button', setting => Activities && setting != 'never')
+    super('hide-activities-button', setting => setting != 'never')
+
+    Override.inject(this, 'panel', 'ActivitiesButtonClassic')
   }
 
   activate() {
