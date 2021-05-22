@@ -1,5 +1,17 @@
 # Changelog
 
+## [v54](https://github.com/hardpixel/unite-shell/tree/v54) (2021-05-22)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v53...v54)
+
+**Closed issues:**
+
+- Windows that want attention are auto-focused [\#242](https://github.com/hardpixel/unite-shell/issues/242)
+
+**Merged pull requests:**
+
+- Add Nordic theme icons [\#238](https://github.com/hardpixel/unite-shell/pull/238) ([Simon-L](https://github.com/Simon-L))
+
 ## [v53](https://github.com/hardpixel/unite-shell/tree/v53) (2021-04-28)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v52...v53)
