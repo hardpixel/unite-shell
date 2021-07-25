@@ -24,6 +24,7 @@
     <value value="21" nick="adwaita-dark" />
     <value value="22" nick="canta" />
     <value value="23" nick="nordic" />
+    <value value="24" nick="mcmojave" />
   </enum>
 
   <enum id="org.gnome.shell.extensions.unite.hideTitlebars">
