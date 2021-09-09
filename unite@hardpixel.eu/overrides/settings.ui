@@ -991,7 +991,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">end</property>
-                <property name="active-id">0</property>
+                <property name="active-id">default-dark</property>
                 <items>
                   <item id="default-dark" translatable="yes">Default Dark</item>
                   <item id="default-light" translatable="yes">Default Light</item>
