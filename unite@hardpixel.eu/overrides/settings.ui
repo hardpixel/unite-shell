@@ -993,31 +993,31 @@
                 <property name="halign">end</property>
                 <property name="active-id">0</property>
                 <items>
-                  <item id="0" translatable="yes">Default Dark</item>
-                  <item id="1" translatable="yes">Default Light</item>
-                  <item id="2" translatable="yes">Ambiance</item>
-                  <item id="3" translatable="yes">Radiance</item>
-                  <item id="4" translatable="yes">Arc Dark</item>
-                  <item id="5" translatable="yes">Arc Light</item>
-                  <item id="6" translatable="yes">United Dark</item>
-                  <item id="7" translatable="yes">United Light</item>
-                  <item id="8" translatable="yes">Materia Dark</item>
-                  <item id="9" translatable="yes">Materia Light</item>
-                  <item id="10" translatable="yes">OSX Arc</item>
-                  <item id="11" translatable="yes">Vertex</item>
-                  <item id="12" translatable="yes">Pop Dark</item>
-                  <item id="13" translatable="yes">Pop Light</item>
-                  <item id="14" translatable="yes">Vimix</item>
-                  <item id="15" translatable="yes">Yaru</item>
-                  <item id="16" translatable="yes">Arrongin</item>
-                  <item id="17" translatable="yes">Telinkrin</item>
-                  <item id="18" translatable="yes">Breeze</item>
-                  <item id="19" translatable="yes">Prof-Gnome</item>
-                  <item id="20" translatable="yes">Flat Remix</item>
-                  <item id="21" translatable="yes">Adwaita Dark</item>
-                  <item id="22" translatable="yes">Canta</item>
-                  <item id="23" translatable="yes">Nordic</item>
-                  <item id="24" translatable="yes">McMojave</item>
+                  <item id="default-dark" translatable="yes">Default Dark</item>
+                  <item id="default-light" translatable="yes">Default Light</item>
+                  <item id="ambiance" translatable="yes">Ambiance</item>
+                  <item id="radiance" translatable="yes">Radiance</item>
+                  <item id="arc-dark" translatable="yes">Arc Dark</item>
+                  <item id="arc-light" translatable="yes">Arc Light</item>
+                  <item id="united-dark" translatable="yes">United Dark</item>
+                  <item id="united-light" translatable="yes">United Light</item>
+                  <item id="materia-dark" translatable="yes">Materia Dark</item>
+                  <item id="materia-light" translatable="yes">Materia Light</item>
+                  <item id="osx-arc" translatable="yes">OSX Arc</item>
+                  <item id="vertex" translatable="yes">Vertex</item>
+                  <item id="pop-dark" translatable="yes">Pop Dark</item>
+                  <item id="pop-light" translatable="yes">Pop Light</item>
+                  <item id="vimix" translatable="yes">Vimix</item>
+                  <item id="yaru" translatable="yes">Yaru</item>
+                  <item id="arrongin" translatable="yes">Arrongin</item>
+                  <item id="telinkrin" translatable="yes">Telinkrin</item>
+                  <item id="breeze" translatable="yes">Breeze</item>
+                  <item id="prof-gnome" translatable="yes">Prof-Gnome</item>
+                  <item id="flat-remix" translatable="yes">Flat Remix</item>
+                  <item id="adwaita-dark" translatable="yes">Adwaita Dark</item>
+                  <item id="canta" translatable="yes">Canta</item>
+                  <item id="nordic" translatable="yes">Nordic</item>
+                  <item id="mcmojave" translatable="yes">McMojave</item>
                 </items>
               </object>
               <packing>

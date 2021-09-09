@@ -23,7 +23,7 @@ var SettingsManager = GObject.registerClass(
         'show-legacy-tray':           'boolean',
         'greyscale-tray-icons':       'boolean',
         'show-window-buttons':        'enum',
-        'window-buttons-theme':       'enum',
+        'window-buttons-theme':       'select',
         'hide-window-titlebars':      'enum',
         'enable-titlebar-actions':    'boolean',
         'window-buttons-placement':   'select',
