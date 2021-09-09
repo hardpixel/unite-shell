@@ -26,7 +26,7 @@ var SettingsManager = GObject.registerClass(
         'window-buttons-theme':       'select',
         'hide-window-titlebars':      'enum',
         'enable-titlebar-actions':    'boolean',
-        'window-buttons-placement':   'select',
+        'window-buttons-placement':   'enum',
         'hide-dropdown-arrows':       'boolean',
         'hide-aggregate-menu-arrow':  'boolean',
         'hide-app-menu-arrow':        'boolean',

@@ -19,6 +19,14 @@
     <value value="2" nick="always" />
   </enum>
 
+  <enum id="org.gnome.shell.extensions.unite.buttonsPlacement">
+    <value value="0" nick="auto" />
+    <value value="1" nick="left" />
+    <value value="2" nick="right" />
+    <value value="3" nick="first" />
+    <value value="4" nick="last" />
+  </enum>
+
   <enum id="org.gnome.shell.extensions.unite.ellipsizeMode">
     <value value="0" nick="start" />
     <value value="1" nick="middle" />
@@ -106,7 +114,7 @@
       <summary>Reduce top bar items spacing.</summary>
     </key>
 
-    <key name="window-buttons-placement" type="s">
+    <key name="window-buttons-placement" enum="org.gnome.shell.extensions.unite.buttonsPlacement">
       <default>"auto"</default>
       <summary>Top bar window buttons position.</summary>
     </key>

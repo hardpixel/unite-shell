@@ -516,13 +516,13 @@
                     <property name="hexpand">1</property>
                     <property name="width-request">170</property>
                     <property name="halign">end</property>
-                    <property name="active-id">auto</property>
+                    <property name="active-id">0</property>
                     <items>
-                      <item id="auto" translatable="yes">Auto</item>
-                      <item id="left" translatable="yes">Left</item>
-                      <item id="right" translatable="yes">Right</item>
-                      <item id="first" translatable="yes">First</item>
-                      <item id="last" translatable="yes">Last</item>
+                      <item id="0" translatable="yes">Auto</item>
+                      <item id="1" translatable="yes">Left</item>
+                      <item id="2" translatable="yes">Right</item>
+                      <item id="3" translatable="yes">First</item>
+                      <item id="4" translatable="yes">Last</item>
                     </items>
                   </object>
                 </child>
