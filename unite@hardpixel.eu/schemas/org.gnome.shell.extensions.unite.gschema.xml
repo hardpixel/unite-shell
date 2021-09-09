@@ -1,21 +1,5 @@
 <schemalist gettext-domain="gnome-shell-extensions">
-  <enum id="org.gnome.shell.extensions.unite.hideTitlebars">
-    <value value="0" nick="never" />
-    <value value="1" nick="tiled" />
-    <value value="2" nick="maximized" />
-    <value value="3" nick="both" />
-    <value value="4" nick="always" />
-  </enum>
-
-  <enum id="org.gnome.shell.extensions.unite.showTitle">
-    <value value="0" nick="never" />
-    <value value="1" nick="tiled" />
-    <value value="2" nick="maximized" />
-    <value value="3" nick="both" />
-    <value value="4" nick="always" />
-  </enum>
-
-  <enum id="org.gnome.shell.extensions.unite.showButtons">
+  <enum id="org.gnome.shell.extensions.unite.windowStates">
     <value value="0" nick="never" />
     <value value="1" nick="tiled" />
     <value value="2" nick="maximized" />
@@ -127,12 +111,12 @@
       <summary>Top bar window buttons position.</summary>
     </key>
 
-    <key name="show-window-title" enum="org.gnome.shell.extensions.unite.showTitle">
+    <key name="show-window-title" enum="org.gnome.shell.extensions.unite.windowStates">
       <default>"maximized"</default>
       <summary>Use window title to replace the app-menu label.</summary>
     </key>
 
-    <key name="show-window-buttons" enum="org.gnome.shell.extensions.unite.showButtons">
+    <key name="show-window-buttons" enum="org.gnome.shell.extensions.unite.windowStates">
       <default>"maximized"</default>
       <summary>Active window bottons in top bar.</summary>
     </key>
@@ -142,7 +126,7 @@
       <summary>Top bar window buttons theme.</summary>
     </key>
 
-    <key name="hide-window-titlebars" enum="org.gnome.shell.extensions.unite.hideTitlebars">
+    <key name="hide-window-titlebars" enum="org.gnome.shell.extensions.unite.windowStates">
       <default>"maximized"</default>
       <summary>Select windows state to hide titlebars.</summary>
     </key>
