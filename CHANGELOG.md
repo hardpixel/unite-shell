@@ -1,5 +1,18 @@
 # Changelog
 
+## [v55](https://github.com/hardpixel/unite-shell/tree/v55) (2021-09-10)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v54...v55)
+
+**Closed issues:**
+
+- \[Feature Request\] move notifications of tray apps to notifications center [\#250](https://github.com/hardpixel/unite-shell/issues/250)
+- Window title bar icons do not hide if arranged towards left in some applications [\#248](https://github.com/hardpixel/unite-shell/issues/248)
+
+**Merged pull requests:**
+
+- Add McMojave theme icons [\#249](https://github.com/hardpixel/unite-shell/pull/249) ([SlyDeath](https://github.com/SlyDeath))
+
 ## [v54](https://github.com/hardpixel/unite-shell/tree/v54) (2021-05-22)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v53...v54)
