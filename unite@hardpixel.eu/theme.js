@@ -8,6 +8,31 @@ const THEME_DIRS = [
   GLib.build_filenamev([GLib.get_user_data_dir(), 'unite-shell/themes'])
 ]
 
+function fileExists(path) {
+  return GLib.file_test(path, GLib.FileTest.EXISTS)
+}
+
+function parseKeyFile(path, callback) {
+  const file = GLib.build_filenamev(path)
+
+  if (!fileExists(file)) {
+    return { get: () => null }
+  }
+
+  const keys = new GLib.KeyFile()
+  keys.load_from_file(file, GLib.KeyFileFlags.NONE)
+
+  return {
+    get: (group, name) => {
+      try {
+        return keys.get_string(group, name)
+      } catch {
+        return null
+      }
+    }
+  }
+}
+
 function toTitleCase(text) {
   const upcase = (_, char) => char ? char.toUpperCase() : ''
   const string = text.replace(/-|_/g, ' ')
@@ -17,13 +42,17 @@ function toTitleCase(text) {
 
 const WindowControlsTheme = class WindowControlsTheme {
   constructor(uuid, path) {
+    const theme = parseKeyFile([path, 'unite.theme'])
+    const name  = theme.get('Theme', 'Name')
+    const style = theme.get('Theme', 'Stylesheet')
+
     this.uuid = uuid
-    this.name = toTitleCase(uuid)
-    this.path = GLib.build_filenamev([path, 'stylesheet.css'])
+    this.name = name || toTitleCase(uuid)
+    this.path = GLib.build_filenamev([path, style || 'stylesheet.css'])
   }
 
   get isValid() {
-    return GLib.file_test(this.path, GLib.FileTest.EXISTS)
+    return fileExists(this.path)
   }
 }
 
