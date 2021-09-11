@@ -2,6 +2,7 @@ const GLib        = imports.gi.GLib
 const GObject     = imports.gi.GObject
 const Gtk         = imports.gi.Gtk
 const Me          = imports.misc.extensionUtils.getCurrentExtension()
+const Theme       = Me.imports.theme
 const Convenience = Me.imports.convenience
 const Override    = Me.imports.overrides.helper
 
@@ -12,10 +13,13 @@ var PrefsWidget = GObject.registerClass(
 
       this._settings  = Convenience.getSettings()
       this._buildable = new Gtk.Builder()
+      this._themes    = new Theme.WindowControlsThemes()
 
       Override.inject(this, 'prefs', 'PrefsWidget')
 
       this._loadTemplate()
+      this._loadThemes()
+
       this._bindStrings()
       this._bindSelects()
       this._bindBooleans()
@@ -29,6 +33,19 @@ var PrefsWidget = GObject.registerClass(
 
       this._container = this._getWidget('prefs_widget')
       this.append(this._container)
+    }
+
+    _loadThemes() {
+      const widget = this._getWidget('window-buttons-theme')
+      const themes = this._themes.available.sort((a, b) => {
+        return a.uuid < b.uuid ? -1 : a.uuid > b.uuid ? 1 : 0
+      })
+
+      themes.forEach(theme => {
+        if (!theme.uuid.startsWith('default')) {
+          widget.append(theme.uuid, theme.name)
+        }
+      })
     }
 
     _getWidget(name) {
