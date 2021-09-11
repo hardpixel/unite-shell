@@ -12,9 +12,22 @@ const WM_PREFS = Convenience.getPreferences()
 const GTK_VERSIONS = [3, 4]
 const USER_CONFIGS = GLib.get_user_config_dir()
 
+function isAbsPath(value) {
+  return value.toString().startsWith('/')
+}
+
+function isRelPath(value) {
+  return value.toString().startsWith('@/')
+}
+
+function isFilePath(value) {
+  return isAbsPath(value) || isRelPath(value)
+}
+
 function filePath(parts) {
   const parse = part => part ? part.replace(/^@/, '') : ''
-  const paths = [Me.path].concat(parts).map(parse)
+  const root  = isAbsPath(parts) ? [] : [Me.path]
+  const paths = root.concat(parts).map(parse)
 
   return GLib.build_filenamev(paths)
 }
@@ -249,7 +262,7 @@ class GtkStyle {
   }
 
   parse(data, ver) {
-    if (data.startsWith('@/')) {
+    if (isFilePath(data)) {
       const path = filePath(['styles', `gtk${ver}`, data])
       return `@import url('${path}');`
     } else {
@@ -315,7 +328,7 @@ var Styles = class Styles {
   }
 
   addShellStyle(name, data) {
-    if (data.startsWith('@/')) {
+    if (isFilePath(data)) {
       this.deleteStyle(name)
       this.setStyle(name, ShellStyle, data)
     } else {
