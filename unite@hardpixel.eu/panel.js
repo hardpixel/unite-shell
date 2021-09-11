@@ -14,6 +14,7 @@ const Me         = imports.misc.extensionUtils.getCurrentExtension()
 const AppMenu    = Main.panel.statusArea.appMenu
 const Activities = Main.panel.statusArea.activities
 const Buttons    = Me.imports.buttons
+const Theme      = Me.imports.theme
 const Handlers   = Me.imports.handlers
 const Override   = Me.imports.overrides.helper
 
@@ -28,6 +29,7 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
     this.settings = new Handlers.Settings()
     this.styles   = new Handlers.Styles()
     this.controls = new Buttons.WindowControls()
+    this.themes   = new Theme.WindowControlsThemes()
 
     this.signals.connect(
       Main.overview, 'showing', this._syncVisible.bind(this)
@@ -133,7 +135,7 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
     this.controls.remove_style_class_name(this.theme)
 
     this.theme = this.settings.get('window-buttons-theme')
-    const path = `@/themes/${this.theme}/stylesheet.css`
+    const path = this.themes.getStyle(this.theme)
 
     this.styles.addShellStyle('windowButtons', path)
     this.controls.add_style_class_name(this.theme)
