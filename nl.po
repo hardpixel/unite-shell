@@ -7,233 +7,194 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-30 17:55+0200\n"
-"PO-Revision-Date: 2021-09-13 18:23+0200\n"
+"POT-Creation-Date: 2021-09-13 22:15+0300\n"
+"PO-Revision-Date: 2021-09-13 22:16+0300\n"
+"Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
 "Language-Team: \n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
-"Language: nl\n"
+"X-Poedit-Basepath: unite@hardpixel.eu\n"
+"X-Poedit-SearchPath-0: settings.ui\n"
+"X-Poedit-SearchPath-1: overrides/settings.ui\n"
 
-#: settings.ui:33
+#: overrides/settings.ui:38 settings.ui:32
 msgid "Extend top bar left box"
 msgstr "Linkervak op bovenbalk uitbreiden"
 
-#: settings.ui:72
+#: overrides/settings.ui:78 settings.ui:52
 msgid "Auto focus new windows"
 msgstr "Nieuwe vensters automatisch focussen"
 
-#: settings.ui:111
+#: overrides/settings.ui:118 settings.ui:72
 msgid "Show system tray in top bar"
 msgstr "Systeemvak tonen op bovenbalk"
 
-#: settings.ui:150
+#: overrides/settings.ui:158 settings.ui:92
 msgid "Show desktop name in top bar"
 msgstr "Werkbladnaam tonen op bovenbalk"
 
-#: settings.ui:189
+#: overrides/settings.ui:198 settings.ui:112
+msgid "Enable titlebar actions on top bar click"
+msgstr ""
+
+#: overrides/settings.ui:238 settings.ui:132
 msgid "Restrict functionalities to the primary screen"
 msgstr "Functies alleen toepassen op primair beeldscherm"
 
-#: settings.ui:228
+#: overrides/settings.ui:278 settings.ui:152
 msgid "Hide activities button"
 msgstr "Activiteitenknop verbergen"
 
-#: settings.ui:243 settings.ui:287 settings.ui:333 settings.ui:379
+#: overrides/settings.ui:294 overrides/settings.ui:339
+#: overrides/settings.ui:386 overrides/settings.ui:433 settings.ui:162
+#: settings.ui:187 settings.ui:214 settings.ui:241
 msgid "Never"
 msgstr "Nooit"
 
-#: settings.ui:244 settings.ui:807
+#: overrides/settings.ui:295 overrides/settings.ui:949 settings.ui:163
+#: settings.ui:521
 msgid "Auto"
 msgstr "Automatisch"
 
-#: settings.ui:245 settings.ui:291 settings.ui:337 settings.ui:383
+#: overrides/settings.ui:296 overrides/settings.ui:343
+#: overrides/settings.ui:390 overrides/settings.ui:437 settings.ui:164
+#: settings.ui:191 settings.ui:218 settings.ui:245
 msgid "Always"
 msgstr "Altijd"
 
-#: settings.ui:272
+#: overrides/settings.ui:323 settings.ui:177
 msgid "Hide window titlebars"
 msgstr "Titelbalken verbergen"
 
-#: settings.ui:288 settings.ui:334 settings.ui:380
+#: overrides/settings.ui:340 overrides/settings.ui:387
+#: overrides/settings.ui:434 settings.ui:188 settings.ui:215 settings.ui:242
 msgid "Tiled"
 msgstr "Bij gebruik van tegels"
 
-#: settings.ui:289 settings.ui:335 settings.ui:381
+#: overrides/settings.ui:341 overrides/settings.ui:388
+#: overrides/settings.ui:435 settings.ui:189 settings.ui:216 settings.ui:243
 msgid "Maximized"
 msgstr "Bij maximaliseren"
 
-#: settings.ui:290 settings.ui:336 settings.ui:382
+#: overrides/settings.ui:342 overrides/settings.ui:389
+#: overrides/settings.ui:436 settings.ui:190 settings.ui:217 settings.ui:244
 msgid "Both"
 msgstr "Beide"
 
-#: settings.ui:318
+#: overrides/settings.ui:370 settings.ui:204
 msgid "Show window title in app menu"
 msgstr "Venstertitel tonen op toepassingsmenu"
 
-#: settings.ui:364
+#: overrides/settings.ui:417 settings.ui:231
 msgid "Show window buttons in top bar"
 msgstr "Vensterknoppen tonen op bovenbalk"
 
-#: settings.ui:410
+#: overrides/settings.ui:464 settings.ui:258
 msgid "Notification messages position"
 msgstr "Locatie van meldingsvak"
 
-#: settings.ui:425
+#: overrides/settings.ui:480 settings.ui:268
 msgid "Center"
 msgstr "Midden"
 
-#: settings.ui:426 settings.ui:808
+#: overrides/settings.ui:481 overrides/settings.ui:950 settings.ui:269
+#: settings.ui:522
 msgid "Left"
 msgstr "Links"
 
-#: settings.ui:427 settings.ui:809
+#: overrides/settings.ui:482 overrides/settings.ui:951 settings.ui:270
+#: settings.ui:523
 msgid "Right"
 msgstr "Rechts"
 
-#: settings.ui:453
+#: overrides/settings.ui:506 settings.ui:282
 msgid "General"
 msgstr "Algemeen"
 
-#: settings.ui:481
+#: overrides/settings.ui:531 settings.ui:307
 msgid "Apply system fonts to shell theme"
 msgstr "Systeemlettertypen gebruiken in Shell-thema"
 
-#: settings.ui:520
+#: overrides/settings.ui:571 settings.ui:327
 msgid "Convert tray icons to greyscale"
 msgstr "Monochrome systeemvakpictogrammen"
 
-#: settings.ui:558
+#: overrides/settings.ui:610 settings.ui:346
 msgid "Hide top bar dropdown arrows"
 msgstr "Uitklappijlen verbergen van bovenbalk"
 
-#: settings.ui:597
+#: overrides/settings.ui:650 settings.ui:367
 msgid "Hide aggregate menu dropdown arrow"
 msgstr "Uitklappijl van meldingsvak verbergen"
 
-#: settings.ui:635
+#: overrides/settings.ui:689 settings.ui:387
 msgid "Hide app menu dropdown arrow"
 msgstr "Uitklappijl van toepassingsmenu verbergen"
 
-#: settings.ui:674
+#: overrides/settings.ui:729 settings.ui:407
 msgid "Hide app menu application icon"
 msgstr "Pictogram van toepassingsmenu verbergen"
 
-#: settings.ui:713
+#: overrides/settings.ui:769 settings.ui:427
 msgid "Reduce top bar items spacing"
 msgstr "Ruimte tussen bovenbalkitems verkleinen"
 
-#: settings.ui:752
+#: overrides/settings.ui:809 settings.ui:447
 msgid "Top bar desktop name text"
 msgstr "Werkbladnaam op bovenbalk"
 
-#: settings.ui:765
+#: overrides/settings.ui:823 settings.ui:455
 msgid "GNOME Desktop"
 msgstr "GNOME-werkomgeving"
 
-#: settings.ui:792
+#: overrides/settings.ui:848 settings.ui:466
+msgid "Max width for the app menu"
+msgstr ""
+
+#: overrides/settings.ui:888 settings.ui:486
+msgid "Ellipsis mode for app menu"
+msgstr ""
+
+#: overrides/settings.ui:904 settings.ui:496
+msgid "Start"
+msgstr ""
+
+#: overrides/settings.ui:905 settings.ui:497
+msgid "Middle"
+msgstr ""
+
+#: overrides/settings.ui:906 settings.ui:498
+msgid "End"
+msgstr ""
+
+#: overrides/settings.ui:933 settings.ui:511
 msgid "Top bar window buttons position"
 msgstr "Vensterknoplocatie op bovenbalk"
 
-#: settings.ui:810
+#: overrides/settings.ui:952 settings.ui:524
 msgid "First"
 msgstr "Vooraan"
 
-#: settings.ui:811
+#: overrides/settings.ui:953 settings.ui:525
 msgid "Last"
 msgstr "Achteraan"
 
-#: settings.ui:839
+#: overrides/settings.ui:980 settings.ui:538
 msgid "Top bar window buttons theme"
 msgstr "Vensterknopthema op bovenbalk"
 
-#: settings.ui:854
+#: overrides/settings.ui:996 settings.ui:548
 msgid "Default Dark"
 msgstr "Standaard (donker)"
 
-#: settings.ui:855
+#: overrides/settings.ui:997 settings.ui:549
 msgid "Default Light"
 msgstr "Standaard (licht)"
 
-#: settings.ui:856
-msgid "Ambiance"
-msgstr "Ambiance"
-
-#: settings.ui:857
-msgid "Radiance"
-msgstr "Radiance"
-
-#: settings.ui:858
-msgid "Arc Dark"
-msgstr "Arc (donker)"
-
-#: settings.ui:859
-msgid "Arc Light"
-msgstr "Arc (licht)"
-
-#: settings.ui:860
-msgid "United Dark"
-msgstr "United (donker)"
-
-#: settings.ui:861
-msgid "United Light"
-msgstr "United (licht)"
-
-#: settings.ui:862
-msgid "Materia Dark"
-msgstr "Materia (donker)"
-
-#: settings.ui:863
-msgid "Materia Light"
-msgstr "Materia (licht)"
-
-#: settings.ui:864
-msgid "OSX Arc"
-msgstr "OSX Arc"
-
-#: settings.ui:865
-msgid "Vertex"
-msgstr "Vertex"
-
-#: settings.ui:866
-msgid "Pop Dark"
-msgstr "Pop (donker)"
-
-#: settings.ui:867
-msgid "Pop Light"
-msgstr "Pop (licht)"
-
-#: settings.ui:868
-msgid "Vimix"
-msgstr "Vimix"
-
-#: settings.ui:869
-msgid "Yaru"
-msgstr "Yaru"
-
-#: settings.ui:870
-msgid "Arrongin"
-msgstr "Arrongin"
-
-#: settings.ui:871
-msgid "Telinkrin"
-msgstr "Telinkrin"
-
-#: settings.ui:872
-msgid "Breeze"
-msgstr "Breeze"
-
-#: settings.ui:873
-msgid "Prof-Gnome"
-msgstr "Prof-Gnome"
-
-#: settings.ui:874
-msgid "Flat Remix"
-msgstr "Flat Remix"
-
-#: settings.ui:901
+#: overrides/settings.ui:1021 settings.ui:561
 msgid "Appearance"
 msgstr "Uiterlijk"
