@@ -471,7 +471,7 @@
                     <property name="hexpand">1</property>
                     <property name="width-request">170</property>
                     <property name="halign">end</property>
-                    <property name="text" translatable="yes">0</property>
+                    <property name="text">0</property>
                     <property name="adjustment">maxwidth_appmenu_adjustment</property>
                   </object>
                 </child>
