@@ -79,7 +79,7 @@ var WindowControlsThemes = class WindowControlsThemes {
   }
 
   update() {
-    THEME_DIRS.forEach(pathName => {
+    THEME_DIRS.filter(fileExists).forEach(pathName => {
       const path = Gio.File.new_for_path(pathName)
       const data = path.enumerate_children(
         Gio.FILE_ATTRIBUTE_STANDARD_NAME,
