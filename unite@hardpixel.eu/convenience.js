@@ -4,6 +4,18 @@ const Gio     = imports.gi.Gio
 const Config  = imports.misc.config
 const Me      = imports.misc.extensionUtils.getCurrentExtension()
 
+var SettingsObject = GObject.registerClass(
+  class UniteSettingsObject extends Gio.Settings {
+    exists(key) {
+      return this.settings_schema.has_key(key)
+    }
+
+    getSetting(key) {
+      if (this.exists(key)) return this.get_string(key)
+    }
+  }
+)
+
 var SettingsManager = GObject.registerClass(
   class UniteSettings extends Gio.Settings {
     get DEFAULT_BINDING() {
