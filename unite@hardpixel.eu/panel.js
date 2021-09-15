@@ -24,12 +24,18 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
   }
 
   activate() {
-    this.theme    = 'default-dark'
+    this.theme    = 'default'
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
     this.styles   = new Handlers.Styles()
     this.controls = new Buttons.WindowControls()
     this.themes   = new Theme.WindowControlsThemes()
+
+    // TODO: Remove in next release
+    if (this.themeName.match(/(-dark|-light)$/)) {
+      const rename = this.themeName.replace(/(-dark|-light)$/, '')
+      this.settings.set('window-buttons-theme', rename)
+    }
 
     this.loadTheme = Main.loadTheme
     Main.loadTheme = this._onThemeLoad.bind(this)
@@ -150,17 +156,17 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
     this.controls.remove_style_class_name(this.theme)
 
     const color = Main.panel.get_theme_node().get_background_color()
-    const theme = this.themes.locate(this.themeName, this.gtkTheme, color)
+    const theme = this.themes.locate(this.themeName, this.gtkTheme)
 
     this.theme = theme.uuid
-    this.styles.addShellStyle('windowButtons', theme.path)
+    this.styles.addShellStyle('windowButtons', theme.getStyle(color))
 
     this.controls.add_style_class_name(this.theme)
   }
 
   _onThemeLoad() {
     this.loadTheme()
-    this._onAutoThemeChange()
+    this._onThemeChange()
   }
 
   _onAutoThemeChange() {

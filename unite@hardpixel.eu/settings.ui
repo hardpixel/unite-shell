@@ -546,8 +546,7 @@
                     <property name="active-id">default-dark</property>
                     <items>
                       <item id="auto" translatable="yes">Auto</item>
-                      <item id="default-dark" translatable="yes">Default Dark</item>
-                      <item id="default-light" translatable="yes">Default Light</item>
+                      <item id="default" translatable="yes">Default</item>
                     </items>
                   </object>
                 </child>

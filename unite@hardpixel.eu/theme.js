@@ -56,22 +56,26 @@ const WindowControlsTheme = class WindowControlsTheme {
     const theme = parseKeyFile([path, 'unite.theme'])
     const name  = theme.get('Theme', 'Name')
     const style = theme.get('Theme', 'Stylesheet', 'stylesheet.css')
+    const dark  = theme.get('Theme', 'DarkStylesheet', style)
+    const light = theme.get('Theme', 'LightStylesheet', dark)
 
     this.uuid = uuid
     this.name = name || toTitleCase(uuid)
-    this.path = GLib.build_filenamev([path, style])
+
+    this.dark  = GLib.build_filenamev([path, dark])
+    this.light = GLib.build_filenamev([path, light])
   }
 
   get isValid() {
-    return fileExists(this.path)
+    return fileExists(this.dark) && fileExists(this.light)
   }
 
-  match(gtkTheme, isDark) {
-    const name = this.name.replace(/(\sDark|\sLight)$/, '')
-    const dark = !this.uuid.endsWith('-light')
+  getStyle(bgColor) {
+    return isColorDark(bgColor) ? this.dark : this.light
+  }
 
-    return dark == isDark &&
-      (gtkTheme == name || gtkTheme.startsWith(`${name}-`))
+  match(gtkTheme) {
+    return gtkTheme == this.name || gtkTheme.startsWith(`${this.name}-`)
   }
 }
 
@@ -97,17 +101,14 @@ var WindowControlsThemes = class WindowControlsThemes {
     return this.themes[name] || this.getDefault('dark')
   }
 
-  match(gtkTheme, bgColor) {
-    const isDark = isColorDark(bgColor)
-
-    return this.available.find(theme => theme.match(gtkTheme, isDark)) ||
-      this.available.find(theme => theme.match(gtkTheme, !isDark)) ||
+  match(gtkTheme) {
+    return this.available.find(theme => theme.match(gtkTheme)) ||
       this.getDefault(isDark ? 'dark' : 'light')
   }
 
-  locate(btnTheme, gtkTheme, bgColor) {
+  locate(btnTheme, gtkTheme) {
     if (btnTheme == 'auto') {
-      return this.match(gtkTheme, bgColor)
+      return this.match(gtkTheme)
     } else {
       return this.get(btnTheme)
     }
