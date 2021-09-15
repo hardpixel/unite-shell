@@ -93,17 +93,12 @@ var WindowControlsThemes = class WindowControlsThemes {
     this.available.forEach(callback)
   }
 
-  getDefault(variant) {
-    return this.themes[`default-${variant}`]
-  }
-
   get(name) {
-    return this.themes[name] || this.getDefault('dark')
+    return this.themes[name] || this.default
   }
 
   match(gtkTheme) {
-    return this.available.find(theme => theme.match(gtkTheme)) ||
-      this.getDefault(isDark ? 'dark' : 'light')
+    return this.available.find(theme => theme.match(gtkTheme)) || this.default
   }
 
   locate(btnTheme, gtkTheme) {
