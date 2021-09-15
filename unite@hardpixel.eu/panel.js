@@ -31,6 +31,9 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
     this.controls = new Buttons.WindowControls()
     this.themes   = new Theme.WindowControlsThemes()
 
+    this.loadTheme = Main.loadTheme
+    Main.loadTheme = this._onThemeLoad.bind(this)
+
     this.signals.connect(
       Main.overview, 'showing', this._syncVisible.bind(this)
     )
@@ -55,6 +58,10 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
       'window-buttons-theme', this._onThemeChange.bind(this)
     )
 
+    this.settings.connect(
+      'gtk-theme', this._onAutoThemeChange.bind(this)
+    )
+
     Main.panel.addToStatusArea(
       'uniteWindowControls', this.controls, this.index, this.side
     )
@@ -62,6 +69,14 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
     this._onPositionChange()
     this._onThemeChange()
     this._syncVisible()
+  }
+
+  get gtkTheme() {
+    return this.settings.get('gtk-theme')
+  }
+
+  get themeName() {
+    return this.settings.get('window-buttons-theme')
   }
 
   get position() {
@@ -134,11 +149,24 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
   _onThemeChange() {
     this.controls.remove_style_class_name(this.theme)
 
-    this.theme = this.settings.get('window-buttons-theme')
-    const path = this.themes.getStyle(this.theme)
+    const color = Main.panel.get_theme_node().get_background_color()
+    const theme = this.themes.locate(this.themeName, this.gtkTheme, color)
 
-    this.styles.addShellStyle('windowButtons', path)
+    this.theme = theme.uuid
+    this.styles.addShellStyle('windowButtons', theme.path)
+
     this.controls.add_style_class_name(this.theme)
+  }
+
+  _onThemeLoad() {
+    this.loadTheme()
+    this._onAutoThemeChange()
+  }
+
+  _onAutoThemeChange() {
+    if (this.themeName == 'auto') {
+      this._onThemeChange()
+    }
   }
 
   _syncVisible() {
@@ -154,6 +182,7 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
   }
 
   destroy() {
+    Main.loadTheme = this.loadTheme
     this.controls.destroy()
 
     this.signals.disconnectAll()

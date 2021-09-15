@@ -12,6 +12,17 @@ function fileExists(path) {
   return GLib.file_test(path, GLib.FileTest.EXISTS)
 }
 
+function isColorDark({ red, green, blue }) {
+  // HSP equation from http://alienryderflex.com/hsp.html
+  const hsp = Math.sqrt(
+    0.299 * (red * red) +
+    0.587 * (green * green) +
+    0.114 * (blue * blue)
+  )
+
+  return hsp < 127.6
+}
+
 function parseKeyFile(path, callback) {
   const file = GLib.build_filenamev(path)
 
@@ -54,6 +65,14 @@ const WindowControlsTheme = class WindowControlsTheme {
   get isValid() {
     return fileExists(this.path)
   }
+
+  match(gtkTheme, isDark) {
+    const name = this.name.replace(/(\sDark|\sLight)$/, '')
+    const dark = !this.uuid.endsWith('-light')
+
+    return dark == isDark &&
+      (gtkTheme == name || gtkTheme.startsWith(`${name}-`))
+  }
 }
 
 var WindowControlsThemes = class WindowControlsThemes {
@@ -70,12 +89,28 @@ var WindowControlsThemes = class WindowControlsThemes {
     this.available.forEach(callback)
   }
 
-  get(name) {
-    return this.themes[name] || this.themes['default-dark']
+  getDefault(variant) {
+    return this.themes[`default-${variant}`]
   }
 
-  getStyle(name) {
-    return this.get(name).path
+  get(name) {
+    return this.themes[name] || this.getDefault('dark')
+  }
+
+  match(gtkTheme, bgColor) {
+    const isDark = isColorDark(bgColor)
+
+    return this.available.find(theme => theme.match(gtkTheme, isDark)) ||
+      this.available.find(theme => theme.match(gtkTheme, !isDark)) ||
+      this.getDefault(isDark ? 'dark' : 'light')
+  }
+
+  locate(btnTheme, gtkTheme, bgColor) {
+    if (btnTheme == 'auto') {
+      return this.match(gtkTheme, bgColor)
+    } else {
+      return this.get(btnTheme)
+    }
   }
 
   update() {
