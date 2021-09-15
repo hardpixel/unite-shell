@@ -8,6 +8,7 @@ const Convenience = Me.imports.convenience
 
 const SETTINGS = Convenience.getSettings()
 const WM_PREFS = Convenience.getPreferences()
+const IF_PREFS = Convenience.getInterface()
 
 const GTK_VERSIONS = [3, 4]
 const USER_CONFIGS = GLib.get_user_config_dir()
@@ -127,8 +128,10 @@ var Settings = class Settings extends Signals {
   getSettingObject(key) {
     if (SETTINGS.exists(key)) {
       return SETTINGS
-    } else {
+    } else if (WM_PREFS.exists(key)) {
       return WM_PREFS
+    } else {
+      return IF_PREFS
     }
   }
 

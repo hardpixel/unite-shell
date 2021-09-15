@@ -141,3 +141,8 @@ function getPreferences() {
   let schemaId = 'org.gnome.desktop.wm.preferences'
   return new PreferencesManager({ schema_id: schemaId })
 }
+
+function getInterface() {
+  let schemaId = 'org.gnome.desktop.interface'
+  return new SettingsObject({ schema_id: schemaId })
+}
