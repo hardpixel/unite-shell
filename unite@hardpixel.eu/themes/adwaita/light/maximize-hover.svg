@@ -1,0 +1,15 @@
+<svg height="24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <linearGradient id="a" gradientUnits="userSpaceOnUse" x1="12.014701" x2="12.014701" y1="11.677387" y2="2.02771">
+    <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+    <stop offset="1" stop-color="#fcfcfc" stop-opacity=".321569"/>
+  </linearGradient>
+  <linearGradient id="b" gradientTransform="matrix(.73329161 0 0 -.73329161 -20.998087 5.400411)" gradientUnits="userSpaceOnUse" x1="45.0214" x2="45.0214" y1="-9.4725" y2="-23.604">
+    <stop offset="0" stop-color="#1d1d1d" stop-opacity="0"/>
+    <stop offset="1"/>
+  </linearGradient>
+  <circle cx="12.000035" cy="12.000035" fill="#f8f8f7" r="10.633389" stroke="#e7e5e4" stroke-width=".733292"/>
+  <path d="m2.0994993 12.000035a9.9005733 9.9005733 0 1 1 19.8011457 0" fill="none" stroke="url(#a)" stroke-width=".733292"/>
+  <path d="m1.3681143 12.000035c0 5.871833 4.760089 10.631922 10.6319207 10.631922a10.631995 10.631995 0 0 0 10.631922-10.631922" fill="none" opacity=".1" stroke="url(#b)" stroke-width=".734978"/>
+  <path d="m8 9v8h8v-8zm1 1h6v6h-6z" fill="#fff"/>
+  <path d="m8 8v8h8v-8zm1 1h6v6h-6z" fill="#2e3436"/>
+</svg>
