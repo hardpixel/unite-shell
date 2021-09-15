@@ -144,6 +144,11 @@ var Settings = class Settings extends Signals {
     const object = this.getSettingObject(key)
     return object.getSetting(key)
   }
+
+  set(key, value) {
+    const object = this.getSettingObject(key)
+    return object.setSetting(key, value)
+  }
 }
 
 var Feature = class Feature {

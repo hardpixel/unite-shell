@@ -13,6 +13,10 @@ var SettingsObject = GObject.registerClass(
     getSetting(key) {
       if (this.exists(key)) return this.get_string(key)
     }
+
+    setSetting() {
+      return false
+    }
   }
 )
 
@@ -71,6 +75,16 @@ var SettingsManager = GObject.registerClass(
         default:        return this.get_string(key)
       }
     }
+
+    setSetting(key, value) {
+      if (!this.exists(key)) return false
+
+      switch (this.getSettingType(key)) {
+        case 'int':     return this.set_int(key, value)
+        case 'boolean': return this.set_boolean(key, value)
+        default:        return this.set_string(key, value)
+      }
+    }
   }
 )
 
@@ -96,6 +110,10 @@ var PreferencesManager = GObject.registerClass(
 
       if (this.exists(fun)) return this[fun]
       if (this.exists(key)) return this.get_string(key)
+    }
+
+    setSetting() {
+      return false
     }
   }
 )
