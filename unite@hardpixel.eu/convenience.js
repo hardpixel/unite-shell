@@ -39,7 +39,7 @@ var SettingsManager = GObject.registerClass(
     }
 
     exists(key) {
-      return Object.keys(this._types).includes(key)
+      return Object.prototype.hasOwnProperty.call(this._types, key)
     }
 
     getSettingType(key) {
@@ -76,7 +76,7 @@ var PreferencesManager = GObject.registerClass(
 
     exists(key) {
       let fun = key.replace(/-/g, '_')
-      return (fun in this) || this.list_keys().includes(key)
+      return (fun in this) || this.settings_schema.has_key(key)
     }
 
     getSetting(key) {
