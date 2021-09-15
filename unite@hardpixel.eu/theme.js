@@ -23,22 +23,22 @@ function isColorDark({ red, green, blue }) {
   return hsp < 127.6
 }
 
-function parseKeyFile(path, callback) {
+function parseKeyFile(path) {
   const file = GLib.build_filenamev(path)
 
   if (!fileExists(file)) {
-    return { get: () => null }
+    return { get: (group, name, fallback = null) => fallback }
   }
 
   const keys = new GLib.KeyFile()
   keys.load_from_file(file, GLib.KeyFileFlags.NONE)
 
   return {
-    get: (group, name) => {
+    get: (group, name, fallback = null) => {
       try {
-        return keys.get_string(group, name)
+        return keys.get_string(group, name) || fallback
       } catch {
-        return null
+        return fallback
       }
     }
   }
@@ -55,11 +55,11 @@ const WindowControlsTheme = class WindowControlsTheme {
   constructor(uuid, path) {
     const theme = parseKeyFile([path, 'unite.theme'])
     const name  = theme.get('Theme', 'Name')
-    const style = theme.get('Theme', 'Stylesheet')
+    const style = theme.get('Theme', 'Stylesheet', 'stylesheet.css')
 
     this.uuid = uuid
     this.name = name || toTitleCase(uuid)
-    this.path = GLib.build_filenamev([path, style || 'stylesheet.css'])
+    this.path = GLib.build_filenamev([path, style])
   }
 
   get isValid() {
