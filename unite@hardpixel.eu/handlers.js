@@ -73,8 +73,6 @@ function resetGtkStyles() {
     let style = getFileContents(filepath)
 
     style = style.replace(/\/\* UNITE ([\s\S]*?) UNITE \*\/\n/g, '')
-    style = style.replace(/@import.*unite@hardpixel\.eu.*css['"]\);\n/g, '')
-
     setFileContents(filepath, style)
   })
 }
@@ -360,5 +358,3 @@ var Styles = class Styles {
     }
   }
 }
-
-resetGtkStyles()

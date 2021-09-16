@@ -42,7 +42,7 @@ var PrefsWidget = GObject.registerClass(
       })
 
       themes.forEach(theme => {
-        if (!theme.uuid.startsWith('default')) {
+        if (theme.uuid !== 'default') {
           widget.append(theme.uuid, theme.name)
         }
       })

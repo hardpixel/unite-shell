@@ -1,6 +1,7 @@
 const GObject       = imports.gi.GObject
 const Main          = imports.ui.main
 const Me            = imports.misc.extensionUtils.getCurrentExtension()
+const Handlers      = Me.imports.handlers
 const PanelManager  = Me.imports.panel.PanelManager
 const LayoutManager = Me.imports.layout.LayoutManager
 const WindowManager = Me.imports.window.WindowManager
@@ -18,6 +19,8 @@ var UniteExtension = GObject.registerClass(
     }
 
     activate() {
+      Handlers.resetGtkStyles()
+
       this.panelManager.activate()
       this.layoutManager.activate()
       this.windowManager.activate()
@@ -26,6 +29,8 @@ var UniteExtension = GObject.registerClass(
     }
 
     destroy() {
+      Handlers.resetGtkStyles()
+
       this.panelManager.destroy()
       this.layoutManager.destroy()
       this.windowManager.destroy()
