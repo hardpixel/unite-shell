@@ -1,0 +1,40 @@
+.window-button .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.close .icon {
+  background-image: url("close.svg");
+}
+
+.close:hover .icon {
+  background-image: url("close-hover.svg");
+}
+
+.close:active .icon {
+  background-image: url("close-active.svg");
+}
+
+.minimize .icon {
+  background-image: url("minimize.svg");
+}
+
+.minimize:hover .icon {
+  background-image: url("minimize-hover.svg");
+}
+
+.minimize:active .icon {
+  background-image: url("minimize-active.svg");
+}
+
+.maximize .icon {
+  background-image: url("maximize.svg");
+}
+
+.maximize:hover .icon {
+  background-image: url("maximize-hover.svg");
+}
+
+.maximize:active .icon {
+  background-image: url("maximize-active.svg");
+}

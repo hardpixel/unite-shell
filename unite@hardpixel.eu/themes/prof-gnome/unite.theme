@@ -1,2 +1,4 @@
 [Theme]
 Name=Prof-Gnome
+DarkStylesheet=dark/stylesheet.css
+LightStylesheet=light/stylesheet.css
