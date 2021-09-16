@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Unite Shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-13 22:12+0300\n"
+"POT-Creation-Date: 2021-09-16 03:07+0300\n"
 "PO-Revision-Date: 2020-04-30 18:36+0200\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -55,8 +55,8 @@ msgstr ""
 msgid "Never"
 msgstr ""
 
-#: overrides/settings.ui:295 overrides/settings.ui:949 settings.ui:163
-#: settings.ui:521
+#: overrides/settings.ui:295 overrides/settings.ui:949
+#: overrides/settings.ui:996 settings.ui:163 settings.ui:521 settings.ui:548
 msgid "Auto"
 msgstr ""
 
@@ -187,12 +187,8 @@ msgstr ""
 msgid "Top bar window buttons theme"
 msgstr ""
 
-#: overrides/settings.ui:996 settings.ui:548
-msgid "Default Dark"
-msgstr ""
-
 #: overrides/settings.ui:997 settings.ui:549
-msgid "Default Light"
+msgid "Default"
 msgstr ""
 
 #: overrides/settings.ui:1021 settings.ui:561

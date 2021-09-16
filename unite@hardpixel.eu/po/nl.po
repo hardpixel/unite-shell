@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Unite Shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-13 22:15+0300\n"
-"PO-Revision-Date: 2021-09-13 22:16+0300\n"
+"POT-Creation-Date: 2021-09-16 03:13+0300\n"
+"PO-Revision-Date: 2021-09-16 03:13+0300\n"
 "Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-Basepath: unite@hardpixel.eu\n"
+"X-Poedit-Basepath: ..\n"
 "X-Poedit-SearchPath-0: settings.ui\n"
 "X-Poedit-SearchPath-1: overrides/settings.ui\n"
 
@@ -55,8 +55,8 @@ msgstr "Activiteitenknop verbergen"
 msgid "Never"
 msgstr "Nooit"
 
-#: overrides/settings.ui:295 overrides/settings.ui:949 settings.ui:163
-#: settings.ui:521
+#: overrides/settings.ui:295 overrides/settings.ui:949
+#: overrides/settings.ui:996 settings.ui:163 settings.ui:521 settings.ui:548
 msgid "Auto"
 msgstr "Automatisch"
 
@@ -187,13 +187,9 @@ msgstr "Achteraan"
 msgid "Top bar window buttons theme"
 msgstr "Vensterknopthema op bovenbalk"
 
-#: overrides/settings.ui:996 settings.ui:548
-msgid "Default Dark"
-msgstr "Standaard (donker)"
-
 #: overrides/settings.ui:997 settings.ui:549
-msgid "Default Light"
-msgstr "Standaard (licht)"
+msgid "Default"
+msgstr "Standaard"
 
 #: overrides/settings.ui:1021 settings.ui:561
 msgid "Appearance"
