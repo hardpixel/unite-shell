@@ -37,9 +37,6 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
       this.settings.set('window-buttons-theme', rename)
     }
 
-    this.loadTheme = Main.loadTheme
-    Main.loadTheme = this._onThemeLoad.bind(this)
-
     this.signals.connect(
       Main.overview, 'showing', this._syncVisible.bind(this)
     )
@@ -50,6 +47,10 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
 
     this.signals.connect(
       WinTracker, 'notify::focus-app', this._syncVisible.bind(this)
+    )
+
+    this.signals.connect(
+      Main.panel, 'style-changed', this._onThemeChange.bind(this)
     )
 
     this.settings.connect(
@@ -164,11 +165,6 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
     this.controls.add_style_class_name(this.theme)
   }
 
-  _onThemeLoad() {
-    this.loadTheme()
-    this._onThemeChange()
-  }
-
   _onAutoThemeChange() {
     if (this.themeName == 'auto') {
       this._onThemeChange()
@@ -188,7 +184,6 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
   }
 
   destroy() {
-    Main.loadTheme = this.loadTheme
     this.controls.destroy()
 
     this.signals.disconnectAll()
