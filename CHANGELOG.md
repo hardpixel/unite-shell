@@ -1,5 +1,32 @@
 # Changelog
 
+## [v56](https://github.com/hardpixel/unite-shell/tree/v56) (2021-09-26)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v55...v56)
+
+**Implemented enhancements:**
+
+- Titlebar Buttons and Top Panel Buttons Same Theme [\#190](https://github.com/hardpixel/unite-shell/issues/190)
+
+**Closed issues:**
+
+- Window buttons appearance on light/dark themes | New Feature + Workaround [\#253](https://github.com/hardpixel/unite-shell/issues/253)
+- Autohide status bar from the bottom instead of the top of the screen [\#245](https://github.com/hardpixel/unite-shell/issues/245)
+- Some applications “sublime text” and “handbrake” doesn't hide title bar while maxium  [\#243](https://github.com/hardpixel/unite-shell/issues/243)
+- Incorrect restore button while maximized [\#241](https://github.com/hardpixel/unite-shell/issues/241)
+- Flickering or tearing when back from lock screen [\#226](https://github.com/hardpixel/unite-shell/issues/226)
+- \[Feature\] Use GTK Window button theme from themes [\#207](https://github.com/hardpixel/unite-shell/issues/207)
+- \[Feature request\] Add "Hide top bar" functionality [\#205](https://github.com/hardpixel/unite-shell/issues/205)
+- Ubuntu Software \(Snap Store app\) double window bottom [\#191](https://github.com/hardpixel/unite-shell/issues/191)
+- Tray icon problems [\#171](https://github.com/hardpixel/unite-shell/issues/171)
+
+**Merged pull requests:**
+
+- Revert "Also check the disconnect handler to really fix the error on suspend" [\#257](https://github.com/hardpixel/unite-shell/pull/257) ([jonian](https://github.com/jonian))
+- Also check the disconnect handler to really fix the error on suspend [\#256](https://github.com/hardpixel/unite-shell/pull/256) ([njsf](https://github.com/njsf))
+- Do not attempt to disconnect from object if it is null [\#255](https://github.com/hardpixel/unite-shell/pull/255) ([njsf](https://github.com/njsf))
+- Added Dutch translation [\#252](https://github.com/hardpixel/unite-shell/pull/252) ([Vistaus](https://github.com/Vistaus))
+
 ## [v55](https://github.com/hardpixel/unite-shell/tree/v55) (2021-09-10)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v54...v55)
