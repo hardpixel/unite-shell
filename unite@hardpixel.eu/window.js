@@ -486,11 +486,11 @@ var WindowManager = GObject.registerClass(
     }
 
     destroy() {
-      this.clearWindows()
-
       this.signals.disconnectAll()
       this.settings.disconnectAll()
       this.styles.removeAll()
+
+      this.clearWindows()
     }
   }
 )
