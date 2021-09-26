@@ -184,11 +184,11 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
   }
 
   destroy() {
-    this.controls.destroy()
-
     this.signals.disconnectAll()
     this.settings.disconnectAll()
     this.styles.removeAll()
+
+    this.controls.destroy()
   }
 }
 
@@ -395,10 +395,10 @@ var DesktopName = class DesktopName extends Handlers.Feature {
   }
 
   destroy() {
-    this.label.destroy()
-
     this.signals.disconnectAll()
     this.settings.disconnectAll()
+
+    this.label.destroy()
   }
 }
 
@@ -645,13 +645,13 @@ var AppMenuCustomizer = class AppMenuCustomizer extends Handlers.Feature {
   }
 
   destroy() {
-    this.tooltip.destroy()
-
     this.setLabelMaxWidth(null)
     this.setTextEllipsizeMode('end')
 
     this.signals.disconnectAll()
     this.settings.disconnectAll()
+
+    this.tooltip.destroy()
   }
 }
 
