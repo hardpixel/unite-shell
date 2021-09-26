@@ -118,8 +118,16 @@ var DropdownArrows = class DropdownArrows extends Handlers.Feature {
   activate() {
     this.signals = new Handlers.Signals()
 
-    for (const box of Main.panel.get_children()) {
-      this.signals.connect(box, 'actor_added', this._onActorAdded.bind(this))
+    const boxes = [
+      Main.panel._leftBox,
+      Main.panel._centerBox,
+      Main.panel._rightBox
+    ]
+
+    for (const box of boxes) {
+      this.signals.connect(
+        box, 'actor_added', this._onActorAdded.bind(this)
+      )
     }
 
     this._onActorAdded()
