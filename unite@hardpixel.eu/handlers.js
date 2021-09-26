@@ -105,7 +105,7 @@ var Signals = class Signals {
   disconnect(key) {
     if (this.hasSignal(key)) {
       const data = this.signals.get(key)
-      if (data.object != null) {
+      if (data.object  && data.object.signal_handler_disconnect) {
         data.object.disconnect(data.signalId)
       }
 
