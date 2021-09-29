@@ -23,51 +23,22 @@ function isColorDark({ red, green, blue }) {
   return hsp < 127.6
 }
 
-function parseKeyFile(path) {
-  const file = GLib.build_filenamev(path)
-
-  if (!fileExists(file)) {
-    return { get: (group, name, fallback = null) => fallback }
-  }
-
-  const keys = new GLib.KeyFile()
-  keys.load_from_file(file, GLib.KeyFileFlags.NONE)
-
-  return {
-    get: (group, name, fallback = null) => {
-      try {
-        return keys.get_string(group, name) || fallback
-      } catch {
-        return fallback
-      }
-    }
-  }
-}
-
-function toTitleCase(text) {
-  const upcase = (_, char) => char ? char.toUpperCase() : ''
-  const string = text.replace(/-|_/g, ' ')
-
-  return string.replace(/\b([a-z])/g, upcase)
-}
-
 const WindowControlsTheme = class WindowControlsTheme {
   constructor(uuid, path) {
-    const theme = parseKeyFile([path, 'unite.theme'])
-    const name  = theme.get('Theme', 'Name')
-    const style = theme.get('Theme', 'Stylesheet', 'stylesheet.css')
-    const dark  = theme.get('Theme', 'DarkStylesheet', style)
-    const light = theme.get('Theme', 'LightStylesheet', dark)
-
     this.uuid = uuid
-    this.name = name || toTitleCase(uuid)
+    this.keys = new GLib.KeyFile()
+    this.path = GLib.build_filenamev([path, 'unite.theme'])
 
-    this.dark  = GLib.build_filenamev([path, dark])
-    this.light = GLib.build_filenamev([path, light])
-  }
+    try {
+      this.keys.load_from_file(this.path, GLib.KeyFileFlags.NONE)
 
-  get isValid() {
-    return fileExists(this.dark) && fileExists(this.light)
+      this.valid = true
+      this.name  = this.keys.get_string('Theme', 'Name')
+      this.dark  = this.keys.get_string('Theme', 'DarkStylesheet')
+      this.light = this.keys.get_string('Theme', 'LightStylesheet')
+    } catch (e) {
+      this.valid = false
+    }
   }
 
   getStyle(bgColor) {
@@ -126,7 +97,7 @@ var WindowControlsThemes = class WindowControlsThemes {
         const path = GLib.build_filenamev([pathName, uuid])
         const item = new WindowControlsTheme(uuid, path)
 
-        if (item.isValid) {
+        if (item.valid) {
           this.themes[uuid] = item
         }
       }
