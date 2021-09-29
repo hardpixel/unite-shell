@@ -1,2 +1,4 @@
 [Theme]
 Name=McMojave
+DarkStylesheet=stylesheet.css
+LightStylesheet=stylesheet.css

@@ -1,3 +1,4 @@
 [Theme]
+Name=Adwaita
 DarkStylesheet=dark/stylesheet.css
 LightStylesheet=light/stylesheet.css
