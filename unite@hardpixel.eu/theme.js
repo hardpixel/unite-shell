@@ -27,15 +27,19 @@ const WindowControlsTheme = class WindowControlsTheme {
   constructor(uuid, path) {
     this.uuid = uuid
     this.keys = new GLib.KeyFile()
-    this.path = GLib.build_filenamev([path, 'unite.theme'])
 
     try {
-      this.keys.load_from_file(this.path, GLib.KeyFileFlags.NONE)
+      const theme = GLib.build_filenamev([path, 'unite.theme'])
+      this.keys.load_from_file(theme, GLib.KeyFileFlags.NONE)
 
-      this.valid = true
+      const dark  = this.keys.get_string('Dark', 'Style')
+      const light = this.keys.get_string('Light', 'Style')
+
       this.name  = this.keys.get_string('Theme', 'Name')
-      this.dark  = this.keys.get_string('Dark', 'Style')
-      this.light = this.keys.get_string('Light', 'Style')
+      this.dark  = GLib.build_filenamev([path, dark])
+      this.light = GLib.build_filenamev([path, light])
+
+      this.valid = fileExists(this.dark) && fileExists(this.light)
     } catch (e) {
       this.valid = false
     }
