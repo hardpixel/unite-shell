@@ -34,8 +34,8 @@ const WindowControlsTheme = class WindowControlsTheme {
 
       this.valid = true
       this.name  = this.keys.get_string('Theme', 'Name')
-      this.dark  = this.keys.get_string('Theme', 'DarkStylesheet')
-      this.light = this.keys.get_string('Theme', 'LightStylesheet')
+      this.dark  = this.keys.get_string('Dark', 'Style')
+      this.light = this.keys.get_string('Light', 'Style')
     } catch (e) {
       this.valid = false
     }
