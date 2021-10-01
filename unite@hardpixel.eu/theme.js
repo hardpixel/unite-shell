@@ -64,6 +64,10 @@ var WindowControlsThemes = class WindowControlsThemes {
     return Object.values(this.themes)
   }
 
+  get default() {
+    return this.themes['default']
+  }
+
   forEach(callback) {
     this.available.forEach(callback)
   }
