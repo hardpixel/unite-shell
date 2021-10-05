@@ -1,5 +1,21 @@
 # Changelog
 
+## [v57](https://github.com/hardpixel/unite-shell/tree/v57) (2021-10-05)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v56...v57)
+
+**Closed issues:**
+
+- unite is making the telegram open in the conversation every time a notification arrives. [\#262](https://github.com/hardpixel/unite-shell/issues/262)
+- Top bar windows buttom theme: 'auto' option does not work in gnome-shell 3.38 [\#261](https://github.com/hardpixel/unite-shell/issues/261)
+- No longer works on Brave Browser using system title bars [\#260](https://github.com/hardpixel/unite-shell/issues/260)
+- Error, when trying to uphgreade/install from https://extensions.gnome.org/extension/1287/unite/ [\#258](https://github.com/hardpixel/unite-shell/issues/258)
+
+**Merged pull requests:**
+
+- Add Sweet GTK theme icons [\#263](https://github.com/hardpixel/unite-shell/pull/263) ([gbegkas](https://github.com/gbegkas))
+- Add Dracula theme icons [\#259](https://github.com/hardpixel/unite-shell/pull/259) ([gbegkas](https://github.com/gbegkas))
+
 ## [v56](https://github.com/hardpixel/unite-shell/tree/v56) (2021-09-26)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v55...v56)
