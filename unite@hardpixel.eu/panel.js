@@ -32,12 +32,6 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
     this.theme    = this.themes.default
     this.isDark   = true
 
-    // TODO: Remove in next release
-    if (this.themeName.match(/(-dark|-light)$/)) {
-      const rename = this.themeName.replace(/(-dark|-light)$/, '')
-      this.settings.set('window-buttons-theme', rename)
-    }
-
     this.signals.connect(
       Main.overview, 'showing', this._syncVisible.bind(this)
     )
