@@ -45,8 +45,8 @@ const WindowControlsTheme = class WindowControlsTheme {
     }
   }
 
-  getStyle(bgColor) {
-    return isColorDark(bgColor) ? this.dark : this.light
+  getStyle(dark = true) {
+    return dark ? this.dark : this.light
   }
 
   match(gtkTheme) {
