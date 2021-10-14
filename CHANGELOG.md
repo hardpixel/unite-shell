@@ -1,5 +1,14 @@
 # Changelog
 
+## [v58](https://github.com/hardpixel/unite-shell/tree/v58) (2021-10-14)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v57...v58)
+
+**Closed issues:**
+
+- Chromium titlebar does not disappear when maximised [\#265](https://github.com/hardpixel/unite-shell/issues/265)
+- v57 errors [\#264](https://github.com/hardpixel/unite-shell/issues/264)
+
 ## [v57](https://github.com/hardpixel/unite-shell/tree/v57) (2021-10-05)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v56...v57)
