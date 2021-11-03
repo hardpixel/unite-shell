@@ -1,5 +1,17 @@
 # Changelog
 
+## [v59](https://github.com/hardpixel/unite-shell/tree/v59) (2021-11-03)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v58...v59)
+
+**Closed issues:**
+
+- Fedora 35 Silverblue [\#271](https://github.com/hardpixel/unite-shell/issues/271)
+- v58 window titles still missing after uninstalling the extension [\#270](https://github.com/hardpixel/unite-shell/issues/270)
+- v58 breaks on Fedora 34 [\#267](https://github.com/hardpixel/unite-shell/issues/267)
+- Global menus are not working or gone and I just recently saw that? [\#266](https://github.com/hardpixel/unite-shell/issues/266)
+- Doubled window buttons on new Chrome v94 and Firefox [\#254](https://github.com/hardpixel/unite-shell/issues/254)
+
 ## [v58](https://github.com/hardpixel/unite-shell/tree/v58) (2021-10-14)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v57...v58)
