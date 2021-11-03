@@ -130,7 +130,7 @@
     </key>
 
     <key name="window-buttons-theme" type="s">
-      <default>"default-dark"</default>
+      <default>"default"</default>
       <summary>Top bar window buttons theme.</summary>
     </key>
 
