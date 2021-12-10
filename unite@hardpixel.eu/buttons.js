@@ -126,7 +126,7 @@ var WindowControls = GObject.registerClass(
     }
 
     setVisible(visible) {
-      this.container.visible = visible
+      this._controls.visible = visible;
     }
   }
 )
