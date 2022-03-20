@@ -166,7 +166,7 @@ var PanelSpacing = class PanelSpacing extends Handlers.Feature {
     this.styles = new Handlers.Styles()
     this._injectStyles()
 
-    Main.panel._addStyleClassName('reduce-spacing')
+    Main.panel.add_style_class_name('reduce-spacing')
     this._syncLayout()
   }
 
@@ -196,7 +196,7 @@ var PanelSpacing = class PanelSpacing extends Handlers.Feature {
   }
 
   destroy() {
-    Main.panel._removeStyleClassName('reduce-spacing')
+    Main.panel.remove_style_class_name('reduce-spacing')
     this.styles.removeAll()
 
     this._syncLayout()
