@@ -8,19 +8,52 @@ const CLASSIC  = global.session_mode == 'classic'
 
 var ExtendLeftBox = class ExtendLeftBox extends Override.Injection {
   get active() {
+    return VERSION < 42 && VERSION >= 38
+  }
+
+  _init() {
+    this._replace('_injectAllocate')
+    this._replace('_restoreAllocate')
+  }
+
+  _injectAllocate() {
+    this._defaultFunc = Main.panel.__proto__.vfunc_allocate
+
+    Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box) => {
+      Main.panel.vfunc_allocate.call(Main.panel, box)
+      this._allocate(Main.panel, box)
+    })
+  }
+
+  _restoreAllocate() {
+    Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', this._defaultFunc)
+    this._defaultFunc = null
+  }
+}
+
+var ExtendLeftBoxLegacy = class ExtendLeftBoxLegacy extends Override.Injection {
+  get active() {
     return VERSION < 38
   }
 
   _init() {
     this._replace('_injectAllocate')
+    this._replace('_restoreAllocate')
     this._replace('_allocate')
   }
 
   _injectAllocate() {
+    this._defaultFunc = Main.panel.__proto__.vfunc_allocate
+
     Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box, flags) => {
       Main.panel.vfunc_allocate.call(Main.panel, box, flags)
       this._allocate(Main.panel, box, flags)
     })
+  }
+
+  _restoreAllocate() {
+    Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', this._defaultFunc)
+    this._defaultFunc = null
   }
 
   _allocate(actor, box, flags) {

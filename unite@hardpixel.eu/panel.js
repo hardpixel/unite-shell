@@ -199,21 +199,29 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
     super('extend-left-box', setting => setting == true)
 
     Override.inject(this, 'panel', 'ExtendLeftBox')
+    Override.inject(this, 'panel', 'ExtendLeftBoxLegacy')
   }
 
   activate() {
-    this._default = Object.getPrototypeOf(Main.panel).vfunc_allocate
     this._injectAllocate()
-
     Main.panel.queue_relayout()
   }
 
   _injectAllocate() {
+    this._defaultFunc = Object.getPrototypeOf(Main.panel).vfunc_allocate
     const protoSymbol = Object.getPrototypeOf(Main.panel)[Gi.gobject_prototype_symbol]
+
     protoSymbol[Gi.hook_up_vfunc_symbol]('allocate', (box) => {
       Main.panel.vfunc_allocate.call(Main.panel, box)
       this._allocate(Main.panel, box)
     })
+  }
+
+  _restoreAllocate() {
+    const protoSymbol = Object.getPrototypeOf(Main.panel)[Gi.gobject_prototype_symbol]
+    protoSymbol[Gi.hook_up_vfunc_symbol]('allocate', this._defaultFunc)
+
+    this._defaultFunc = null
   }
 
   _allocate(actor, box) {
@@ -272,10 +280,7 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
   }
 
   destroy() {
-    const protoSymbol = Object.getPrototypeOf(Main.panel)[Gi.gobject_prototype_symbol]
-    protoSymbol[Gi.hook_up_vfunc_symbol]('allocate', this._default)
-    this._default = null
-
+    this._restoreAllocate()
     Main.panel.queue_relayout()
   }
 }
