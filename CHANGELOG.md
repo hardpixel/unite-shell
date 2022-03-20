@@ -1,5 +1,23 @@
 # Changelog
 
+## [v60](https://github.com/hardpixel/unite-shell/tree/v60) (2022-03-20)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v59...v60)
+
+**Closed issues:**
+
+- \[Feature Request\] Blacklist/Whitelist for global window buttons [\#287](https://github.com/hardpixel/unite-shell/issues/287)
+- Fails to load with: TypeError: Main.panel.\_\_proto\_\_\[Gi.hook\_up\_vfunc\_symbol\] is not a function [\#286](https://github.com/hardpixel/unite-shell/issues/286)
+- \[Feature request\] Option to conditionally hide app icon [\#283](https://github.com/hardpixel/unite-shell/issues/283)
+- MS Edge doubling down window controls when maximized in top bar [\#282](https://github.com/hardpixel/unite-shell/issues/282)
+- \[Feature request\] Global Menu [\#278](https://github.com/hardpixel/unite-shell/issues/278)
+
+**Merged pull requests:**
+
+- Gnome 42 compatibility [\#289](https://github.com/hardpixel/unite-shell/pull/289) ([gonzaarcr](https://github.com/gonzaarcr))
+- Add 42 since it works there too [\#280](https://github.com/hardpixel/unite-shell/pull/280) ([shemgp](https://github.com/shemgp))
+- Add Korean Translation [\#275](https://github.com/hardpixel/unite-shell/pull/275) ([kuroehanako](https://github.com/kuroehanako))
+
 ## [v59](https://github.com/hardpixel/unite-shell/tree/v59) (2021-11-03)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v58...v59)
