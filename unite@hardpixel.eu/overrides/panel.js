@@ -8,7 +8,7 @@ const CLASSIC  = global.session_mode == 'classic'
 
 var ExtendLeftBox = class ExtendLeftBox extends Override.Injection {
   get active() {
-    return VERSION < 42 && VERSION >= 38
+    return Gi.gobject_prototype_symbol === undefined
   }
 
   _init() {
