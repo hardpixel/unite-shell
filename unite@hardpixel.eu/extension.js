@@ -25,7 +25,7 @@ var UniteExtension = GObject.registerClass(
       this.layoutManager.activate()
       this.windowManager.activate()
 
-      Main.panel._addStyleClassName('unite-shell')
+      Main.panel.add_style_class_name('unite-shell')
     }
 
     destroy() {
@@ -35,7 +35,7 @@ var UniteExtension = GObject.registerClass(
       this.layoutManager.destroy()
       this.windowManager.destroy()
 
-      Main.panel._removeStyleClassName('unite-shell')
+      Main.panel.remove_style_class_name('unite-shell')
     }
   }
 )
