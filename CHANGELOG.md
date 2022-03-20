@@ -1,5 +1,14 @@
 # Changelog
 
+## [v61](https://github.com/hardpixel/unite-shell/tree/v61) (2022-03-20)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v60...v61)
+
+**Closed issues:**
+
+- GTK application buttons removed even when the extension is not activate [\#285](https://github.com/hardpixel/unite-shell/issues/285)
+- Not able to match icons with theme icon [\#279](https://github.com/hardpixel/unite-shell/issues/279)
+
 ## [v60](https://github.com/hardpixel/unite-shell/tree/v60) (2022-03-20)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v59...v60)
