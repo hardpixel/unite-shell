@@ -394,8 +394,7 @@ var WindowManager = GObject.registerClass(
     }
 
     get focusWindow() {
-      const win = global.display.get_focus_window()
-      return this.getWindow(win)
+      return this.getWindow(this._focusWindow)
     }
 
     get hideTitlebars() {
@@ -451,6 +450,8 @@ var WindowManager = GObject.registerClass(
     }
 
     _onFocusWindow(display) {
+      this._focusWindow = display.focus_window
+
       if (this.focusWindow) {
         this.focusWindow.syncComponents()
       }
