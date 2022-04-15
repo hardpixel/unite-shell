@@ -225,29 +225,30 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
   }
 
   _allocate(actor, box) {
-    let leftBox   = Main.panel._leftBox
-    let centerBox = Main.panel._centerBox
-    let rightBox  = Main.panel._rightBox
+    const leftBox     = Main.panel._leftBox
+    const centerBox   = Main.panel._centerBox
+    const rightBox    = Main.panel._rightBox
+    const childBox    = new Clutter.ActorBox()
 
-    let allocWidth  = box.x2 - box.x1
-    let allocHeight = box.y2 - box.y1
+    const leftWidth   = leftBox.get_preferred_width(-1)[1]
+    const centerWidth = centerBox.get_preferred_width(-1)[1]
+    const rightWidth  = rightBox.get_preferred_width(-1)[1]
 
-    let [leftMinWidth, leftNaturalWidth]     = leftBox.get_preferred_width(-1)
-    let [centerMinWidth, centerNaturalWidth] = centerBox.get_preferred_width(-1)
-    let [rightMinWidth, rightNaturalWidth]   = rightBox.get_preferred_width(-1)
+    const allocWidth  = box.x2 - box.x1
+    const allocHeight = box.y2 - box.y1
+    const sideWidth   = Math.floor(allocWidth - centerWidth - rightWidth)
 
-    let sideWidth = allocWidth - rightNaturalWidth - centerNaturalWidth
-    let childBox  = new Clutter.ActorBox()
+    const rtlTextDir  = actor.get_text_direction() == Clutter.TextDirection.RTL
 
     childBox.y1 = 0
     childBox.y2 = allocHeight
 
-    if (actor.get_text_direction() == Clutter.TextDirection.RTL) {
-      childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth), leftNaturalWidth)
+    if (rtlTextDir) {
+      childBox.x1 = allocWidth - Math.min(sideWidth, leftWidth)
       childBox.x2 = allocWidth
     } else {
       childBox.x1 = 0
-      childBox.x2 = Math.min(Math.floor(sideWidth), leftNaturalWidth)
+      childBox.x2 = Math.min(sideWidth, leftWidth)
     }
 
     leftBox.allocate(childBox)
@@ -255,12 +256,12 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
     childBox.y1 = 0
     childBox.y2 = allocHeight
 
-    if (actor.get_text_direction() == Clutter.TextDirection.RTL) {
-      childBox.x1 = rightNaturalWidth
-      childBox.x2 = childBox.x1 + centerNaturalWidth
+    if (rtlTextDir) {
+      childBox.x1 = rightWidth
+      childBox.x2 = childBox.x1 + centerWidth
     } else {
-      childBox.x1 = allocWidth - centerNaturalWidth - rightNaturalWidth
-      childBox.x2 = childBox.x1 + centerNaturalWidth
+      childBox.x1 = allocWidth - centerWidth - rightWidth
+      childBox.x2 = childBox.x1 + centerWidth
     }
 
     centerBox.allocate(childBox)
@@ -268,11 +269,11 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
     childBox.y1 = 0
     childBox.y2 = allocHeight
 
-    if (actor.get_text_direction() == Clutter.TextDirection.RTL) {
+    if (rtlTextDir) {
       childBox.x1 = 0
-      childBox.x2 = rightNaturalWidth
+      childBox.x2 = rightWidth
     } else {
-      childBox.x1 = allocWidth - rightNaturalWidth
+      childBox.x1 = allocWidth - rightWidth
       childBox.x2 = allocWidth
     }
 
