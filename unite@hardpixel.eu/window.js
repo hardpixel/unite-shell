@@ -367,10 +367,6 @@ var WindowManager = GObject.registerClass(
       )
 
       this.signals.connect(
-        global.window_manager, 'destroy', this._onDestroyWindow.bind(this)
-      )
-
-      this.signals.connect(
         global.display, 'window-entered-monitor', this._onWindowEntered.bind(this)
       )
 
@@ -413,6 +409,10 @@ var WindowManager = GObject.registerClass(
       if (!this.hasWindow(win)) {
         const meta = new MetaWindow(win)
         this.windows.set(getId(win), meta)
+
+        win.connect('unmanaged', () => {
+          this.deleteWindow(win, false)
+        })
       }
     }
 
@@ -434,12 +434,6 @@ var WindowManager = GObject.registerClass(
     _onMapWindow(shellwm, { meta_window }) {
       if (isValid(meta_window)) {
         this.setWindow(meta_window)
-      }
-    }
-
-    _onDestroyWindow(shellwm, { meta_window }) {
-      if (isValid(meta_window)) {
-        this.deleteWindow(meta_window, false)
       }
     }
 
