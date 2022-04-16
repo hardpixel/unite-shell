@@ -1,4 +1,3 @@
-const Gi         = imports._gi
 const System     = imports.system
 const GObject    = imports.gi.GObject
 const GLib       = imports.gi.GLib
@@ -199,36 +198,24 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
     super('extend-left-box', setting => setting == true)
 
     Override.inject(this, 'panel', 'ExtendLeftBox')
-    Override.inject(this, 'panel', 'ExtendLeftBoxLegacy')
   }
 
   activate() {
-    this._injectAllocate()
+    this.injections = new Handlers.Injections()
+
+    this.injections.vfunc(
+      Main.panel, 'allocate', this._allocate.bind(this)
+    )
+
     Main.panel.queue_relayout()
   }
 
-  _injectAllocate() {
-    const proto = Object.getPrototypeOf(Main.panel)
-    const vfunc = proto[Gi.gobject_prototype_symbol]
+  _allocate(box) {
+    Main.panel.set_allocation(box)
 
-    vfunc[Gi.hook_up_vfunc_symbol]('allocate', (box) => {
-      this._allocate(Main.panel, box)
-    })
-  }
-
-  _restoreAllocate() {
-    const proto = Object.getPrototypeOf(Main.panel)
-    const vfunc = proto[Gi.gobject_prototype_symbol]
-
-    vfunc[Gi.hook_up_vfunc_symbol]('allocate', proto.vfunc_allocate)
-  }
-
-  _allocate(actor, box) {
-    actor.set_allocation(box)
-
-    const leftBox     = actor._leftBox
-    const centerBox   = actor._centerBox
-    const rightBox    = actor._rightBox
+    const leftBox     = Main.panel._leftBox
+    const centerBox   = Main.panel._centerBox
+    const rightBox    = Main.panel._rightBox
     const childBox    = new Clutter.ActorBox()
 
     const leftWidth   = leftBox.get_preferred_width(-1)[1]
@@ -239,7 +226,7 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
     const allocHeight = box.y2 - box.y1
     const sideWidth   = Math.floor(allocWidth - centerWidth - rightWidth)
 
-    const rtlTextDir  = actor.get_text_direction() == Clutter.TextDirection.RTL
+    const rtlTextDir  = Main.panel.get_text_direction() == Clutter.TextDirection.RTL
 
     childBox.y1 = 0
     childBox.y2 = allocHeight
@@ -282,7 +269,7 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
   }
 
   destroy() {
-    this._restoreAllocate()
+    this.injections.removeAll()
     Main.panel.queue_relayout()
   }
 }

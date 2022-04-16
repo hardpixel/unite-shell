@@ -1,4 +1,3 @@
-const Gi       = imports._gi
 const Clutter  = imports.gi.Clutter
 const Main     = imports.ui.main
 const Me       = imports.misc.extensionUtils.getCurrentExtension()
@@ -8,56 +7,19 @@ const CLASSIC  = global.session_mode == 'classic'
 
 var ExtendLeftBox = class ExtendLeftBox extends Override.Injection {
   get active() {
-    return Gi.gobject_prototype_symbol === undefined
-  }
-
-  _init() {
-    this._replace('_injectAllocate')
-    this._replace('_restoreAllocate')
-  }
-
-  _injectAllocate() {
-    Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box) => {
-      this._allocate(Main.panel, box)
-    })
-  }
-
-  _restoreAllocate() {
-    Main.panel.__proto__[Gi.hook_up_vfunc_symbol](
-      'allocate', Main.panel.__proto__.vfunc_allocate
-    )
-  }
-}
-
-var ExtendLeftBoxLegacy = class ExtendLeftBoxLegacy extends Override.Injection {
-  get active() {
     return VERSION < 38
   }
 
   _init() {
-    this._replace('_injectAllocate')
-    this._replace('_restoreAllocate')
     this._replace('_allocate')
   }
 
-  _injectAllocate() {
-    Main.panel.__proto__[Gi.hook_up_vfunc_symbol]('allocate', (box, flags) => {
-      this._allocate(Main.panel, box, flags)
-    })
-  }
+  _allocate(box, flags) {
+    Main.panel.set_allocation(box, flags)
 
-  _restoreAllocate() {
-    Main.panel.__proto__[Gi.hook_up_vfunc_symbol](
-      'allocate', Main.panel.__proto__.vfunc_allocate
-    )
-  }
-
-  _allocate(actor, box, flags) {
-    actor.set_allocation(box, flags)
-
-    const leftBox     = actor._leftBox
-    const centerBox   = actor._centerBox
-    const rightBox    = actor._rightBox
+    const leftBox     = Main.panel._leftBox
+    const centerBox   = Main.panel._centerBox
+    const rightBox    = Main.panel._rightBox
     const childBox    = new Clutter.ActorBox()
 
     const leftWidth   = leftBox.get_preferred_width(-1)[1]
@@ -68,7 +30,7 @@ var ExtendLeftBoxLegacy = class ExtendLeftBoxLegacy extends Override.Injection {
     const allocHeight = box.y2 - box.y1
     const sideWidth   = Math.floor(allocWidth - centerWidth - rightWidth)
 
-    const rtlTextDir  = actor.get_text_direction() == Clutter.TextDirection.RTL
+    const rtlTextDir  = Main.panel.get_text_direction() == Clutter.TextDirection.RTL
 
     childBox.y1 = 0
     childBox.y2 = allocHeight
