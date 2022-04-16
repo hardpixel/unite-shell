@@ -343,8 +343,8 @@ var MetaWindow = GObject.registerClass(
       this.syncAppmenu()
     }
 
-    destroy() {
-      this.decorations.reset()
+    destroy(reset = true) {
+      reset && this.decorations.reset()
 
       this.signals.disconnectAll()
       this.settings.disconnectAll()
@@ -416,10 +416,10 @@ var WindowManager = GObject.registerClass(
       }
     }
 
-    deleteWindow(win) {
+    deleteWindow(win, reset = true) {
       if (this.hasWindow(win)) {
         const meta = this.getWindow(win)
-        meta.destroy()
+        meta.destroy(reset)
 
         this.windows.delete(getId(win))
       }
@@ -439,7 +439,7 @@ var WindowManager = GObject.registerClass(
 
     _onDestroyWindow(shellwm, { meta_window }) {
       if (isValid(meta_window)) {
-        this.deleteWindow(meta_window)
+        this.deleteWindow(meta_window, false)
       }
     }
 
