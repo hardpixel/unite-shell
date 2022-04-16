@@ -1,3 +1,4 @@
+const Gi          = imports._gi
 const Bytes       = imports.byteArray
 const Gio         = imports.gi.Gio
 const GLib        = imports.gi.GLib
@@ -149,6 +150,61 @@ var Settings = class Settings extends Signals {
   set(key, value) {
     const object = this.getSettingObject(key)
     return object.setSetting(key, value)
+  }
+}
+
+var Injections = class Injections {
+  constructor() {
+    this.store = new Map()
+  }
+
+  registerInjection(name, value) {
+    const uid = GLib.uuid_string_random()
+    const key = `[injection ${name} uuid@${uid}]`
+
+    this.store.set(key, value)
+    return key
+  }
+
+  method(object, method, callback) {
+    const original = object[method]
+    object[method] = callback
+
+    return this.registerInjection(method, () => {
+      object[method] = original
+    })
+  }
+
+  vfunc(object, symbol, callback) {
+    const proto = Object.getPrototypeOf(object)
+    const vhook = func => {
+      if (Gi.gobject_prototype_symbol && proto[Gi.gobject_prototype_symbol]) {
+        proto[Gi.gobject_prototype_symbol][Gi.hook_up_vfunc_symbol](symbol, func)
+      } else {
+        proto[Gi.hook_up_vfunc_symbol](symbol, func)
+      }
+    }
+
+    vhook(callback)
+
+    return this.registerInjection(symbol, () => {
+      vhook(proto[`vfunc_${symbol}`])
+    })
+  }
+
+  remove(key) {
+    if (this.store.has(key)) {
+      const remove = this.store.get(key)
+      remove()
+
+      this.store.delete(key)
+    }
+  }
+
+  removeAll() {
+    for (const key of this.store.keys()) {
+      this.remove(key)
+    }
   }
 }
 
