@@ -1,5 +1,15 @@
 # Changelog
 
+## [v63](https://github.com/hardpixel/unite-shell/tree/v63) (2022-04-16)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v62...v63)
+
+**Closed issues:**
+
+- Decorations are not removed for QT applications when maximized in Gnome 42 with Wayland [\#291](https://github.com/hardpixel/unite-shell/issues/291)
+- Closing certain types of windows creating lots of debug messages [\#276](https://github.com/hardpixel/unite-shell/issues/276)
+- Changing workspaces creates a JS error [\#274](https://github.com/hardpixel/unite-shell/issues/274)
+
 ## [v62](https://github.com/hardpixel/unite-shell/tree/v62) (2022-04-07)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v61...v62)
