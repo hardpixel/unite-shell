@@ -112,6 +112,21 @@ var ExtendLeftBoxLegacy = class ExtendLeftBoxLegacy extends Override.Injection {
   }
 }
 
+var TitlebarActions = class TitlebarActions extends Override.Injection {
+  get active() {
+    return VERSION < 42
+  }
+
+  _init() {
+    this._replace('_menuPositionRect')
+  }
+
+  _menuPositionRect(x) {
+    const size = Main.panel.height + 4
+    return { x: x - size, y: 0, width: size * 2, height: size }
+  }
+}
+
 var ActivitiesButtonClassic = class ActivitiesButtonClassic extends Override.Injection {
   get active() {
     return CLASSIC == true

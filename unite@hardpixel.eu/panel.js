@@ -483,6 +483,8 @@ var TrayIcons = class TrayIcons extends Handlers.Feature {
 var TitlebarActions = class TitlebarActions extends Handlers.Feature {
   constructor() {
     super('enable-titlebar-actions', setting => setting == true)
+
+    Override.inject(this, 'panel', 'TitlebarActions')
   }
 
   activate() {
@@ -505,7 +507,7 @@ var TitlebarActions = class TitlebarActions extends Handlers.Feature {
       return Clutter.EVENT_PROPAGATE
     }
 
-    const ccount = event.get_click_count()
+    const ccount = event.get_click_count && event.get_click_count()
     const button = event.get_button()
 
     let action = null
@@ -554,12 +556,16 @@ var TitlebarActions = class TitlebarActions extends Handlers.Feature {
   }
 
   _openWindowMenu(win, x) {
-    const size = Main.panel.height + 4
-    const rect = { x: x - size, y: 0, width: size * 2, height: size }
+    const rect = this._menuPositionRect(x)
     const type = Meta.WindowMenuType.WM
 
     Main.wm._windowMenuManager.showWindowMenuForWindow(win, type, rect)
     return Clutter.EVENT_STOP
+  }
+
+  _menuPositionRect(x) {
+    const size = Main.panel.height
+    return { x: x - size, y: 0, width: size * 2, height: size }
   }
 
   destroy() {
