@@ -208,26 +208,27 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
   }
 
   _injectAllocate() {
-    this._defaultFunc = Object.getPrototypeOf(Main.panel).vfunc_allocate
-    const protoSymbol = Object.getPrototypeOf(Main.panel)[Gi.gobject_prototype_symbol]
+    const proto = Object.getPrototypeOf(Main.panel)
+    const vfunc = proto[Gi.gobject_prototype_symbol]
 
-    protoSymbol[Gi.hook_up_vfunc_symbol]('allocate', (box) => {
-      Main.panel.vfunc_allocate.call(Main.panel, box)
+    vfunc[Gi.hook_up_vfunc_symbol]('allocate', (box) => {
       this._allocate(Main.panel, box)
     })
   }
 
   _restoreAllocate() {
-    const protoSymbol = Object.getPrototypeOf(Main.panel)[Gi.gobject_prototype_symbol]
-    protoSymbol[Gi.hook_up_vfunc_symbol]('allocate', this._defaultFunc)
+    const proto = Object.getPrototypeOf(Main.panel)
+    const vfunc = proto[Gi.gobject_prototype_symbol]
 
-    this._defaultFunc = null
+    vfunc[Gi.hook_up_vfunc_symbol]('allocate', proto.vfunc_allocate)
   }
 
   _allocate(actor, box) {
-    const leftBox     = Main.panel._leftBox
-    const centerBox   = Main.panel._centerBox
-    const rightBox    = Main.panel._rightBox
+    actor.set_allocation(box)
+
+    const leftBox     = actor._leftBox
+    const centerBox   = actor._centerBox
+    const rightBox    = actor._rightBox
     const childBox    = new Clutter.ActorBox()
 
     const leftWidth   = leftBox.get_preferred_width(-1)[1]
