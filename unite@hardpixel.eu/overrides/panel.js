@@ -15,7 +15,7 @@ var ExtendLeftBox = class ExtendLeftBox extends Override.Injection {
   }
 
   _allocate(box, flags) {
-    Main.panel.set_allocation(box, flags)
+    Main.panel.vfunc_allocate.call(Main.panel, box, flags)
 
     const leftBox     = Main.panel._leftBox
     const centerBox   = Main.panel._centerBox

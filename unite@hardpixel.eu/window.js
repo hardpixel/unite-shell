@@ -390,7 +390,9 @@ var WindowManager = GObject.registerClass(
     }
 
     get focusWindow() {
-      return this.getWindow(this._focusWindow)
+      if (this._focusWindow) {
+        return this.getWindow(this._focusWindow)
+      }
     }
 
     get hideTitlebars() {
