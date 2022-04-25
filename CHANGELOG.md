@@ -1,5 +1,13 @@
 # Changelog
 
+## [v65](https://github.com/hardpixel/unite-shell/tree/v65) (2022-04-25)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v64...v65)
+
+**Fixed bugs:**
+
+- Titlebar action double-click not working on GNOME 42 [\#290](https://github.com/hardpixel/unite-shell/issues/290)
+
 ## [v64](https://github.com/hardpixel/unite-shell/tree/v64) (2022-04-16)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v63...v64)
