@@ -5,6 +5,24 @@ const Override = Me.imports.overrides.helper
 const VERSION  = Me.imports.overrides.helper.VERSION
 const CLASSIC  = global.session_mode == 'classic'
 
+var WindowButtons = class WindowButtons extends Override.Injection {
+  get active() {
+    return VERSION < 43
+  }
+
+  _init() {
+    this._getter('sibling')
+  }
+
+  sibling() {
+    if (this.side == 'left') {
+      return Main.panel.statusArea.appMenu.get_parent()
+    } else {
+      return Main.panel.statusArea.aggregateMenu.get_parent()
+    }
+  }
+}
+
 var ExtendLeftBox = class ExtendLeftBox extends Override.Injection {
   get active() {
     return VERSION < 38
