@@ -20,6 +20,8 @@ const Override   = Me.imports.overrides.helper
 var WindowButtons = class WindowButtons extends Handlers.Feature {
   constructor() {
     super('show-window-buttons', setting => setting != 'never')
+
+    Override.inject(this, 'panel', 'WindowButtons')
   }
 
   activate() {
@@ -104,7 +106,7 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
     if (this.side == 'left') {
       return Main.panel.statusArea.appMenu.get_parent()
     } else {
-      return Main.panel.statusArea.aggregateMenu.get_parent()
+      return Main.panel.statusArea.quickSettings.get_parent()
     }
   }
 
