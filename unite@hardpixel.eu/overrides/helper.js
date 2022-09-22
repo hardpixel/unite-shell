@@ -7,6 +7,16 @@ var Injection = class Injection {
   __override__(ctx) {
     if (!this.active) return
 
+    this._getter = (key, fn) => {
+      const method = fn || this[key]
+      Object.defineProperty(ctx, key, { get: method.bind(ctx) })
+    }
+
+    this._setter = (key, fn) => {
+      const method = fn || this[key]
+      Object.defineProperty(ctx, key, { set: method.bind(ctx) })
+    }
+
     this._replace = (key, fn) => {
       const method = fn || this[key]
       ctx[key] = (...args) => method.call(ctx, ...args)
