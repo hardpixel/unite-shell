@@ -1,12 +1,28 @@
 # Changelog
 
+## [v66](https://github.com/hardpixel/unite-shell/tree/v66) (2022-09-22)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v65...v66)
+
+**Closed issues:**
+
+- Epiphany: Duplication of window buttons [\#304](https://github.com/hardpixel/unite-shell/issues/304)
+- Flatpak + Flatseal [\#303](https://github.com/hardpixel/unite-shell/issues/303)
+- Everything works EXCEPT hide window titlebars [\#298](https://github.com/hardpixel/unite-shell/issues/298)
+- Move Menubars into the Gnome-bar. [\#297](https://github.com/hardpixel/unite-shell/issues/297)
+- Double title bar buttons in different apps [\#295](https://github.com/hardpixel/unite-shell/issues/295)
+- Broken [\#294](https://github.com/hardpixel/unite-shell/issues/294)
+- Today's update broke this extension [\#293](https://github.com/hardpixel/unite-shell/issues/293)
+- Firefox title bar not showing when maximized on second screen [\#281](https://github.com/hardpixel/unite-shell/issues/281)
+
+**Merged pull requests:**
+
+- Gnome 43 support [\#307](https://github.com/hardpixel/unite-shell/pull/307) ([jonian](https://github.com/jonian))
+- Add Brazilian Portuguese translation [\#305](https://github.com/hardpixel/unite-shell/pull/305) ([rffontenelle](https://github.com/rffontenelle))
+
 ## [v65](https://github.com/hardpixel/unite-shell/tree/v65) (2022-04-25)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v64...v65)
-
-**Fixed bugs:**
-
-- Titlebar action double-click not working on GNOME 42 [\#290](https://github.com/hardpixel/unite-shell/issues/290)
 
 ## [v64](https://github.com/hardpixel/unite-shell/tree/v64) (2022-04-16)
 
