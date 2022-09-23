@@ -98,6 +98,38 @@ function init() {
   Convenience.initTranslations()
 }
 
+function fillPreferencesWindow(window) {
+  const { Adw } = imports.gi
+
+  const pages  = [
+    { name: 'general', icon: 'emblem-system-symbolic' },
+    { name: 'appearance', icon: 'preferences-desktop-theme-symbolic' }
+  ]
+
+  const widget = new PrefsWidget()
+
+  pages.forEach(({ name, icon }) => {
+    const page  = Adw.PreferencesPage.new()
+    const group = Adw.PreferencesGroup.new()
+
+    const label = widget._getWidget(`${name}_label`)
+    const prefs = widget._getWidget(`${name}_prefs`)
+
+    page.set_name(name)
+    page.set_title(label.get_text())
+    page.set_icon_name(icon)
+
+    prefs.unparent()
+    group.add(prefs)
+
+    page.add(group)
+    window.add(page)
+  })
+
+  window.set_default_size(620, 665)
+  widget.unrealize()
+}
+
 function buildPrefsWidget() {
   return new PrefsWidget()
 }
