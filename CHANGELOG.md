@@ -1,5 +1,9 @@
 # Changelog
 
+## [v67](https://github.com/hardpixel/unite-shell/tree/v67) (2022-09-23)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v66...v67)
+
 ## [v66](https://github.com/hardpixel/unite-shell/tree/v66) (2022-09-22)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v65...v66)
