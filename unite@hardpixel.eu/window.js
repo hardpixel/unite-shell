@@ -59,6 +59,8 @@ var ServerDecorations = class ServerDecorations {
   constructor({ xid, win }) {
     this.xid = xid
     this.win = win
+
+    Override.inject(this, 'window', 'ServerDecorations')
   }
 
   get decorated() {
