@@ -206,20 +206,16 @@ var MetaWindow = GObject.registerClass(
       return this.win.minimized
     }
 
+    get anyMaximized() {
+      return this.win.maximized_horizontally || this.win.maximized_vertically
+    }
+
     get maximized() {
       return this.win.maximized_horizontally && this.win.maximized_vertically
     }
 
     get tiled() {
-      if (this.maximized) {
-        return false
-      } else {
-        return this.win.maximized_horizontally || this.win.maximized_vertically
-      }
-    }
-
-    get bothMaximized() {
-      return this.maximized || this.tiled
+      return !this.maximized && this.anyMaximized
     }
 
     get restrictToPrimary() {
@@ -331,7 +327,7 @@ var MetaWindow = GObject.registerClass(
         case 'never':     return false
         case 'tiled':     return this.handleScreen && this.tiled
         case 'maximized': return this.handleScreen && this.maximized
-        case 'both':      return this.handleScreen && this.bothMaximized
+        case 'both':      return this.handleScreen && this.anyMaximized
       }
     }
 
