@@ -81,10 +81,6 @@ function isDecorated(hints) {
 }
 
 var ClientDecorations = class ClientDecorations {
-  constructor(xid) {
-    this.xid = xid
-  }
-
   show() {
     return false
   }
@@ -99,30 +95,28 @@ var ClientDecorations = class ClientDecorations {
 }
 
 var ServerDecorations = class ServerDecorations {
-  constructor(xid) {
-    this.xid     = xid
-    this.initial = getHints(xid)
-    this.current = this.initial
+  constructor({ xid, win }) {
+    this.xid = xid
+    this.win = win
+    this.mwm = getHints(xid)
   }
 
   get decorated() {
-    return isDecorated(this.current)
+    return this.win.get_frame_type() !== Meta.FrameType.BORDER
   }
 
   get handle() {
-    return isDecorated(this.initial)
+    return isDecorated(this.mwm)
   }
 
   show() {
     if (this.handle && !this.decorated) {
-      this.current = _SHOW_FLAGS
       setHint(this.xid, MOTIF_HINTS, _SHOW_FLAGS)
     }
   }
 
   hide() {
     if (this.handle && this.decorated) {
-      this.current = _HIDE_FLAGS
       setHint(this.xid, MOTIF_HINTS, _HIDE_FLAGS)
     }
   }
@@ -146,9 +140,9 @@ var MetaWindow = GObject.registerClass(
       this.settings = new Handlers.Settings()
 
       if (this.xid && !this.clientDecorated) {
-        this.decorations = new ServerDecorations(this.xid)
+        this.decorations = new ServerDecorations(this)
       } else {
-        this.decorations = new ClientDecorations(this.xid)
+        this.decorations = new ClientDecorations(this)
       }
 
       this.signals.connect(
