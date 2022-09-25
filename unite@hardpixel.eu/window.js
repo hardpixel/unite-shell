@@ -1,4 +1,3 @@
-const Bytes      = imports.byteArray
 const GLib       = imports.gi.GLib
 const GObject    = imports.gi.GObject
 const Meta       = imports.gi.Meta
@@ -17,19 +16,10 @@ const VALID_TYPES = [
   Meta.WindowType.UTILITY
 ]
 
-const UNITE_HINTS = '_UNITE_ORIGINAL_STATE'
 const MOTIF_HINTS = '_MOTIF_WM_HINTS'
 
 const _SHOW_FLAGS = ['0x2', '0x0', '0x1', '0x0', '0x0']
 const _HIDE_FLAGS = ['0x2', '0x0', '0x2', '0x0', '0x0']
-
-function safeSpawn(command) {
-  try {
-    return GLib.spawn_command_line_sync(command)
-  } catch (e) {
-    return [false, Bytes.fromString('')]
-  }
-}
 
 function isValid(win) {
   return win && VALID_TYPES.includes(win.window_type)
@@ -46,38 +36,9 @@ function getXid(win) {
   return match && match[0]
 }
 
-function getHint(xid, name, fallback) {
-  const result = safeSpawn(`xprop -id ${xid} ${name}`)
-  const string = Bytes.toString(result[1])
-
-  if (!string.match(/=/)) {
-    return fallback
-  }
-
-  return string.split('=')[1].trim().split(',').map(part => {
-    part = part.trim()
-    return part.match(/\dx/) ? part : `0x${part}`
-  })
-}
-
 function setHint(xid, hint, value) {
   value = value.join(', ')
   Util.spawn(['xprop', '-id', xid, '-f', hint, '32c', '-set', hint, value])
-}
-
-function getHints(xid) {
-  let value = getHint(xid, UNITE_HINTS)
-
-  if (!value) {
-    value = getHint(xid, MOTIF_HINTS, _SHOW_FLAGS)
-    setHint(xid, UNITE_HINTS, value)
-  }
-
-  return value
-}
-
-function isDecorated(hints) {
-  return hints[2] != '0x2' && hints[2] != '0x0'
 }
 
 var ClientDecorations = class ClientDecorations {
@@ -98,7 +59,6 @@ var ServerDecorations = class ServerDecorations {
   constructor({ xid, win }) {
     this.xid = xid
     this.win = win
-    this.mwm = getHints(xid)
   }
 
   get decorated() {
@@ -106,7 +66,7 @@ var ServerDecorations = class ServerDecorations {
   }
 
   get handle() {
-    return isDecorated(this.mwm)
+    return this.win.decorated
   }
 
   show() {
