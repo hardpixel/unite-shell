@@ -253,8 +253,11 @@ var MetaWindow = GObject.registerClass(
       if (this.hasFocus) {
         const overview = Main.overview.visibleTarget
         const controls = Main.panel.statusArea.uniteWindowControls
+        const skipTbar = Meta.is_wayland_compositor() && this.win.skip_taskbar
 
-        controls && controls.setVisible(!overview && this.showButtons)
+        controls && controls.setVisible(
+          !overview && !skipTbar && this.showButtons
+        )
       }
     }
 
