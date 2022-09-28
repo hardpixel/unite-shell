@@ -1,5 +1,20 @@
 # Changelog
 
+## [v68](https://github.com/hardpixel/unite-shell/tree/v68) (2022-09-28)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v67...v68)
+
+**Fixed bugs:**
+
+- Telegram maximized undecorated window's titlebar comes back after right-clicking a message and dismissing the context popup [\#308](https://github.com/hardpixel/unite-shell/issues/308)
+- Decorations are not removed on some SSD applications [\#183](https://github.com/hardpixel/unite-shell/issues/183)
+
+**Closed issues:**
+
+- Add a blocklist for windows/apps/extensions [\#309](https://github.com/hardpixel/unite-shell/issues/309)
+- Top bar window buttons appear when all windows closed [\#302](https://github.com/hardpixel/unite-shell/issues/302)
+- The button does not work，restarting the computer after the computer locks the screen， in GNOME42 [\#299](https://github.com/hardpixel/unite-shell/issues/299)
+
 ## [v67](https://github.com/hardpixel/unite-shell/tree/v67) (2022-09-23)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v66...v67)
