@@ -340,6 +340,8 @@ var WindowManager = GObject.registerClass(
       )
 
       Override.inject(this, 'window', 'WindowManager')
+
+      this._onFocusWindow(global.display)
     }
 
     get focusWindow() {
