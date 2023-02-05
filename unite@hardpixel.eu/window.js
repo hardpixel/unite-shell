@@ -340,8 +340,6 @@ var WindowManager = GObject.registerClass(
       )
 
       Override.inject(this, 'window', 'WindowManager')
-
-      this._onFocusWindow(global.display)
     }
 
     get focusWindow() {
@@ -434,6 +432,7 @@ var WindowManager = GObject.registerClass(
         return GLib.SOURCE_REMOVE
       })
 
+      this._onFocusWindow(global.display)
       this._onStylesChange()
     }
 
