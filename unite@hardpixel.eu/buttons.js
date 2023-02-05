@@ -122,7 +122,7 @@ var WindowControls = GObject.registerClass(
 
     addButtons(buttons) {
       this._controls.destroy_all_children()
-      buttons.forEach(this._addButton.bind(this))
+      buttons && buttons.forEach(this._addButton.bind(this))
     }
 
     setVisible(visible) {
