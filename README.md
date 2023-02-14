@@ -1,5 +1,5 @@
 # Unite Shell
-<a href="https://github.com/hardpixel/unite-shell/edit/master/README.md#unite-shell-espa%C3%B1ol">Also, Read in spanish</a>
+<a href="https://github.com/hardpixel/unite-shell/edit/master/README.md#unite-shell-espa%C3%B1ol">Also, Read in spanish</a> <br>
 [<img src="https://raw.githubusercontent.com/andyholmes/gnome-shell-extensions-badge/master/get-it-on-ego.svg?sanitize=true" height="100" align="right">](https://extensions.gnome.org/extension/1287/unite/)
 Unite is a GNOME Shell extension which makes a few layout tweaks to the top panel and removes window decorations to make it look like Ubuntu Unity Shell.
 
