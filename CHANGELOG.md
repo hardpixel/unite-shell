@@ -1,5 +1,14 @@
 # Changelog
 
+## [v70](https://github.com/hardpixel/unite-shell/tree/v70) (2023-03-01)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v69...v70)
+
+**Closed issues:**
+
+- Changing Scaling doesn't refresh window control buttons in top bar [\#318](https://github.com/hardpixel/unite-shell/issues/318)
+- Button is null [\#313](https://github.com/hardpixel/unite-shell/issues/313)
+
 ## [v69](https://github.com/hardpixel/unite-shell/tree/v69) (2022-11-09)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v68...v69)
