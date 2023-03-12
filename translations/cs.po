@@ -1,0 +1,196 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR galen1423 <gnu.linux@zaclys.net>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Unite Shell\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-16 03:07+0300\n"
+"PO-Revision-Date: 2023-03-12 19:26+0100\n"
+"Last-Translator: Amerey.eu <info@amerey.eu>\n"
+"Language-Team: \n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
+"X-Generator: Poedit 3.1.1\n"
+"X-Poedit-Basepath: unite@hardpixel.eu\n"
+"X-Poedit-SearchPath-0: settings.ui\n"
+"X-Poedit-SearchPath-1: overrides/settings.ui\n"
+
+#: overrides/settings.ui:38 settings.ui:32
+msgid "Extend top bar left box"
+msgstr "Rozšíření levého pole horní lišty"
+
+#: overrides/settings.ui:78 settings.ui:52
+msgid "Auto focus new windows"
+msgstr "Automatické zvýraznění nových oken"
+
+#: overrides/settings.ui:118 settings.ui:72
+msgid "Show system tray in top bar"
+msgstr "Zobrazit systémovou lištu v horní liště"
+
+#: overrides/settings.ui:158 settings.ui:92
+msgid "Show desktop name in top bar"
+msgstr "Zobrazit název plochy v horní liště"
+
+#: overrides/settings.ui:198 settings.ui:112
+msgid "Enable titlebar actions on top bar click"
+msgstr "Povolit akce v záhlaví kliknutím na horní lištu"
+
+#: overrides/settings.ui:238 settings.ui:132
+msgid "Restrict functionalities to the primary screen"
+msgstr "Omezte funkce na primární obrazovku"
+
+#: overrides/settings.ui:278 settings.ui:152
+msgid "Hide activities button"
+msgstr "Skrýt tlačítko aktivit"
+
+#: overrides/settings.ui:294 overrides/settings.ui:339
+#: overrides/settings.ui:386 overrides/settings.ui:433 settings.ui:162
+#: settings.ui:187 settings.ui:214 settings.ui:241
+msgid "Never"
+msgstr "Nikdy"
+
+#: overrides/settings.ui:295 overrides/settings.ui:949
+#: overrides/settings.ui:996 settings.ui:163 settings.ui:521 settings.ui:548
+msgid "Auto"
+msgstr "Automaticky"
+
+#: overrides/settings.ui:296 overrides/settings.ui:343
+#: overrides/settings.ui:390 overrides/settings.ui:437 settings.ui:164
+#: settings.ui:191 settings.ui:218 settings.ui:245
+msgid "Always"
+msgstr "Vždy"
+
+#: overrides/settings.ui:323 settings.ui:177
+msgid "Hide window titlebars"
+msgstr "Skrýt titulky oken"
+
+#: overrides/settings.ui:340 overrides/settings.ui:387
+#: overrides/settings.ui:434 settings.ui:188 settings.ui:215 settings.ui:242
+msgid "Tiled"
+msgstr "Dlaždice"
+
+#: overrides/settings.ui:341 overrides/settings.ui:388
+#: overrides/settings.ui:435 settings.ui:189 settings.ui:216 settings.ui:243
+msgid "Maximized"
+msgstr "Maximalizované"
+
+#: overrides/settings.ui:342 overrides/settings.ui:389
+#: overrides/settings.ui:436 settings.ui:190 settings.ui:217 settings.ui:244
+msgid "Both"
+msgstr "Obojí"
+
+#: overrides/settings.ui:370 settings.ui:204
+msgid "Show window title in app menu"
+msgstr "Zobrazit název okna v nabídce aplikace"
+
+#: overrides/settings.ui:417 settings.ui:231
+msgid "Show window buttons in top bar"
+msgstr "Zobrazit tlačítka okna v horní liště"
+
+#: overrides/settings.ui:464 settings.ui:258
+msgid "Notification messages position"
+msgstr "Pozice zpráv s upozorněním"
+
+#: overrides/settings.ui:480 settings.ui:268
+msgid "Center"
+msgstr "Uprostřed"
+
+#: overrides/settings.ui:481 overrides/settings.ui:950 settings.ui:269
+#: settings.ui:522
+msgid "Left"
+msgstr "Vlevo"
+
+#: overrides/settings.ui:482 overrides/settings.ui:951 settings.ui:270
+#: settings.ui:523
+msgid "Right"
+msgstr "Vpravo"
+
+#: overrides/settings.ui:506 settings.ui:282
+msgid "General"
+msgstr "Obecné"
+
+#: overrides/settings.ui:531 settings.ui:307
+msgid "Apply system fonts to shell theme"
+msgstr "Použít systémová písma na motiv shellu"
+
+#: overrides/settings.ui:571 settings.ui:327
+msgid "Convert tray icons to greyscale"
+msgstr "Převést ikony na panelu na odstíny šedi"
+
+#: overrides/settings.ui:610 settings.ui:346
+msgid "Hide top bar dropdown arrows"
+msgstr "Skrýt šipky rozbalovacích nabídek na horní liště"
+
+#: overrides/settings.ui:650 settings.ui:367
+msgid "Hide aggregate menu dropdown arrow"
+msgstr "Skrýt šipku rozbalovací nabídky souhrnné nabídky"
+
+#: overrides/settings.ui:689 settings.ui:387
+msgid "Hide app menu dropdown arrow"
+msgstr "Skrýt šipku rozbalovací nabídky aplikace"
+
+#: overrides/settings.ui:729 settings.ui:407
+msgid "Hide app menu application icon"
+msgstr "Skrýt ikonu menu aplikace"
+
+#: overrides/settings.ui:769 settings.ui:427
+msgid "Reduce top bar items spacing"
+msgstr "Zmenšit rozestupy mezi položkami horní lišty"
+
+#: overrides/settings.ui:809 settings.ui:447
+msgid "Top bar desktop name text"
+msgstr "Text názvu plochy v horní liště"
+
+#: overrides/settings.ui:823 settings.ui:455
+msgid "GNOME Desktop"
+msgstr "Plocha GNOME"
+
+#: overrides/settings.ui:848 settings.ui:466
+msgid "Max width for the app menu"
+msgstr "Maximální šířka menu aplikace"
+
+#: overrides/settings.ui:888 settings.ui:486
+msgid "Ellipsis mode for app menu"
+msgstr "Režim elipsy pro menu aplikace"
+
+#: overrides/settings.ui:904 settings.ui:496
+msgid "Start"
+msgstr "Začátek"
+
+#: overrides/settings.ui:905 settings.ui:497
+msgid "Middle"
+msgstr "Uprostřed"
+
+#: overrides/settings.ui:906 settings.ui:498
+msgid "End"
+msgstr "Konec"
+
+#: overrides/settings.ui:933 settings.ui:511
+msgid "Top bar window buttons position"
+msgstr "Umístění tlačítek okna v horní liště"
+
+#: overrides/settings.ui:952 settings.ui:524
+msgid "First"
+msgstr "První"
+
+#: overrides/settings.ui:953 settings.ui:525
+msgid "Last"
+msgstr "Poslední"
+
+#: overrides/settings.ui:980 settings.ui:538
+msgid "Top bar window buttons theme"
+msgstr "Téma tlačítek okna v horní liště"
+
+#: overrides/settings.ui:997 settings.ui:549
+msgid "Default"
+msgstr "Výchozí"
+
+#: overrides/settings.ui:1021 settings.ui:561
+msgid "Appearance"
+msgstr "Vzhled"
