@@ -1,5 +1,20 @@
 # Changelog
 
+## [v71](https://github.com/hardpixel/unite-shell/tree/v71) (2023-05-07)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v70...v71)
+
+**Closed issues:**
+
+- Unity shell tray icons [\#327](https://github.com/hardpixel/unite-shell/issues/327)
+- Is it possible to hide the buttons in the GTK application of the FlatPack package?  [\#326](https://github.com/hardpixel/unite-shell/issues/326)
+- \[Feature Request\] Ability to close, maximize, minimize  unfocused windows [\#46](https://github.com/hardpixel/unite-shell/issues/46)
+
+**Merged pull requests:**
+
+- Add Windwood theme [\#325](https://github.com/hardpixel/unite-shell/pull/325) ([natewind](https://github.com/natewind))
+- czech translation [\#322](https://github.com/hardpixel/unite-shell/pull/322) ([Amereyeu](https://github.com/Amereyeu))
+
 ## [v70](https://github.com/hardpixel/unite-shell/tree/v70) (2023-03-01)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v69...v70)
@@ -232,7 +247,7 @@
 
 **Merged pull requests:**
 
-- GTK4-Settings: Fix focus behavior [\#234](https://github.com/hardpixel/unite-shell/pull/234) ([fushinari](https://github.com/fushinari))
+- GTK4-Settings: Fix focus behavior [\#234](https://github.com/hardpixel/unite-shell/pull/234) ([mufeedali](https://github.com/mufeedali))
 
 ## [v48](https://github.com/hardpixel/unite-shell/tree/v48) (2021-03-26)
 
