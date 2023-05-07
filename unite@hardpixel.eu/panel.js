@@ -405,6 +405,8 @@ var DesktopName = class DesktopName extends Handlers.Feature {
 var TrayIcons = class TrayIcons extends Handlers.Feature {
   constructor() {
     super('show-legacy-tray', setting => setting == true)
+
+    Override.inject(this, 'panel', 'TrayIcons')
   }
 
   activate() {

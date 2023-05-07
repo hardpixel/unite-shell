@@ -91,6 +91,20 @@ var ExtendLeftBox = class ExtendLeftBox extends Override.Injection {
   }
 }
 
+var TrayIcons = class TrayIcons extends Override.Injection {
+  get active() {
+    return VERSION > 43
+  }
+
+  _init() {
+    this._append('activate', this._setIconSize)
+  }
+
+  _setIconSize() {
+    Object.defineProperty(this.indicators, 'size', { get: () => -1 })
+  }
+}
+
 var TitlebarActions = class TitlebarActions extends Override.Injection {
   get active() {
     return VERSION < 42
