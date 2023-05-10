@@ -186,10 +186,13 @@ class WindowButtons extends Handlers.Feature {
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
     this.styles   = new Handlers.Styles()
-    this.controls = new Buttons.WindowControls()
     this.themes   = new Theme.WindowControlsThemes()
     this.theme    = this.themes.default
     this.isDark   = true
+    this.controls = new Buttons.WindowControls({
+      iconScaleWorkaround: this.iconScaleWorkaround,
+      actionIcons: this.theme.getActionIcons(this.isDark)
+    })
 
     this.signals.connect(
       Main.overview, 'showing', this._syncVisible.bind(this)
@@ -246,6 +249,10 @@ class WindowButtons extends Handlers.Feature {
 
   get placement() {
     return this.settings.get('window-buttons-placement')
+  }
+
+  get iconScaleWorkaround() {
+    return this.settings.get('icon-scale-workaround')
   }
 
   get side() {
@@ -308,12 +315,25 @@ class WindowButtons extends Handlers.Feature {
   }
 
   _onThemeChange() {
-    this.controls.remove_style_class_name(this.theme.uuid)
+    const newTheme = this.themes.locate(this.themeName, this.gtkTheme)
+    const shouldUpdateTheme = this.theme.uuid !== newTheme.uuid
 
-    this.theme = this.themes.locate(this.themeName, this.gtkTheme)
+    this.controls.remove_style_class_name(this.theme.uuid)
+    this.theme = newTheme
     this.styles.addShellStyle('windowButtons', this.theme.getStyle(this.isDark))
 
     this.controls.add_style_class_name(this.theme.uuid)
+
+    if (this.iconScaleWorkaround) {
+      this.controls.setControlThemeParams({
+        actionIcons: this.theme.getActionIcons(this.isDark),
+      })
+
+      // For workaround, we need to re-create elements on theme change
+      if (shouldUpdateTheme) {
+        this._onLayoutChange()
+      }
+    }
   }
 
   _onPanelStyleChange() {

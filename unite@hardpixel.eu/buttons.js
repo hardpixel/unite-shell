@@ -178,7 +178,7 @@ export const TrayIndicator = GObject.registerClass(
 
 export const WindowControls = GObject.registerClass(
   class UniteWindowControls extends PanelMenu.Button {
-    _init() {
+    _init(params) {
       super._init(0.0, null, true)
 
       this._controls = new St.BoxLayout({ style_class: 'window-controls-box' })
@@ -186,14 +186,41 @@ export const WindowControls = GObject.registerClass(
 
       this.add_style_class_name('window-controls')
       this.remove_style_class_name('panel-button')
+      this._iconScaleWorkaround = params.iconScaleWorkaround
+      this._actionIcons = params.actionIcons
+    }
+
+    setControlThemeParams(params) {
+      this._actionIcons = params.actionIcons
     }
 
     _addButton(action) {
       const pos = Clutter.ActorAlign.CENTER
+      const btn = new St.Button({track_hover: true})
       const bin = new St.Bin({ style_class: 'icon', x_align: pos, y_align: pos })
-      const btn = new St.Button({ track_hover: true })
 
-      btn.add_style_class_name(`window-button ${action}`)
+      if (this._iconScaleWorkaround) {
+        // A workaround for multi-scaling setups https://github.com/hardpixel/unite-shell/issues/106
+        const gicon = this._actionIcons[action];
+        const icon = new St.Icon({
+          x_align: pos,
+          y_align: pos,
+          gicon: gicon.default,
+        })
+        btn.connect(
+          'notify::hover', () => void icon.set_gicon(btn.hover ? gicon.hover : gicon.default)
+        )
+        btn.connect(
+          'notify::pressed', () => void icon.set_gicon(btn.pressed ? gicon.active : gicon.default)
+        )
+        bin.set_child(icon)
+        // Add only root class name for button sizing
+        btn.add_style_class_name('window-button')
+      } else {
+        // Normal approach with CSS-based icons
+        btn.add_style_class_name(`window-button ${action}`)
+      }
+
       btn.set_child(bin)
 
       btn.connect('clicked', () => {

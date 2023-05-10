@@ -43,6 +43,7 @@ export const SettingsManager = GObject.registerClass(
         'window-buttons-placement':   'enum',
         'hide-app-menu-icon':         'boolean',
         'reduce-panel-spacing':       'boolean',
+        'icon-scale-workaround':      'boolean',
         'restrict-to-primary-screen': 'boolean',
         'app-menu-max-width':         'int',
         'app-menu-ellipsize-mode':    'enum'

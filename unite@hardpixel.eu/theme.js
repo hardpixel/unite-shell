@@ -27,6 +27,7 @@ export class WindowControlsTheme {
   constructor(uuid, path) {
     this.uuid = uuid
     this.keys = new GLib.KeyFile()
+    this._gicons = null;
 
     try {
       const theme = GLib.build_filenamev([path, 'unite.theme'])
@@ -40,9 +41,25 @@ export class WindowControlsTheme {
       this.light = GLib.build_filenamev([path, light])
 
       this.valid = fileExists(this.dark) && fileExists(this.light)
+
+      this.darkIconsDir  = GLib.path_get_dirname(this.dark)
+      this.lightIconsDir = GLib.path_get_dirname(this.light)
     } catch (e) {
       this.valid = false
     }
+  }
+
+  getActionIcons(dark = true) {
+    const dir = dark ? this.darkIconsDir : this.lightIconsDir
+    if (!this._gicons) {
+      this._gicons = {
+        close:    getActionIconStates(dir, 'close'),
+        minimize: getActionIconStates(dir, 'minimize'),
+        maximize: getActionIconStates(dir, 'maximize')
+      }
+    }
+
+    return this._gicons
   }
 
   getStyle(dark = true) {
@@ -112,5 +129,20 @@ export class WindowControlsThemes {
 
       data.close(null)
     })
+  }
+}
+
+function getActionIconStates(iconsPath, action) {
+  const getGIcon = (state) => {
+    const statePostfix = state ? `-${state}` : ''
+    const iconPath = GLib.build_filenamev([iconsPath, `${action}${statePostfix}.svg`])
+
+    return Gio.icon_new_for_string(iconPath)
+  }
+
+  return {
+    default: getGIcon(),
+    hover: getGIcon('hover'),
+    active: getGIcon('active')
   }
 }
