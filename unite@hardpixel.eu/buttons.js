@@ -186,15 +186,41 @@ export const WindowControls = GObject.registerClass(
 
       this.add_style_class_name('window-controls')
       this.remove_style_class_name('panel-button')
+      this._iconScaleWorkaround = false;
+    }
+
+    setControlThemeParams(params) {
+      this._iconScaleWorkaround = params.iconScaleWorkaround || false
+      this.action_icons = params.action_icons
     }
 
     _addButton(action) {
       const pos = Clutter.ActorAlign.CENTER
-      const bin = new St.Bin({ style_class: 'icon', x_align: pos, y_align: pos })
       const btn = new St.Button({ track_hover: true })
 
       btn.add_style_class_name(`window-button ${action}`)
-      btn.add_actor(bin)
+
+      // A workaround for multi-scaling setups https://github.com/hardpixel/unite-shell/issues/106
+      if (this._iconScaleWorkaround) {
+        const gicons = this.action_icons[action];
+        const icon = new St.Icon({
+          x_align: pos,
+          y_align: pos,
+          style_class: 'icon',
+          gicon: gicons.default,
+        })
+        btn.connect(
+          'notify::hover', () => void icon.set_gicon(btn.hover ? gicons.hover : gicons.default)
+        )
+        btn.connect(
+          'notify::pressed', () => void icon.set_gicon(btn.pressed ? gicons.active : gicons.default)
+        )
+
+        btn.add_actor(icon)
+      } else {
+        const bin = new St.Bin({ style_class: 'icon', x_align: pos, y_align: pos })
+        btn.add_actor(bin)
+      }
 
       btn.connect('clicked', () => {
         const target = global.unite.focusWindow
