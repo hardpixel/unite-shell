@@ -1,5 +1,15 @@
 # Changelog
 
+## [v72](https://github.com/hardpixel/unite-shell/tree/v72) (2023-08-02)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v71...v72)
+
+**Closed issues:**
+
+- Donations [\#332](https://github.com/hardpixel/unite-shell/issues/332)
+- Has a black background under system tray in top bar [\#331](https://github.com/hardpixel/unite-shell/issues/331)
+- Hello after updating both RHEL and unity  unity stops working  [\#330](https://github.com/hardpixel/unite-shell/issues/330)
+
 ## [v71](https://github.com/hardpixel/unite-shell/tree/v71) (2023-05-07)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v70...v71)
@@ -117,7 +127,7 @@
 
 - Gnome 42 compatibility [\#289](https://github.com/hardpixel/unite-shell/pull/289) ([gonzaarcr](https://github.com/gonzaarcr))
 - Add 42 since it works there too [\#280](https://github.com/hardpixel/unite-shell/pull/280) ([shemgp](https://github.com/shemgp))
-- Add Korean Translation [\#275](https://github.com/hardpixel/unite-shell/pull/275) ([kuroehanako](https://github.com/kuroehanako))
+- Add Korean Translation [\#275](https://github.com/hardpixel/unite-shell/pull/275) ([mjkim0727](https://github.com/mjkim0727))
 
 ## [v59](https://github.com/hardpixel/unite-shell/tree/v59) (2021-11-03)
 
