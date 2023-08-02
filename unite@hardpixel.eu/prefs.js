@@ -103,7 +103,7 @@ function fillPreferencesWindow(window) {
 
   const pages  = [
     { name: 'general', icon: 'emblem-system-symbolic' },
-    { name: 'appearance', icon: 'preferences-desktop-theme-symbolic' }
+    { name: 'appearance', icon: 'emblem-photos-symbolic' }
   ]
 
   const widget = new PrefsWidget()
