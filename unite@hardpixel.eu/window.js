@@ -5,7 +5,6 @@ const WinTracker = imports.gi.Shell.WindowTracker.get_default()
 const Main       = imports.ui.main
 const Util       = imports.misc.util
 const Me         = imports.misc.extensionUtils.getCurrentExtension()
-const AppMenu    = Main.panel.statusArea.appMenu
 const Handlers   = Me.imports.handlers
 
 const VALID_TYPES = [
@@ -261,13 +260,10 @@ var MetaWindow = GObject.registerClass(
     }
 
     syncAppmenu() {
-      const label = AppMenu._label
-
-      if (label && this.hasFocus && this.title) {
-        const current = label.get_text()
-        const newText = this.title.replace(/\r?\n|\r/g, ' ')
-
-        current != newText && label.set_text(newText)
+      if (this.hasFocus && this.title) {
+        const title = this.title.replace(/\r?\n|\r/g, ' ')
+        // TODO: Use custom appmenu to change title
+        // Main.panel.statusArea.uniteAppMenu.setLabel(title)
       }
     }
 

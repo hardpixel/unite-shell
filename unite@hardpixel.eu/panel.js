@@ -10,7 +10,6 @@ const AppSystem  = imports.gi.Shell.AppSystem.get_default()
 const WinTracker = imports.gi.Shell.WindowTracker.get_default()
 const Main       = imports.ui.main
 const Me         = imports.misc.extensionUtils.getCurrentExtension()
-const AppMenu    = Main.panel.statusArea.appMenu
 const Activities = Main.panel.statusArea.activities
 const Buttons    = Me.imports.buttons
 const Theme      = Me.imports.theme
@@ -101,7 +100,9 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
 
   get sibling() {
     if (this.side == 'left') {
-      return Main.panel.statusArea.appMenu.get_parent()
+      // TODO: Use custom appmenu implementation
+      // return Main.panel.statusArea.uniteAppMenu.get_parent()
+      return Main.panel.statusArea.activities.get_parent()
     } else {
       return Main.panel.statusArea.quickSettings.get_parent()
     }
@@ -173,7 +174,7 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
 
   _syncVisible() {
     const overview = Main.overview.visibleTarget
-    const focusApp = WinTracker.focus_app || AppMenu._targetApp
+    const focusApp = WinTracker.focus_app
 
     if (!overview && focusApp && focusApp.state == Shell.AppState.RUNNING) {
       const win = global.unite.focusWindow
@@ -314,7 +315,7 @@ var ActivitiesButton = class ActivitiesButton extends Handlers.Feature {
   _syncVisible() {
     const button   = Activities.container
     const overview = Main.overview.visibleTarget
-    const focusApp = WinTracker.focus_app || AppMenu._targetApp
+    const focusApp = WinTracker.focus_app
 
     if (this.hideButton == 'always') {
       return button.hide()
@@ -377,7 +378,7 @@ var DesktopName = class DesktopName extends Handlers.Feature {
 
   _syncVisible() {
     const overview = Main.overview.visibleTarget
-    const focusApp = WinTracker.focus_app || AppMenu._targetApp
+    const focusApp = WinTracker.focus_app
 
     this.label.setVisible(!overview && focusApp == null)
   }
@@ -554,104 +555,6 @@ var TitlebarActions = class TitlebarActions extends Handlers.Feature {
   }
 }
 
-var AppMenuCustomizer = class AppMenuCustomizer extends Handlers.Feature {
-  constructor() {
-    super('app-menu-max-width', setting => setting > 0)
-  }
-
-  activate() {
-    this.signals  = new Handlers.Signals()
-    this.settings = new Handlers.Settings()
-    this.tooltip  = new St.Label({ visible: false, style_class: 'dash-label' })
-
-    this.signals.connect(
-      AppMenu, 'notify::hover', this._onAppMenuHover.bind(this)
-    )
-
-    this.signals.connect(
-      AppMenu, 'button-press-event', this._onAppMenuClicked.bind(this)
-    )
-
-    this.settings.connect(
-      'app-menu-max-width', this._onMaxWidthChange.bind(this)
-    )
-
-    this.settings.connect(
-      'app-menu-ellipsize-mode', this._onEllipsizeModeChange.bind(this)
-    )
-
-    Main.uiGroup.add_child(this.tooltip)
-
-    this._onMaxWidthChange()
-  }
-
-  get maxWidth() {
-    return this.settings.get('app-menu-max-width')
-  }
-
-  get ellipsizeMode() {
-    return this.settings.get('app-menu-ellipsize-mode')
-  }
-
-  setLabelMaxWidth(width) {
-    const label = AppMenu._label
-    label && label.set_style('max-width' + (width ? `: ${width}px` : ''))
-  }
-
-  setTextEllipsizeMode(mode) {
-    const modeK = mode.toUpperCase()
-    const label = AppMenu._label
-
-    label && label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode[modeK])
-  }
-
-  _onAppMenuHover(appMenu) {
-    if (!appMenu._label) return
-
-    this.isHovered = appMenu.get_hover()
-
-    if (!this.isHovered) {
-      return this.tooltip.hide()
-    }
-
-    GLib.timeout_add(GLib.PRIORITY_DEFAULT, 400, () => {
-      if (this.isHovered && !this.tooltip.visible) {
-        const [mouseX, mouseY] = global.get_pointer()
-
-        this.tooltip.set_position(mouseX + 20, mouseY)
-        this.tooltip.set_text(appMenu._label.get_text())
-        this.tooltip.show()
-      }
-
-      return GLib.SOURCE_REMOVE
-    })
-  }
-
-  _onAppMenuClicked() {
-    this.isHovered = false
-    this.tooltip.hide()
-  }
-
-  _onMaxWidthChange() {
-    this.setLabelMaxWidth(this.maxWidth)
-    this.setTextEllipsizeMode(this.ellipsizeMode)
-  }
-
-  _onEllipsizeModeChange() {
-    this.setTextEllipsizeMode(this.ellipsizeMode)
-  }
-
-  destroy() {
-    this.setLabelMaxWidth(null)
-    this.setTextEllipsizeMode('end')
-
-    this.signals.disconnectAll()
-    this.settings.disconnectAll()
-
-    this.tooltip.destroy()
-  }
-}
-
 var PanelManager = GObject.registerClass(
   class UnitePanelManager extends GObject.Object {
     _init() {
@@ -663,7 +566,6 @@ var PanelManager = GObject.registerClass(
       this.features.add(DesktopName)
       this.features.add(TrayIcons)
       this.features.add(TitlebarActions)
-      this.features.add(AppMenuCustomizer)
     }
 
     activate() {

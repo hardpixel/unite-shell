@@ -26,7 +26,8 @@ var DesktopLabel = GObject.registerClass(
 
     setVisible(visible) {
       this.container.visible = visible
-      AppMenu.container.visible = !visible
+      // TODO: Use custom appmenu implementation
+      // Main.panel.statusArea.uniteAppMenu = !visible
     }
   }
 )
