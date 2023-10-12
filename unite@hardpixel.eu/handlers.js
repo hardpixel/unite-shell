@@ -1,5 +1,4 @@
 const Gi          = imports._gi
-const Bytes       = imports.byteArray
 const Gio         = imports.gi.Gio
 const GLib        = imports.gi.GLib
 const St          = imports.gi.St
@@ -53,7 +52,7 @@ function getGioFile(path) {
 function getFileContents(path) {
   if (fileExists(path)) {
     const contents = GLib.file_get_contents(path)
-    return Bytes.toString(contents[1])
+    return String.fromCharCode(...contents[1])
   } else {
     return ''
   }
