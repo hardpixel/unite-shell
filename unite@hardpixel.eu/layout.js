@@ -5,7 +5,6 @@ const Main     = imports.ui.main
 const Me       = imports.misc.extensionUtils.getCurrentExtension()
 const AppMenu  = Main.panel.statusArea.appMenu
 const Handlers = Me.imports.handlers
-const Override = Me.imports.overrides.helper
 
 var WidgetArrow = class WidgetArrow {
   constructor(widget) {
@@ -95,8 +94,6 @@ var Messages = class Messages extends Handlers.Feature {
 var AppMenuIcon = class AppMenuIcon extends Handlers.Feature {
   constructor() {
     super('hide-app-menu-icon', setting => setting == true)
-
-    Override.inject(this, 'layout', 'AppMenuIconClassic')
   }
 
   activate() {
@@ -111,8 +108,6 @@ var AppMenuIcon = class AppMenuIcon extends Handlers.Feature {
 var DropdownArrows = class DropdownArrows extends Handlers.Feature {
   constructor() {
     super('hide-dropdown-arrows', setting => setting == true)
-
-    Override.inject(this, 'layout', 'DropdownArrows')
   }
 
   activate() {
@@ -157,9 +152,6 @@ var DropdownArrows = class DropdownArrows extends Handlers.Feature {
 var PanelSpacing = class PanelSpacing extends Handlers.Feature {
   constructor() {
     super('reduce-panel-spacing', setting => setting == true)
-
-    Override.inject(this, 'layout', 'PanelSpacing')
-    Override.inject(this, 'layout', 'PanelSpacingClassic')
   }
 
   activate() {
@@ -212,8 +204,6 @@ var LayoutManager = GObject.registerClass(
       this.features.add(AppMenuIcon)
       this.features.add(DropdownArrows)
       this.features.add(PanelSpacing)
-
-      Override.inject(this, 'layout', 'LayoutManager')
     }
 
     activate() {

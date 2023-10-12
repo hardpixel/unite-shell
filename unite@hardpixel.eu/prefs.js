@@ -4,7 +4,6 @@ const Gtk         = imports.gi.Gtk
 const Me          = imports.misc.extensionUtils.getCurrentExtension()
 const Theme       = Me.imports.theme
 const Convenience = Me.imports.convenience
-const Override    = Me.imports.overrides.helper
 
 var PrefsWidget = GObject.registerClass(
   class UnitePrefsWidget extends Gtk.Box {
@@ -14,8 +13,6 @@ var PrefsWidget = GObject.registerClass(
       this._settings  = Convenience.getSettings()
       this._buildable = new Gtk.Builder()
       this._themes    = new Theme.WindowControlsThemes()
-
-      Override.inject(this, 'prefs', 'PrefsWidget')
 
       this._loadTemplate()
       this._loadThemes()

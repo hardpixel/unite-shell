@@ -15,13 +15,10 @@ const Activities = Main.panel.statusArea.activities
 const Buttons    = Me.imports.buttons
 const Theme      = Me.imports.theme
 const Handlers   = Me.imports.handlers
-const Override   = Me.imports.overrides.helper
 
 var WindowButtons = class WindowButtons extends Handlers.Feature {
   constructor() {
     super('show-window-buttons', setting => setting != 'never')
-
-    Override.inject(this, 'panel', 'WindowButtons')
   }
 
   activate() {
@@ -198,8 +195,6 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
 var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
   constructor() {
     super('extend-left-box', setting => setting == true)
-
-    Override.inject(this, 'panel', 'ExtendLeftBox')
   }
 
   activate() {
@@ -279,8 +274,6 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
 var ActivitiesButton = class ActivitiesButton extends Handlers.Feature {
   constructor() {
     super('hide-activities-button', setting => setting != 'never')
-
-    Override.inject(this, 'panel', 'ActivitiesButtonClassic')
   }
 
   activate() {
@@ -405,8 +398,6 @@ var DesktopName = class DesktopName extends Handlers.Feature {
 var TrayIcons = class TrayIcons extends Handlers.Feature {
   constructor() {
     super('show-legacy-tray', setting => setting == true)
-
-    Override.inject(this, 'panel', 'TrayIcons')
   }
 
   activate() {
@@ -474,8 +465,6 @@ var TrayIcons = class TrayIcons extends Handlers.Feature {
 var TitlebarActions = class TitlebarActions extends Handlers.Feature {
   constructor() {
     super('enable-titlebar-actions', setting => setting == true)
-
-    Override.inject(this, 'panel', 'TitlebarActions')
   }
 
   activate() {

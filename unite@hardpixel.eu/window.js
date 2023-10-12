@@ -7,7 +7,6 @@ const Util       = imports.misc.util
 const Me         = imports.misc.extensionUtils.getCurrentExtension()
 const AppMenu    = Main.panel.statusArea.appMenu
 const Handlers   = Me.imports.handlers
-const Override   = Me.imports.overrides.helper
 
 const VALID_TYPES = [
   Meta.WindowType.NORMAL,
@@ -338,8 +337,6 @@ var WindowManager = GObject.registerClass(
       this.settings.connect(
         'button-layout', this._onStylesChange.bind(this)
       )
-
-      Override.inject(this, 'window', 'WindowManager')
     }
 
     get focusWindow() {
