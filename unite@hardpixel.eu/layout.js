@@ -3,51 +3,7 @@ const St       = imports.gi.St
 const Clutter  = imports.gi.Clutter
 const Main     = imports.ui.main
 const Me       = imports.misc.extensionUtils.getCurrentExtension()
-const AppMenu  = Main.panel.statusArea.appMenu
 const Handlers = Me.imports.handlers
-
-var WidgetArrow = class WidgetArrow {
-  constructor(widget) {
-    this.widget = widget || {}
-
-    if (!this.widget.hasOwnProperty('_arrow')) {
-      this._findActor(this.widget)
-    }
-  }
-
-  get arrow() {
-    return this.widget._arrow || {}
-  }
-
-  _findActor(widget) {
-    if (widget.hasOwnProperty('_arrow')) {
-      return this.widget._arrow = widget._arrow
-    }
-
-    const actor = widget.last_child
-    const valid = actor && actor.has_style_class_name
-
-    if (valid && actor.has_style_class_name('popup-menu-arrow')) {
-      return this.widget._arrow = actor
-    }
-
-    actor && this._findActor(actor)
-  }
-
-  hide() {
-    if (!this.widget._arrowRemoved) {
-      this.arrow.visible = false
-      this.widget._arrowRemoved = true
-    }
-  }
-
-  show() {
-    if (this.widget._arrowRemoved) {
-      this.arrow.visible = true
-      delete this.widget._arrowRemoved
-    }
-  }
-}
 
 var Messages = class Messages extends Handlers.Feature {
   constructor() {
@@ -88,64 +44,6 @@ var Messages = class Messages extends Handlers.Feature {
     banner.set_width(-1)
 
     this.settings.disconnectAll()
-  }
-}
-
-var AppMenuIcon = class AppMenuIcon extends Handlers.Feature {
-  constructor() {
-    super('hide-app-menu-icon', setting => setting == true)
-  }
-
-  activate() {
-    AppMenu._iconBox.hide()
-  }
-
-  destroy() {
-    AppMenu._iconBox.show()
-  }
-}
-
-var DropdownArrows = class DropdownArrows extends Handlers.Feature {
-  constructor() {
-    super('hide-dropdown-arrows', setting => setting == true)
-  }
-
-  activate() {
-    this.signals = new Handlers.Signals()
-
-    const boxes = [
-      Main.panel._leftBox,
-      Main.panel._centerBox,
-      Main.panel._rightBox
-    ]
-
-    for (const box of boxes) {
-      this.signals.connect(
-        box, 'actor_added', this._onActorAdded.bind(this)
-      )
-    }
-
-    this._onActorAdded()
-  }
-
-  get arrows() {
-    const items = Main.panel.statusArea
-    const names = Object.keys(items).filter(this._handleWidget.bind(this))
-
-    return names.map(name => new WidgetArrow(items[name]))
-  }
-
-  _handleWidget(name) {
-    return !name.startsWith('unite')
-  }
-
-  _onActorAdded() {
-    this.arrows.forEach(arrow => arrow.hide())
-  }
-
-  destroy() {
-    this.arrows.forEach(arrow => arrow.show())
-    this.signals.disconnectAll()
   }
 }
 
@@ -201,8 +99,6 @@ var LayoutManager = GObject.registerClass(
       this.features = new Handlers.Features()
 
       this.features.add(Messages)
-      this.features.add(AppMenuIcon)
-      this.features.add(DropdownArrows)
       this.features.add(PanelSpacing)
     }
 
