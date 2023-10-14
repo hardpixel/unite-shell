@@ -34,11 +34,6 @@
   </enum>
 
   <schema id="org.gnome.shell.extensions.unite" path="/org/gnome/shell/extensions/unite/">
-    <key name="use-system-fonts" type="b">
-      <default>true</default>
-      <summary>Apply system fonts to shell interface.</summary>
-    </key>
-
     <key name="extend-left-box" type="b">
       <default>true</default>
       <summary>Extend top bar left box.</summary>
@@ -77,26 +72,6 @@
     <key name="restrict-to-primary-screen" type="b">
       <default>true</default>
       <summary>Restrict functionalities to the primary screen.</summary>
-    </key>
-
-    <key name="hide-dropdown-arrows" type="b">
-      <default>true</default>
-      <summary>Hide top bar dropdown arrows.</summary>
-    </key>
-
-    <key name="hide-aggregate-menu-arrow" type="b">
-      <default>false</default>
-      <summary>Hide aggregate menu dropdown arrow.</summary>
-    </key>
-
-    <key name="hide-app-menu-arrow" type="b">
-      <default>true</default>
-      <summary>Hide app menu dropdown arrow.</summary>
-    </key>
-
-    <key name="hide-app-menu-icon" type="b">
-      <default>true</default>
-      <summary>Hide app menu application icon.</summary>
     </key>
 
     <key name="app-menu-max-width" type="i">
