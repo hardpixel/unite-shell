@@ -33,10 +33,8 @@ export const DesktopLabel = GObject.registerClass(
 
 export const TrayIndicator = GObject.registerClass(
   class UniteTrayIndicator extends PanelMenu.Button {
-    _init(size) {
-      this._size  = size || 20
+    _init() {
       this._icons = []
-
       super._init(0.0, null, true)
 
       this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' })
@@ -44,11 +42,6 @@ export const TrayIndicator = GObject.registerClass(
 
       this.add_style_class_name('system-tray-icons')
       this._sync()
-    }
-
-    get size() {
-      const context = St.ThemeContext.get_for_stage(global.stage)
-      return this._size * context.scale_factor
     }
 
     _sync() {
@@ -67,7 +60,6 @@ export const TrayIndicator = GObject.registerClass(
       ibtn.connect('button-release-event', (actor, event) => icon.click(event))
 
       icon.set_reactive(true)
-      icon.set_size(this.size, this.size)
       icon.set_x_align(Clutter.ActorAlign.CENTER)
       icon.set_y_align(Clutter.ActorAlign.CENTER)
 
