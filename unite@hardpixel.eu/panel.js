@@ -1,21 +1,21 @@
-const System     = imports.system
-const GObject    = imports.gi.GObject
-const GLib       = imports.gi.GLib
-const St         = imports.gi.St
-const Pango      = imports.gi.Pango
-const Clutter    = imports.gi.Clutter
-const Meta       = imports.gi.Meta
-const Shell      = imports.gi.Shell
-const AppSystem  = imports.gi.Shell.AppSystem.get_default()
-const WinTracker = imports.gi.Shell.WindowTracker.get_default()
-const Main       = imports.ui.main
-const Me         = imports.misc.extensionUtils.getCurrentExtension()
-const Activities = Main.panel.statusArea.activities
-const Buttons    = Me.imports.buttons
-const Theme      = Me.imports.theme
-const Handlers   = Me.imports.handlers
+import System from 'system'
+import GObject from 'gi://GObject'
+import GLib from 'gi://GLib'
+import St from 'gi://St'
+import Pango from 'gi://Pango'
+import Clutter from 'gi://Clutter'
+import Meta from 'gi://Meta'
+import Shell from 'gi://Shell'
+import * as Main from 'resource:///org/gnome/shell/ui/main.js'
+import * as Buttons from './buttons.js'
+import * as Theme from './theme.js'
+import * as Handlers from './handlers.js'
 
-var WindowButtons = class WindowButtons extends Handlers.Feature {
+const AppSystem  = Shell.AppSystem.get_default()
+const WinTracker = Shell.WindowTracker.get_default()
+const Activities = Main.panel.statusArea.activities
+
+class WindowButtons extends Handlers.Feature {
   constructor() {
     super('show-window-buttons', setting => setting != 'never')
   }
@@ -193,7 +193,7 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
   }
 }
 
-var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
+class ExtendLeftBox extends Handlers.Feature {
   constructor() {
     super('extend-left-box', setting => setting == true)
   }
@@ -272,7 +272,7 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
   }
 }
 
-var ActivitiesButton = class ActivitiesButton extends Handlers.Feature {
+class ActivitiesButton extends Handlers.Feature {
   constructor() {
     super('hide-activities-button', setting => setting != 'never')
   }
@@ -338,7 +338,7 @@ var ActivitiesButton = class ActivitiesButton extends Handlers.Feature {
   }
 }
 
-var DesktopName = class DesktopName extends Handlers.Feature {
+class DesktopName extends Handlers.Feature {
   constructor() {
     super('show-desktop-name', setting => setting == true)
   }
@@ -396,7 +396,7 @@ var DesktopName = class DesktopName extends Handlers.Feature {
   }
 }
 
-var TrayIcons = class TrayIcons extends Handlers.Feature {
+class TrayIcons extends Handlers.Feature {
   constructor() {
     super('show-legacy-tray', setting => setting == true)
   }
@@ -463,7 +463,7 @@ var TrayIcons = class TrayIcons extends Handlers.Feature {
   }
 }
 
-var TitlebarActions = class TitlebarActions extends Handlers.Feature {
+class TitlebarActions extends Handlers.Feature {
   constructor() {
     super('enable-titlebar-actions', setting => setting == true)
   }
@@ -555,7 +555,7 @@ var TitlebarActions = class TitlebarActions extends Handlers.Feature {
   }
 }
 
-var PanelManager = GObject.registerClass(
+export const PanelManager = GObject.registerClass(
   class UnitePanelManager extends GObject.Object {
     _init() {
       this.features = new Handlers.Features()

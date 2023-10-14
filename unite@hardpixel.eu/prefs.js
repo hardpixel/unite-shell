@@ -1,11 +1,12 @@
-const GLib        = imports.gi.GLib
-const GObject     = imports.gi.GObject
-const Gtk         = imports.gi.Gtk
-const Me          = imports.misc.extensionUtils.getCurrentExtension()
-const Theme       = Me.imports.theme
-const Convenience = Me.imports.convenience
+import Adw from 'gi://Adw'
+import GLib from 'gi://GLib'
+import GObject from 'gi://GObject'
+import Gtk from 'gi://Gtk'
+import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js'
+import * as Theme from './theme.js'
+import * as Convenience from './convenience.js'
 
-var PrefsWidget = GObject.registerClass(
+const PrefsWidget = GObject.registerClass(
   class UnitePrefsWidget extends Gtk.Box {
     _init(params) {
       super._init(params)
@@ -25,7 +26,7 @@ var PrefsWidget = GObject.registerClass(
     }
 
     _loadTemplate() {
-      const template = GLib.build_filenamev([Me.path, 'settings.ui'])
+      const template = GLib.build_filenamev([Convenience.getPath(), 'settings.ui'])
       this._buildable.add_from_file(template)
 
       this._container = this._getWidget('prefs_widget')
@@ -91,42 +92,34 @@ var PrefsWidget = GObject.registerClass(
   }
 )
 
-function init() {
-  Convenience.initTranslations()
-}
+export default class UnitePreferences extends ExtensionPreferences {
+  fillPreferencesWindow(window) {
+    const pages  = [
+      { name: 'general', icon: 'emblem-system-symbolic' },
+      { name: 'appearance', icon: 'emblem-photos-symbolic' }
+    ]
 
-function fillPreferencesWindow(window) {
-  const { Adw } = imports.gi
+    const widget = new PrefsWidget()
 
-  const pages  = [
-    { name: 'general', icon: 'emblem-system-symbolic' },
-    { name: 'appearance', icon: 'emblem-photos-symbolic' }
-  ]
+    pages.forEach(({ name, icon }) => {
+      const page  = Adw.PreferencesPage.new()
+      const group = Adw.PreferencesGroup.new()
 
-  const widget = new PrefsWidget()
+      const label = widget._getWidget(`${name}_label`)
+      const prefs = widget._getWidget(`${name}_prefs`)
 
-  pages.forEach(({ name, icon }) => {
-    const page  = Adw.PreferencesPage.new()
-    const group = Adw.PreferencesGroup.new()
+      page.set_name(name)
+      page.set_title(label.get_text())
+      page.set_icon_name(icon)
 
-    const label = widget._getWidget(`${name}_label`)
-    const prefs = widget._getWidget(`${name}_prefs`)
+      prefs.unparent()
+      group.add(prefs)
 
-    page.set_name(name)
-    page.set_title(label.get_text())
-    page.set_icon_name(icon)
+      page.add(group)
+      window.add(page)
+    })
 
-    prefs.unparent()
-    group.add(prefs)
-
-    page.add(group)
-    window.add(page)
-  })
-
-  window.set_default_size(620, 665)
-  widget.unrealize()
-}
-
-function buildPrefsWidget() {
-  return new PrefsWidget()
+    window.set_default_size(620, 665)
+    widget.unrealize()
+  }
 }

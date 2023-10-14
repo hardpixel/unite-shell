@@ -1,10 +1,9 @@
-const Gi          = imports._gi
-const Gio         = imports.gi.Gio
-const GLib        = imports.gi.GLib
-const St          = imports.gi.St
-const Main        = imports.ui.main
-const Me          = imports.misc.extensionUtils.getCurrentExtension()
-const Convenience = Me.imports.convenience
+import Gio from 'gi://Gio'
+import GLib from 'gi://GLib'
+import St from 'gi://St'
+import { InjectionManager } from 'resource:///org/gnome/shell/extensions/extension.js'
+import * as Main from 'resource:///org/gnome/shell/ui/main.js'
+import * as Convenience from './convenience.js'
 
 const SETTINGS = Convenience.getSettings()
 const WM_PREFS = Convenience.getPreferences()
@@ -27,7 +26,7 @@ function isFilePath(value) {
 
 function filePath(parts) {
   const parse = part => part ? part.replace(/^@/, '') : ''
-  const root  = isAbsPath(parts) ? [] : [Me.path]
+  const root  = isAbsPath(parts) ? [] : [Convenience.getPath()]
   const paths = root.concat(parts).map(parse)
 
   return GLib.build_filenamev(paths)
@@ -67,7 +66,7 @@ function setFileContents(path, contents) {
   GLib.file_set_contents(path, contents)
 }
 
-function resetGtkStyles() {
+export function resetGtkStyles() {
   GTK_VERSIONS.forEach(version => {
     const filepath = userStylesPath(version)
     let style = getFileContents(filepath)
@@ -77,7 +76,7 @@ function resetGtkStyles() {
   })
 }
 
-var Signals = class Signals {
+export class Signals {
   constructor() {
     this.signals = new Map()
   }
@@ -125,7 +124,7 @@ var Signals = class Signals {
   }
 }
 
-var Settings = class Settings extends Signals {
+export class Settings extends Signals {
   getSettingObject(key) {
     if (SETTINGS.exists(key)) {
       return SETTINGS
@@ -152,9 +151,10 @@ var Settings = class Settings extends Signals {
   }
 }
 
-var Injections = class Injections {
+export class Injections {
   constructor() {
     this.store = new Map()
+    this.items = new InjectionManager()
   }
 
   registerInjection(name, value) {
@@ -166,55 +166,43 @@ var Injections = class Injections {
   }
 
   method(object, method, callback) {
-    const original = object[method]
-    object[method] = callback
+    const proto = object.prototype
+    this.items.overrideMethod(proto, method, () => callback)
 
-    return this.registerInjection(method, () => {
-      object[method] = original
-    })
+    return this.registerInjection(method, [proto, method])
   }
 
-  vfunc(object, symbol, callback) {
+  vfunc(object, method, callback) {
     const proto = Object.getPrototypeOf(object)
-    const vhook = func => {
-      if (Gi.gobject_prototype_symbol && proto[Gi.gobject_prototype_symbol]) {
-        proto[Gi.gobject_prototype_symbol][Gi.hook_up_vfunc_symbol](symbol, func)
-      } else {
-        proto[Gi.hook_up_vfunc_symbol](symbol, func)
-      }
-    }
+    const vfunc = `vfunc_${method}`
+    this.items.overrideMethod(proto, vfunc, () => callback)
 
-    vhook(callback)
-
-    return this.registerInjection(symbol, () => {
-      vhook(proto[`vfunc_${symbol}`])
-    })
+    return this.registerInjection(vfunc, [proto, vfunc])
   }
 
   remove(key) {
     if (this.store.has(key)) {
-      const remove = this.store.get(key)
-      remove()
+      const [prototype, method] = this.store.get(key)
+      this.items.restoreMethod(prototype, method)
 
       this.store.delete(key)
     }
   }
 
   removeAll() {
-    for (const key of this.store.keys()) {
-      this.remove(key)
-    }
+    this.store.clear()
+    this.items.clear()
   }
 }
 
-var Feature = class Feature {
+export class Feature {
   constructor(setting, callback) {
     this._settingsKey = setting
     this._checkActive = callback
   }
 }
 
-var Features = class Features {
+export class Features {
   constructor() {
     this.features = []
     this.settings = new Settings()
@@ -360,7 +348,7 @@ class GtkStyles {
   }
 }
 
-var Styles = class Styles {
+export class Styles {
   constructor() {
     this.styles = new Map()
   }

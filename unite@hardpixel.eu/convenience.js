@@ -1,10 +1,7 @@
-const Gettext = imports.gettext
-const GObject = imports.gi.GObject
-const Gio     = imports.gi.Gio
-const Config  = imports.misc.config
-const Me      = imports.misc.extensionUtils.getCurrentExtension()
+import GObject from 'gi://GObject'
+import Gio from 'gi://Gio'
 
-var SettingsObject = GObject.registerClass(
+export const SettingsObject = GObject.registerClass(
   class UniteSettingsObject extends Gio.Settings {
     exists(key) {
       return this.settings_schema.has_key(key)
@@ -20,7 +17,7 @@ var SettingsObject = GObject.registerClass(
   }
 )
 
-var SettingsManager = GObject.registerClass(
+export const SettingsManager = GObject.registerClass(
   class UniteSettings extends Gio.Settings {
     get DEFAULT_BINDING() {
       return Gio.SettingsBindFlags.DEFAULT
@@ -88,7 +85,7 @@ var SettingsManager = GObject.registerClass(
   }
 )
 
-var PreferencesManager = GObject.registerClass(
+export const PreferencesManager = GObject.registerClass(
   class UnitePreferences extends Gio.Settings {
     get window_buttons_position() {
       let setting = this.get_string('button-layout')
@@ -118,24 +115,11 @@ var PreferencesManager = GObject.registerClass(
   }
 )
 
-function initTranslations(domain) {
-  let textDomain = domain || Me.metadata['gettext-domain']
-  let localeDir  = Me.dir.get_child('locale')
-
-  if (localeDir.query_exists(null)) {
-    localeDir = localeDir.get_path()
-  } else {
-    localeDir = Config.LOCALEDIR
-  }
-
-  Gettext.bindtextdomain(textDomain, localeDir)
-}
-
-function getSettings(schema) {
-  schema = schema || Me.metadata['settings-schema']
+export function getSettings(schema) {
+  schema = schema || 'org.gnome.shell.extensions.unite'
 
   let gioSSS       = Gio.SettingsSchemaSource
-  let schemaDir    = Me.dir.get_child('schemas')
+  let schemaDir    = getDir().get_child('schemas')
   let schemaSource = gioSSS.get_default()
 
   if (schemaDir.query_exists(null)) {
@@ -146,7 +130,7 @@ function getSettings(schema) {
   let schemaObj = schemaSource.lookup(schema, true)
 
   if (!schemaObj) {
-    let metaId  = Me.metadata.uuid
+    let metaId  = 'unite@hardpixel.eu'
     let message = `Schema ${schema} could not be found for extension ${metaId}.`
 
     throw new Error(`${message} Please check your installation.`)
@@ -155,12 +139,20 @@ function getSettings(schema) {
   return new SettingsManager({ settings_schema: schemaObj })
 }
 
-function getPreferences() {
+export function getPreferences() {
   let schemaId = 'org.gnome.desktop.wm.preferences'
   return new PreferencesManager({ schema_id: schemaId })
 }
 
-function getInterface() {
+export function getInterface() {
   let schemaId = 'org.gnome.desktop.interface'
   return new SettingsObject({ schema_id: schemaId })
+}
+
+export function getDir() {
+  return Gio.File.new_for_uri(import.meta.url).get_parent()
+}
+
+export function getPath() {
+  return getDir().get_path()
 }

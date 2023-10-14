@@ -1,11 +1,10 @@
-const GObject  = imports.gi.GObject
-const St       = imports.gi.St
-const Clutter  = imports.gi.Clutter
-const Main     = imports.ui.main
-const Me       = imports.misc.extensionUtils.getCurrentExtension()
-const Handlers = Me.imports.handlers
+import GObject from 'gi://GObject'
+import St from 'gi://St'
+import Clutter from 'gi://Clutter'
+import * as Main from 'resource:///org/gnome/shell/ui/main.js'
+import * as Handlers from './handlers.js'
 
-var Messages = class Messages extends Handlers.Feature {
+class Messages extends Handlers.Feature {
   constructor() {
     super('notifications-position', setting => setting != 'center')
   }
@@ -47,7 +46,7 @@ var Messages = class Messages extends Handlers.Feature {
   }
 }
 
-var PanelSpacing = class PanelSpacing extends Handlers.Feature {
+class PanelSpacing extends Handlers.Feature {
   constructor() {
     super('reduce-panel-spacing', setting => setting == true)
   }
@@ -93,7 +92,7 @@ var PanelSpacing = class PanelSpacing extends Handlers.Feature {
   }
 }
 
-var LayoutManager = GObject.registerClass(
+export const LayoutManager = GObject.registerClass(
   class UniteLayoutManager extends GObject.Object {
     _init() {
       this.features = new Handlers.Features()

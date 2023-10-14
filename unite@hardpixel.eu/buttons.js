@@ -1,11 +1,10 @@
-const GObject   = imports.gi.GObject
-const St        = imports.gi.St
-const Clutter   = imports.gi.Clutter
-const Main      = imports.ui.main
-const AppMenu   = Main.panel.statusArea.appMenu
-const PanelMenu = imports.ui.panelMenu
+import GObject from 'gi://GObject'
+import St from 'gi://St'
+import Clutter from 'gi://Clutter'
+import * as Main from 'resource:///org/gnome/shell/ui/main.js'
+import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js'
 
-var DesktopLabel = GObject.registerClass(
+export const DesktopLabel = GObject.registerClass(
   class UniteDesktopLabel extends PanelMenu.Button {
     _init(text) {
       super._init(0.0, null, true)
@@ -32,7 +31,7 @@ var DesktopLabel = GObject.registerClass(
   }
 )
 
-var TrayIndicator = GObject.registerClass(
+export const TrayIndicator = GObject.registerClass(
   class UniteTrayIndicator extends PanelMenu.Button {
     _init(size) {
       this._size  = size || 20
@@ -91,7 +90,7 @@ var TrayIndicator = GObject.registerClass(
   }
 )
 
-var WindowControls = GObject.registerClass(
+export const WindowControls = GObject.registerClass(
   class UniteWindowControls extends PanelMenu.Button {
     _init() {
       super._init(0.0, null, true)

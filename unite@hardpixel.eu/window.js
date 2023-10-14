@@ -1,11 +1,10 @@
-const GLib       = imports.gi.GLib
-const GObject    = imports.gi.GObject
-const Meta       = imports.gi.Meta
-const WinTracker = imports.gi.Shell.WindowTracker.get_default()
-const Main       = imports.ui.main
-const Util       = imports.misc.util
-const Me         = imports.misc.extensionUtils.getCurrentExtension()
-const Handlers   = Me.imports.handlers
+import GLib from 'gi://GLib'
+import GObject from 'gi://GObject'
+import Shell from 'gi://Shell'
+import Meta from 'gi://Meta'
+import * as Main from 'resource:///org/gnome/shell/ui/main.js'
+import * as Util from 'resource:///org/gnome/shell/misc/util.js'
+import * as Handlers from './handlers.js'
 
 const VALID_TYPES = [
   Meta.WindowType.NORMAL,
@@ -18,6 +17,8 @@ const MOTIF_HINTS = '_MOTIF_WM_HINTS'
 
 const _SHOW_FLAGS = ['0x2', '0x0', '0x1', '0x0', '0x0']
 const _HIDE_FLAGS = ['0x2', '0x0', '0x2', '0x0', '0x0']
+
+const WinTracker  = Shell.WindowTracker.get_default()
 
 function isValid(win) {
   return win && VALID_TYPES.includes(win.window_type)
@@ -39,7 +40,7 @@ function setHint(xid, hint, value) {
   Util.spawn(['xprop', '-id', xid, '-f', hint, '32c', '-set', hint, value])
 }
 
-var ClientDecorations = class ClientDecorations {
+class ClientDecorations {
   show() {
     return false
   }
@@ -53,7 +54,7 @@ var ClientDecorations = class ClientDecorations {
   }
 }
 
-var ServerDecorations = class ServerDecorations {
+class ServerDecorations {
   constructor({ xid, win }) {
     this.xid = xid
     this.win = win
@@ -86,7 +87,7 @@ var ServerDecorations = class ServerDecorations {
   }
 }
 
-var MetaWindow = GObject.registerClass(
+const MetaWindow = GObject.registerClass(
   class UniteMetaWindow extends GObject.Object {
     _init(win) {
       win._uniteShellManaged = true
@@ -302,7 +303,7 @@ var MetaWindow = GObject.registerClass(
   }
 )
 
-var WindowManager = GObject.registerClass(
+export const WindowManager = GObject.registerClass(
   class UniteWindowManager extends GObject.Object {
     _init() {
       this.windows  = new Map()
