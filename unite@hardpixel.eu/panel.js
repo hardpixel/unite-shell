@@ -271,9 +271,9 @@ class WindowButtons extends Handlers.Feature {
 
   get sibling() {
     if (this.side == 'left') {
-      return Main.panel.statusArea.uniteAppMenu.get_parent()
+      return Main.panel.statusArea.uniteAppMenu || Main.panel.statusArea.activities
     } else {
-      return Main.panel.statusArea.quickSettings.get_parent()
+      return Main.panel.statusArea.quickSettings
     }
   }
 
@@ -310,7 +310,7 @@ class WindowButtons extends Handlers.Feature {
     if (this.index != null) {
       this.container.set_child_at_index(controls, this.index)
     } else {
-      this.container.set_child_below_sibling(controls, this.sibling)
+      this.container.set_child_below_sibling(controls, this.sibling.get_parent())
     }
 
     this._onLayoutChange()
