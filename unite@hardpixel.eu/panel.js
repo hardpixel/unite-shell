@@ -683,7 +683,7 @@ class TitlebarActions extends Handlers.Feature {
   }
 
   _onButtonPressEvent(actor, event) {
-    if (Main.modalCount > 0 || actor != event.get_source()) {
+    if (Main.modalCount > 0 || event.get_source() != null) {
       return Clutter.EVENT_PROPAGATE
     }
 
