@@ -25,6 +25,8 @@ class AppmenuButton extends Handlers.Feature {
     this.settings = new Handlers.Settings()
     this.button   = new Buttons.AppmenuLabel()
     this.tooltip  = new St.Label({ visible: false, style_class: 'dash-label' })
+
+    this.focused  = null
     this.starting = []
 
     this.signals.connect(
@@ -65,9 +67,8 @@ class AppmenuButton extends Handlers.Feature {
       'uniteAppMenu', this.button, 1, 'left'
     )
 
-    this._syncFocused()
-    this._syncState()
     this._onMaxWidthChange()
+    this._syncState()
   }
 
   get maxWidth() {
@@ -109,7 +110,6 @@ class AppmenuButton extends Handlers.Feature {
       if (global.stage.key_focus != null) return
     }
 
-    this._syncFocused()
     this._syncState()
   }
 
@@ -128,16 +128,16 @@ class AppmenuButton extends Handlers.Feature {
     return null
   }
 
-  _syncFocused() {
-    const focused = this._findTargetApp()
-    focused && this.button.setApp(focused)
-  }
-
   _syncState() {
     const astates = Shell.AppState.STARTING
     const focused = this._findTargetApp()
     const visible = focused != null && !Main.overview.visibleTarget
     const loading = focused != null && (focused.get_state() == astates || focused.get_busy())
+
+    if (focused != this.focused) {
+      this.focused = focused
+      this.button.setApp(this.focused)
+    }
 
     this.button.setReactive(visible && !loading)
     this.button.setVisible(visible)

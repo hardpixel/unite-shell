@@ -27,7 +27,7 @@ export const AppmenuLabel = GObject.registerClass(
     }
 
     setApp(app) {
-      this.setText(app.get_name())
+      this.setText(app ? app.get_name() : '')
       this.menu.setApp(app)
     }
 
