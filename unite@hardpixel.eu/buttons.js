@@ -66,7 +66,6 @@ export const DesktopLabel = GObject.registerClass(
 
     setVisible(visible) {
       this.container.visible = visible
-      Main.panel.statusArea.uniteAppMenu.visible = !visible
     }
   }
 )

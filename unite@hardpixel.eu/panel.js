@@ -516,6 +516,7 @@ class DesktopName extends Handlers.Feature {
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
     this.label    = new Buttons.DesktopLabel()
+    this.starting = []
 
     this.signals.connect(
       Main.overview, 'showing', this._syncVisible.bind(this)
@@ -526,11 +527,11 @@ class DesktopName extends Handlers.Feature {
     )
 
     this.signals.connect(
-      AppSystem, 'app-state-changed', this._syncVisible.bind(this)
+      AppSystem, 'app-state-changed', this._onAppStateChanged.bind(this)
     )
 
     this.signals.connect(
-      WinTracker, 'notify::focus-app', this._syncVisible.bind(this)
+      WinTracker, 'notify::focus-app', this._onFocusAppChanged.bind(this)
     )
 
     this.settings.connect(
@@ -545,9 +546,44 @@ class DesktopName extends Handlers.Feature {
     this._syncVisible()
   }
 
+  _onAppStateChanged(appSys, app) {
+    const state = app.state
+
+    if (state != Shell.AppState.STARTING) {
+      this.starting = this.starting.filter(item => item != app)
+    } else if (state == Shell.AppState.STARTING) {
+      this.starting.push(app)
+    }
+
+    this._syncVisible()
+  }
+
+  _onFocusAppChanged() {
+    if (!WinTracker.focus_app) {
+      if (global.stage.key_focus != null) return
+    }
+
+    this._syncVisible()
+  }
+
+  _findFocusedApp() {
+    const focused   = WinTracker.focus_app
+    const workspace = global.workspace_manager.get_active_workspace()
+
+    if (focused && focused.is_on_workspace(workspace))
+      return focused
+
+    for (let i = 0; i < this.starting.length; i++) {
+      if (this.starting[i].is_on_workspace(workspace))
+        return this.starting[i]
+    }
+
+    return null
+  }
+
   _syncVisible() {
     const overview = Main.overview.visibleTarget
-    const focusApp = WinTracker.focus_app
+    const focusApp = this._findFocusedApp()
 
     this.label.setVisible(!overview && focusApp == null)
   }
