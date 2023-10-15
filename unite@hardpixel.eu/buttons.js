@@ -1,8 +1,49 @@
 import GObject from 'gi://GObject'
 import St from 'gi://St'
 import Clutter from 'gi://Clutter'
+import { AppMenu } from 'resource:///org/gnome/shell/ui/appMenu.js'
 import * as Main from 'resource:///org/gnome/shell/ui/main.js'
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js'
+
+export const AppmenuLabel = GObject.registerClass(
+  class UniteAppmenuLabel extends PanelMenu.Button {
+    _init(text) {
+      super._init(0.0, null, true)
+
+      const menu = new AppMenu(this)
+      this.setMenu(menu)
+
+      this._menuManager = Main.panel.menuManager
+      this._menuManager.addMenu(menu)
+
+      this._label = new St.Label({ y_align: Clutter.ActorAlign.CENTER })
+      this.add_actor(this._label)
+
+      this.reactive = false
+      this.label_actor = this._label
+
+      this.setText(text || '')
+      this.add_style_class_name('app-menu-label')
+    }
+
+    setApp(app) {
+      this.setText(app.get_name())
+      this.menu.setApp(app)
+    }
+
+    setText(text) {
+      this._label.set_text(text)
+    }
+
+    setReactive(reactive) {
+      this.reactive = reactive
+    }
+
+    setVisible(visible) {
+      this.container.visible = visible
+    }
+  }
+)
 
 export const DesktopLabel = GObject.registerClass(
   class UniteDesktopLabel extends PanelMenu.Button {
@@ -25,8 +66,7 @@ export const DesktopLabel = GObject.registerClass(
 
     setVisible(visible) {
       this.container.visible = visible
-      // TODO: Use custom appmenu implementation
-      // Main.panel.statusArea.uniteAppMenu = !visible
+      Main.panel.statusArea.uniteAppMenu.visible = !visible
     }
   }
 )

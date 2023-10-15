@@ -28,6 +28,7 @@ export const SettingsManager = GObject.registerClass(
         'autofocus-windows':          'boolean',
         'hide-activities-button':     'enum',
         'show-window-title':          'enum',
+        'show-appmenu-button':        'boolean',
         'show-desktop-name':          'boolean',
         'desktop-name-text':          'string',
         'extend-left-box':            'boolean',

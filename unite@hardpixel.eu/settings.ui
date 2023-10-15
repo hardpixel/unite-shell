@@ -83,6 +83,26 @@
               </object>
             </child>
             <child>
+              <object class="GtkBox" id="show_appmenu_button_section">
+                <property name="spacing">50</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="can-focus">0</property>
+                    <property name="valign">center</property>
+                    <property name="label" translatable="yes">Show appmenu in top bar</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="show_appmenu_button">
+                    <property name="hexpand">1</property>
+                    <property name="halign">end</property>
+                    <property name="valign">center</property>
+                    <property name="active">1</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
               <object class="GtkBox" id="show_desktop_name_section">
                 <property name="spacing">50</property>
                 <child>

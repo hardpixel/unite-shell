@@ -263,8 +263,7 @@ const MetaWindow = GObject.registerClass(
     syncAppmenu() {
       if (this.hasFocus && this.title) {
         const title = this.title.replace(/\r?\n|\r/g, ' ')
-        // TODO: Use custom appmenu to change title
-        // Main.panel.statusArea.uniteAppMenu.setLabel(title)
+        Main.panel.statusArea.uniteAppMenu.setText(title)
       }
     }
 

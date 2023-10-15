@@ -15,6 +15,105 @@ const AppSystem  = Shell.AppSystem.get_default()
 const WinTracker = Shell.WindowTracker.get_default()
 const Activities = Main.panel.statusArea.activities
 
+class AppmenuButton extends Handlers.Feature {
+  constructor() {
+    super('show-appmenu-button', setting => setting == true)
+  }
+
+  activate() {
+    this.signals  = new Handlers.Signals()
+    this.settings = new Handlers.Settings()
+    this.label    = new Buttons.AppmenuLabel()
+    this.starting = []
+
+    this.signals.connect(
+      Main.overview, 'showing', this._syncState.bind(this)
+    )
+
+    this.signals.connect(
+      Main.overview, 'hiding', this._syncState.bind(this)
+    )
+
+    this.signals.connect(
+      AppSystem, 'app-state-changed', this._onAppStateChanged.bind(this)
+    )
+
+    this.signals.connect(
+      WinTracker, 'notify::focus-app', this._onFocusAppChanged.bind(this)
+    )
+
+    Main.panel.addToStatusArea(
+      'uniteAppMenu', this.label, 1, 'left'
+    )
+
+    this._syncFocused()
+    this._syncState()
+  }
+
+  _onAppStateChanged(appSys, app) {
+    const state = app.state
+
+    if (state != Shell.AppState.STARTING) {
+      this.starting = this.starting.filter(item => item != app)
+    } else if (state == Shell.AppState.STARTING) {
+      this.starting.push(app)
+    }
+    // For now just resync on all running state changes; this is mainly to handle
+    // cases where the focused window's application changes without the focus
+    // changing. An example case is how we map OpenOffice.org based on the window
+    // title which is a dynamic property.
+    this._syncState()
+  }
+
+  _onFocusAppChanged() {
+    if (!WinTracker.focus_app) {
+      // If the app has just lost focus to the panel, pretend
+      // nothing happened; otherwise you can't keynav to the app menu.
+      if (global.stage.key_focus != null) return
+    }
+
+    this._syncFocused()
+    this._syncState()
+  }
+
+  _findTargetApp() {
+    const focused   = WinTracker.focus_app
+    const workspace = global.workspace_manager.get_active_workspace()
+
+    if (focused && focused.is_on_workspace(workspace))
+      return focused
+
+    for (let i = 0; i < this.starting.length; i++) {
+      if (this.starting[i].is_on_workspace(workspace))
+        return this.starting[i]
+    }
+
+    return null
+  }
+
+  _syncFocused() {
+    const focused = this._findTargetApp()
+    focused && this.label.setApp(focused)
+  }
+
+  _syncState() {
+    const astates = Shell.AppState.STARTING
+    const focused = this._findTargetApp()
+    const visible = focused != null && !Main.overview.visibleTarget
+    const loading = focused != null && (focused.get_state() == astates || focused.get_busy())
+
+    this.label.setReactive(visible && !loading)
+    this.label.setVisible(visible)
+  }
+
+  destroy() {
+    this.signals.disconnectAll()
+    this.settings.disconnectAll()
+
+    this.label.destroy()
+  }
+}
+
 class WindowButtons extends Handlers.Feature {
   constructor() {
     super('show-window-buttons', setting => setting != 'never')
@@ -100,9 +199,7 @@ class WindowButtons extends Handlers.Feature {
 
   get sibling() {
     if (this.side == 'left') {
-      // TODO: Use custom appmenu implementation
-      // return Main.panel.statusArea.uniteAppMenu.get_parent()
-      return Main.panel.statusArea.activities.get_parent()
+      return Main.panel.statusArea.uniteAppMenu.get_parent()
     } else {
       return Main.panel.statusArea.quickSettings.get_parent()
     }
@@ -560,6 +657,7 @@ export const PanelManager = GObject.registerClass(
     _init() {
       this.features = new Handlers.Features()
 
+      this.features.add(AppmenuButton)
       this.features.add(WindowButtons)
       this.features.add(ExtendLeftBox)
       this.features.add(ActivitiesButton)
