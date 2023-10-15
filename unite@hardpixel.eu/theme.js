@@ -1,10 +1,10 @@
-const GLib    = imports.gi.GLib
-const GObject = imports.gi.GObject
-const Gio     = imports.gi.Gio
-const Me      = imports.misc.extensionUtils.getCurrentExtension()
+import GLib from 'gi://GLib'
+import GObject from 'gi://GObject'
+import Gio from 'gi://Gio'
+import * as Convenience from './convenience.js'
 
 const THEME_DIRS = [
-  GLib.build_filenamev([Me.path, 'themes']),
+  GLib.build_filenamev([Convenience.getPath(), 'themes']),
   GLib.build_filenamev([GLib.get_user_data_dir(), 'unite-shell/themes'])
 ]
 
@@ -23,7 +23,7 @@ function isColorDark({ red, green, blue }) {
   return hsp < 127.6
 }
 
-const WindowControlsTheme = class WindowControlsTheme {
+export class WindowControlsTheme {
   constructor(uuid, path) {
     this.uuid = uuid
     this.keys = new GLib.KeyFile()
@@ -54,7 +54,7 @@ const WindowControlsTheme = class WindowControlsTheme {
   }
 }
 
-var WindowControlsThemes = class WindowControlsThemes {
+export class WindowControlsThemes {
   constructor() {
     this.themes = {}
     this.update()

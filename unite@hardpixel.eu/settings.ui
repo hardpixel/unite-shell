@@ -23,26 +23,6 @@
             <property name="spacing">15</property>
             <property name="homogeneous">1</property>
             <child>
-              <object class="GtkBox" id="extend_left_box_section">
-                <property name="spacing">50</property>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="can-focus">0</property>
-                    <property name="valign">center</property>
-                    <property name="label" translatable="yes">Extend top bar left box</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkSwitch" id="extend_left_box">
-                    <property name="hexpand">1</property>
-                    <property name="halign">end</property>
-                    <property name="valign">center</property>
-                    <property name="active">1</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
               <object class="GtkBox" id="autofocus_windows_section">
                 <property name="spacing">50</property>
                 <child>
@@ -74,6 +54,26 @@
                 </child>
                 <child>
                   <object class="GtkSwitch" id="show_legacy_tray">
+                    <property name="hexpand">1</property>
+                    <property name="halign">end</property>
+                    <property name="valign">center</property>
+                    <property name="active">1</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox" id="show_appmenu_button_section">
+                <property name="spacing">50</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="can-focus">0</property>
+                    <property name="valign">center</property>
+                    <property name="label" translatable="yes">Show appmenu in top bar</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="show_appmenu_button">
                     <property name="hexpand">1</property>
                     <property name="halign">end</property>
                     <property name="valign">center</property>
@@ -297,18 +297,17 @@
             <property name="spacing">15</property>
             <property name="homogeneous">1</property>
             <child>
-              <object class="GtkBox" id="use_system_fonts_section">
+              <object class="GtkBox" id="extend_left_box_section">
                 <property name="spacing">50</property>
-                <property name="visible">0</property>
                 <child>
                   <object class="GtkLabel">
                     <property name="can-focus">0</property>
                     <property name="valign">center</property>
-                    <property name="label" translatable="yes">Apply system fonts to shell theme</property>
+                    <property name="label" translatable="yes">Extend top bar left box</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkSwitch" id="use_system_fonts">
+                  <object class="GtkSwitch" id="extend_left_box">
                     <property name="hexpand">1</property>
                     <property name="halign">end</property>
                     <property name="valign">center</property>
@@ -332,87 +331,6 @@
                     <property name="hexpand">1</property>
                     <property name="halign">end</property>
                     <property name="valign">center</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkBox" id="hide_dropdown_arrows_section">
-                <property name="spacing">50</property>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="can-focus">0</property>
-                    <property name="valign">center</property>
-                    <property name="label" translatable="yes">Hide top bar dropdown arrows</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkSwitch" id="hide_dropdown_arrows">
-                    <property name="hexpand">1</property>
-                    <property name="halign">end</property>
-                    <property name="valign">center</property>
-                    <property name="active">1</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkBox" id="hide_aggregate_menu_arrow_section">
-                <property name="sensitive">0</property>
-                <property name="spacing">50</property>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="can-focus">0</property>
-                    <property name="valign">center</property>
-                    <property name="label" translatable="yes">Hide aggregate menu dropdown arrow</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkSwitch" id="hide_aggregate_menu_arrow">
-                    <property name="hexpand">1</property>
-                    <property name="halign">end</property>
-                    <property name="valign">center</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkBox" id="hide_app_menu_arrow_section">
-                <property name="sensitive">0</property>
-                <property name="spacing">50</property>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="can-focus">0</property>
-                    <property name="valign">center</property>
-                    <property name="label" translatable="yes">Hide app menu dropdown arrow</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkSwitch" id="hide_app_menu_arrow">
-                    <property name="hexpand">1</property>
-                    <property name="halign">end</property>
-                    <property name="valign">center</property>
-                    <property name="active">1</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkBox" id="hide_app_menu_icon_section">
-                <property name="spacing">50</property>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="can-focus">0</property>
-                    <property name="valign">center</property>
-                    <property name="label" translatable="yes">Hide app menu application icon</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkSwitch" id="hide_app_menu_icon">
-                    <property name="hexpand">1</property>
-                    <property name="halign">end</property>
-                    <property name="valign">center</property>
-                    <property name="active">1</property>
                   </object>
                 </child>
               </object>

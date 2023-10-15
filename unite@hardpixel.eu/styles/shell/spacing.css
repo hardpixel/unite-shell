@@ -22,7 +22,8 @@
 
 #panel #panelActivities,
 #panel .system-tray-icons,
-#panel .desktop-name-label {
+#panel .desktop-name-label,
+#panel .app-menu-label {
   -natural-hpadding: 10px;
   -minimum-hpadding: 8px;
 }

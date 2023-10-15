@@ -1,51 +1,40 @@
-const GObject       = imports.gi.GObject
-const Main          = imports.ui.main
-const Me            = imports.misc.extensionUtils.getCurrentExtension()
-const Handlers      = Me.imports.handlers
-const PanelManager  = Me.imports.panel.PanelManager
-const LayoutManager = Me.imports.layout.LayoutManager
-const WindowManager = Me.imports.window.WindowManager
+import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js'
+import * as Main from 'resource:///org/gnome/shell/ui/main.js'
+import * as Handlers from './handlers.js'
+import { PanelManager } from './panel.js'
+import { LayoutManager } from './layout.js'
+import { WindowManager } from './window.js'
 
-var UniteExtension = GObject.registerClass(
-  class UniteExtension extends GObject.Object {
-    _init() {
-      this.panelManager  = new PanelManager()
-      this.layoutManager = new LayoutManager()
-      this.windowManager = new WindowManager()
-    }
+export default class UniteExtension extends Extension {
+  enable() {
+    global.unite = this
 
-    get focusWindow() {
-      return this.windowManager.focusWindow
-    }
+    this.panelManager  = new PanelManager()
+    this.layoutManager = new LayoutManager()
+    this.windowManager = new WindowManager()
 
-    activate() {
-      Handlers.resetGtkStyles()
+    Handlers.resetGtkStyles()
 
-      this.panelManager.activate()
-      this.layoutManager.activate()
-      this.windowManager.activate()
+    this.panelManager.activate()
+    this.layoutManager.activate()
+    this.windowManager.activate()
 
-      Main.panel.add_style_class_name('unite-shell')
-    }
-
-    destroy() {
-      Handlers.resetGtkStyles()
-
-      this.panelManager.destroy()
-      this.layoutManager.destroy()
-      this.windowManager.destroy()
-
-      Main.panel.remove_style_class_name('unite-shell')
-    }
+    Main.panel.add_style_class_name('unite-shell')
   }
-)
 
-function enable() {
-  global.unite = new UniteExtension()
-  global.unite.activate()
-}
+  disable() {
+    Handlers.resetGtkStyles()
 
-function disable() {
-  global.unite.destroy()
-  global.unite = null
+    this.panelManager.destroy()
+    this.layoutManager.destroy()
+    this.windowManager.destroy()
+
+    Main.panel.remove_style_class_name('unite-shell')
+
+    global.unite = null
+  }
+
+  get focusWindow() {
+    return this.windowManager.focusWindow
+  }
 }

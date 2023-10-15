@@ -1,11 +1,51 @@
-const GObject   = imports.gi.GObject
-const St        = imports.gi.St
-const Clutter   = imports.gi.Clutter
-const Main      = imports.ui.main
-const AppMenu   = Main.panel.statusArea.appMenu
-const PanelMenu = imports.ui.panelMenu
+import GObject from 'gi://GObject'
+import St from 'gi://St'
+import Clutter from 'gi://Clutter'
+import { AppMenu } from 'resource:///org/gnome/shell/ui/appMenu.js'
+import * as Main from 'resource:///org/gnome/shell/ui/main.js'
+import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js'
 
-var DesktopLabel = GObject.registerClass(
+export const AppmenuLabel = GObject.registerClass(
+  class UniteAppmenuLabel extends PanelMenu.Button {
+    _init(text) {
+      super._init(0.0, null, true)
+
+      const menu = new AppMenu(this)
+      this.setMenu(menu)
+
+      this._menuManager = Main.panel.menuManager
+      this._menuManager.addMenu(menu)
+
+      this._label = new St.Label({ y_align: Clutter.ActorAlign.CENTER })
+      this.add_actor(this._label)
+
+      this.reactive = false
+      this.label_actor = this._label
+
+      this.setText(text || '')
+      this.add_style_class_name('app-menu-label')
+    }
+
+    setApp(app) {
+      this.setText(app ? app.get_name() : '')
+      this.menu.setApp(app)
+    }
+
+    setText(text) {
+      this._label.set_text(text)
+    }
+
+    setReactive(reactive) {
+      this.reactive = reactive
+    }
+
+    setVisible(visible) {
+      this.container.visible = visible
+    }
+  }
+)
+
+export const DesktopLabel = GObject.registerClass(
   class UniteDesktopLabel extends PanelMenu.Button {
     _init(text) {
       super._init(0.0, null, true)
@@ -26,17 +66,14 @@ var DesktopLabel = GObject.registerClass(
 
     setVisible(visible) {
       this.container.visible = visible
-      AppMenu.container.visible = !visible
     }
   }
 )
 
-var TrayIndicator = GObject.registerClass(
+export const TrayIndicator = GObject.registerClass(
   class UniteTrayIndicator extends PanelMenu.Button {
-    _init(size) {
-      this._size  = size || 20
+    _init() {
       this._icons = []
-
       super._init(0.0, null, true)
 
       this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' })
@@ -44,11 +81,6 @@ var TrayIndicator = GObject.registerClass(
 
       this.add_style_class_name('system-tray-icons')
       this._sync()
-    }
-
-    get size() {
-      const context = St.ThemeContext.get_for_stage(global.stage)
-      return this._size * context.scale_factor
     }
 
     _sync() {
@@ -67,7 +99,6 @@ var TrayIndicator = GObject.registerClass(
       ibtn.connect('button-release-event', (actor, event) => icon.click(event))
 
       icon.set_reactive(true)
-      icon.set_size(this.size, this.size)
       icon.set_x_align(Clutter.ActorAlign.CENTER)
       icon.set_y_align(Clutter.ActorAlign.CENTER)
 
@@ -90,7 +121,7 @@ var TrayIndicator = GObject.registerClass(
   }
 )
 
-var WindowControls = GObject.registerClass(
+export const WindowControls = GObject.registerClass(
   class UniteWindowControls extends PanelMenu.Button {
     _init() {
       super._init(0.0, null, true)

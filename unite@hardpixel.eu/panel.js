@@ -1,27 +1,194 @@
-const System     = imports.system
-const GObject    = imports.gi.GObject
-const GLib       = imports.gi.GLib
-const St         = imports.gi.St
-const Pango      = imports.gi.Pango
-const Clutter    = imports.gi.Clutter
-const Meta       = imports.gi.Meta
-const Shell      = imports.gi.Shell
-const AppSystem  = imports.gi.Shell.AppSystem.get_default()
-const WinTracker = imports.gi.Shell.WindowTracker.get_default()
-const Main       = imports.ui.main
-const Me         = imports.misc.extensionUtils.getCurrentExtension()
-const AppMenu    = Main.panel.statusArea.appMenu
-const Activities = Main.panel.statusArea.activities
-const Buttons    = Me.imports.buttons
-const Theme      = Me.imports.theme
-const Handlers   = Me.imports.handlers
-const Override   = Me.imports.overrides.helper
+import System from 'system'
+import GObject from 'gi://GObject'
+import GLib from 'gi://GLib'
+import St from 'gi://St'
+import Pango from 'gi://Pango'
+import Clutter from 'gi://Clutter'
+import Meta from 'gi://Meta'
+import Shell from 'gi://Shell'
+import * as Main from 'resource:///org/gnome/shell/ui/main.js'
+import * as Buttons from './buttons.js'
+import * as Theme from './theme.js'
+import * as Handlers from './handlers.js'
 
-var WindowButtons = class WindowButtons extends Handlers.Feature {
+const AppSystem  = Shell.AppSystem.get_default()
+const WinTracker = Shell.WindowTracker.get_default()
+const Activities = Main.panel.statusArea.activities
+
+class AppmenuButton extends Handlers.Feature {
+  constructor() {
+    super('show-appmenu-button', setting => setting == true)
+  }
+
+  activate() {
+    this.signals  = new Handlers.Signals()
+    this.settings = new Handlers.Settings()
+    this.button   = new Buttons.AppmenuLabel()
+    this.tooltip  = new St.Label({ visible: false, style_class: 'dash-label' })
+
+    this.focused  = null
+    this.starting = []
+
+    this.signals.connect(
+      Main.overview, 'showing', this._syncState.bind(this)
+    )
+
+    this.signals.connect(
+      Main.overview, 'hiding', this._syncState.bind(this)
+    )
+
+    this.signals.connect(
+      AppSystem, 'app-state-changed', this._onAppStateChanged.bind(this)
+    )
+
+    this.signals.connect(
+      WinTracker, 'notify::focus-app', this._onFocusAppChanged.bind(this)
+    )
+
+    this.settings.connect(
+      'app-menu-max-width', this._onMaxWidthChange.bind(this)
+    )
+
+    this.settings.connect(
+      'app-menu-ellipsize-mode', this._onEllipsizeModeChange.bind(this)
+    )
+
+    this.button.connect(
+      'notify::hover', this._onAppMenuHover.bind(this)
+    )
+
+    this.button.connect(
+      'button-press-event', this._onAppMenuClicked.bind(this)
+    )
+
+    Main.uiGroup.add_child(this.tooltip)
+
+    Main.panel.addToStatusArea(
+      'uniteAppMenu', this.button, 1, 'left'
+    )
+
+    this._onMaxWidthChange()
+    this._syncState()
+  }
+
+  get maxWidth() {
+    return this.settings.get('app-menu-max-width')
+  }
+
+  get ellipsizeMode() {
+    return this.settings.get('app-menu-ellipsize-mode')
+  }
+
+  setLabelMaxWidth(width) {
+    this.button._label.set_style('max-width' + (width ? `: ${width}px` : ''))
+  }
+
+  setTextEllipsizeMode(mode) {
+    const type = mode.toUpperCase()
+    this.button._label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode[type])
+  }
+
+  _onAppStateChanged(appSys, app) {
+    const state = app.state
+
+    if (state != Shell.AppState.STARTING) {
+      this.starting = this.starting.filter(item => item != app)
+    } else if (state == Shell.AppState.STARTING) {
+      this.starting.push(app)
+    }
+    // For now just resync on all running state changes; this is mainly to handle
+    // cases where the focused window's application changes without the focus
+    // changing. An example case is how we map OpenOffice.org based on the window
+    // title which is a dynamic property.
+    this._syncState()
+  }
+
+  _onFocusAppChanged() {
+    if (!WinTracker.focus_app) {
+      // If the app has just lost focus to the panel, pretend
+      // nothing happened; otherwise you can't keynav to the app menu.
+      if (global.stage.key_focus != null) return
+    }
+
+    this._syncState()
+  }
+
+  _findTargetApp() {
+    const focused   = WinTracker.focus_app
+    const workspace = global.workspace_manager.get_active_workspace()
+
+    if (focused && focused.is_on_workspace(workspace))
+      return focused
+
+    for (let i = 0; i < this.starting.length; i++) {
+      if (this.starting[i].is_on_workspace(workspace))
+        return this.starting[i]
+    }
+
+    return null
+  }
+
+  _syncState() {
+    const astates = Shell.AppState.STARTING
+    const focused = this._findTargetApp()
+    const visible = focused != null && !Main.overview.visibleTarget
+    const loading = focused != null && (focused.get_state() == astates || focused.get_busy())
+
+    if (focused != this.focused) {
+      this.focused = focused
+      this.button.setApp(this.focused)
+    }
+
+    this.button.setReactive(visible && !loading)
+    this.button.setVisible(visible)
+  }
+
+  _onAppMenuHover(appMenu) {
+    this.isHovered = appMenu.get_hover()
+
+    if (!this.isHovered || !this.maxWidth) {
+      return this.tooltip.hide()
+    }
+
+    GLib.timeout_add(GLib.PRIORITY_DEFAULT, 400, () => {
+      if (this.isHovered && !this.tooltip.visible) {
+        const [mouseX, mouseY] = global.get_pointer()
+
+        this.tooltip.set_position(mouseX + 20, mouseY)
+        this.tooltip.set_text(appMenu._label.get_text())
+        this.tooltip.show()
+      }
+
+      return GLib.SOURCE_REMOVE
+    })
+  }
+
+  _onAppMenuClicked() {
+    this.isHovered = false
+    this.tooltip.hide()
+  }
+
+  _onMaxWidthChange() {
+    this.setLabelMaxWidth(this.maxWidth)
+    this.setTextEllipsizeMode(this.ellipsizeMode)
+  }
+
+  _onEllipsizeModeChange() {
+    this.setTextEllipsizeMode(this.ellipsizeMode)
+  }
+
+  destroy() {
+    this.signals.disconnectAll()
+    this.settings.disconnectAll()
+
+    this.button.destroy()
+    this.tooltip.destroy()
+  }
+}
+
+class WindowButtons extends Handlers.Feature {
   constructor() {
     super('show-window-buttons', setting => setting != 'never')
-
-    Override.inject(this, 'panel', 'WindowButtons')
   }
 
   activate() {
@@ -104,9 +271,9 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
 
   get sibling() {
     if (this.side == 'left') {
-      return Main.panel.statusArea.appMenu.get_parent()
+      return Main.panel.statusArea.uniteAppMenu || Main.panel.statusArea.activities
     } else {
-      return Main.panel.statusArea.quickSettings.get_parent()
+      return Main.panel.statusArea.quickSettings
     }
   }
 
@@ -143,7 +310,7 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
     if (this.index != null) {
       this.container.set_child_at_index(controls, this.index)
     } else {
-      this.container.set_child_below_sibling(controls, this.sibling)
+      this.container.set_child_below_sibling(controls, this.sibling.get_parent())
     }
 
     this._onLayoutChange()
@@ -176,7 +343,7 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
 
   _syncVisible() {
     const overview = Main.overview.visibleTarget
-    const focusApp = WinTracker.focus_app || AppMenu._targetApp
+    const focusApp = WinTracker.focus_app
 
     if (!overview && focusApp && focusApp.state == Shell.AppState.RUNNING) {
       const win = global.unite.focusWindow
@@ -195,11 +362,9 @@ var WindowButtons = class WindowButtons extends Handlers.Feature {
   }
 }
 
-var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
+class ExtendLeftBox extends Handlers.Feature {
   constructor() {
     super('extend-left-box', setting => setting == true)
-
-    Override.inject(this, 'panel', 'ExtendLeftBox')
   }
 
   activate() {
@@ -276,11 +441,9 @@ var ExtendLeftBox = class ExtendLeftBox extends Handlers.Feature {
   }
 }
 
-var ActivitiesButton = class ActivitiesButton extends Handlers.Feature {
+class ActivitiesButton extends Handlers.Feature {
   constructor() {
     super('hide-activities-button', setting => setting != 'never')
-
-    Override.inject(this, 'panel', 'ActivitiesButtonClassic')
   }
 
   activate() {
@@ -321,7 +484,7 @@ var ActivitiesButton = class ActivitiesButton extends Handlers.Feature {
   _syncVisible() {
     const button   = Activities.container
     const overview = Main.overview.visibleTarget
-    const focusApp = WinTracker.focus_app || AppMenu._targetApp
+    const focusApp = WinTracker.focus_app
 
     if (this.hideButton == 'always') {
       return button.hide()
@@ -344,7 +507,7 @@ var ActivitiesButton = class ActivitiesButton extends Handlers.Feature {
   }
 }
 
-var DesktopName = class DesktopName extends Handlers.Feature {
+class DesktopName extends Handlers.Feature {
   constructor() {
     super('show-desktop-name', setting => setting == true)
   }
@@ -353,6 +516,7 @@ var DesktopName = class DesktopName extends Handlers.Feature {
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
     this.label    = new Buttons.DesktopLabel()
+    this.starting = []
 
     this.signals.connect(
       Main.overview, 'showing', this._syncVisible.bind(this)
@@ -363,11 +527,11 @@ var DesktopName = class DesktopName extends Handlers.Feature {
     )
 
     this.signals.connect(
-      AppSystem, 'app-state-changed', this._syncVisible.bind(this)
+      AppSystem, 'app-state-changed', this._onAppStateChanged.bind(this)
     )
 
     this.signals.connect(
-      WinTracker, 'notify::focus-app', this._syncVisible.bind(this)
+      WinTracker, 'notify::focus-app', this._onFocusAppChanged.bind(this)
     )
 
     this.settings.connect(
@@ -382,9 +546,44 @@ var DesktopName = class DesktopName extends Handlers.Feature {
     this._syncVisible()
   }
 
+  _onAppStateChanged(appSys, app) {
+    const state = app.state
+
+    if (state != Shell.AppState.STARTING) {
+      this.starting = this.starting.filter(item => item != app)
+    } else if (state == Shell.AppState.STARTING) {
+      this.starting.push(app)
+    }
+
+    this._syncVisible()
+  }
+
+  _onFocusAppChanged() {
+    if (!WinTracker.focus_app) {
+      if (global.stage.key_focus != null) return
+    }
+
+    this._syncVisible()
+  }
+
+  _findFocusedApp() {
+    const focused   = WinTracker.focus_app
+    const workspace = global.workspace_manager.get_active_workspace()
+
+    if (focused && focused.is_on_workspace(workspace))
+      return focused
+
+    for (let i = 0; i < this.starting.length; i++) {
+      if (this.starting[i].is_on_workspace(workspace))
+        return this.starting[i]
+    }
+
+    return null
+  }
+
   _syncVisible() {
     const overview = Main.overview.visibleTarget
-    const focusApp = WinTracker.focus_app || AppMenu._targetApp
+    const focusApp = this._findFocusedApp()
 
     this.label.setVisible(!overview && focusApp == null)
   }
@@ -402,11 +601,9 @@ var DesktopName = class DesktopName extends Handlers.Feature {
   }
 }
 
-var TrayIcons = class TrayIcons extends Handlers.Feature {
+class TrayIcons extends Handlers.Feature {
   constructor() {
     super('show-legacy-tray', setting => setting == true)
-
-    Override.inject(this, 'panel', 'TrayIcons')
   }
 
   activate() {
@@ -471,11 +668,9 @@ var TrayIcons = class TrayIcons extends Handlers.Feature {
   }
 }
 
-var TitlebarActions = class TitlebarActions extends Handlers.Feature {
+class TitlebarActions extends Handlers.Feature {
   constructor() {
     super('enable-titlebar-actions', setting => setting == true)
-
-    Override.inject(this, 'panel', 'TitlebarActions')
   }
 
   activate() {
@@ -488,7 +683,7 @@ var TitlebarActions = class TitlebarActions extends Handlers.Feature {
   }
 
   _onButtonPressEvent(actor, event) {
-    if (Main.modalCount > 0 || actor != event.get_source()) {
+    if (Main.modalCount > 0 || event.get_source() != null) {
       return Clutter.EVENT_PROPAGATE
     }
 
@@ -565,116 +760,18 @@ var TitlebarActions = class TitlebarActions extends Handlers.Feature {
   }
 }
 
-var AppMenuCustomizer = class AppMenuCustomizer extends Handlers.Feature {
-  constructor() {
-    super('app-menu-max-width', setting => setting > 0)
-  }
-
-  activate() {
-    this.signals  = new Handlers.Signals()
-    this.settings = new Handlers.Settings()
-    this.tooltip  = new St.Label({ visible: false, style_class: 'dash-label' })
-
-    this.signals.connect(
-      AppMenu, 'notify::hover', this._onAppMenuHover.bind(this)
-    )
-
-    this.signals.connect(
-      AppMenu, 'button-press-event', this._onAppMenuClicked.bind(this)
-    )
-
-    this.settings.connect(
-      'app-menu-max-width', this._onMaxWidthChange.bind(this)
-    )
-
-    this.settings.connect(
-      'app-menu-ellipsize-mode', this._onEllipsizeModeChange.bind(this)
-    )
-
-    Main.uiGroup.add_child(this.tooltip)
-
-    this._onMaxWidthChange()
-  }
-
-  get maxWidth() {
-    return this.settings.get('app-menu-max-width')
-  }
-
-  get ellipsizeMode() {
-    return this.settings.get('app-menu-ellipsize-mode')
-  }
-
-  setLabelMaxWidth(width) {
-    const label = AppMenu._label
-    label && label.set_style('max-width' + (width ? `: ${width}px` : ''))
-  }
-
-  setTextEllipsizeMode(mode) {
-    const modeK = mode.toUpperCase()
-    const label = AppMenu._label
-
-    label && label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode[modeK])
-  }
-
-  _onAppMenuHover(appMenu) {
-    if (!appMenu._label) return
-
-    this.isHovered = appMenu.get_hover()
-
-    if (!this.isHovered) {
-      return this.tooltip.hide()
-    }
-
-    GLib.timeout_add(GLib.PRIORITY_DEFAULT, 400, () => {
-      if (this.isHovered && !this.tooltip.visible) {
-        const [mouseX, mouseY] = global.get_pointer()
-
-        this.tooltip.set_position(mouseX + 20, mouseY)
-        this.tooltip.set_text(appMenu._label.get_text())
-        this.tooltip.show()
-      }
-
-      return GLib.SOURCE_REMOVE
-    })
-  }
-
-  _onAppMenuClicked() {
-    this.isHovered = false
-    this.tooltip.hide()
-  }
-
-  _onMaxWidthChange() {
-    this.setLabelMaxWidth(this.maxWidth)
-    this.setTextEllipsizeMode(this.ellipsizeMode)
-  }
-
-  _onEllipsizeModeChange() {
-    this.setTextEllipsizeMode(this.ellipsizeMode)
-  }
-
-  destroy() {
-    this.setLabelMaxWidth(null)
-    this.setTextEllipsizeMode('end')
-
-    this.signals.disconnectAll()
-    this.settings.disconnectAll()
-
-    this.tooltip.destroy()
-  }
-}
-
-var PanelManager = GObject.registerClass(
+export const PanelManager = GObject.registerClass(
   class UnitePanelManager extends GObject.Object {
     _init() {
       this.features = new Handlers.Features()
 
+      this.features.add(AppmenuButton)
       this.features.add(WindowButtons)
       this.features.add(ExtendLeftBox)
       this.features.add(ActivitiesButton)
       this.features.add(DesktopName)
       this.features.add(TrayIcons)
       this.features.add(TitlebarActions)
-      this.features.add(AppMenuCustomizer)
     }
 
     activate() {
