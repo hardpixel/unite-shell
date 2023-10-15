@@ -12,7 +12,7 @@ function fileExists(path) {
   return GLib.file_test(path, GLib.FileTest.EXISTS)
 }
 
-function isColorDark({ red, green, blue }) {
+export function isColorDark({ red, green, blue }) {
   // HSP equation from http://alienryderflex.com/hsp.html
   const hsp = Math.sqrt(
     0.299 * (red * red) +
