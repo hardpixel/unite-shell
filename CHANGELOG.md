@@ -1,5 +1,25 @@
 # Changelog
 
+## [v73](https://github.com/hardpixel/unite-shell/tree/v73) (2023-10-15)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v72...v73)
+
+**Fixed bugs:**
+
+- Titlebar action double-click not working on GNOME 42 [\#290](https://github.com/hardpixel/unite-shell/issues/290)
+
+**Closed issues:**
+
+- Hide window titlebar not work on the secondary monitor  [\#344](https://github.com/hardpixel/unite-shell/issues/344)
+- Button is null [\#342](https://github.com/hardpixel/unite-shell/issues/342)
+- Ubuntu 23.10 [\#341](https://github.com/hardpixel/unite-shell/issues/341)
+- Support for gnome 45 [\#339](https://github.com/hardpixel/unite-shell/issues/339)
+- Unite & MultiMonitor on Gnome 42 [\#310](https://github.com/hardpixel/unite-shell/issues/310)
+
+**Merged pull requests:**
+
+- Port to gnome 45 [\#345](https://github.com/hardpixel/unite-shell/pull/345) ([jonian](https://github.com/jonian))
+
 ## [v72](https://github.com/hardpixel/unite-shell/tree/v72) (2023-08-02)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v71...v72)
