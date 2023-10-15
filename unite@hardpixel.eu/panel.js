@@ -23,7 +23,8 @@ class AppmenuButton extends Handlers.Feature {
   activate() {
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
-    this.label    = new Buttons.AppmenuLabel()
+    this.button   = new Buttons.AppmenuLabel()
+    this.tooltip  = new St.Label({ visible: false, style_class: 'dash-label' })
     this.starting = []
 
     this.signals.connect(
@@ -42,12 +43,48 @@ class AppmenuButton extends Handlers.Feature {
       WinTracker, 'notify::focus-app', this._onFocusAppChanged.bind(this)
     )
 
+    this.settings.connect(
+      'app-menu-max-width', this._onMaxWidthChange.bind(this)
+    )
+
+    this.settings.connect(
+      'app-menu-ellipsize-mode', this._onEllipsizeModeChange.bind(this)
+    )
+
+    this.button.connect(
+      'notify::hover', this._onAppMenuHover.bind(this)
+    )
+
+    this.button.connect(
+      'button-press-event', this._onAppMenuClicked.bind(this)
+    )
+
+    Main.uiGroup.add_child(this.tooltip)
+
     Main.panel.addToStatusArea(
-      'uniteAppMenu', this.label, 1, 'left'
+      'uniteAppMenu', this.button, 1, 'left'
     )
 
     this._syncFocused()
     this._syncState()
+    this._onMaxWidthChange()
+  }
+
+  get maxWidth() {
+    return this.settings.get('app-menu-max-width')
+  }
+
+  get ellipsizeMode() {
+    return this.settings.get('app-menu-ellipsize-mode')
+  }
+
+  setLabelMaxWidth(width) {
+    this.button._label.set_style('max-width' + (width ? `: ${width}px` : ''))
+  }
+
+  setTextEllipsizeMode(mode) {
+    const type = mode.toUpperCase()
+    this.button._label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode[type])
   }
 
   _onAppStateChanged(appSys, app) {
@@ -93,7 +130,7 @@ class AppmenuButton extends Handlers.Feature {
 
   _syncFocused() {
     const focused = this._findTargetApp()
-    focused && this.label.setApp(focused)
+    focused && this.button.setApp(focused)
   }
 
   _syncState() {
@@ -102,15 +139,50 @@ class AppmenuButton extends Handlers.Feature {
     const visible = focused != null && !Main.overview.visibleTarget
     const loading = focused != null && (focused.get_state() == astates || focused.get_busy())
 
-    this.label.setReactive(visible && !loading)
-    this.label.setVisible(visible)
+    this.button.setReactive(visible && !loading)
+    this.button.setVisible(visible)
+  }
+
+  _onAppMenuHover(appMenu) {
+    this.isHovered = appMenu.get_hover()
+
+    if (!this.isHovered || !this.maxWidth) {
+      return this.tooltip.hide()
+    }
+
+    GLib.timeout_add(GLib.PRIORITY_DEFAULT, 400, () => {
+      if (this.isHovered && !this.tooltip.visible) {
+        const [mouseX, mouseY] = global.get_pointer()
+
+        this.tooltip.set_position(mouseX + 20, mouseY)
+        this.tooltip.set_text(appMenu._label.get_text())
+        this.tooltip.show()
+      }
+
+      return GLib.SOURCE_REMOVE
+    })
+  }
+
+  _onAppMenuClicked() {
+    this.isHovered = false
+    this.tooltip.hide()
+  }
+
+  _onMaxWidthChange() {
+    this.setLabelMaxWidth(this.maxWidth)
+    this.setTextEllipsizeMode(this.ellipsizeMode)
+  }
+
+  _onEllipsizeModeChange() {
+    this.setTextEllipsizeMode(this.ellipsizeMode)
   }
 
   destroy() {
     this.signals.disconnectAll()
     this.settings.disconnectAll()
 
-    this.label.destroy()
+    this.button.destroy()
+    this.tooltip.destroy()
   }
 }
 
