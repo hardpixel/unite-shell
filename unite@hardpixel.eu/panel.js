@@ -209,7 +209,7 @@ class WindowButtons extends Handlers.Feature {
     )
 
     this.signals.connect(
-      WinTracker, 'notify::focus-app', this._syncVisible.bind(this)
+      WinTracker, 'notify::focus-app', this._onFocusAppChanged.bind(this)
     )
 
     this.signals.connect(
@@ -339,6 +339,14 @@ class WindowButtons extends Handlers.Feature {
     if (this.themeName == 'auto') {
       this._onThemeChange()
     }
+  }
+
+  _onFocusAppChanged() {
+    if (!WinTracker.focus_app) {
+      if (global.stage.key_focus != null) return
+    }
+
+    this._syncVisible()
   }
 
   _syncVisible() {
