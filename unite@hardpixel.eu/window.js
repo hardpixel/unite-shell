@@ -261,9 +261,11 @@ const MetaWindow = GObject.registerClass(
     }
 
     syncAppmenu() {
-      if (this.hasFocus && this.title) {
+      const appmenu = Main.panel.statusArea.uniteAppMenu
+
+      if (appmenu && this.hasFocus && this.title) {
         const title = this.title.replace(/\r?\n|\r/g, ' ')
-        Main.panel.statusArea.uniteAppMenu.setText(title)
+        appmenu.setText(title)
       }
     }
 
