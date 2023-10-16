@@ -1,5 +1,13 @@
 # Changelog
 
+## [v75](https://github.com/hardpixel/unite-shell/tree/v75) (2023-10-16)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v74...v75)
+
+**Closed issues:**
+
+- Xorg: top bar buttons are hidden when popup menu is opened [\#346](https://github.com/hardpixel/unite-shell/issues/346)
+
 ## [v74](https://github.com/hardpixel/unite-shell/tree/v74) (2023-10-15)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v73...v74)
