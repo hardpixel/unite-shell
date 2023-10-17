@@ -134,9 +134,20 @@ class AppmenuButton extends Handlers.Feature {
     const visible = focused != null && !Main.overview.visibleTarget
     const loading = focused != null && (focused.get_state() == astates || focused.get_busy())
 
-    if (focused != this.focused) {
+    if (focused !== this.focused) {
+      this.focused?.disconnectObject(this)
       this.focused = focused
-      this.button.setApp(this.focused)
+
+      if (this.focused) {
+        this.focused.connectObject('notify::busy', this._syncState.bind(this), this)
+        this.button.setApp(this.focused)
+      }
+    }
+
+    if (loading) {
+      this.button.startAnimation()
+    } else {
+      this.button.stopAnimation()
     }
 
     this.button.setReactive(visible && !loading)

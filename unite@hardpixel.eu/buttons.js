@@ -4,11 +4,27 @@ import Clutter from 'gi://Clutter'
 import { AppMenu } from 'resource:///org/gnome/shell/ui/appMenu.js'
 import * as Main from 'resource:///org/gnome/shell/ui/main.js'
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js'
+import * as Animation from 'resource:///org/gnome/shell/ui/animation.js'
 
 export const AppmenuLabel = GObject.registerClass(
   class UniteAppmenuLabel extends PanelMenu.Button {
     _init(text) {
       super._init(0.0, null, true)
+
+      const bin = new St.Bin({ name: 'appMenu' })
+      this.add_actor(bin)
+
+      this.bind_property('reactive', this, 'can-focus', 0)
+      this.reactive = false
+
+      this._container = new St.BoxLayout({ style_class: 'panel-status-menu-box' })
+      bin.set_child(this._container)
+
+      this._label = new St.Label({ y_align: Clutter.ActorAlign.CENTER })
+      this._container.add_actor(this._label)
+
+      this._spinner = new Animation.Spinner(16, { animate: true, hideOnStop: true })
+      this._container.add_actor(this._spinner)
 
       const menu = new AppMenu(this)
       this.setMenu(menu)
@@ -16,18 +32,12 @@ export const AppmenuLabel = GObject.registerClass(
       this._menuManager = Main.panel.menuManager
       this._menuManager.addMenu(menu)
 
-      this._label = new St.Label({ y_align: Clutter.ActorAlign.CENTER })
-      this.add_actor(this._label)
-
-      this.reactive = false
-      this.label_actor = this._label
-
       this.setText(text || '')
       this.add_style_class_name('app-menu-label')
     }
 
     setApp(app) {
-      this.setText(app ? app.get_name() : '')
+      this.setText(app.get_name())
       this.menu.setApp(app)
     }
 
@@ -41,6 +51,14 @@ export const AppmenuLabel = GObject.registerClass(
 
     setVisible(visible) {
       this.container.visible = visible
+    }
+
+    stopAnimation() {
+      this._spinner.stop()
+    }
+
+    startAnimation() {
+      this._spinner.play()
     }
   }
 )
