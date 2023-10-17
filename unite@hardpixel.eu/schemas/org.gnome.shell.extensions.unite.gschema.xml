@@ -79,6 +79,11 @@
       <summary>Restrict functionalities to the primary screen.</summary>
     </key>
 
+    <key name="hide-app-menu-icon" type="b">
+      <default>true</default>
+      <summary>Hide app menu application icon.</summary>
+    </key>
+
     <key name="app-menu-max-width" type="i">
       <default>0</default>
       <summary>Limit the width of the app menu. 0 means no limit.</summary>

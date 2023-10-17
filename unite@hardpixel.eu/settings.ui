@@ -336,6 +336,26 @@
               </object>
             </child>
             <child>
+              <object class="GtkBox" id="hide_app_menu_icon_section">
+                <property name="spacing">50</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="can-focus">0</property>
+                    <property name="valign">center</property>
+                    <property name="label" translatable="yes">Hide app menu application icon</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="hide_app_menu_icon">
+                    <property name="hexpand">1</property>
+                    <property name="halign">end</property>
+                    <property name="valign">center</property>
+                    <property name="active">1</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
               <object class="GtkBox" id="reduce_panel_spacing_section">
                 <property name="spacing">50</property>
                 <child>

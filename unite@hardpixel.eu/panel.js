@@ -46,6 +46,10 @@ class AppmenuButton extends Handlers.Feature {
     )
 
     this.settings.connect(
+      'hide-app-menu-icon', this._onHideIconChange.bind(this)
+    )
+
+    this.settings.connect(
       'app-menu-max-width', this._onMaxWidthChange.bind(this)
     )
 
@@ -67,8 +71,14 @@ class AppmenuButton extends Handlers.Feature {
       'uniteAppMenu', this.button, 1, 'left'
     )
 
+    this._onHideIconChange()
     this._onMaxWidthChange()
+
     this._syncState()
+  }
+
+  get hideIcon() {
+    return this.settings.get('hide-app-menu-icon')
   }
 
   get maxWidth() {
@@ -177,6 +187,10 @@ class AppmenuButton extends Handlers.Feature {
   _onAppMenuClicked() {
     this.isHovered = false
     this.tooltip.hide()
+  }
+
+  _onHideIconChange() {
+    this.button.toggleIcon(this.hideIcon)
   }
 
   _onMaxWidthChange() {

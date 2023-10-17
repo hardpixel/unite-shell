@@ -74,6 +74,10 @@ export const AppmenuLabel = GObject.registerClass(
       this.container.visible = visible
     }
 
+    toggleIcon(hidden) {
+      this._iconBox.visible = !hidden
+    }
+
     stopAnimation() {
       this._spinner.stop()
     }

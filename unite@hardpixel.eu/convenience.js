@@ -40,6 +40,7 @@ export const SettingsManager = GObject.registerClass(
         'hide-window-titlebars':      'enum',
         'enable-titlebar-actions':    'boolean',
         'window-buttons-placement':   'enum',
+        'hide-app-menu-icon':         'boolean',
         'reduce-panel-spacing':       'boolean',
         'restrict-to-primary-screen': 'boolean',
         'app-menu-max-width':         'int',
