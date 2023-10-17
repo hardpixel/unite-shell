@@ -20,6 +20,14 @@ export const AppmenuLabel = GObject.registerClass(
       this._container = new St.BoxLayout({ style_class: 'panel-status-menu-box' })
       bin.set_child(this._container)
 
+      this._icon = new St.Icon()
+      this._icon.set_icon_size(16, 16)
+      this._icon.set_fallback_gicon(null)
+
+      this._iconBox = new St.Bin({ style_class: 'app-menu-icon', y_align: Clutter.ActorAlign.CENTER })
+      this._iconBox.set_child(this._icon)
+      this._container.add_actor(this._iconBox)
+
       this._label = new St.Label({ y_align: Clutter.ActorAlign.CENTER })
       this._container.add_actor(this._label)
 
@@ -32,13 +40,26 @@ export const AppmenuLabel = GObject.registerClass(
       this._menuManager = Main.panel.menuManager
       this._menuManager.addMenu(menu)
 
+      const iconEffect = new Clutter.DesaturateEffect()
+      this._iconBox.add_effect(iconEffect)
+
+      this._iconBox.connect('style-changed', () => {
+        const themeNode = this._iconBox.get_theme_node()
+        iconEffect.enabled = themeNode.get_icon_style() === St.IconStyle.SYMBOLIC
+      })
+
       this.setText(text || '')
       this.add_style_class_name('app-menu-label')
     }
 
     setApp(app) {
+      this.setIcon(app.get_icon())
       this.setText(app.get_name())
       this.menu.setApp(app)
+    }
+
+    setIcon(icon) {
+      this._icon.set_gicon(icon)
     }
 
     setText(text) {
