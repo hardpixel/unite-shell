@@ -21,7 +21,7 @@ export const AppmenuLabel = GObject.registerClass(
       bin.set_child(this._container)
 
       this._icon = new St.Icon()
-      this._icon.set_icon_size(16, 16)
+      this._icon.set_icon_size(16)
       this._icon.set_fallback_gicon(null)
 
       this._iconBox = new St.Bin({ style_class: 'app-menu-icon', y_align: Clutter.ActorAlign.CENTER })
