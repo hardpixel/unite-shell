@@ -59,6 +59,11 @@
       <summary>Show appmenu in top bar.</summary>
     </key>
 
+    <key name="use-activities-text" type="b">
+      <default>true</default>
+      <summary>Use text in activities button.</summary>
+    </key>
+
     <key name="show-desktop-name" type="b">
       <default>true</default>
       <summary>Show desktop name in top bar.</summary>

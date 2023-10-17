@@ -540,6 +540,30 @@ class ActivitiesButton extends Handlers.Feature {
   }
 }
 
+class ActivitiesText extends Handlers.Feature {
+  constructor() {
+    super('use-activities-text', setting => setting == true)
+  }
+
+  activate() {
+    this.label = new St.Label({ y_align: Clutter.ActorAlign.CENTER })
+    this.label.set_text(Activities.get_accessible_name())
+
+    this.switcher = Activities.get_first_child()
+    Activities.remove_child(this.switcher)
+
+    Activities.add_actor(this.label)
+  }
+
+  destroy() {
+    Activities.remove_actor(this.label)
+    this.label.destroy()
+
+    Activities.add_child(this.switcher)
+    this.switcher = null
+  }
+}
+
 class DesktopName extends Handlers.Feature {
   constructor() {
     super('show-desktop-name', setting => setting == true)
@@ -802,6 +826,7 @@ export const PanelManager = GObject.registerClass(
       this.features.add(WindowButtons)
       this.features.add(ExtendLeftBox)
       this.features.add(ActivitiesButton)
+      this.features.add(ActivitiesText)
       this.features.add(DesktopName)
       this.features.add(TrayIcons)
       this.features.add(TitlebarActions)

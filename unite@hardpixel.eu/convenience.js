@@ -30,6 +30,7 @@ export const SettingsManager = GObject.registerClass(
         'show-window-title':          'enum',
         'show-appmenu-button':        'boolean',
         'show-desktop-name':          'boolean',
+        'use-activities-text':        'boolean',
         'desktop-name-text':          'string',
         'extend-left-box':            'boolean',
         'notifications-position':     'enum',
