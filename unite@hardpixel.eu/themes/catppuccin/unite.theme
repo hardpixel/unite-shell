@@ -1,0 +1,8 @@
+[Theme]
+Name=Catppuccin
+
+[Dark]
+Style=dark/stylesheet.css
+
+[Light]
+Style=light/stylesheet.css
