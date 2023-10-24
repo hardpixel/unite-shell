@@ -1,6 +1,19 @@
 # Changelog
 
-## [v76](https://github.com/hardpixel/unite-shell/tree/v75) (2023-10-17)
+## [v77](https://github.com/hardpixel/unite-shell/tree/v77) (2023-10-24)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v76...v77)
+
+**Closed issues:**
+
+- \[Theme\] Catppuccin Macchiato [\#348](https://github.com/hardpixel/unite-shell/issues/348)
+- \[Possible bug, support\] Element flatpak titlebar isn't hiding [\#347](https://github.com/hardpixel/unite-shell/issues/347)
+
+**Merged pull requests:**
+
+- Catppuccin Theme \(Macchiato\) [\#349](https://github.com/hardpixel/unite-shell/pull/349) ([42Willow](https://github.com/42Willow))
+
+## [v76](https://github.com/hardpixel/unite-shell/tree/v76) (2023-10-17)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v75...v76)
 
