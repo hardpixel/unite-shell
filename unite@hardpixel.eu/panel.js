@@ -171,7 +171,7 @@ class AppmenuButton extends Handlers.Feature {
       return this.tooltip.hide()
     }
 
-    GLib.timeout_add(GLib.PRIORITY_DEFAULT, 400, () => {
+    this._hoverHandlerID = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 400, () => {
       if (this.isHovered && !this.tooltip.visible) {
         const [mouseX, mouseY] = global.get_pointer()
 
@@ -203,6 +203,11 @@ class AppmenuButton extends Handlers.Feature {
   }
 
   destroy() {
+    if (this._hoverHandlerID) {
+      GLib.source_remove(this._hoverHandlerID)
+      this._hoverHandlerID = null
+    }
+
     this.signals.disconnectAll()
     this.settings.disconnectAll()
 
