@@ -85,6 +85,18 @@ export const AppmenuLabel = GObject.registerClass(
     startAnimation() {
       this._spinner.play()
     }
+
+    _onDestroy() {
+      if (this.menu) {
+        this._menuManager.removeMenu(this.menu)
+        this._menuManager = null
+
+        this.menu.setApp(null)
+        this.setMenu(null)
+      }
+
+      super._onDestroy()
+    }
   }
 )
 
