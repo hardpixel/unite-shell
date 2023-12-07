@@ -1,6 +1,5 @@
 import System from 'system'
 import GObject from 'gi://GObject'
-import GLib from 'gi://GLib'
 import St from 'gi://St'
 import Pango from 'gi://Pango'
 import Clutter from 'gi://Clutter'
@@ -23,6 +22,7 @@ class AppmenuButton extends Handlers.Feature {
   activate() {
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
+    this.timeouts = new Handlers.Timeouts()
     this.button   = new Buttons.AppmenuLabel()
     this.tooltip  = new St.Label({ visible: false, style_class: 'dash-label' })
 
@@ -171,7 +171,7 @@ class AppmenuButton extends Handlers.Feature {
       return this.tooltip.hide()
     }
 
-    this._hoverHandlerID = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 400, () => {
+    this.timeouts.timeout(400, () => {
       if (this.isHovered && !this.tooltip.visible) {
         const [mouseX, mouseY] = global.get_pointer()
 
@@ -179,8 +179,6 @@ class AppmenuButton extends Handlers.Feature {
         this.tooltip.set_text(appMenu._label.get_text())
         this.tooltip.show()
       }
-
-      return GLib.SOURCE_REMOVE
     })
   }
 
@@ -203,11 +201,7 @@ class AppmenuButton extends Handlers.Feature {
   }
 
   destroy() {
-    if (this._hoverHandlerID) {
-      GLib.source_remove(this._hoverHandlerID)
-      this._hoverHandlerID = null
-    }
-
+    this.timeouts.removeAll()
     this.signals.disconnectAll()
     this.settings.disconnectAll()
 

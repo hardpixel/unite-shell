@@ -195,6 +195,66 @@ export class Injections {
   }
 }
 
+export class Timeouts {
+  constructor() {
+    this.store = new Map()
+  }
+
+  register(sourceId) {
+    const uid = GLib.uuid_string_random()
+    const key = `[timeout uuid@${uid}]`
+
+    this.store.set(key, sourceId)
+
+    return key
+  }
+
+  idle(callback) {
+    return this.register(
+      GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+        callback.call(null)
+        return GLib.SOURCE_REMOVE
+      })
+    )
+  }
+
+  timeout(time, callback) {
+    return this.register(
+      GLib.timeout_add(GLib.PRIORITY_DEFAULT, time, () => {
+        callback.call(null)
+        return GLib.SOURCE_REMOVE
+      })
+    )
+  }
+
+  interval(time, callback) {
+    return this.register(
+      GLib.timeout_add(GLib.PRIORITY_DEFAULT, time, () => {
+        if (callback.call(null) === false) {
+          return GLib.SOURCE_REMOVE
+        } else {
+          return GLib.SOURCE_CONTINUE
+        }
+      })
+    )
+  }
+
+  remove(key) {
+    if (this.store.has(key)) {
+      const sourceId = this.store.get(key)
+      GLib.source_remove(sourceId)
+
+      this.store.delete(key)
+    }
+  }
+
+  removeAll() {
+    for (const key of this.store.keys()) {
+      this.remove(key)
+    }
+  }
+}
+
 export class Feature {
   constructor(setting, callback) {
     this._settingsKey = setting

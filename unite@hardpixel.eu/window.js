@@ -1,4 +1,3 @@
-import GLib from 'gi://GLib'
 import GObject from 'gi://GObject'
 import Shell from 'gi://Shell'
 import Meta from 'gi://Meta'
@@ -310,6 +309,7 @@ export const WindowManager = GObject.registerClass(
       this.windows  = new Map()
       this.signals  = new Handlers.Signals()
       this.settings = new Handlers.Settings()
+      this.timeouts = new Handlers.Timeouts()
       this.styles   = new Handlers.Styles()
 
       this.signals.connect(
@@ -420,11 +420,9 @@ export const WindowManager = GObject.registerClass(
     }
 
     activate() {
-      GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+      this.timeouts.idle(() => {
         const actors = global.get_window_actors()
         actors.forEach(actor => this._onMapWindow(null, actor))
-
-        return GLib.SOURCE_REMOVE
       })
 
       this._onFocusWindow(global.display)
@@ -432,6 +430,7 @@ export const WindowManager = GObject.registerClass(
     }
 
     destroy() {
+      this.timeouts.removeAll()
       this.signals.disconnectAll()
       this.settings.disconnectAll()
       this.styles.removeAll()
