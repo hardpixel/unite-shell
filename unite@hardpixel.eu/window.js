@@ -381,15 +381,27 @@ export const WindowManager = GObject.registerClass(
       }
     }
 
-    _onMapWindow(shellwm, { meta_window }) {
+    registerWindow(meta_window) {
       if (isValid(meta_window)) {
         this.setWindow(meta_window)
       }
     }
 
+    registerActor({ meta_window }) {
+      this.registerWindow(meta_window)
+    }
+
+    _onMapWindow(shellwm, actor) {
+      this.registerActor(actor)
+    }
+
     _onWindowEntered(display, index, meta_window) {
-      if (isValid(meta_window)) {
-        this.setWindow(meta_window)
+      const meta = this.getWindow(meta_window)
+
+      if (meta) {
+        meta.syncComponents()
+      } else {
+        this.registerWindow(meta_window)
       }
     }
 
@@ -422,7 +434,7 @@ export const WindowManager = GObject.registerClass(
     activate() {
       this.timeouts.idle(() => {
         const actors = global.get_window_actors()
-        actors.forEach(actor => this._onMapWindow(null, actor))
+        actors.forEach(actor => this.registerActor(actor))
       })
 
       this._onFocusWindow(global.display)
