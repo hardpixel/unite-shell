@@ -99,43 +99,26 @@ class AppmenuButton extends Handlers.Feature {
   }
 
   _onAppStateChanged(appSys, app) {
-    const state = app.state
-
-    if (state != Shell.AppState.STARTING) {
-      this.starting = this.starting.filter(item => item != app)
-    } else if (state == Shell.AppState.STARTING) {
+    if (app.state == Shell.AppState.STARTING) {
       this.starting.push(app)
+    } else {
+      this.starting = this.starting.filter(item => item !== app)
     }
-    // For now just resync on all running state changes; this is mainly to handle
-    // cases where the focused window's application changes without the focus
-    // changing. An example case is how we map OpenOffice.org based on the window
-    // title which is a dynamic property.
+
     this._syncState()
   }
 
   _onFocusAppChanged() {
-    if (!WinTracker.focus_app) {
-      // If the app has just lost focus to the panel, pretend
-      // nothing happened; otherwise you can't keynav to the app menu.
-      if (global.stage.key_focus != null) return
+    if (global.stage.key_focus == null) {
+      this._syncState()
     }
-
-    this._syncState()
   }
 
   _findTargetApp() {
-    const focused   = WinTracker.focus_app
+    const focusApps = [WinTracker.focus_app].concat(this.starting)
     const workspace = global.workspace_manager.get_active_workspace()
 
-    if (focused && focused.is_on_workspace(workspace))
-      return focused
-
-    for (let i = 0; i < this.starting.length; i++) {
-      if (this.starting[i].is_on_workspace(workspace))
-        return this.starting[i]
-    }
-
-    return null
+    return focusApps.find(app => app && app.is_on_workspace(workspace))
   }
 
   _syncState() {
@@ -366,11 +349,9 @@ class WindowButtons extends Handlers.Feature {
   }
 
   _onFocusAppChanged() {
-    if (!WinTracker.focus_app) {
-      if (global.stage.key_focus != null) return
+    if (global.stage.key_focus == null) {
+      this._syncVisible()
     }
-
-    this._syncVisible()
   }
 
   _syncVisible() {
@@ -603,38 +584,26 @@ class DesktopName extends Handlers.Feature {
   }
 
   _onAppStateChanged(appSys, app) {
-    const state = app.state
-
-    if (state != Shell.AppState.STARTING) {
-      this.starting = this.starting.filter(item => item != app)
-    } else if (state == Shell.AppState.STARTING) {
+    if (app.state == Shell.AppState.STARTING) {
       this.starting.push(app)
+    } else {
+      this.starting = this.starting.filter(item => item != app)
     }
 
     this._syncVisible()
   }
 
   _onFocusAppChanged() {
-    if (!WinTracker.focus_app) {
-      if (global.stage.key_focus != null) return
+    if (global.stage.key_focus == null) {
+      this._syncVisible()
     }
-
-    this._syncVisible()
   }
 
   _findFocusedApp() {
-    const focused   = WinTracker.focus_app
+    const focusApps = [WinTracker.focus_app].concat(this.starting)
     const workspace = global.workspace_manager.get_active_workspace()
 
-    if (focused && focused.is_on_workspace(workspace))
-      return focused
-
-    for (let i = 0; i < this.starting.length; i++) {
-      if (this.starting[i].is_on_workspace(workspace))
-        return this.starting[i]
-    }
-
-    return null
+    return focusApps.find(app => app && app.is_on_workspace(workspace))
   }
 
   _syncVisible() {
