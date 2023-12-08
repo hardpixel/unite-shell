@@ -25,9 +25,7 @@ class AppmenuButton extends Handlers.Feature {
     this.timeouts = new Handlers.Timeouts()
     this.button   = new Buttons.AppmenuLabel()
     this.tooltip  = new St.Label({ visible: false, style_class: 'dash-label' })
-
     this.focused  = null
-    this.starting = []
 
     this.signals.connect(
       Main.overview, 'showing', this._syncState.bind(this)
@@ -38,7 +36,7 @@ class AppmenuButton extends Handlers.Feature {
     )
 
     this.signals.connect(
-      AppSystem, 'app-state-changed', this._onAppStateChanged.bind(this)
+      AppSystem, 'app-state-changed', this._syncState.bind(this)
     )
 
     this.signals.connect(
@@ -98,32 +96,15 @@ class AppmenuButton extends Handlers.Feature {
     this.button._label.get_clutter_text().set_ellipsize(Pango.EllipsizeMode[type])
   }
 
-  _onAppStateChanged(appSys, app) {
-    if (app.state == Shell.AppState.STARTING) {
-      this.starting.push(app)
-    } else {
-      this.starting = this.starting.filter(item => item !== app)
-    }
-
-    this._syncState()
-  }
-
   _onFocusAppChanged() {
     if (global.stage.key_focus == null) {
       this._syncState()
     }
   }
 
-  _findTargetApp() {
-    const focusApps = [WinTracker.focus_app].concat(this.starting)
-    const workspace = global.workspace_manager.get_active_workspace()
-
-    return focusApps.find(app => app && app.is_on_workspace(workspace))
-  }
-
   _syncState() {
     const astates = Shell.AppState.STARTING
-    const focused = this._findTargetApp()
+    const focused = global.unite.focusApp
     const visible = focused != null && !Main.overview.visibleTarget
     const loading = focused != null && (focused.get_state() == astates || focused.get_busy())
 
@@ -356,7 +337,7 @@ class WindowButtons extends Handlers.Feature {
 
   _syncVisible() {
     const overview = Main.overview.visibleTarget
-    const focusApp = WinTracker.focus_app
+    const focusApp = global.unite.focusApp
 
     if (!overview && focusApp && focusApp.state == Shell.AppState.RUNNING) {
       const win = global.unite.focusWindow
@@ -476,7 +457,7 @@ class ActivitiesButton extends Handlers.Feature {
     )
 
     this.signals.connect(
-      WinTracker, 'notify::focus-app', this._syncVisible.bind(this)
+      WinTracker, 'notify::focus-app', this._onFocusAppChanged.bind(this)
     )
 
     this.settings.connect(
@@ -494,10 +475,16 @@ class ActivitiesButton extends Handlers.Feature {
     return this.settings.get('show-desktop-name')
   }
 
+  _onFocusAppChanged() {
+    if (global.stage.key_focus == null) {
+      this._syncVisible()
+    }
+  }
+
   _syncVisible() {
     const button   = Activities.container
     const overview = Main.overview.visibleTarget
-    const focusApp = WinTracker.focus_app
+    const focusApp = global.unite.focusApp
 
     if (this.hideButton == 'always') {
       return button.hide()
@@ -553,7 +540,6 @@ class DesktopName extends Handlers.Feature {
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
     this.label    = new Buttons.DesktopLabel()
-    this.starting = []
 
     this.signals.connect(
       Main.overview, 'showing', this._syncVisible.bind(this)
@@ -564,7 +550,7 @@ class DesktopName extends Handlers.Feature {
     )
 
     this.signals.connect(
-      AppSystem, 'app-state-changed', this._onAppStateChanged.bind(this)
+      AppSystem, 'app-state-changed', this._syncVisible.bind(this)
     )
 
     this.signals.connect(
@@ -583,32 +569,15 @@ class DesktopName extends Handlers.Feature {
     this._syncVisible()
   }
 
-  _onAppStateChanged(appSys, app) {
-    if (app.state == Shell.AppState.STARTING) {
-      this.starting.push(app)
-    } else {
-      this.starting = this.starting.filter(item => item != app)
-    }
-
-    this._syncVisible()
-  }
-
   _onFocusAppChanged() {
     if (global.stage.key_focus == null) {
       this._syncVisible()
     }
   }
 
-  _findFocusedApp() {
-    const focusApps = [WinTracker.focus_app].concat(this.starting)
-    const workspace = global.workspace_manager.get_active_workspace()
-
-    return focusApps.find(app => app && app.is_on_workspace(workspace))
-  }
-
   _syncVisible() {
     const overview = Main.overview.visibleTarget
-    const focusApp = this._findFocusedApp()
+    const focusApp = global.unite.focusApp
 
     this.label.setVisible(!overview && focusApp == null)
   }

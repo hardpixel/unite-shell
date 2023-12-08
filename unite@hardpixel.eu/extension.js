@@ -9,9 +9,9 @@ export default class UniteExtension extends Extension {
   enable() {
     global.unite = this
 
+    this.windowManager = new WindowManager()
     this.panelManager  = new PanelManager()
     this.layoutManager = new LayoutManager()
-    this.windowManager = new WindowManager()
 
     Handlers.resetGtkStyles()
 
@@ -32,6 +32,10 @@ export default class UniteExtension extends Extension {
     Main.panel.remove_style_class_name('unite-shell')
 
     global.unite = null
+  }
+
+  get focusApp() {
+    return this.windowManager.focusApp
   }
 
   get focusWindow() {

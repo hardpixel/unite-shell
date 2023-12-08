@@ -17,6 +17,7 @@ const MOTIF_HINTS = '_MOTIF_WM_HINTS'
 const _SHOW_FLAGS = ['0x2', '0x0', '0x1', '0x0', '0x0']
 const _HIDE_FLAGS = ['0x2', '0x0', '0x2', '0x0', '0x0']
 
+const AppSystem   = Shell.AppSystem.get_default()
 const WinTracker  = Shell.WindowTracker.get_default()
 
 function isValid(win) {
@@ -312,6 +313,9 @@ export const WindowManager = GObject.registerClass(
       this.timeouts = new Handlers.Timeouts()
       this.styles   = new Handlers.Styles()
 
+      this._focusWindow  = null
+      this._startingApps = []
+
       this.signals.connect(
         global.window_manager, 'map', this._onMapWindow.bind(this)
       )
@@ -328,6 +332,10 @@ export const WindowManager = GObject.registerClass(
         global.display, 'window-demands-attention', this._onAttention.bind(this)
       )
 
+      this.signals.connect(
+        AppSystem, 'app-state-changed', this._onAppStateChanged.bind(this)
+      )
+
       this.settings.connect(
         'hide-window-titlebars', this._onStylesChange.bind(this)
       )
@@ -335,6 +343,13 @@ export const WindowManager = GObject.registerClass(
       this.settings.connect(
         'button-layout', this._onStylesChange.bind(this)
       )
+    }
+
+    get focusApp() {
+      const focusApps = [WinTracker.focus_app].concat(this._startingApps)
+      const workspace = global.workspace_manager.get_active_workspace()
+
+      return focusApps.find(app => app && app.is_on_workspace(workspace))
     }
 
     get focusWindow() {
@@ -413,6 +428,14 @@ export const WindowManager = GObject.registerClass(
       }
     }
 
+    _onAppStateChanged(appSys, app) {
+      if (app.state == Shell.AppState.STARTING) {
+        this._startingApps.push(app)
+      } else {
+        this._startingApps = this._startingApps.filter(item => item !== app)
+      }
+    }
+
     _onAttention(actor, win) {
       const auto = this.settings.get('autofocus-windows')
       const time = global.get_current_time()
@@ -442,6 +465,9 @@ export const WindowManager = GObject.registerClass(
     }
 
     destroy() {
+      this._focusWindow  = null
+      this._startingApps = []
+
       this.timeouts.removeAll()
       this.signals.disconnectAll()
       this.settings.disconnectAll()
