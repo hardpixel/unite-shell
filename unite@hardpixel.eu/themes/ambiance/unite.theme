@@ -1,8 +1,11 @@
 [Theme]
 Name=Ambiance
+IconScaleWorkaround=true
 
 [Dark]
 Style=stylesheet.css
+IconsPath=/
 
 [Light]
 Style=stylesheet.css
+IconsPath=/

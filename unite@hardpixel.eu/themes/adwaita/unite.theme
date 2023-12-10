@@ -1,8 +1,11 @@
 [Theme]
 Name=Adwaita
+IconScaleWorkaround=true
 
 [Dark]
 Style=dark/stylesheet.css
+IconsPath=dark/
 
 [Light]
 Style=light/stylesheet.css
+IconsPath=light/
