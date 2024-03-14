@@ -1,5 +1,26 @@
 # Changelog
 
+## [v78](https://github.com/hardpixel/unite-shell/tree/v78) (2024-03-14)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v77...v78)
+
+**Fixed bugs:**
+
+- GNOME 45 + unite-shell 77 crash [\#360](https://github.com/hardpixel/unite-shell/issues/360)
+- Incompatible with Ubuntu 23.10 [\#359](https://github.com/hardpixel/unite-shell/issues/359)
+- Unite doesn't show up among extensions [\#354](https://github.com/hardpixel/unite-shell/issues/354)
+
+**Closed issues:**
+
+- Title Bars not properly hidden on Wayland in winit apps [\#358](https://github.com/hardpixel/unite-shell/issues/358)
+- Update GNOME extensions page to gnome 45 [\#352](https://github.com/hardpixel/unite-shell/issues/352)
+- \[BUG\] Top bar window buttons scaling broken upon switching display/scale [\#350](https://github.com/hardpixel/unite-shell/issues/350)
+- Add themes [\#336](https://github.com/hardpixel/unite-shell/issues/336)
+
+**Merged pull requests:**
+
+- Add feature/bug labels to new templated issues [\#351](https://github.com/hardpixel/unite-shell/pull/351) ([42Willow](https://github.com/42Willow))
+
 ## [v77](https://github.com/hardpixel/unite-shell/tree/v77) (2023-10-24)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v76...v77)
