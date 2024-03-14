@@ -12,7 +12,7 @@ export const AppmenuLabel = GObject.registerClass(
       super._init(0.0, null, true)
 
       const bin = new St.Bin({ name: 'appMenu' })
-      this.add_actor(bin)
+      this.add_child(bin)
 
       this.bind_property('reactive', this, 'can-focus', 0)
       this.reactive = false
@@ -26,13 +26,13 @@ export const AppmenuLabel = GObject.registerClass(
 
       this._iconBox = new St.Bin({ style_class: 'app-menu-icon', y_align: Clutter.ActorAlign.CENTER })
       this._iconBox.set_child(this._icon)
-      this._container.add_actor(this._iconBox)
+      this._container.add_child(this._iconBox)
 
       this._label = new St.Label({ y_align: Clutter.ActorAlign.CENTER })
-      this._container.add_actor(this._label)
+      this._container.add_child(this._label)
 
       this._spinner = new Animation.Spinner(16, { animate: true, hideOnStop: true })
-      this._container.add_actor(this._spinner)
+      this._container.add_child(this._spinner)
 
       const menu = new AppMenu(this)
       this.setMenu(menu)
@@ -106,7 +106,7 @@ export const DesktopLabel = GObject.registerClass(
       super._init(0.0, null, true)
 
       this._label = new St.Label({ y_align: Clutter.ActorAlign.CENTER })
-      this.add_actor(this._label)
+      this.add_child(this._label)
 
       this.reactive = false
       this.label_actor = this._label
@@ -194,7 +194,7 @@ export const WindowControls = GObject.registerClass(
       const btn = new St.Button({ track_hover: true })
 
       btn.add_style_class_name(`window-button ${action}`)
-      btn.add_actor(bin)
+      btn.set_child(bin)
 
       btn.connect('clicked', () => {
         const target = global.unite.focusWindow

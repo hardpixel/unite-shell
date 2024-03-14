@@ -519,11 +519,11 @@ class ActivitiesText extends Handlers.Feature {
     this.switcher = Activities.get_first_child()
     Activities.remove_child(this.switcher)
 
-    Activities.add_actor(this.label)
+    Activities.add_child(this.label)
   }
 
   destroy() {
-    Activities.remove_actor(this.label)
+    Activities.remove_child(this.label)
     this.label.destroy()
 
     Activities.add_child(this.switcher)
