@@ -317,7 +317,7 @@ export const WindowManager = GObject.registerClass(
       this._startingApps = []
 
       this.signals.connect(
-        global.window_manager, 'map', this._onMapWindow.bind(this)
+        global.display, 'window-created', this._onWindowCreated.bind(this)
       )
 
       this.signals.connect(
@@ -406,8 +406,8 @@ export const WindowManager = GObject.registerClass(
       this.registerWindow(meta_window)
     }
 
-    _onMapWindow(shellwm, actor) {
-      this.registerActor(actor)
+    _onWindowCreated(display, meta_window) {
+      this.registerWindow(meta_window)
     }
 
     _onWindowEntered(display, index, meta_window) {
