@@ -97,9 +97,12 @@ class AppmenuButton extends Handlers.Feature {
   }
 
   _onFocusAppChanged() {
-    if (global.stage.key_focus == null) {
-      this._syncState()
+    if (!WinTracker.focus_app) {
+      if (global.stage.key_focus != null)
+        return
     }
+
+    this._syncState()
   }
 
   _syncState() {
