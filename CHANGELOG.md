@@ -1,5 +1,20 @@
 # Changelog
 
+## [v79](https://github.com/hardpixel/unite-shell/tree/v79) (2024-07-27)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v78...v79)
+
+**Fixed bugs:**
+
+- App icon in top panel not updated when switching windows with Alt+Tab [\#364](https://github.com/hardpixel/unite-shell/issues/364)
+
+**Closed issues:**
+
+- Fedora40 Gnome 46 Unite-shell fails \(no left sidebar\) [\#370](https://github.com/hardpixel/unite-shell/issues/370)
+- Gnome 46 wayland does not hide tittle bar [\#366](https://github.com/hardpixel/unite-shell/issues/366)
+- Doesn't work on Gnome 46.1 [\#365](https://github.com/hardpixel/unite-shell/issues/365)
+- Support for GNOME 46 [\#362](https://github.com/hardpixel/unite-shell/issues/362)
+
 ## [v78](https://github.com/hardpixel/unite-shell/tree/v78) (2024-03-14)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v77...v78)
