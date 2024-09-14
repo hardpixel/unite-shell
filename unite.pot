@@ -3,194 +3,173 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR galen1423 <gnu.linux@zaclys.net>, 2020.
 #
-msgid ""
-msgstr ""
 "Project-Id-Version: Unite Shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-16 03:07+0300\n"
+"POT-Creation-Date: 2024-07-30 10:03+0300\n"
 "PO-Revision-Date: 2020-04-30 18:36+0200\n"
+"Last-Translator: \n"
 "Language-Team: \n"
+"Language: en_EN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
-"Last-Translator: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"Language: en_EN\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Poedit-Basepath: unite@hardpixel.eu\n"
 "X-Poedit-SearchPath-0: settings.ui\n"
-"X-Poedit-SearchPath-1: overrides/settings.ui\n"
 
-#: overrides/settings.ui:38 settings.ui:32
-msgid "Extend top bar left box"
-msgstr ""
-
-#: overrides/settings.ui:78 settings.ui:52
-msgid "Auto focus new windows"
-msgstr ""
-
-#: overrides/settings.ui:118 settings.ui:72
-msgid "Show system tray in top bar"
-msgstr ""
-
-#: overrides/settings.ui:158 settings.ui:92
-msgid "Show desktop name in top bar"
-msgstr ""
-
-#: overrides/settings.ui:198 settings.ui:112
-msgid "Enable titlebar actions on top bar click"
-msgstr ""
-
-#: overrides/settings.ui:238 settings.ui:132
-msgid "Restrict functionalities to the primary screen"
-msgstr ""
-
-#: overrides/settings.ui:278 settings.ui:152
-msgid "Hide activities button"
-msgstr ""
-
-#: overrides/settings.ui:294 overrides/settings.ui:339
-#: overrides/settings.ui:386 overrides/settings.ui:433 settings.ui:162
-#: settings.ui:187 settings.ui:214 settings.ui:241
-msgid "Never"
-msgstr ""
-
-#: overrides/settings.ui:295 overrides/settings.ui:949
-#: overrides/settings.ui:996 settings.ui:163 settings.ui:521 settings.ui:548
-msgid "Auto"
-msgstr ""
-
-#: overrides/settings.ui:296 overrides/settings.ui:343
-#: overrides/settings.ui:390 overrides/settings.ui:437 settings.ui:164
-#: settings.ui:191 settings.ui:218 settings.ui:245
-msgid "Always"
-msgstr ""
-
-#: overrides/settings.ui:323 settings.ui:177
-msgid "Hide window titlebars"
-msgstr ""
-
-#: overrides/settings.ui:340 overrides/settings.ui:387
-#: overrides/settings.ui:434 settings.ui:188 settings.ui:215 settings.ui:242
-msgid "Tiled"
-msgstr ""
-
-#: overrides/settings.ui:341 overrides/settings.ui:388
-#: overrides/settings.ui:435 settings.ui:189 settings.ui:216 settings.ui:243
-msgid "Maximized"
-msgstr ""
-
-#: overrides/settings.ui:342 overrides/settings.ui:389
-#: overrides/settings.ui:436 settings.ui:190 settings.ui:217 settings.ui:244
-msgid "Both"
-msgstr ""
-
-#: overrides/settings.ui:370 settings.ui:204
-msgid "Show window title in app menu"
-msgstr ""
-
-#: overrides/settings.ui:417 settings.ui:231
-msgid "Show window buttons in top bar"
-msgstr ""
-
-#: overrides/settings.ui:464 settings.ui:258
-msgid "Notification messages position"
-msgstr ""
-
-#: overrides/settings.ui:480 settings.ui:268
-msgid "Center"
-msgstr ""
-
-#: overrides/settings.ui:481 overrides/settings.ui:950 settings.ui:269
-#: settings.ui:522
-msgid "Left"
-msgstr ""
-
-#: overrides/settings.ui:482 overrides/settings.ui:951 settings.ui:270
-#: settings.ui:523
-msgid "Right"
-msgstr ""
-
-#: overrides/settings.ui:506 settings.ui:282
+#: settings.ui:11
 msgid "General"
 msgstr ""
 
-#: overrides/settings.ui:531 settings.ui:307
-msgid "Apply system fonts to shell theme"
+#: settings.ui:32
+msgid "Auto focus new windows"
 msgstr ""
 
-#: overrides/settings.ui:571 settings.ui:327
+#: settings.ui:52
+msgid "Show system tray in top bar"
+msgstr ""
+
+#: settings.ui:72
+msgid "Show appmenu in top bar"
+msgstr ""
+
+#: settings.ui:92
+msgid "Show desktop name in top bar"
+msgstr ""
+
+#: settings.ui:112
+msgid "Enable titlebar actions on top bar click"
+msgstr ""
+
+#: settings.ui:132
+msgid "Restrict functionalities to the primary screen"
+msgstr ""
+
+#: settings.ui:152
+msgid "Hide activities button"
+msgstr ""
+
+#: settings.ui:162 settings.ui:187 settings.ui:214 settings.ui:241
+msgid "Never"
+msgstr ""
+
+#: settings.ui:163 settings.ui:477 settings.ui:504
+msgid "Auto"
+msgstr ""
+
+#: settings.ui:164 settings.ui:191 settings.ui:218 settings.ui:245
+msgid "Always"
+msgstr ""
+
+#: settings.ui:177
+msgid "Hide window titlebars"
+msgstr ""
+
+#: settings.ui:188 settings.ui:215 settings.ui:242
+msgid "Tiled"
+msgstr ""
+
+#: settings.ui:189 settings.ui:216 settings.ui:243
+msgid "Maximized"
+msgstr ""
+
+#: settings.ui:190 settings.ui:217 settings.ui:244
+msgid "Both"
+msgstr ""
+
+#: settings.ui:204
+msgid "Show window title in app menu"
+msgstr ""
+
+#: settings.ui:231
+msgid "Show window buttons in top bar"
+msgstr ""
+
+#: settings.ui:258
+msgid "Notification messages position"
+msgstr ""
+
+#: settings.ui:268
+msgid "Center"
+msgstr ""
+
+#: settings.ui:269 settings.ui:478
+msgid "Left"
+msgstr ""
+
+#: settings.ui:270 settings.ui:479
+msgid "Right"
+msgstr ""
+
+#: settings.ui:283
+msgid "Appearance"
+msgstr ""
+
+#: settings.ui:304
+msgid "Extend top bar left box"
+msgstr ""
+
+#: settings.ui:324
+msgid "Use text in activities button"
+msgstr ""
+
+#: settings.ui:344
 msgid "Convert tray icons to greyscale"
 msgstr ""
 
-#: overrides/settings.ui:610 settings.ui:346
-msgid "Hide top bar dropdown arrows"
-msgstr ""
-
-#: overrides/settings.ui:650 settings.ui:367
-msgid "Hide aggregate menu dropdown arrow"
-msgstr ""
-
-#: overrides/settings.ui:689 settings.ui:387
-msgid "Hide app menu dropdown arrow"
-msgstr ""
-
-#: overrides/settings.ui:729 settings.ui:407
+#: settings.ui:363
 msgid "Hide app menu application icon"
 msgstr ""
 
-#: overrides/settings.ui:769 settings.ui:427
+#: settings.ui:383
 msgid "Reduce top bar items spacing"
 msgstr ""
 
-#: overrides/settings.ui:809 settings.ui:447
+#: settings.ui:403
 msgid "Top bar desktop name text"
 msgstr ""
 
-#: overrides/settings.ui:823 settings.ui:455
+#: settings.ui:411
 msgid "GNOME Desktop"
 msgstr ""
 
-#: overrides/settings.ui:848 settings.ui:466
+#: settings.ui:422
 msgid "Max width for the app menu"
 msgstr ""
 
-#: overrides/settings.ui:888 settings.ui:486
+#: settings.ui:442
 msgid "Ellipsis mode for app menu"
 msgstr ""
 
-#: overrides/settings.ui:904 settings.ui:496
+#: settings.ui:452
 msgid "Start"
 msgstr ""
 
-#: overrides/settings.ui:905 settings.ui:497
+#: settings.ui:453
 msgid "Middle"
 msgstr ""
 
-#: overrides/settings.ui:906 settings.ui:498
+#: settings.ui:454
 msgid "End"
 msgstr ""
 
-#: overrides/settings.ui:933 settings.ui:511
+#: settings.ui:467
 msgid "Top bar window buttons position"
 msgstr ""
 
-#: overrides/settings.ui:952 settings.ui:524
+#: settings.ui:480
 msgid "First"
 msgstr ""
 
-#: overrides/settings.ui:953 settings.ui:525
+#: settings.ui:481
 msgid "Last"
 msgstr ""
 
-#: overrides/settings.ui:980 settings.ui:538
+#: settings.ui:494
 msgid "Top bar window buttons theme"
 msgstr ""
 
-#: overrides/settings.ui:997 settings.ui:549
+#: settings.ui:505
 msgid "Default"
-msgstr ""
-
-#: overrides/settings.ui:1021 settings.ui:561
-msgid "Appearance"
 msgstr ""
