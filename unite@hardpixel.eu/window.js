@@ -148,7 +148,15 @@ const MetaWindow = GObject.registerClass(
     }
 
     get clientDecorated() {
-      return this.win.is_client_decorated()
+      if (this.win.is_client_decorated) {
+        return this.win.is_client_decorated()
+      }
+
+      if (this.win.get_client_type() == Meta.WindowClientType.WAYLAND) {
+        return true
+      }
+
+      return false
     }
 
     get primaryScreen() {
