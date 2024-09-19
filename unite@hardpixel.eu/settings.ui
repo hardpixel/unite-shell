@@ -227,7 +227,7 @@
       </object>
     </child>
   </object>
-  <object class="AdwPreferencesPage" id="appearance_page">
+  <object class="AdwPreferencesPage" id="windows_page">
     <property name="name">appearance-page</property>
     <property name="title" translatable="yes">Windows</property>
     <property name="icon-name">emblem-photos-symbolic</property>

@@ -90,7 +90,7 @@ export default class UnitePreferences extends ExtensionPreferences {
     const widget = new UnitePreferencesWidget()
 
     window.add(widget._getWidget('general_page'))
-    window.add(widget._getWidget('appearance_page'))
+    window.add(widget._getWidget('windows_page'))
 
     window.set_default_size(620, 660)
   }
