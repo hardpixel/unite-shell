@@ -1,5 +1,4 @@
 # Unite Shell
-
 Unite is a GNOME Shell extension which makes a few layout tweaks to the top panel and removes window decorations to make it look like Ubuntu Unity Shell.
 
 * Adds window buttons to the top panel for maximized windows.
@@ -31,12 +30,14 @@ Before installing the extension, make sure you have installed `xprop`.
 | Fedora Silverblue |xprop | `rpm-ostree install xprop` |
 | Arch Linux, Manjaro, EndeavourOS |xorg-xprop | `pacman -S xorg-xprop` |
 
-Then install the latest version using the commands below. To get notifications for new [releases](https://github.com/hardpixel/unite-shell/releases) you can watch this repository.
+Then install the latest version using the commands below.
 
 ```bash
 wget https://github.com/hardpixel/unite-shell/releases/download/v79/unite-v79.zip
 gnome-extensions install unite-v79.zip
 ```
+
+To get notifications for new [releases](https://github.com/hardpixel/unite-shell/releases) you can watch this repository.
 
 For the complete Ubuntu Unity layout, you can combine it with [Dash to Dock](https://github.com/micheleg/dash-to-dock) extension and [Gnome HUD](https://github.com/hardpixel/gnome-hud) menu.
 
