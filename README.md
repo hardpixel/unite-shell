@@ -1,5 +1,5 @@
 # Unite Shell
-[<img src="https://raw.githubusercontent.com/andyholmes/gnome-shell-extensions-badge/master/get-it-on-ego.svg?sanitize=true" height="100" align="right">](https://extensions.gnome.org/extension/1287/unite/)
+
 Unite is a GNOME Shell extension which makes a few layout tweaks to the top panel and removes window decorations to make it look like Ubuntu Unity Shell.
 
 * Adds window buttons to the top panel for maximized windows.
@@ -9,7 +9,7 @@ Unite is a GNOME Shell extension which makes a few layout tweaks to the top pane
 * Moves the date to the right, fixes icons spacing and removes dropdown arrows.
 * Moves legacy tray icons to the top panel.
 * Moves notifications to the right.
-* Hides activities button.
+* Hides activities button / workspace switcher.
 * Adds desktop name to the top panel.
 
 ### Screenshots
@@ -17,25 +17,31 @@ Unite running with the default options.
 
 ![Screenshot](https://raw.githubusercontent.com/hardpixel/unite-shell/master/screenshot.png)
 
-Settings window available in gnome-tweaks.
+Settings window available in gnome extensions application.
 
 ![Settings](https://raw.githubusercontent.com/hardpixel/unite-shell/master/settings.png)
 
-### Wayland
-Since version `2` applications on wayland with client side decorations are supported using CSS.
+## Installation
+Before installing the extension, make sure you have installed `xprop`.
 
-## Install
-Make sure you have installed `xorg-xprop`:
+| Distribution | Package Name | Install Command |
+| ------------ | ------------ | --------------- |
+| Debian, Ubuntu |x11-utils | `apt install x11-utils` |
+| Fedora, RHEL | xprop| `dnf install xprop` |
+| Fedora Silverblue |xprop | `rpm-ostree install xprop` |
+| Arch Linux, Manjaro, EndeavourOS |xorg-xprop | `pacman -S xorg-xprop` |
 
-* Debian/Ubuntu: `apt install x11-utils`
-* Fedora/RHEL: `dnf install xprop`
-* Fedora Silverblue: `rpm-ostree install xprop`
-* Arch: `pacman -S xorg-xprop`
+Then install the latest version using the commands below. To get notifications for new [releases](https://github.com/hardpixel/unite-shell/releases) you can watch this repository.
 
-Then, download the latest [release](https://github.com/hardpixel/unite-shell/releases) and extract it into `~/.local/share/gnome-shell/extensions`. To get the complete Ubuntu Unity layout, you can combine it with [Dash to Dock](https://github.com/micheleg/dash-to-dock) or [Dash to Plank](https://github.com/hardpixel/dash-to-plank) extension and [Gnome HUD](https://github.com/hardpixel/gnome-hud) menu.
+```bash
+wget https://github.com/hardpixel/unite-shell/releases/download/v79/unite-v79.zip
+gnome-extensions install unite-v79.zip
+```
+
+For the complete Ubuntu Unity layout, you can combine it with [Dash to Dock](https://github.com/micheleg/dash-to-dock) extension and [Gnome HUD](https://github.com/hardpixel/gnome-hud) menu.
 
 ### Gnome Shell Extensions
-The easiest way to install this extension is via the official [Gnome Shell Extensions](https://extensions.gnome.org) resource page [here](https://extensions.gnome.org/extension/1287/unite).
+For Gnome versions up to 44 you can install the extension from the official extensions resource page [here](https://extensions.gnome.org/extension/1287/unite).
 
 ### Packages
 Arch Linux: [AUR package](https://aur.archlinux.org/packages/gnome-shell-extension-unite)
