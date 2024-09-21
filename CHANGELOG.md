@@ -1,5 +1,17 @@
 # Changelog
 
+## [v80](https://github.com/hardpixel/unite-shell/tree/v80) (2024-09-21)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v79...v80)
+
+**Closed issues:**
+
+- Keep the new « workspace switcher » which now replaces the « activities » button ? [\#363](https://github.com/hardpixel/unite-shell/issues/363)
+
+**Merged pull requests:**
+
+- Libadwaita settings [\#376](https://github.com/hardpixel/unite-shell/pull/376) ([jonian](https://github.com/jonian))
+
 ## [v79](https://github.com/hardpixel/unite-shell/tree/v79) (2024-07-27)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v78...v79)
