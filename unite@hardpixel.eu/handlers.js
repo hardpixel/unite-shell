@@ -50,8 +50,10 @@ function getGioFile(path) {
 
 function getFileContents(path) {
   if (fileExists(path)) {
+    const decoder  = new TextDecoder('utf-8')
     const contents = GLib.file_get_contents(path)
-    return String.fromCharCode(...contents[1])
+
+    return decoder.decode(contents[1])
   } else {
     return ''
   }
