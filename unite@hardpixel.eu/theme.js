@@ -27,7 +27,7 @@ export class WindowControlsTheme {
   constructor(uuid, path) {
     this.uuid = uuid
     this.keys = new GLib.KeyFile()
-    this._gicons = null;
+    this._gicons = null
 
     try {
       const theme = GLib.build_filenamev([path, 'unite.theme'])

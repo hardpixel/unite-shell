@@ -178,7 +178,7 @@ export const TrayIndicator = GObject.registerClass(
 
 export const WindowControls = GObject.registerClass(
   class UniteWindowControls extends PanelMenu.Button {
-    _init(params) {
+    _init() {
       super._init(0.0, null, true)
 
       this._controls = new St.BoxLayout({ style_class: 'window-controls-box' })
@@ -186,18 +186,17 @@ export const WindowControls = GObject.registerClass(
 
       this.add_style_class_name('window-controls')
       this.remove_style_class_name('panel-button')
-      this._iconScaleWorkaround = params.iconScaleWorkaround
-      this._actionIcons = params.actionIcons
     }
 
     setControlThemeParams(params) {
       this._actionIcons = params.actionIcons
+      this._iconScaleWorkaround = params.iconScaleWorkaround
     }
 
     _addButton(action) {
       const pos = Clutter.ActorAlign.CENTER
-      const btn = new St.Button({track_hover: true})
       const bin = new St.Bin({ style_class: 'icon', x_align: pos, y_align: pos })
+      const btn = new St.Button({ track_hover: true })
 
       if (this._iconScaleWorkaround) {
         // A workaround for multi-scaling setups https://github.com/hardpixel/unite-shell/issues/106

@@ -186,13 +186,10 @@ class WindowButtons extends Handlers.Feature {
     this.signals  = new Handlers.Signals()
     this.settings = new Handlers.Settings()
     this.styles   = new Handlers.Styles()
+    this.controls = new Buttons.WindowControls()
     this.themes   = new Theme.WindowControlsThemes()
     this.theme    = this.themes.default
     this.isDark   = true
-    this.controls = new Buttons.WindowControls({
-      iconScaleWorkaround: this.iconScaleWorkaround,
-      actionIcons: this.theme.getActionIcons(this.isDark)
-    })
 
     this.signals.connect(
       Main.overview, 'showing', this._syncVisible.bind(this)
@@ -224,6 +221,10 @@ class WindowButtons extends Handlers.Feature {
 
     this.settings.connect(
       'gtk-theme', this._onAutoThemeChange.bind(this)
+    )
+
+    this.settings.connect(
+      'icon-scale-workaround', this._updateIconScaleWorkaround.bind(this, true)
     )
 
     Main.panel.addToStatusArea(
@@ -315,24 +316,18 @@ class WindowButtons extends Handlers.Feature {
   }
 
   _onThemeChange() {
-    const newTheme = this.themes.locate(this.themeName, this.gtkTheme)
-    const shouldUpdateTheme = this.theme.uuid !== newTheme.uuid
-
+    const previousThemeUuid = this.theme.uuid
     this.controls.remove_style_class_name(this.theme.uuid)
-    this.theme = newTheme
+
+    this.theme = this.themes.locate(this.themeName, this.gtkTheme)
     this.styles.addShellStyle('windowButtons', this.theme.getStyle(this.isDark))
 
     this.controls.add_style_class_name(this.theme.uuid)
 
     if (this.iconScaleWorkaround) {
-      this.controls.setControlThemeParams({
-        actionIcons: this.theme.getActionIcons(this.isDark),
-      })
-
       // For workaround, we need to re-create elements on theme change
-      if (shouldUpdateTheme) {
-        this._onLayoutChange()
-      }
+      const shouldUpdateTheme = this.theme.uuid !== previousThemeUuid
+      this._updateIconScaleWorkaround(shouldUpdateTheme)
     }
   }
 
@@ -367,6 +362,18 @@ class WindowButtons extends Handlers.Feature {
       this.controls.setVisible(win && win.showButtons)
     } else {
       this.controls.setVisible(false)
+    }
+  }
+
+  _updateIconScaleWorkaround(forceLayoutChange = false) {
+    this.controls.setControlThemeParams({
+      actionIcons: this.theme.getActionIcons(this.isDark),
+      iconScaleWorkaround: this.iconScaleWorkaround,
+    })
+
+
+    if (forceLayoutChange) {
+      this._onLayoutChange()
     }
   }
 
