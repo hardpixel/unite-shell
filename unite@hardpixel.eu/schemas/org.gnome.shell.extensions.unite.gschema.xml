@@ -138,5 +138,10 @@
       <default>"auto"</default>
       <summary>Hide top bar activities button.</summary>
     </key>
+
+    <key name="icon-scale-workaround" type="b">
+      <default>false</default>
+      <summary>Apply HiDPI icon scale workaround.</summary>
+    </key>
   </schema>
 </schemalist>

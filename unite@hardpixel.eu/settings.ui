@@ -385,6 +385,19 @@
             </child>
           </object>
         </child>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">Apply icon scale fix (experimental)</property>
+            <property name="subtitle" translatable="yes">Icons are properly rendered for multiple different display scales</property>
+            <property name="activatable-widget">icon_scale_workaround</property>
+            <child>
+              <object class="GtkSwitch" id="icon_scale_workaround">
+                <property name="valign">center</property>
+                <property name="active">1</property>
+              </object>
+            </child>
+          </object>
+        </child>
       </object>
     </child>
   </object>
