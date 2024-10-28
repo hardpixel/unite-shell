@@ -1,1 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"  fill-rule="evenodd" xmlns:v="https://vecta.io/nano"><path d="M8 14h8v1H8z" fill="#070707"/><path d="M8 15h8v1H8z" fill="#eeeeec"/></svg>
+<svg fill-rule="evenodd" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="12" cy="12" fill="#454545" r="11"/>
+  <path d="m8.0000962 13.999992h8.0000128v1.988281h-8.0000128zm0 0" fill="#fff"/>
+</svg>
