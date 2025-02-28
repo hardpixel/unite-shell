@@ -1,5 +1,32 @@
 # Changelog
 
+## [v81](https://github.com/hardpixel/unite-shell/tree/v81) (2025-02-28)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v80...v81)
+
+**Fixed bugs:**
+
+- Cursor doesn't hide title bar while maxium [\#383](https://github.com/hardpixel/unite-shell/issues/383)
+- RangeError: too many function arguments, getFileContents@handlers.js:54:19 [\#378](https://github.com/hardpixel/unite-shell/issues/378)
+- Unite display scaling issue [\#373](https://github.com/hardpixel/unite-shell/issues/373)
+- \[Bug\] DPI changes and window controls not re-scaling [\#106](https://github.com/hardpixel/unite-shell/issues/106)
+
+**Closed issues:**
+
+- Gnome 48 support? [\#391](https://github.com/hardpixel/unite-shell/issues/391)
+- statement on the gnome extensions release situation [\#390](https://github.com/hardpixel/unite-shell/issues/390)
+-  Support for GNOME 47 [\#375](https://github.com/hardpixel/unite-shell/issues/375)
+- Update Yaru theme icon 24.04 [\#372](https://github.com/hardpixel/unite-shell/issues/372)
+
+**Merged pull requests:**
+
+- Add gnome 48 to supported versions [\#392](https://github.com/hardpixel/unite-shell/pull/392) ([jonian](https://github.com/jonian))
+- Themes: update yaru theme [\#382](https://github.com/hardpixel/unite-shell/pull/382) ([jonian](https://github.com/jonian))
+- Themes: update dracula gtk theme [\#381](https://github.com/hardpixel/unite-shell/pull/381) ([jonian](https://github.com/jonian))
+- Themes: update sweet gtk theme [\#380](https://github.com/hardpixel/unite-shell/pull/380) ([jonian](https://github.com/jonian))
+- Update metadata.json [\#379](https://github.com/hardpixel/unite-shell/pull/379) ([luciofstars](https://github.com/luciofstars))
+- gicon-based buttons to workaround the scaling issue [\#356](https://github.com/hardpixel/unite-shell/pull/356) ([ilya-m32](https://github.com/ilya-m32))
+
 ## [v80](https://github.com/hardpixel/unite-shell/tree/v80) (2024-09-21)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v79...v80)
