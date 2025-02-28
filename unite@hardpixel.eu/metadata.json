@@ -1,5 +1,5 @@
 {
-  "shell-version": ["45", "46", "47"],
+  "shell-version": ["45", "46", "47", "48"],
   "uuid": "unite@hardpixel.eu",
   "url": "https://github.com/hardpixel/unite-shell",
   "settings-schema": "org.gnome.shell.extensions.unite",
