@@ -1,5 +1,21 @@
 # Changelog
 
+## [v82](https://github.com/hardpixel/unite-shell/tree/v82) (2025-03-23)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v81...v82)
+
+**Fixed bugs:**
+
+- App Menu causes Gnome-Shell to crash [\#394](https://github.com/hardpixel/unite-shell/issues/394)
+
+**Closed issues:**
+
+- hide window buttons only when window is active and maximized [\#388](https://github.com/hardpixel/unite-shell/issues/388)
+
+**Merged pull requests:**
+
+- appmenu: subclass animation spinner to avoid gnome shell crash [\#395](https://github.com/hardpixel/unite-shell/pull/395) ([jonian](https://github.com/jonian))
+
 ## [v81](https://github.com/hardpixel/unite-shell/tree/v81) (2025-02-28)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v80...v81)
