@@ -230,7 +230,7 @@
   <object class="AdwPreferencesPage" id="windows_page">
     <property name="name">appearance-page</property>
     <property name="title" translatable="yes">Windows</property>
-    <property name="icon-name">emblem-photos-symbolic</property>
+    <property name="icon-name">image-x-generic-symbolic</property>
     <child>
       <object class="AdwPreferencesGroup">
         <property name="title" translatable="yes">Behavior</property>
