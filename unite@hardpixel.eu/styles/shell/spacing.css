@@ -20,6 +20,10 @@
   spacing: 4px;
 }
 
+#panel .panel-button .panel-status-menu-box {
+  spacing: 8px;
+}
+
 #panel #panelActivities,
 #panel .system-tray-icons,
 #panel .desktop-name-label {
