@@ -31,7 +31,7 @@ export const AppmenuLabel = GObject.registerClass(
       this._label = new St.Label({ y_align: Clutter.ActorAlign.CENTER })
       this._container.add_child(this._label)
 
-      this._spinner = new Animation.Spinner(16, { animate: true, hideOnStop: true })
+      this._spinner = new Animation.Spinner(14, { animate: true, hideOnStop: true })
       this._container.add_child(this._spinner)
 
       const menu = new AppMenu(this)
