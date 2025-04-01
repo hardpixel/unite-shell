@@ -1,0 +1,31 @@
+name: Ego Upload
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  upload-extension:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Deno
+        uses: denolib/setup-deno@v2
+        with:
+          deno-version: 1.x
+
+      - name: Run Ego Upload
+        run: |
+          ZIP_FILE="path/to/your/extension.zip"
+          deno run \
+            --allow-env=EGO_USERNAME,EGO_PASSWORD \
+            --allow-net=extensions.gnome.org \
+            https://raw.githubusercontent.com/swsnr/ego-upload/main/ego-upload.ts \
+            $ZIP_FILE
+        env:
+          EGO_USERNAME: ${{ secrets.EGO_USERNAME }}
+          EGO_PASSWORD: ${{ secrets.EGO_PASSWORD }}
