@@ -1,4 +1,10 @@
 # Changelog
+## [v83](https://github.com/hardpixel/unite-shell/tree/v83) (2025-09-08)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v82...v83)
+
+**Merged pull requests:**
+- Add support for gnome 49 [\#409](https://github.com/hardpixel/unite-shell/pull/409)
 
 ## [v82](https://github.com/hardpixel/unite-shell/tree/v82) (2025-03-23)
 
