@@ -199,6 +199,22 @@ const MetaWindow = GObject.registerClass(
       return this._parseEnumSetting('hide-window-titlebars')
     }
 
+    setMaximizeFlags(flags) {
+      if (this.win.set_maximize_flags) {
+        this.win.set_maximize_flags(flags)
+      } else {
+        this.win.maximize(flags)
+      }
+    }
+
+    setUnmaximizeFlags(flags) {
+      if (this.win.set_unmaximize_flags) {
+        this.win.set_unmaximize_flags(flags)
+      } else {
+        this.win.unmaximize(flags)
+      }
+    }
+
     minimize() {
       if (this.minimized) {
         this.win.unminimize()
@@ -209,25 +225,25 @@ const MetaWindow = GObject.registerClass(
 
     maximize() {
       if (this.maximized) {
-        this.win.unmaximize(Meta.MaximizeFlags.BOTH)
+        this.setUnmaximizeFlags(Meta.MaximizeFlags.BOTH)
       } else {
-        this.win.maximize(Meta.MaximizeFlags.BOTH)
+        this.setMaximizeFlags(Meta.MaximizeFlags.BOTH)
       }
     }
 
     maximizeX() {
       if (this.win.maximized_horizontally) {
-        this.win.unmaximize(Meta.MaximizeFlags.HORIZONTAL)
+        this.setUnmaximizeFlags(Meta.MaximizeFlags.HORIZONTAL)
       } else {
-        this.win.maximize(Meta.MaximizeFlags.HORIZONTAL)
+        this.setMaximizeFlags(Meta.MaximizeFlags.HORIZONTAL)
       }
     }
 
     maximizeY() {
       if (this.win.maximized_vertically) {
-        this.win.unmaximize(Meta.MaximizeFlags.VERTICAL)
+        this.setUnmaximizeFlags(Meta.MaximizeFlags.VERTICAL)
       } else {
-        this.win.maximize(Meta.MaximizeFlags.VERTICAL)
+        this.setMaximizeFlags(Meta.MaximizeFlags.VERTICAL)
       }
     }
 
