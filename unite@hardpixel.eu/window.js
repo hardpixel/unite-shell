@@ -15,7 +15,7 @@ const VALID_TYPES = [
 const MOTIF_HINTS = '_MOTIF_WM_HINTS'
 
 const _SHOW_FLAGS = ['0x2', '0x0', '0x1', '0x0', '0x0']
-const _HIDE_FLAGS = ['0x2', '0x0', '0x2', '0x0', '0x0']
+const _HIDE_FLAGS = ['0x2', '0x0', '0x0', '0x0', '0x0']
 
 const AppSystem   = Shell.AppSystem.get_default()
 const WinTracker  = Shell.WindowTracker.get_default()
@@ -58,14 +58,15 @@ class ServerDecorations {
   constructor({ xid, win }) {
     this.xid = xid
     this.win = win
+    this.hidden_by_us = false
   }
 
   get decorated() {
-    return this.win.get_frame_type() !== Meta.FrameType.BORDER
+    return this.win.decorated
   }
 
   get handle() {
-    return this.win.decorated
+    return this.hidden_by_us
   }
 
   show() {
@@ -75,7 +76,8 @@ class ServerDecorations {
   }
 
   hide() {
-    if (this.handle && this.decorated) {
+    if (this.decorated) {
+      this.hidden_by_us = true
       setHint(this.xid, MOTIF_HINTS, _HIDE_FLAGS)
     }
   }
