@@ -1,4 +1,13 @@
 # Changelog
+
+## [v84](https://github.com/hardpixel/unite-shell/tree/v84) (2025-11-16)
+
+[Full Changelog](https://github.com/hardpixel/unite-shell/compare/v83...v84)
+
+**Fixed bugs:**
+- Ghost labels on screen [\#412](https://github.com/hardpixel/unite-shell/issues/412)
+- App icons are displayed in full colour instead of symbolic in v83 [\#410](https://github.com/hardpixel/unite-shell/issues/410)
+
 ## [v83](https://github.com/hardpixel/unite-shell/tree/v83) (2025-09-08)
 
 [Full Changelog](https://github.com/hardpixel/unite-shell/compare/v82...v83)
