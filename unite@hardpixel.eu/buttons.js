@@ -153,6 +153,7 @@ export const TrayIndicator = GObject.registerClass(
 
       this._indicators.add_child(ibtn)
 
+      ibtn.clear_actions()
       icon.connect('destroy', () => { ibtn.destroy() })
       ibtn.connect('button-release-event', (actor, event) => icon.click(event))
 
