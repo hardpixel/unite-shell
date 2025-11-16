@@ -3,6 +3,10 @@
   -minimum-hpadding: 0px;
 }
 
+#panel .panel-button .app-menu-icon {
+  -st-icon-style: symbolic;
+}
+
 #panel .window-controls-box {
   spacing: 2px;
 }
@@ -24,4 +28,17 @@
   border-radius: 0;
   box-shadow: none;
   border: 0;
+}
+
+#appMenu {
+  spacing: 6px;
+}
+
+#appMenu .label-shadow {
+  color: transparent;
+}
+
+#appMenu .panel-status-menu-box {
+  padding: 0 6px;
+  spacing: 8px;
 }
