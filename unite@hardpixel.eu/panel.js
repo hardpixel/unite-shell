@@ -132,25 +132,22 @@ class AppmenuButton extends Handlers.Feature {
   }
 
   _onAppMenuHover(appMenu) {
-    this.isHovered = appMenu.get_hover()
-
-    if (!this.isHovered || !this.maxWidth) {
+    if (!appMenu.get_hover() || !this.maxWidth) {
       return this.tooltip.hide()
     }
 
     this.timeouts.timeout(400, () => {
-      if (this.isHovered && !this.tooltip.visible) {
+      if (appMenu.get_hover() && !this.tooltip.visible) {
         const [mouseX, mouseY] = global.get_pointer()
 
         this.tooltip.set_position(mouseX + 20, mouseY)
-        this.tooltip.set_text(appMenu._label.get_text())
+        this.tooltip.set_text(this.button._label.get_text())
         this.tooltip.show()
       }
     })
   }
 
   _onAppMenuClicked() {
-    this.isHovered = false
     this.tooltip.hide()
   }
 

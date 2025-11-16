@@ -71,7 +71,10 @@ export const AppmenuLabel = GObject.registerClass(
     }
 
     setVisible(visible) {
-      this.container.visible = visible
+      if (this.container.visible != visible) {
+        this.container.visible = visible
+        this.set_hover(false)
+      }
     }
 
     toggleIcon(hidden) {
