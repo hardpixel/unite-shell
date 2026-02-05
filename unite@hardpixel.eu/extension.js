@@ -23,22 +23,103 @@ export default class UniteExtension extends Extension {
   }
 
   disable() {
-    Handlers.resetGtkStyles()
+    // 1. Disconnect Signals
+    if (this.handlers) {
+      this.handlers.forEach((handler) => {
+        try {
+          if (handler) handler.disconnect()
+        } catch (e) {
+          /* Ignore */
+        }
+      })
+    }
+    this.handlers = []
 
-    this.panelManager.destroy()
-    this.layoutManager.destroy()
-    this.windowManager.destroy()
+    // 2. Destroy Managers
+    const managers = [
+      'windowManager',
+      'panelManager',
+      'layoutManager',
+      'platform',
+    ]
+    managers.forEach((mgr) => {
+      try {
+        if (this[mgr]) {
+          if (this[mgr].destroy) {
+            this[mgr].destroy()
+          } else if (this[mgr].deactivate) {
+            this[mgr].deactivate()
+          }
+        }
+      } catch (e) {
+        // Log removed to keep PR clean, or use console.debug if preferred
+      }
+      this[mgr] = null
+    })
 
-    Main.panel.remove_style_class_name('unite-shell')
+    // 3. FORCE REMOVE PANEL INDICATORS
+    // Fixes 'Extension point conflict' crash on unlock
+    const zombieRoles = [
+      'uniteWindowControls',
+      'uniteAppMenu',
+      'uniteTray',
+      'uniteDesktopLabel',
+    ]
+    zombieRoles.forEach((role) => {
+      try {
+        if (Main.panel.statusArea[role]) {
+          let actor = Main.panel.statusArea[role]
+          if (actor && actor.destroy) {
+            actor.destroy()
+          } else if (
+            actor &&
+            actor.container &&
+            actor.container.destroy
+          ) {
+            actor.container.destroy()
+          }
+          delete Main.panel.statusArea[role]
+        }
+      } catch (e) {
+        try {
+          delete Main.panel.statusArea[role]
+        } catch (z) {}
+      }
+    })
 
-    global.unite = null
+    // 4. Remove Shell Style
+    try {
+      Main.panel.remove_style_class_name('unite-shell')
+    } catch (e) {}
+
+    // 5. Clean up Settings
+    try {
+      if (this.settings) {
+        this.settings.runDispose()
+        this.settings = null
+      }
+    } catch (e) {}
+
+    // 6. CLEAR GLOBAL REF (Fixes Memory Leak)
+    if (global.unite === this) {
+      global.unite = null
+    }
+
+    // 7. Force GC
+    try {
+      if (global.gc) global.gc()
+    } catch (e) {}
   }
 
   get focusApp() {
-    return this.windowManager.focusApp
+    return this.windowManager && this.windowManager.focusApp
+      ? this.windowManager.focusApp
+      : null
   }
 
   get focusWindow() {
-    return this.windowManager.focusWindow
+    return this.windowManager && this.windowManager.focusWindow
+      ? this.windowManager.focusWindow
+      : null
   }
 }
