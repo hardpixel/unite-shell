@@ -248,6 +248,8 @@ const MetaWindow = GObject.registerClass(
     }
 
     shade() {
+      if (typeof this.win.shade !== 'function') return
+
       if (this.win.is_shaded) {
         this.win.shade(true)
       } else {
@@ -276,7 +278,8 @@ const MetaWindow = GObject.registerClass(
       if (this.hasFocus) {
         const overview = Main.overview.visibleTarget
         const controls = Main.panel.statusArea.uniteWindowControls
-        const skipTbar = Meta.is_wayland_compositor() && this.win.skip_taskbar
+        const isWayland = Meta.is_wayland_compositor ? Meta.is_wayland_compositor() : true
+        const skipTbar = isWayland && this.win.skip_taskbar
 
         controls && controls.setVisible(
           !overview && !skipTbar && this.showButtons
