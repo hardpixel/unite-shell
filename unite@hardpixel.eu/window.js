@@ -159,6 +159,14 @@ const MetaWindow = GObject.registerClass(
       return false
     }
 
+    get skipTaskbar() {
+      if (Meta.is_wayland_compositor) {
+        return Meta.is_wayland_compositor() && this.win.skip_taskbar
+      }
+
+      return this.win.skip_taskbar
+    }
+
     get primaryScreen() {
       return this.win.is_on_primary_monitor()
     }
@@ -276,10 +284,9 @@ const MetaWindow = GObject.registerClass(
       if (this.hasFocus) {
         const overview = Main.overview.visibleTarget
         const controls = Main.panel.statusArea.uniteWindowControls
-        const skipTbar = Meta.is_wayland_compositor() && this.win.skip_taskbar
 
         controls && controls.setVisible(
-          !overview && !skipTbar && this.showButtons
+          !overview && !this.skipTaskbar && this.showButtons
         )
       }
     }
