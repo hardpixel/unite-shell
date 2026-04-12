@@ -11,7 +11,7 @@
     "package": "package=1 rollup -c"
   },
   "devDependencies": {
-    "rollup": "^2.79.2",
+    "rollup": "^2.80.0",
     "rollup-plugin-copy": "latest",
     "rollup-plugin-delete": "latest",
     "rollup-plugin-zipdir": "latest"
