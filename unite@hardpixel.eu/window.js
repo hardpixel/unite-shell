@@ -1,6 +1,7 @@
 import GObject from 'gi://GObject'
 import Shell from 'gi://Shell'
 import Meta from 'gi://Meta'
+import GLib from 'gi://GLib'
 import * as Main from 'resource:///org/gnome/shell/ui/main.js'
 import * as Util from 'resource:///org/gnome/shell/misc/util.js'
 import * as Handlers from './handlers.js'
@@ -19,6 +20,7 @@ const _HIDE_FLAGS = ['0x2', '0x0', '0x2', '0x0', '0x0']
 
 const AppSystem   = Shell.AppSystem.get_default()
 const WinTracker  = Shell.WindowTracker.get_default()
+const HAS_XPROP   = GLib.find_program_in_path('xprop') !== null
 
 function isValid(win) {
   return win && VALID_TYPES.includes(win.window_type)
@@ -98,7 +100,7 @@ const MetaWindow = GObject.registerClass(
       this.signals  = new Handlers.Signals()
       this.settings = new Handlers.Settings()
 
-      if (this.xid && !this.clientDecorated) {
+      if (this.xid && !this.clientDecorated && HAS_XPROP) {
         this.decorations = new ServerDecorations(this)
       } else {
         this.decorations = new ClientDecorations(this)
